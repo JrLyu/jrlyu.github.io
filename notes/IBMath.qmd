@@ -1,0 +1,8 @@
+---
+title: "IB Math AA HL Notes"
+---
+
+
+```{=html}
+<embed src="pdf/IB Math AA HL.pdf" width="800px" height="800px" />
+```

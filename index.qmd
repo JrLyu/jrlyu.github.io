@@ -1,11 +1,21 @@
 ---
-title: "jiurulyu.github.io"
+title: "Jiuru Lyu"
+image: media/headshot.jpg
+toc: false
+about: 
+  template: jolla
+  image-shape: round
+  image-width: 17em
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/jiuru-lyu/
+    - icon: github
+      text: GitHub
+      href: https://github.com/JrLyu
+    - icon: mail
+      text: Email
+      href: mailto:richard.jrlyu@outlook.com
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-1 + 1
-```
+Hi! My name is Jiuru Lyu, and I am a junior at Emory University studying Applied Mathematics. In my leisure time, I enjoy coffee brewing, traveling, photograph, and commercial aviation.

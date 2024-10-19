@@ -1,19 +1,26 @@
 project:
   type: website
+  output-dir: docs
 
 website:
-  title: "jiurulyu.github.io"
+  title: "Jiuru Lyu"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: cv.qmd
+        text: CV
+      - href: notes.qmd
+        text: Notes
+      - href: photo.qmd
+        text: Photograph
 
 format:
   html:
-    theme: cosmo
+    theme: 
+      light: flatly
+      dark: darkly
     css: styles.css
     toc: true
-
-editor: visual
+    page-layout: full
 
