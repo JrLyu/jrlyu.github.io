@@ -25,7 +25,7 @@
     "href": "notes.html",
     "title": "Class Notes",
     "section": "",
-    "text": "High School Level Math\nIB Math AA HL Notes\n\n\nCollege Level Math\n\nMath Fundamentals\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\nProof Practice\n\n\nApplied Mathematics\n(Ordinary) Differential Equations\nNonlinear Optimization\nNumerical Analysis\n\n\nData Science, Statistics, and Causal Inference\nIntroduction to Causal Inference\nMathematical Statistics I: Probability\nMathematical Statistics II: Statistical Inference\nGoogle Data Analytics Learning Notes\n\n\n\nComputer Science\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\n\n\nOther Fields\nIntroduction to Sociology"
+    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nMathematical Statistics\nGoogle Data Analytics Learning Notes\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\n\n\n\nOther Fields\n\nIntroduction to Sociology"
   },
   {
     "objectID": "cv.html",
@@ -33,5 +33,26 @@
     "title": "Jiuru Lyu",
     "section": "",
     "text": "---\ntitle: CV\n---"
+  },
+  {
+    "objectID": "notes/MathStats.html#statistical-inference",
+    "href": "notes/MathStats.html#statistical-inference",
+    "title": "Mathematical Statistics",
+    "section": "Statistical Inference",
+    "text": "Statistical Inference"
+  },
+  {
+    "objectID": "notes/Proofs.html#proof-practice",
+    "href": "notes/Proofs.html#proof-practice",
+    "title": "IB Math AA HL Notes",
+    "section": "Proof Practice",
+    "text": "Proof Practice"
+  },
+  {
+    "objectID": "notes/LA.html#linear-algebra-done-right",
+    "href": "notes/LA.html#linear-algebra-done-right",
+    "title": "Linear Algebra",
+    "section": "Linear Algebra Done Right",
+    "text": "Linear Algebra Done Right"
   }
 ]

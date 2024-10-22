@@ -1,0 +1,5 @@
+---
+title: "Nonlinear Optimization"
+---
+
+<embed src="pdf/Nonlinear Optimization.pdf" width="800px" height="800px" />

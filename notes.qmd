@@ -2,40 +2,37 @@
 title: "Class Notes"
 ---
 
-
-
 ### High School Level Math
-[IB Math AA HL Notes](notes/IBMath.qmd)
+
+- [IB Math AA HL Notes](notes/IBMath.qmd)
 
 ### College Level Math
+
 #### Math Fundamentals
 
-    Calculus II
-    Multivariable Calculus/Advanced Calculus/Calculus III
-    Linear Algebra
-    Mathematical Proofs
-    Proof Practice
+- [Calculus II](notes/Calc2.qmd)
+- [Multivariable Calculus/Advanced Calculus/Calculus III](notes/Calc3.qmd)
+- [Linear Algebra](notes/LA.qmd)
+- [Mathematical Proofs](notes/Proofs.qmd)
 
 #### Applied Mathematics
 
-    (Ordinary) Differential Equations
-    Nonlinear Optimization
-    Numerical Analysis
+- [Ordinary Differential Equations](notes/ODE.qmd)
+- [Nonlinear Optimization](notes/nonlinearOpt.qmd)
+- [Undergraduate-Level Numerical Analysis](notes/NumericalAnalysis1.qmd)
 
 #### Data Science, Statistics, and Causal Inference
 
-    Introduction to Causal Inference
-    Mathematical Statistics I: Probability
-    Mathematical Statistics II: Statistical Inference
-    Google Data Analytics Learning Notes
+- [Introduction to Causal Inference](https://jrlyu.github.io/qtm110.io/)
+- [Mathematical Statistics](notes/MathStats.qmd)
+- [Google Data Analytics Learning Notes](https://jrlyu.github.io/google_analytics.io/)
 
 ### Computer Science
 
-    Object-Oriented Programming & Introduction to Data Structures
-    Introduction to Data Structure and Algorithms
+- Object-Oriented Programming & Introduction to Data Structures
+- Introduction to Data Structure and Algorithms
 
 ### Other Fields
 
-    Introduction to Sociology
-
+- [Introduction to Sociology](https://jrlyu.github.io/intro_to_socio.io/)
 

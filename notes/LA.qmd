@@ -1,0 +1,11 @@
+---
+title: "Linear Algebra"
+---
+
+## General Linear Algebra
+
+<embed src="pdf/Linear Algebra.pdf" width="800px" height="800px" />
+
+## Linear Algebra Done Right
+
+<embed src="pdf/Linear Algebra Done Right.pdf" width="800px" height="800px" />

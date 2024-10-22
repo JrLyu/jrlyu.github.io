@@ -1,0 +1,11 @@
+---
+title: "Mathematical Statistics"
+---
+
+## Probability Thoery
+
+<embed src="pdf/Mathematical Statistics I.pdf" width="800px" height="800px" />
+
+## Statistical Inference
+
+<embed src="pdf/Mathematical Statistics II.pdf" width="800px" height="800px" />

@@ -1,0 +1,11 @@
+---
+title: "IB Math AA HL Notes"
+---
+
+## Class Notes
+
+<embed src="pdf/Mathematical Proofs.pdf" width="800px" height="800px" />
+
+## Proof Practice
+
+<embed src="pdf/Proof Practice.pdf" width="800px" height="800px" />
