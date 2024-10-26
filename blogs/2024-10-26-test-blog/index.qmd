@@ -1,0 +1,20 @@
+---
+title: "blog post title"
+description: "blog post description (appears underneath the title in smaller text) which is included on the listing page"
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 10-26-2024
+categories: [Quarto, Test, Blog] # self-defined categories
+image: preview-image.png
+draft: false # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
+---
+
+# Statement of Purpose
+This is my test-blog to show case how to generate a blog post in Quarto.
+
+## Some random thoughts
+It is important to note that the front matter of the blog post is different from the front matter of the index page, notes page, and blogs page. The front matter of the blog post is used to provide metadata about the blog post, such as the title, description, author, date, categories, image, and draft status. The content of the blog post is written in markdown and can include text, images, links, and other markdown elements.
+
+# Citations
+I take the tutorial from Sam Csik's [blog](https://samanthacsik.github.io/posts/2022-10-24-quarto-blogs/#I-MEDS) ^[Also see other useful blogs as reference!]

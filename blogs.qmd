@@ -1,0 +1,11 @@
+---
+title: "My Blogs"
+listing: 
+  contents: blogs
+  type: grid # or `default` or `table`
+  filter-ui: true
+  sort-ui: true
+  sort: "date desc" # can also sort on more than one field
+  categories: true # allows you to sort posts by assigned categories 
+---
+

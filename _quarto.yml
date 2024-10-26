@@ -4,6 +4,12 @@ project:
 
 website:
   title: "Jiuru Lyu"
+  repo-url: https://github.com/JrLyu/jrlyu.github.io
+  repo-actions: [edit, source, issue]
+  search: true
+  reader-mode: true
+  back-to-top-navigation: true
+  bread-crumbs: true
   navbar:
     left:
       - href: index.qmd
@@ -14,6 +20,16 @@ website:
         text: Notes
       - href: photo.qmd
         text: Photograph
+      - href: blogs.qmd
+  page-footer: 
+    left: "Copyright 2024, Jiuru Lyu" 
+    right: 
+      - icon: linkedin
+        href: https://www.linkedin.com/in/jiuru-lyu/
+      - icon: github
+        href: https://github.com/JrLyu
+      - icon: envelope
+        href: mailto:richard.jrlyu@outlook.com
 
 format:
   html:
@@ -23,4 +39,9 @@ format:
     css: styles.css
     toc: true
     page-layout: full
+    header-includes: | 
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Sedan:ital@0;1&display=swap" rel="stylesheet">
+      
 

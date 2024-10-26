@@ -13,7 +13,7 @@ about:
     - icon: github
       text: GitHub
       href: https://github.com/JrLyu
-    - icon: mail
+    - icon: envelope
       text: Email
       href: mailto:richard.jrlyu@outlook.com
 ---

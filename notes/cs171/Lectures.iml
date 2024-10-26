@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/02-Review" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/03-Objects_and_Classes" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/04-Packages" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/05-Inheritance-and-Polymorphism" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/05-Inheritance-and-Polymorphism/01-extend" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/05-Inheritance-and-Polymorphism/02-override-and-add" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/05-Inheritance-and-Polymorphism/03-oop-design" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/05-Inheritance-and-Polymorphism/04-super" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/05-Inheritance-and-Polymorphism/05-bank-account" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/05-Inheritance-and-Polymorphism/06-casting" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/05-Inheritance-and-Polymorphism/07-slection-sort" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/05-Inheritance-and-Polymorphism/08-exception-handling" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/05-Inheritance-and-Polymorphism/09-casting" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/05-Inheritance-and-Polymorphism/10-protected-modifier" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/05-Inheritance-and-Polymorphism/11-final-modifier" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/06-Abstract-Classes-and-Interfaces" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/06-Abstract-Classes-and-Interfaces/01-abstract-modifier" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/06-Abstract-Classes-and-Interfaces/02-interfaces" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/06-Abstract-Classes-and-Interfaces/03-built-in-interfaces" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/06-Abstract-Classes-and-Interfaces/04-defualt-modifier" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/07-Generics" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/07-Generics/01-generic-classes" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/07-Generics/02-generic-methods" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/07-Generics/03-bounded-parameters" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/08-Array-Data-Structure" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/08-Array-Data-Structure/01-linear-search" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/08-Array-Data-Structure/02-binary-search" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/08-Array-Data-Structure/03-adding-and-deleting-elements" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/08-Searching-in-Arrays" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/08-Array-Data-Structure/04-dynamic-array" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/09-Stack-Data-Structure" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/10-Queue-Data-Structure" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/11-Linked-List" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/12-Complexity-Analysis" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/13-Sorting-Algorithms" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/14-Hashing" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/24.0.0/annotations-24.0.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>

@@ -1,1 +1,46 @@
 /* css styles */
+.sedan-regular {
+  font-family: "Sedan", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.sedan-regular-italic {
+  font-family: "Sedan", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+// <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 100 to 800
+
+.jetbrains-mono-<uniquifier> {
+  font-family: "JetBrains Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
+
+// <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 100 to 900
+
+.inter-<uniquifier> {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  line-height: 1.8;
+}
+
+code, pre {
+  font-family: "JetBrains Mono", monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Sedan", serif;
+}
+

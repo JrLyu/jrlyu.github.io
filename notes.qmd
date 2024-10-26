@@ -29,7 +29,7 @@ title: "Class Notes"
 
 ### Computer Science
 
-- Object-Oriented Programming & Introduction to Data Structures
+- [Object-Oriented Programming & Introduction to Data Structures](notes/cs171.qmd)
 - Introduction to Data Structure and Algorithms
 
 ### Other Fields

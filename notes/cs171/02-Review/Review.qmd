@@ -1,0 +1,423 @@
+---
+title: "Lecture 1 Introduction & Review"
+description: "This lecture introduces the purpose of studying algorithms and data structures. It also does some review on Java and its code basics."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 08-29-2023
+categories: [Coding, Java, Algorithm, OOP, Data Structure] # self-defined categories
+draft: false # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
+---
+
+## Introduction
+
+::: {#nte-algorithm .callout-note}
+## ***Algorithm***
+
+A method for solving a problem expressed as a **sequence of steps** that is suitable for execution by a computer(machine).
+:::
+
+Different ways to express algorithms:
+
+-   Natural languages (bad - ambiguous)
+
+-   Flow charts (good for conceptualization of the algorithm)
+
+-   Pseudo code (good for algorithm development)
+
+-   Programming languages (good for communicating the algorithm to a machine because it's unambiguous)
+
+::: {#nte-data-structure .callout-note}
+## ***Data structure***
+
+A way to **organize** (insert, delete, and retrieve) the data used by an algorithm
+:::
+
+::: {#tip-data-structure .callout-tip collapse="true"}
+## Example of a data structure
+
+Arrays
+:::
+
+Every data structure has its strengths and its weaknesses:
+
+-   Array: The data is stored in consecutive array elements & The array elements are accessed efficiently using an index.
+
+    -   Strength: efficient (low) storage cost
+    -   Weakness: not dynamic (cannot increase in size easily)
+
+Metrics used to measure the goodness of algorithms:
+
+-   **Running time**: how long does it take for the program to finish
+-   **Storage requirement**: how much memory does the program use to store its information.
+
+## Review - Computer Architecture
+
+### The smallest unit of Computer Memory: bit
+
+1.  Computers use memory devices built with electronics.
+2.  The smallest memory device used by the computer works like a switch. It can be in one of the 2 states:
+    -   Off state (state 0)
+    -   On state (state 1)
+    -   0 and 1 are called **binary digits**
+3.  The smallest memory device is called a bit (=binary digit)
+4.  A row on $n$ bits can be in one of $2^n$ states: each switch can be in 2 states, and so the total number of combinations is $2\times2\times2\times\cdots\times2=2^n$
+5.  Byte memory = 8 bits = a memory device that can retain (=remember) 8 binary digits. Since $2^8=256$, each byte can store one of the 256 possible patterns of binary numbers.
+6.  Though humans are very flexible in storing data (can use many different methods), computers can only store data/information as binary numbers.
+
+### Memory address and Memory content
+
+1.  Each memory cell is identified by a unique address (which is a number).
+2.  Each memory cell stores a number (that is the data/information stored by the computer).
+
+## Review - Variables in Java
+
+1.  What happens inside the computer when we define a variable `int a`:
+    -   The computer will find some used memory cells and mark them as used (aka: allocate memory)
+    -   The computer equates(=records) the name `a` to the memory location of the reserved cells.
+2.  Each variable has a **data type**
+    -   The data type specifies the kind of information.
+    -   Each kind of information has its own way of representation. The way of representation is called a **code**.
+3.  Encoding method of a data type:
+    -   Information of a data type are represented by binary numbers.
+    -   The encoding method defines the way to interpret a binary number.
+4.  <mark>**Data type provide the context to interpret a number and obtain the meaning of the number.**</mark>
+    -   See [`datatype.java`](datatype.java) for an example.
+5.  Java's primitive data types:
+
+| Data type |                Encoding method                |
+|:---------:|:---------------------------------------------:|
+|   byte    |     2's complement encoding using 8 bits      |
+|   short   |     2's complement encoding using 16 bits     |
+|    int    |     2's complement encoding using 32 bits     |
+|   long    |     2's complement encoding using 64 bits     |
+|   float   |        IEEE 754 encoding using 32 bits        |
+|  double   |        IEEE 754 encoding using 64 bits        |
+|   char    |        Unicode encoding using 16 bits         |
+|  boolean  | Enumeration encoding using 0=false and 1=true |
+
+6.  Besides the primitive data types, all other data types in Java are **reference data types**:
+    -   Reference: A reference in computer science is a memory address
+    -   Reference data type: A variable of a reference data type stores a memory address
+7.  Primitive and reference data types are stored differently:
+    -   The variable of primitive data types contains a value of that data type.
+    -   The variable of reference data types contains a reference to the location where the object is stored.
+
+## Review - Programming Language
+
+::: {#nte-prograaming-langue .callout-note}
+### ***Programming Language***
+
+An artificial language designed to convey commands **unambigously** to a machine.
+
+-   A programming language has a set of syntax rules to construct commands.
+
+-   3 types of commands/statements in a procedural programming language:
+
+    -   Assignment statement - Selection statement: `if`, `if-else`
+    -   Loop statement: `while`, `for`, `do-while`
+
+-   These 3 types of statements are necessary and sufficient to make a programming language Turing-complete (meaning the machine can solve any computational problem given enough time and memory, no matter how complex).
+:::
+
+::: {#nte-operator .callout-note}
+## ***Operator***
+
+A symbol that represents an operation.
+:::
+
+| Assignment | Arithmetic | Relational | Logical | Special |
+|:----------:|:----------:|:----------:|:-------:|:-------:|
+|    `=`     |            |    `==`    |  `&&`   |  `++`   |
+|    `+=`    |    `+`     |    `!=`    |  `||`   |  `--`   |
+|    `-=`    |    `-`     |    `<`     |   `!`   |         |
+|    `*=`    |    `*`     |    `<=`    |         |         |
+|    `/=`    |    `/`     |    `>`     |         |         |
+|    `%=`    |    `%`     |    `>=`    |         |         |
+
+::: {#nte-operand .callout-note}
+## ***Operand***
+
+The value used in an operation.
+
+-   An operator performs an operation on its operands and produce some result value.
+:::
+
+::: {#nte-expression .callout-note}
+## ***Expression***
+
+A combination of one or more operators and operands that performs a computation.
+
+-   An expression can be built up from other expressions.
+:::
+
+``` java
+core = score - 10 * lateDays;
+```
+
+-   Consists of the arithmetic expression `10 * lateDays`
+-   which itself is an operand of the arithmetic expression `score - •`
+-   which is an operand of the assignment expression `score = •`
+
+::: {#nte-pre-operators .callout-note}
+## ***Pre-operators*** and ***Post-operators***
+
+-   ***Pre-operators*** preforms the operation first and will return the new value of the variable.
+-   ***Post-operators*** performs the operation later and returns the old value of the variable.
+:::
+
+``` java
+x = 4;
+y = ++x;   <===>   x = x + 1; y = x; (PRE increment)
+
+Result: x = 5  y = 5
+```
+
+``` java
+x = 4;
+y = x++;   <===>   y = x; x = x + 1; (POST increment)
+
+Result: x = 5  y = 4
+```
+
+::: {#nte-statement .callout-note}
+## ***Statement***
+
+A command issued to the computer to do something.
+
+-   Statement is the unit of execution in a programming language.
+-   In Java, a statement must be contained inside some method.
+:::
+
+-   Assignment statement:
+
+``` java
+variable = expression;
+
+x = 4; // Store the value 4 in variable x
+x = x + 1; // Read the value in variable x, add 1 to it, then store result in variable x
+```
+
+-   Variables on the RHS of the `=` operator are read/accessed.
+-   The variable on the LHS of the `=` operator is written/updated
+-   `if` statement
+
+``` java
+if (condition)
+  one-statement;
+
+if (conditon) {
+  statement1;
+  statement2;
+  ...
+}
+```
+
+-   `if-else` statement
+
+``` java
+if (condition)
+  one-statement;
+else
+  one-statement;
+
+if (condition) {
+  statement1;
+  statement2;
+  ...
+} else {
+  statement3;
+  statement4;
+  ...
+}
+```
+
+-   `Switch` statement
+
+``` java
+Switch (integer-expression) {
+  case intVal1: statement1-1;
+                statement1-2;
+                ...
+                break;
+  case intVal2: statement2-1;
+                statement2-2;
+                ...
+                break;
+  ...
+  default: statementD-1; //optional clause
+           statementD-2;
+           ...
+           break;
+}
+```
+
+-   `while` loop
+
+``` java
+while (condition)
+  one-statement;
+   
+while (condition) {
+  statement1;
+  statement2;
+  ...
+}
+```
+
+-   `for` loop
+
+``` java
+for (init; term-cond; incr) {
+  statement1;
+  statement2;
+  ...
+}
+```
+
+-   See [`LoopTracing.java`](LoopTracing.java)
+
+## Review - Array
+
+-   Syntax to define an array (reference) variable:
+
+``` java
+dataType[] arrayRefVar; // Defines an array reference variable
+```
+
+-   Syntax to create an array object
+
+``` java
+new dataType[N]; // Create an array of N elements
+```
+
+-   Properties of an array in Java:
+
+    -   All elements in the array have the same data type.
+    -   Array elements are stored consecutively in memory
+
+    ``` java
+    int[] A; // A is a reference variable
+    A = new int[10];
+    ```
+
+    -   `int[] A` will allocate (reserve memory) a reference variable `A`.
+    -   `new int[10]` will allocate for an `int[10]` array (=40 bytes) and return its base address.
+    -   `A =` will assign the return value to the variable `A`.
+
+-   Copy an array:
+
+    -   Make a duplicate of an array where the duplicate contains the same data as the original
+    -   Updating array elements in the duplicate must not affect the data in the original array.
+
+    ``` java
+     public static void main(String[] args) {
+        double[] myList = {34, 15, 66, 7};
+        double[] myListCopy = new double[ myList.length ];
+
+        for ( int i = 0; i < myList.length; i++)
+           myListCopy[i] = myList[i];
+     } 
+    ```
+
+-   See (`CopyArray.java`)\[CopyArray.java\].
+
+-   Variables of primitive data types (such as `int`, `double`, etc.) can be copied with an assignment. However, in Java, the assignment operation will not copy objects of non-primitive data types.
+
+``` java
+double[] myList = {34, 15, 66, 7};
+double[] myListCopy;
+
+myListCopy = myList;   // Does not copy an array object 
+// ** This copies the reference in myList to myListCopy
+```
+
+-   The assignment `myListCopy = myList` will copy the reference in `myList` to the `myListCopy` variable.
+
+-   Because `myListCopy` and `myList` refer to the same array object, updates made with `myListCopy[i]` will also affect `myList[i]` and vice versa. \> ***Alias***: When a difference variable names can be used to reference the same variable, they are called aliases in computer science.
+
+-   See [`Alias.java`](Alias.java).
+
+## Review - Methods
+
+::: {#nte-method .callout-note}
+## ***Methods***
+
+Methods are used to encapsulate(=put in a capsule) a series of operations used to solve a complex problem.
+
+-   Methods allow programmers to work with higher level of abstraction.
+    -   Low level of abstraction = when we can see a log of detail
+    -   High level of abstraction = when we can see less detail and the big picture
+-   **Abstraction** is a commonly used technique to solve complex problems.
+-   Components in a method definition
+    -   access specifier: `public`/`private`
+    -   class variable modifier: `static`
+    -   return value data type: `int`/`double`/etc.
+    -   method name
+    -   parameter variables
+    -   local variable
+    -   return value
+:::
+
+``` java
+/**
+ * This method returns the summation of integers from the start integer to the end integer.
+ * @param start the start integer
+ * @param end the final integer
+ * @return the summation
+ */
+public static int sum(int start, int end) {
+  int s = 0;
+  for (int i = start; i <= end; i++) {
+      s += i;
+  }
+  return s;
+}
+```
+
+-   Invoking a method: The values of the actual parameters(=arguments) are passed(=copied) to the parameter variables of the method.
+
+-   The signature of a method = method name + data type of the parameters.
+
+    -   Java uses the method signature to select which method to invoke.
+    -   **Overloaded method** = when there are multiple method in the class with the same method name but different signatures.
+
+    ``` java
+    public class Overload {
+     public static void meth(int x) {
+        System.out.println("Running: meth(int x)");
+     }
+
+     public static void meth(double x) {
+        System.out.println("Running: meth(double x)");
+     }
+
+     public static void meth(int x, int y) {
+        System.out.println("Running: meth(int x, int y)");
+     }
+    }
+    ```
+
+-   Also see [`Overload.java`](Overload.java).
+
+-   Parameter passing = conveying some information(=parameter) to a method.
+
+-   The most commonly used parameter passing mechanisms are:
+
+    -   Pass-by-value: The value of the argument is passed(=assigned) to the parameter variable. The method will use the copy of the argument's value in its computations.
+    -   Pass-by-reference: the address of the argument is passed(=assigned) to the parameter variable. The method will retrieve the value using the address in computations.
+
+-   One key to remember: The parameter variables are **local** variables to the method. Arguments and parameter variables are different variables.
+
+-   Java always passes the arguments **by-value** to a method. However, because primitive typed variables and reference typed variables are stored differently, the outcome of the pass-by-value mechanism is different for primitive typed variables and reference typed variables.
+
+    -   A primitive typed argument passed to a method cannot be modified:
+        -   See [`PassPrimitive.java`](PassPrimitive.java).
+    -   A reference typed argument passed to a method will be modified.
+        -   See [`PassReference.java`](PassReference.java).
+
+## Review - Exception Handling
+
+-   When a method execution encounters an error, the method would return an error code: See [`ErrorCode.java`](ErrorCode.java).
+-   In newer programming languages, the method will "throw an exception" when ti encounters an error: See [`ThrowException.java`](ThrowException.java).
+-   You can text(=catch) for the "error code" (exception type) and execute a block when the error code is detected: See [`CatchException.java`](CatchException.java).

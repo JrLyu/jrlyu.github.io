@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2023-10-18">
+<meta name="description" content="This lecture discusses the stack data structure and its implementation in Java.">
+
+<title>Jiuru Lyu - Lecture 8 Stack</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Jiuru Lyu</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../cv.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../photo.html"> 
+<span class="menu-text">Photograph</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blogs.html"> 
+<span class="menu-text">My Blogs</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction-to-stack" id="toc-introduction-to-stack" class="nav-link active" data-scroll-target="#introduction-to-stack">Introduction to Stack</a></li>
+  <li><a href="#the-stack-interface" id="toc-the-stack-interface" class="nav-link" data-scroll-target="#the-stack-interface">The Stack Interface</a></li>
+  <li><a href="#implementing-the-stack-with-a-fixed-size-array" id="toc-implementing-the-stack-with-a-fixed-size-array" class="nav-link" data-scroll-target="#implementing-the-stack-with-a-fixed-size-array">Implementing the Stack with a fixed size array</a></li>
+  <li><a href="#implement-the-stack-with-a-dynamic-array" id="toc-implement-the-stack-with-a-dynamic-array" class="nav-link" data-scroll-target="#implement-the-stack-with-a-dynamic-array">Implement the stack with a dynamic array</a></li>
+  <li><a href="#generic-stack" id="toc-generic-stack" class="nav-link" data-scroll-target="#generic-stack">Generic Stack</a></li>
+  <li><a href="#javas-stack-library" id="toc-javas-stack-library" class="nav-link" data-scroll-target="#javas-stack-library">Java’s Stack Library</a></li>
+  <li><a href="#application-of-stack-reverse-polish-expression-evaluation" id="toc-application-of-stack-reverse-polish-expression-evaluation" class="nav-link" data-scroll-target="#application-of-stack-reverse-polish-expression-evaluation">Application of Stack: Reverse Polish Expression Evaluation</a></li>
+  <li><a href="#stack-application-edsger-dijkstra-algorithm-for-fully-parenthesized-arithmetic-expression" id="toc-stack-application-edsger-dijkstra-algorithm-for-fully-parenthesized-arithmetic-expression" class="nav-link" data-scroll-target="#stack-application-edsger-dijkstra-algorithm-for-fully-parenthesized-arithmetic-expression">Stack Application: Edsger Dijkstra Algorithm for Fully Parenthesized Arithmetic Expression</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 8 Stack</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Coding</div>
+    <div class="quarto-category">Java</div>
+    <div class="quarto-category">Data Structure</div>
+    <div class="quarto-category">Stack</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    This lecture discusses the stack data structure and its implementation in Java.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 18, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction-to-stack" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-stack">Introduction to Stack</h2>
+<ul>
+<li><p>There are 2 commonly used data structures:</p>
+<ul>
+<li>Stack (LIFO)</li>
+<li>Queue (FIFO)</li>
+</ul></li>
+<li><p>A <strong>stack</strong> is a data structure that organize the stored data in a <strong>Last In First Out (LIFO)</strong> manner.</p></li>
+<li><p>To achieve the LIFO behavior, the stack only provide the following 2 methods to access the data stored in a stack:</p>
+<ul>
+<li><code>push(x)</code>: add <code>x</code> to the “top” of the stack.</li>
+<li><code>pop()</code>: remove the item at the “top” of the stack and return it.</li>
+<li>The item removed by <code>pop()</code> is always the last item that was pushed.</li>
+</ul></li>
+<li><p>Method invocation/return:</p>
+<ul>
+<li>If the order of method invocation is</li>
+</ul>
+<pre><code>M1() --&gt; M2() --&gt; M3() --&gt; M4()</code></pre>
+<ul>
+<li>Then the order in which the methods return form their invocation is the reverse order:</li>
+</ul>
+<pre><code>M4() --&gt; M3() --&gt; M2() --&gt; M1()</code></pre>
+<ul>
+<li>Some computer algorithms/processes with a natural LIFO behavior: undo algorithm in a text editor (it uses a stack to store the history of edit changes); back algorithm in a browser (it uses a stack to store the browser history)</li>
+</ul></li>
+</ul>
+</section>
+<section id="the-stack-interface" class="level2">
+<h2 class="anchored" data-anchor-id="the-stack-interface">The Stack Interface</h2>
+<ul>
+<li><p>The stack interface definition:</p>
+<ul>
+<li>The stack only defines a behavior on the access of the data stored in a stack: <code>pop()</code> must return the last item that was pushed</li>
+<li>The stack does not specify how the data must be stored.</li>
+<li>There are different ways to implement the same behavior</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> MyStackInterface<span class="op">&lt;</span>E<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">boolean</span> <span class="fu">isEmpty</span><span class="op">();</span> <span class="co">// returns true if stack is empty</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">boolean</span> <span class="fu">isFull</span><span class="op">();</span> <span class="co">// returns true if stack is full</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">void</span> <span class="fu">push</span><span class="op">(</span>E e<span class="op">);</span> <span class="co">// pushes element e on the stack</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  E <span class="fu">pop</span><span class="op">();</span> <span class="co">// Remove the element at the top of the stack and return it</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  E <span class="fu">peek</span><span class="op">();</span> <span class="co">// Return the element at the top without removing it</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+</section>
+<section id="implementing-the-stack-with-a-fixed-size-array" class="level2">
+<h2 class="anchored" data-anchor-id="implementing-the-stack-with-a-fixed-size-array">Implementing the Stack with a fixed size array</h2>
+<ul>
+<li>The basic implementation of a Stack is using:
+<ul>
+<li>A fixed size array to store the data items</li>
+<li>A <code>stackTop</code> index variable to record the first open position in the array</li>
+</ul></li>
+<li>The initial state of the stack when it is instantiated (=created): <code>stackTop = 0</code> (can also use <code>stackTop = -1</code>)</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> IntegerStack <span class="kw">implements</span> <span class="bu">Stack</span><span class="op">&lt;</span><span class="bu">Integer</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="bu">Integer</span><span class="op">[]</span> item<span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">int</span> stackTop<span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">IntegerStack</span><span class="op">(</span><span class="dt">int</span> N<span class="op">)</span> <span class="op">{</span> <span class="co">// Create a stack of size N</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    item <span class="op">=</span> <span class="kw">new</span> <span class="bu">Integer</span><span class="op">[</span>N<span class="op">];</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    stackTop <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">isEmpty</span><span class="op">()</span> <span class="op">{</span> <span class="co">// Test if stack is empty</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> stackTop <span class="op">==</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">isFull</span><span class="op">()</span> <span class="op">{</span> <span class="co">// Test if stack is empty</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> stackTop <span class="op">==</span> item<span class="op">.</span><span class="fu">length</span><span class="op">;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">push</span><span class="op">(</span><span class="bu">Integer</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span><span class="fu">isFull</span><span class="op">())</span> <span class="op">{</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Full"</span><span class="op">);</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span><span class="op">;</span> <span class="co">// Or: throw an exception</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        item<span class="op">[</span>stackTop<span class="op">]</span> <span class="op">=</span> e<span class="op">;</span> <span class="co">// (1) store item</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        stackTop<span class="op">++;</span> <span class="co">// (2) increment stackTop</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Integer</span> <span class="fu">pop</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span><span class="fu">isEmpty</span><span class="op">())</span> <span class="op">{</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Empty"</span><span class="op">);</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span> <span class="co">// Or: throw an exception</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        stackTop<span class="op">--;</span> <span class="co">// (1) decrement stackTop</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> item<span class="op">[</span>stackTop<span class="op">];</span> <span class="co">// (2) return item</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><ul>
+<li>See <code>IntegerStack.java</code> and <code>TestIntegerStack.java</code>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="implement-the-stack-with-a-dynamic-array" class="level2">
+<h2 class="anchored" data-anchor-id="implement-the-stack-with-a-dynamic-array">Implement the stack with a dynamic array</h2>
+<ul>
+<li>The stack can be implemented using a dynamic array</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> IntegerStack <span class="kw">implements</span> <span class="bu">Stack</span><span class="op">&lt;</span><span class="bu">Integer</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="bu">Integer</span><span class="op">[]</span> item<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">int</span> stackTop<span class="op">;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">final</span> <span class="dt">double</span> DELTA <span class="op">=</span> <span class="fl">0.25</span><span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">IntegerStack</span><span class="op">(</span><span class="dt">int</span> N<span class="op">)</span> <span class="op">{</span> <span class="co">// Create a stack of size N</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    item <span class="op">=</span> <span class="kw">new</span> <span class="bu">Integer</span><span class="op">[</span>N<span class="op">];</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    stackTop <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">isEmpty</span><span class="op">()</span> <span class="op">{</span> <span class="co">// Test if stack is empty</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> stackTop <span class="op">==</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">isFull</span><span class="op">()</span> <span class="op">{</span> <span class="co">// Test if stack is empty</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> stackTop <span class="op">==</span> item<span class="op">.</span><span class="fu">length</span><span class="op">;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">push</span><span class="op">(</span><span class="bu">Integer</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span><span class="fu">isFull</span><span class="op">())</span> <span class="op">{</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Double the array size</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>            <span class="bu">Integer</span><span class="op">[]</span> temp <span class="op">=</span> <span class="kw">new</span> <span class="dt">int</span><span class="op">[</span><span class="dv">2</span> <span class="op">*</span> item<span class="op">.</span><span class="fu">length</span><span class="op">];</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> item<span class="op">.</span><span class="fu">length</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                temp<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> item<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>            item <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        item<span class="op">[</span>stackTop<span class="op">]</span> <span class="op">=</span> e<span class="op">;</span> <span class="co">// (1) store item</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>        stackTop<span class="op">++;</span> <span class="co">// (2) increment stackTop</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Integer</span> <span class="fu">pop</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span><span class="fu">isEmpty</span><span class="op">())</span> <span class="op">{</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Empty"</span><span class="op">);</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span> <span class="co">// Or: throw an exception</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>        stackTop<span class="op">--;</span> <span class="co">// (1) decrement stackTop</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>        <span class="bu">Integer</span> retVal <span class="op">=</span> item<span class="op">[</span>stackTop<span class="op">];</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>stackTop <span class="op">&lt;</span> DELTA <span class="op">*</span> item<span class="op">.</span><span class="fu">length</span> <span class="op">&amp;&amp;</span> item<span class="op">.</span><span class="fu">length</span> <span class="op">&gt;=</span> <span class="dv">2</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Reduce the array by half</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>            temp <span class="op">=</span> <span class="kw">new</span> <span class="dt">int</span><span class="op">[</span>item<span class="op">.</span><span class="fu">length</span> <span class="op">/</span> <span class="dv">2</span><span class="op">];</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> stackTop<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>                temp<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> item<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>            item <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> retVal<span class="op">;</span> <span class="co">// (2) return item</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>The value <code>DELTA</code> determines when we will reduce the size of the array: <code>DELTA</code> is a wastage threshold:
+<ul>
+<li>When only the fraction of <code>DELTA</code> of the array is being used, we will reduce the wastage.</li>
+<li>Since we will reduce the array by half, <code>DELTA</code> must be at most 0.5. Otherwise, we will discard some valid entries in the stack.</li>
+<li><code>DELTA</code> = 0.25 is actually better than 0.5</li>
+</ul></li>
+<li>Running Time Analysis: Consider the <code>push()</code> algorithm using a dynamic array. On average, how many “store” statements are executed for each <code>push()</code> invocation?
+<ul>
+<li>When the stack is not full, the <code>push()</code> invocation will execute 1 store statement.</li>
+<li>When the stack if full, the <code>push()</code> invocation will execute <code>(1 + item.length)</code> store statement.</li>
+<li>Suppose we execute <span class="math inline">\(N\)</span> <code>push()</code> operations:</li>
+</ul></li>
+</ul>
+<table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"># times exec <code>push()</code></th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;"><span class="math inline">\(\cdots\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(N\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"># store statements to store item pushed</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="math inline">\(\cdots\)</span></td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"># store statements to double array</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;"><span class="math inline">\(\cdots\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(M\leq N\)</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Therefore, total store statements executed for <span class="math inline">\(N\)</span> <code>push()</code> invocations: <span class="math display">\[(1+1+\cdots+1)+(1+2+4+\cdots+M)\text{ where }M\le N\]</span>
+<ul>
+<li>Consider <span class="math inline">\(S=1+2+4+\cdots+M\)</span>: <span class="math display">\[\begin{aligned}S=1+&amp;2+4+\cdots+M\\2S=\quad\ \ &amp;2+4+8+\cdots+2M\\S=2S-S&amp;=2M-1\end{aligned}\]</span></li>
+<li>Therefore, total store statements executed is <span class="math display">\[N+(2*M-1)\leq N+2*N-1=3N-1\]</span></li>
+<li>Hence, average # store statement for <code>1 push()</code> invocation is <span class="math inline">\(\dfrac{(3N-1)}{N}\approx3\)</span>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="generic-stack" class="level2">
+<h2 class="anchored" data-anchor-id="generic-stack">Generic Stack</h2>
+<ul>
+<li>Java does not allow instantiation of a generic array, so the following code will cause error messages:</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ArrayStack<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="kw">implements</span> <span class="bu">Stack</span><span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> T<span class="op">[]</span> item<span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">int</span> stackTop<span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">ArrayStack</span><span class="op">(</span><span class="dt">int</span> N<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        item <span class="op">=</span> <span class="kw">new</span> T<span class="op">[</span>N<span class="op">];</span> <span class="co">// Create an array of T objects --&gt; error</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        stackTop <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// other methods...</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>However, there’s a simple hack to work around this Java restriction.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ArrayStack<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="kw">implements</span> <span class="bu">Stack</span><span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> T<span class="op">[]</span> item<span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">int</span> stackTop<span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">ArrayStack</span><span class="op">(</span><span class="dt">int</span> N<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        item <span class="op">=</span> <span class="op">(</span>T<span class="op">[])</span> <span class="kw">new</span> <span class="bu">Object</span><span class="op">[</span>N<span class="op">];</span> <span class="co">// Create an array of Object objects, and casting</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        stackTop <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// other methods...</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>In this way, Java will report warning messages (not fatal errors), so our program will still compile and run.</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> GenericStack<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="kw">implements</span> MyStackInterface<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> T<span class="op">[]</span> item<span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">int</span> stackTop<span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">GenericStack</span><span class="op">(</span><span class="dt">int</span> N<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        item <span class="op">=</span> <span class="op">(</span>T<span class="op">[])</span> <span class="kw">new</span> <span class="bu">Object</span><span class="op">[</span>N<span class="op">];</span> <span class="co">// Create an array of Object objects</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">// This will cause some warning, but it will compile (Java does not know if the casting will be successful)</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Why this will work: If we are working with unbounded generic types,</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="co">// we know T will be interpreted as Object by Java. Then we will create</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">// an array of Object, then cast it into our desired type T</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        stackTop <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">isEmpty</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> stackTop <span class="op">==</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">isFull</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> stackTop <span class="op">==</span> item<span class="op">.</span><span class="fu">length</span><span class="op">;</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">push</span><span class="op">(</span>T t<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        <span class="co">// if the array is full, then double the size of the array</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span><span class="fu">isFull</span><span class="op">())</span> <span class="op">{</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Full"</span><span class="op">);</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>        item<span class="op">[</span>stackTop<span class="op">]</span> <span class="op">=</span> t<span class="op">;</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>        stackTop<span class="op">++;</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> T <span class="fu">pop</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span><span class="fu">isEmpty</span><span class="op">())</span> <span class="op">{</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Empty"</span><span class="op">);</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span> <span class="co">// or throw an exception</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>        stackTop<span class="op">--;</span> <span class="co">// (1) decrease stackTop</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> item<span class="op">[</span>stackTop<span class="op">];</span> <span class="co">// return item</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> T <span class="fu">peek</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> item<span class="op">[</span>stackTop <span class="op">-</span> <span class="dv">1</span><span class="op">];</span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> <span class="fu">toString</span><span class="op">(){</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>        <span class="bu">String</span> result <span class="op">=</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> stackTop<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>            result <span class="op">+=</span> item<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> result<span class="op">;</span></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="javas-stack-library" class="level2">
+<h2 class="anchored" data-anchor-id="javas-stack-library">Java’s Stack Library</h2>
+<ul>
+<li>The Java library contains a generic <code>Stack</code> class: <code>java.util.Stack</code></li>
+<li>To instantiate <code>Stack</code> objects:</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Stack</span><span class="op">&lt;</span><span class="bu">Integer</span><span class="op">&gt;</span> iStack <span class="op">=</span> <span class="kw">new</span> <span class="bu">Stack</span><span class="op">&lt;&gt;();</span> <span class="co">// Integer Stack</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Stack</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> sStack <span class="op">=</span> <span class="kw">new</span> <span class="bu">Stack</span><span class="op">&lt;&gt;();</span> <span class="co">// String Stack</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p>The <code>Stack</code> class contains the following instance methods: <code>boolean empty()</code>; <code>E peek()</code>; <code>E push(E item)</code>; <code>E pop()</code>.</p></li>
+<li><p>For some reasons, the <code>Stack</code> class is a subclass of the <code>Vector</code> class, which can access the sotred data using an index.</p>
+<ul>
+<li>As a subclass, <code>Stack</code> inherits those methods:</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get</span><span class="op">(</span><span class="dt">int</span> index<span class="op">);</span> <span class="co">// Returns the element at the specified position</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">remove</span><span class="op">(</span><span class="dt">int</span> index<span class="op">);</span> <span class="co">// Removes the element at the specified position</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>However, this inheritance makes the FIFO behavior not guaranteed.</li>
+</ul></li>
+</ul>
+</section>
+<section id="application-of-stack-reverse-polish-expression-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="application-of-stack-reverse-polish-expression-evaluation">Application of Stack: Reverse Polish Expression Evaluation</h2>
+<ul>
+<li><p>There are 3 ways to write arithmetic expressions:</p>
+<ul>
+<li>In-fix: operators are placed between their operands: <span class="math inline">\((A+B)\times C=(A+B)\times C\)</span>.</li>
+<li>Pre-fix: operators are placed before their operands: <span class="math inline">\(\times + A\ B\ C\ =(A + B)\times C\)</span>.</li>
+<li>Post-fix: operators are placed after their operands: <span class="math inline">\(A\ B+C\times=(A+B)\times C\)</span>.</li>
+<li>The pre-fix and post-fix notations do no use parenthesis to write arithmetic expressions.</li>
+</ul></li>
+<li><p>Reverse Polish Notation (RPN):</p>
+<ul>
+<li>The operator always follows its (2) operands: <code>3 4 + ==&gt; 3 + 4 = 7</code></li>
+<li>When we evaluate an operation in RPN, the result is used an operand of another operation: <code>3 4 + 1 - ==&gt; 7 1 - ==&gt; 6</code></li>
+<li>Conclusion:
+<ul>
+<li>Each operator will operate on its proceeding 2 operands.</li>
+<li>Each operator will produce a result that will be the operand of some subsequent operator.</li>
+</ul></li>
+<li>We use a stack to store the operands. Whenever we reach an operator, we evaluate the operation with the two operands at the top of the stack.</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">Stack</span><span class="op">;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> EavluatePRN <span class="op">{</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="fu">evalRPN</span><span class="op">(</span>args<span class="op">));</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">/**</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span> Reverse Polish Notation <span class="co">(</span>RPN<span class="co">):</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span>      <span class="co">3</span> <span class="co">4</span> <span class="co">+</span> <span class="co">===&gt;</span> <span class="co">3</span> <span class="co">+</span> <span class="co">4</span> <span class="co">=</span> <span class="co">7</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span>      <span class="co">-</span> Each operator will operate on its proceeding <span class="co">2</span> operands</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span>      <span class="co">-</span> Each operator will produce a result that will be the operand of some subsequent operator</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span> We will use a Stack to implement this algorithm</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">   * </span><span class="an">@param</span><span class="co"> </span><span class="an">inp</span><span class="co"> =</span> array of String representing an RPN expression <span class="co">(</span>e<span class="co">.</span>g<span class="co">.:</span> <span class="co">"3"</span> <span class="co">"4"</span> <span class="co">"+')</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>   <span class="co">*/</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">public</span> <span class="dt">static</span> <span class="dt">int</span> <span class="fu">evalRPN</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> inp<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>      <span class="bu">Stack</span><span class="op">&lt;</span><span class="bu">Integer</span><span class="op">&gt;</span> opStack <span class="op">=</span> <span class="kw">new</span> <span class="bu">Stack</span><span class="op">&lt;&gt;();</span> <span class="co">// Stack containing the prior oprands</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>      <span class="bu">String</span> s<span class="op">;</span> <span class="co">// Help variable containg the next symbol</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> inp<span class="op">.</span><span class="fu">length</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>          s <span class="op">=</span> inp<span class="op">[</span>i<span class="op">];</span> <span class="co">// s = next item/symbol in input (as String !)</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>          <span class="cf">if</span> <span class="op">(</span>s<span class="op">.</span><span class="fu">equals</span><span class="op">(</span><span class="st">"+"</span><span class="op">)</span> <span class="op">||</span> s<span class="op">.</span><span class="fu">equals</span><span class="op">(</span><span class="st">"-"</span><span class="op">)</span> <span class="op">||</span> s<span class="op">.</span><span class="fu">equals</span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span> <span class="op">||</span> s<span class="op">.</span><span class="fu">equals</span><span class="op">(</span><span class="st">"/"</span><span class="op">))</span> <span class="op">{</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>              <span class="co">// the next symbol is an operator</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>              <span class="dt">int</span> o2 <span class="op">=</span> opStack<span class="op">.</span><span class="fu">pop</span><span class="op">();</span> <span class="co">// Get the last 2 operands</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>              <span class="dt">int</span> o1 <span class="op">=</span> opStack<span class="op">.</span><span class="fu">pop</span><span class="op">();</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>              <span class="dt">int</span> r <span class="op">=</span> <span class="fu">operate</span><span class="op">(</span>s<span class="op">,</span> o1<span class="op">,</span> o2<span class="op">);</span> <span class="co">// Perform operation</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>              opStack<span class="op">.</span><span class="fu">push</span><span class="op">(</span>r<span class="op">);</span> <span class="co">// Save result (operand) on stack</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span> <span class="co">// the next symbol is an oprands</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>              opStack<span class="op">.</span><span class="fu">push</span><span class="op">(</span><span class="bu">Integer</span><span class="op">.</span><span class="fu">parseInt</span><span class="op">(</span>s<span class="op">));</span> <span class="co">// Save number as Integer</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> opStack<span class="op">.</span><span class="fu">pop</span><span class="op">();</span> <span class="co">// Return result (was saved on stack)</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">public</span> <span class="dt">static</span> <span class="dt">int</span> <span class="fu">operate</span><span class="op">(</span><span class="bu">String</span> op<span class="op">,</span> <span class="dt">int</span> o1<span class="op">,</span> <span class="dt">int</span> o2<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>op<span class="op">.</span><span class="fu">equals</span><span class="op">(</span><span class="st">"x"</span><span class="op">))</span> <span class="op">{</span> <span class="co">// Multiply</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>          <span class="cf">return</span> o1 <span class="op">*</span> o2<span class="op">;</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>op<span class="op">.</span><span class="fu">equals</span><span class="op">(</span><span class="st">"/"</span><span class="op">))</span> <span class="op">{</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>          <span class="cf">return</span> o1<span class="op">/</span>o2<span class="op">;</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>op<span class="op">.</span><span class="fu">equals</span><span class="op">(</span><span class="st">"+"</span><span class="op">))</span> <span class="op">{</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>          <span class="cf">return</span> o1 <span class="op">+</span> o2<span class="op">;</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>op<span class="op">.</span><span class="fu">equals</span><span class="op">(</span><span class="st">"-"</span><span class="op">))</span> <span class="op">{</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>          <span class="cf">return</span> o1 <span class="op">-</span> o2<span class="op">;</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>          <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+</section>
+<section id="stack-application-edsger-dijkstra-algorithm-for-fully-parenthesized-arithmetic-expression" class="level2">
+<h2 class="anchored" data-anchor-id="stack-application-edsger-dijkstra-algorithm-for-fully-parenthesized-arithmetic-expression">Stack Application: Edsger Dijkstra Algorithm for Fully Parenthesized Arithmetic Expression</h2>
+<ul>
+<li><p>Problem description:</p>
+<ul>
+<li>We are given a fully parenthesized arithmetic expression using only <code>x</code>, <code>/</code>, <code>+</code>, and <code>-</code> operations.</li>
+<li>Write an algorithm to evaluate expressions in this form.</li>
+<li>We will need 2 stakcs:
+<ul>
+<li>An <code>operand</code> stack that stores the operands in the input, and</li>
+<li>An <code>operator</code> stack that stores the operators in the input.</li>
+</ul></li>
+</ul></li>
+<li><p>Algorithm:</p>
+<ul>
+<li>Find the first occurrence of a right parenthesis <code>)</code>: observe the last 2 operands and the last operation prior to the right parenthesis.
+<ul>
+<li>This guarantees the most inner <code>()</code> will be the first to be evaluated.</li>
+<li>The result of an operation must be pushed on to operand stack.</li>
+</ul></li>
+<li>Then, we can reduce the parenthesis and find the next earliest occurrence of the right parenthesis.</li>
+<li>Repeat the steps until the input array is exhausted.</li>
+<li>The left parenthesis <code>(</code> does not convey and information.</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">Stack</span><span class="op">;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> Dijkstra2Stackalg <span class="op">{</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">public</span> <span class="dt">static</span> <span class="bu">Integer</span> <span class="fu">eval</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> inp<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      <span class="bu">Stack</span><span class="op">&lt;</span><span class="bu">Integer</span><span class="op">&gt;</span> operandStck <span class="op">=</span> <span class="kw">new</span> <span class="bu">Stack</span><span class="op">&lt;&gt;();</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>      <span class="bu">Stack</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> operatorStck <span class="op">=</span> <span class="kw">new</span> <span class="bu">Stack</span><span class="op">&lt;&gt;();</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>      <span class="bu">String</span> s<span class="op">;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> inp<span class="op">.</span><span class="fu">lengthl</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>          s <span class="op">=</span> inp<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>          <span class="cf">if</span> <span class="op">(</span>s<span class="op">.</span><span class="fu">equals</span><span class="op">(</span><span class="st">"("</span><span class="op">))</span> <span class="op">{</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>              <span class="co">// do nothing</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>s<span class="op">.</span><span class="fu">equals</span><span class="op">(</span><span class="st">"+"</span><span class="op">)</span> <span class="op">||</span> s<span class="op">.</span><span class="fu">equals</span><span class="op">(</span><span class="st">"-"</span><span class="op">)</span> <span class="op">||</span> s<span class="op">.</span><span class="fu">equals</span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span> <span class="op">||</span> s<span class="op">.</span><span class="fu">equals</span><span class="op">(</span><span class="st">"/"</span><span class="op">))</span> <span class="op">{</span> <span class="co">// s is an operator</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>              operatorStck<span class="op">.</span><span class="fu">push</span><span class="op">(</span>s<span class="op">);</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>s<span class="op">.</span><span class="fu">equals</span><span class="op">(</span><span class="st">")"</span><span class="op">))</span> <span class="op">{</span> <span class="co">// compute the must inner ()</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>              <span class="dt">int</span> o2 <span class="op">=</span> operandStck<span class="op">.</span><span class="fu">pop</span><span class="op">();</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>              <span class="dt">int</span> o1 <span class="op">=</span> operandStck<span class="op">.</span><span class="fu">pop</span><span class="op">();</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>              <span class="bu">String</span> op <span class="op">=</span> operatorStck<span class="op">.</span><span class="fu">pop</span><span class="op">();</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>              <span class="dt">int</span> r <span class="op">=</span> <span class="fu">operate</span><span class="op">(</span>op<span class="op">,</span> o1<span class="op">,</span> o2<span class="op">);</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>              operandStck<span class="op">.</span><span class="fu">psuh</span><span class="op">(</span>r<span class="op">);</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span> <span class="co">// s is a number</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>              operandStck<span class="op">.</span><span class="fu">push</span><span class="op">(</span>s<span class="op">);</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> operandStck<span class="op">.</span><span class="fu">pop</span><span class="op">();</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

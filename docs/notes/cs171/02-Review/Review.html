@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2023-08-29">
+<meta name="description" content="This lecture introduces the purpose of studying algorithms and data structures. It also does some review on Java and its code basics.">
+
+<title>Jiuru Lyu - Lecture 1 Introduction &amp; Review</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Jiuru Lyu</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../cv.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../photo.html"> 
+<span class="menu-text">Photograph</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blogs.html"> 
+<span class="menu-text">My Blogs</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#review---computer-architecture" id="toc-review---computer-architecture" class="nav-link" data-scroll-target="#review---computer-architecture">Review - Computer Architecture</a>
+  <ul class="collapse">
+  <li><a href="#the-smallest-unit-of-computer-memory-bit" id="toc-the-smallest-unit-of-computer-memory-bit" class="nav-link" data-scroll-target="#the-smallest-unit-of-computer-memory-bit">The smallest unit of Computer Memory: bit</a></li>
+  <li><a href="#memory-address-and-memory-content" id="toc-memory-address-and-memory-content" class="nav-link" data-scroll-target="#memory-address-and-memory-content">Memory address and Memory content</a></li>
+  </ul></li>
+  <li><a href="#review---variables-in-java" id="toc-review---variables-in-java" class="nav-link" data-scroll-target="#review---variables-in-java">Review - Variables in Java</a></li>
+  <li><a href="#review---programming-language" id="toc-review---programming-language" class="nav-link" data-scroll-target="#review---programming-language">Review - Programming Language</a></li>
+  <li><a href="#review---array" id="toc-review---array" class="nav-link" data-scroll-target="#review---array">Review - Array</a></li>
+  <li><a href="#review---methods" id="toc-review---methods" class="nav-link" data-scroll-target="#review---methods">Review - Methods</a></li>
+  <li><a href="#review---exception-handling" id="toc-review---exception-handling" class="nav-link" data-scroll-target="#review---exception-handling">Review - Exception Handling</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 1 Introduction &amp; Review</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Coding</div>
+    <div class="quarto-category">Java</div>
+    <div class="quarto-category">Algorithm</div>
+    <div class="quarto-category">OOP</div>
+    <div class="quarto-category">Data Structure</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    This lecture introduces the purpose of studying algorithms and data structures. It also does some review on Java and its code basics.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 29, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<div id="nte-algorithm" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;1: <strong><em>Algorithm</em></strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A method for solving a problem expressed as a <strong>sequence of steps</strong> that is suitable for execution by a computer(machine).</p>
+</div>
+</div>
+<p>Different ways to express algorithms:</p>
+<ul>
+<li><p>Natural languages (bad - ambiguous)</p></li>
+<li><p>Flow charts (good for conceptualization of the algorithm)</p></li>
+<li><p>Pseudo code (good for algorithm development)</p></li>
+<li><p>Programming languages (good for communicating the algorithm to a machine because it’s unambiguous)</p></li>
+</ul>
+<div id="nte-data-structure" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;2: <strong><em>Data structure</em></strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A way to <strong>organize</strong> (insert, delete, and retrieve) the data used by an algorithm</p>
+</div>
+</div>
+<div id="tip-data-structure" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;1: Example of a data structure
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Arrays</p>
+</div>
+</div>
+</div>
+<p>Every data structure has its strengths and its weaknesses:</p>
+<ul>
+<li><p>Array: The data is stored in consecutive array elements &amp; The array elements are accessed efficiently using an index.</p>
+<ul>
+<li>Strength: efficient (low) storage cost</li>
+<li>Weakness: not dynamic (cannot increase in size easily)</li>
+</ul></li>
+</ul>
+<p>Metrics used to measure the goodness of algorithms:</p>
+<ul>
+<li><strong>Running time</strong>: how long does it take for the program to finish</li>
+<li><strong>Storage requirement</strong>: how much memory does the program use to store its information.</li>
+</ul>
+</section>
+<section id="review---computer-architecture" class="level2">
+<h2 class="anchored" data-anchor-id="review---computer-architecture">Review - Computer Architecture</h2>
+<section id="the-smallest-unit-of-computer-memory-bit" class="level3">
+<h3 class="anchored" data-anchor-id="the-smallest-unit-of-computer-memory-bit">The smallest unit of Computer Memory: bit</h3>
+<ol type="1">
+<li>Computers use memory devices built with electronics.</li>
+<li>The smallest memory device used by the computer works like a switch. It can be in one of the 2 states:
+<ul>
+<li>Off state (state 0)</li>
+<li>On state (state 1)</li>
+<li>0 and 1 are called <strong>binary digits</strong></li>
+</ul></li>
+<li>The smallest memory device is called a bit (=binary digit)</li>
+<li>A row on <span class="math inline">\(n\)</span> bits can be in one of <span class="math inline">\(2^n\)</span> states: each switch can be in 2 states, and so the total number of combinations is <span class="math inline">\(2\times2\times2\times\cdots\times2=2^n\)</span></li>
+<li>Byte memory = 8 bits = a memory device that can retain (=remember) 8 binary digits. Since <span class="math inline">\(2^8=256\)</span>, each byte can store one of the 256 possible patterns of binary numbers.</li>
+<li>Though humans are very flexible in storing data (can use many different methods), computers can only store data/information as binary numbers.</li>
+</ol>
+</section>
+<section id="memory-address-and-memory-content" class="level3">
+<h3 class="anchored" data-anchor-id="memory-address-and-memory-content">Memory address and Memory content</h3>
+<ol type="1">
+<li>Each memory cell is identified by a unique address (which is a number).</li>
+<li>Each memory cell stores a number (that is the data/information stored by the computer).</li>
+</ol>
+</section>
+</section>
+<section id="review---variables-in-java" class="level2">
+<h2 class="anchored" data-anchor-id="review---variables-in-java">Review - Variables in Java</h2>
+<ol type="1">
+<li>What happens inside the computer when we define a variable <code>int a</code>:
+<ul>
+<li>The computer will find some used memory cells and mark them as used (aka: allocate memory)</li>
+<li>The computer equates(=records) the name <code>a</code> to the memory location of the reserved cells.</li>
+</ul></li>
+<li>Each variable has a <strong>data type</strong>
+<ul>
+<li>The data type specifies the kind of information.</li>
+<li>Each kind of information has its own way of representation. The way of representation is called a <strong>code</strong>.</li>
+</ul></li>
+<li>Encoding method of a data type:
+<ul>
+<li>Information of a data type are represented by binary numbers.</li>
+<li>The encoding method defines the way to interpret a binary number.</li>
+</ul></li>
+<li><mark><strong>Data type provide the context to interpret a number and obtain the meaning of the number.</strong></mark>
+<ul>
+<li>See <a href="datatype.java"><code>datatype.java</code></a> for an example.</li>
+</ul></li>
+<li>Java’s primitive data types:</li>
+</ol>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Data type</th>
+<th style="text-align: center;">Encoding method</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">byte</td>
+<td style="text-align: center;">2’s complement encoding using 8 bits</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">short</td>
+<td style="text-align: center;">2’s complement encoding using 16 bits</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">int</td>
+<td style="text-align: center;">2’s complement encoding using 32 bits</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">long</td>
+<td style="text-align: center;">2’s complement encoding using 64 bits</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">float</td>
+<td style="text-align: center;">IEEE 754 encoding using 32 bits</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">double</td>
+<td style="text-align: center;">IEEE 754 encoding using 64 bits</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">char</td>
+<td style="text-align: center;">Unicode encoding using 16 bits</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">boolean</td>
+<td style="text-align: center;">Enumeration encoding using 0=false and 1=true</td>
+</tr>
+</tbody>
+</table>
+<ol start="6" type="1">
+<li>Besides the primitive data types, all other data types in Java are <strong>reference data types</strong>:
+<ul>
+<li>Reference: A reference in computer science is a memory address</li>
+<li>Reference data type: A variable of a reference data type stores a memory address</li>
+</ul></li>
+<li>Primitive and reference data types are stored differently:
+<ul>
+<li>The variable of primitive data types contains a value of that data type.</li>
+<li>The variable of reference data types contains a reference to the location where the object is stored.</li>
+</ul></li>
+</ol>
+</section>
+<section id="review---programming-language" class="level2">
+<h2 class="anchored" data-anchor-id="review---programming-language">Review - Programming Language</h2>
+<div id="nte-prograaming-langue" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;3: <strong><em>Programming Language</em></strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An artificial language designed to convey commands <strong>unambigously</strong> to a machine.</p>
+<ul>
+<li><p>A programming language has a set of syntax rules to construct commands.</p></li>
+<li><p>3 types of commands/statements in a procedural programming language:</p>
+<ul>
+<li>Assignment statement - Selection statement: <code>if</code>, <code>if-else</code></li>
+<li>Loop statement: <code>while</code>, <code>for</code>, <code>do-while</code></li>
+</ul></li>
+<li><p>These 3 types of statements are necessary and sufficient to make a programming language Turing-complete (meaning the machine can solve any computational problem given enough time and memory, no matter how complex).</p></li>
+</ul>
+</div>
+</div>
+<div id="nte-operator" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4: <strong><em>Operator</em></strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A symbol that represents an operation.</p>
+</div>
+</div>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Assignment</th>
+<th style="text-align: center;">Arithmetic</th>
+<th style="text-align: center;">Relational</th>
+<th style="text-align: center;">Logical</th>
+<th style="text-align: center;">Special</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>=</code></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><code>==</code></td>
+<td style="text-align: center;"><code>&amp;&amp;</code></td>
+<td style="text-align: center;"><code>++</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>+=</code></td>
+<td style="text-align: center;"><code>+</code></td>
+<td style="text-align: center;"><code>!=</code></td>
+<td style="text-align: center;"><code>||</code></td>
+<td style="text-align: center;"><code>--</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>-=</code></td>
+<td style="text-align: center;"><code>-</code></td>
+<td style="text-align: center;"><code>&lt;</code></td>
+<td style="text-align: center;"><code>!</code></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>*=</code></td>
+<td style="text-align: center;"><code>*</code></td>
+<td style="text-align: center;"><code>&lt;=</code></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>/=</code></td>
+<td style="text-align: center;"><code>/</code></td>
+<td style="text-align: center;"><code>&gt;</code></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>%=</code></td>
+<td style="text-align: center;"><code>%</code></td>
+<td style="text-align: center;"><code>&gt;=</code></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<div id="nte-operand" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;5: <strong><em>Operand</em></strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The value used in an operation.</p>
+<ul>
+<li>An operator performs an operation on its operands and produce some result value.</li>
+</ul>
+</div>
+</div>
+<div id="nte-expression" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;6: <strong><em>Expression</em></strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A combination of one or more operators and operands that performs a computation.</p>
+<ul>
+<li>An expression can be built up from other expressions.</li>
+</ul>
+</div>
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>core <span class="op">=</span> score <span class="op">-</span> <span class="dv">10</span> <span class="op">*</span> lateDays<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Consists of the arithmetic expression <code>10 * lateDays</code></li>
+<li>which itself is an operand of the arithmetic expression <code>score - •</code></li>
+<li>which is an operand of the assignment expression <code>score = •</code></li>
+</ul>
+<div id="nte-pre-operators" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;7: <strong><em>Pre-operators</em></strong> and <strong><em>Post-operators</em></strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong><em>Pre-operators</em></strong> preforms the operation first and will return the new value of the variable.</li>
+<li><strong><em>Post-operators</em></strong> performs the operation later and returns the old value of the variable.</li>
+</ul>
+</div>
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">4</span><span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="op">++</span>x<span class="op">;</span>   <span class="op">&lt;===&gt;</span>   x <span class="op">=</span> x <span class="op">+</span> <span class="dv">1</span><span class="op">;</span> y <span class="op">=</span> x<span class="op">;</span> <span class="op">(</span>PRE increment<span class="op">)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">Result</span><span class="op">:</span> x <span class="op">=</span> <span class="dv">5</span>  y <span class="op">=</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">4</span><span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> x<span class="op">++;</span>   <span class="op">&lt;===&gt;</span>   y <span class="op">=</span> x<span class="op">;</span> x <span class="op">=</span> x <span class="op">+</span> <span class="dv">1</span><span class="op">;</span> <span class="op">(</span>POST increment<span class="op">)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">Result</span><span class="op">:</span> x <span class="op">=</span> <span class="dv">5</span>  y <span class="op">=</span> <span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="nte-statement" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;8: <strong><em>Statement</em></strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A command issued to the computer to do something.</p>
+<ul>
+<li>Statement is the unit of execution in a programming language.</li>
+<li>In Java, a statement must be contained inside some method.</li>
+</ul>
+</div>
+</div>
+<ul>
+<li>Assignment statement:</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>variable <span class="op">=</span> expression<span class="op">;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">4</span><span class="op">;</span> <span class="co">// Store the value 4 in variable x</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> x <span class="op">+</span> <span class="dv">1</span><span class="op">;</span> <span class="co">// Read the value in variable x, add 1 to it, then store result in variable x</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Variables on the RHS of the <code>=</code> operator are read/accessed.</li>
+<li>The variable on the LHS of the <code>=</code> operator is written/updated</li>
+<li><code>if</code> statement</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>condition<span class="op">)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  one<span class="op">-</span>statement<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>conditon<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  statement1<span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  statement2<span class="op">;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">...</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>if-else</code> statement</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>condition<span class="op">)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  one<span class="op">-</span>statement<span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  one<span class="op">-</span>statement<span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>condition<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  statement1<span class="op">;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  statement2<span class="op">;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">...</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  statement3<span class="op">;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  statement4<span class="op">;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">...</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>Switch</code> statement</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Switch</span> <span class="op">(</span>integer<span class="op">-</span>expression<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> intVal1<span class="op">:</span> statement1<span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                statement1<span class="op">-</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                <span class="kw">...</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> intVal2<span class="op">:</span> statement2<span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                statement2<span class="op">-</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                <span class="kw">...</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">...</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">default</span><span class="op">:</span> statementD<span class="op">-</span><span class="dv">1</span><span class="op">;</span> <span class="co">//optional clause</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>           statementD<span class="op">-</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>           <span class="kw">...</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>           <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>while</code> loop</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>condition<span class="op">)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  one<span class="op">-</span>statement<span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>condition<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  statement1<span class="op">;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  statement2<span class="op">;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">...</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>for</code> loop</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span>init<span class="op">;</span> term<span class="op">-</span>cond<span class="op">;</span> incr<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  statement1<span class="op">;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  statement2<span class="op">;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">...</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>See <a href="LoopTracing.java"><code>LoopTracing.java</code></a></li>
+</ul>
+</section>
+<section id="review---array" class="level2">
+<h2 class="anchored" data-anchor-id="review---array">Review - Array</h2>
+<ul>
+<li>Syntax to define an array (reference) variable:</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dataType<span class="op">[]</span> arrayRefVar<span class="op">;</span> <span class="co">// Defines an array reference variable</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Syntax to create an array object</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">new</span> dataType<span class="op">[</span>N<span class="op">];</span> <span class="co">// Create an array of N elements</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p>Properties of an array in Java:</p>
+<ul>
+<li>All elements in the array have the same data type.</li>
+<li>Array elements are stored consecutively in memory</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span><span class="op">[]</span> A<span class="op">;</span> <span class="co">// A is a reference variable</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> <span class="kw">new</span> <span class="dt">int</span><span class="op">[</span><span class="dv">10</span><span class="op">];</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>int[] A</code> will allocate (reserve memory) a reference variable <code>A</code>.</li>
+<li><code>new int[10]</code> will allocate for an <code>int[10]</code> array (=40 bytes) and return its base address.</li>
+<li><code>A =</code> will assign the return value to the variable <code>A</code>.</li>
+</ul></li>
+<li><p>Copy an array:</p>
+<ul>
+<li>Make a duplicate of an array where the duplicate contains the same data as the original</li>
+<li>Updating array elements in the duplicate must not affect the data in the original array.</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a> <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span><span class="op">[]</span> myList <span class="op">=</span> <span class="op">{</span><span class="dv">34</span><span class="op">,</span> <span class="dv">15</span><span class="op">,</span> <span class="dv">66</span><span class="op">,</span> <span class="dv">7</span><span class="op">};</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span><span class="op">[]</span> myListCopy <span class="op">=</span> <span class="kw">new</span> <span class="dt">double</span><span class="op">[</span> myList<span class="op">.</span><span class="fu">length</span> <span class="op">];</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span> <span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> myList<span class="op">.</span><span class="fu">length</span><span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>       myListCopy<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> myList<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a> <span class="op">}</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>See (<code>CopyArray.java</code>)[CopyArray.java].</p></li>
+<li><p>Variables of primitive data types (such as <code>int</code>, <code>double</code>, etc.) can be copied with an assignment. However, in Java, the assignment operation will not copy objects of non-primitive data types.</p></li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span><span class="op">[]</span> myList <span class="op">=</span> <span class="op">{</span><span class="dv">34</span><span class="op">,</span> <span class="dv">15</span><span class="op">,</span> <span class="dv">66</span><span class="op">,</span> <span class="dv">7</span><span class="op">};</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span><span class="op">[]</span> myListCopy<span class="op">;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>myListCopy <span class="op">=</span> myList<span class="op">;</span>   <span class="co">// Does not copy an array object </span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">// ** This copies the reference in myList to myListCopy</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p>The assignment <code>myListCopy = myList</code> will copy the reference in <code>myList</code> to the <code>myListCopy</code> variable.</p></li>
+<li><p>Because <code>myListCopy</code> and <code>myList</code> refer to the same array object, updates made with <code>myListCopy[i]</code> will also affect <code>myList[i]</code> and vice versa. &gt; <strong><em>Alias</em></strong>: When a difference variable names can be used to reference the same variable, they are called aliases in computer science.</p></li>
+<li><p>See <a href="Alias.java"><code>Alias.java</code></a>.</p></li>
+</ul>
+</section>
+<section id="review---methods" class="level2">
+<h2 class="anchored" data-anchor-id="review---methods">Review - Methods</h2>
+<div id="nte-method" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;9: <strong><em>Methods</em></strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Methods are used to encapsulate(=put in a capsule) a series of operations used to solve a complex problem.</p>
+<ul>
+<li>Methods allow programmers to work with higher level of abstraction.
+<ul>
+<li>Low level of abstraction = when we can see a log of detail</li>
+<li>High level of abstraction = when we can see less detail and the big picture</li>
+</ul></li>
+<li><strong>Abstraction</strong> is a commonly used technique to solve complex problems.</li>
+<li>Components in a method definition
+<ul>
+<li>access specifier: <code>public</code>/<code>private</code></li>
+<li>class variable modifier: <code>static</code></li>
+<li>return value data type: <code>int</code>/<code>double</code>/etc.</li>
+<li>method name</li>
+<li>parameter variables</li>
+<li>local variable</li>
+<li>return value</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> This method returns the summation of integers from the start integer to the end integer<span class="co">.</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">start</span><span class="co"> </span>the start integer</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">end</span><span class="co"> </span>the final integer</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@return</span> the summation</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="dt">int</span> <span class="fu">sum</span><span class="op">(</span><span class="dt">int</span> start<span class="op">,</span> <span class="dt">int</span> end<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> s <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> start<span class="op">;</span> i <span class="op">&lt;=</span> end<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>      s <span class="op">+=</span> i<span class="op">;</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> s<span class="op">;</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p>Invoking a method: The values of the actual parameters(=arguments) are passed(=copied) to the parameter variables of the method.</p></li>
+<li><p>The signature of a method = method name + data type of the parameters.</p>
+<ul>
+<li>Java uses the method signature to select which method to invoke.</li>
+<li><strong>Overloaded method</strong> = when there are multiple method in the class with the same method name but different signatures.</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> Overload <span class="op">{</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a> <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">meth</span><span class="op">(</span><span class="dt">int</span> x<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Running: meth(int x)"</span><span class="op">);</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a> <span class="op">}</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a> <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">meth</span><span class="op">(</span><span class="dt">double</span> x<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Running: meth(double x)"</span><span class="op">);</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a> <span class="op">}</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a> <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">meth</span><span class="op">(</span><span class="dt">int</span> x<span class="op">,</span> <span class="dt">int</span> y<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Running: meth(int x, int y)"</span><span class="op">);</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a> <span class="op">}</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Also see <a href="Overload.java"><code>Overload.java</code></a>.</p></li>
+<li><p>Parameter passing = conveying some information(=parameter) to a method.</p></li>
+<li><p>The most commonly used parameter passing mechanisms are:</p>
+<ul>
+<li>Pass-by-value: The value of the argument is passed(=assigned) to the parameter variable. The method will use the copy of the argument’s value in its computations.</li>
+<li>Pass-by-reference: the address of the argument is passed(=assigned) to the parameter variable. The method will retrieve the value using the address in computations.</li>
+</ul></li>
+<li><p>One key to remember: The parameter variables are <strong>local</strong> variables to the method. Arguments and parameter variables are different variables.</p></li>
+<li><p>Java always passes the arguments <strong>by-value</strong> to a method. However, because primitive typed variables and reference typed variables are stored differently, the outcome of the pass-by-value mechanism is different for primitive typed variables and reference typed variables.</p>
+<ul>
+<li>A primitive typed argument passed to a method cannot be modified:
+<ul>
+<li>See <a href="PassPrimitive.java"><code>PassPrimitive.java</code></a>.</li>
+</ul></li>
+<li>A reference typed argument passed to a method will be modified.
+<ul>
+<li>See <a href="PassReference.java"><code>PassReference.java</code></a>.</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="review---exception-handling" class="level2">
+<h2 class="anchored" data-anchor-id="review---exception-handling">Review - Exception Handling</h2>
+<ul>
+<li>When a method execution encounters an error, the method would return an error code: See <a href="ErrorCode.java"><code>ErrorCode.java</code></a>.</li>
+<li>In newer programming languages, the method will “throw an exception” when ti encounters an error: See <a href="ThrowException.java"><code>ThrowException.java</code></a>.</li>
+<li>You can text(=catch) for the “error code” (exception type) and execute a block when the error code is detected: See <a href="CatchException.java"><code>CatchException.java</code></a>.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

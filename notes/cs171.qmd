@@ -1,0 +1,11 @@
+---
+title: "CS 171 Introduction to Computer Science II"
+listing: 
+  contents: cs171
+  type: default
+  filter-ui: true
+  sort-ui: true
+  sort: "date asc" # can also sort on more than one field
+  categories: true # allows you to sort posts by assigned categories 
+  image-placeholder: https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/fig
+---

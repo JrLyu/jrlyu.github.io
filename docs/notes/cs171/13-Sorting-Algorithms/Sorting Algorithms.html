@@ -1,0 +1,1926 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2023-12-04">
+<meta name="description" content="This lecture discusses various sorting algorithms and their implementation in Java. It also touches on the runtime analysis of them.">
+
+<title>Jiuru Lyu - Lecture 12 Sorting Algorithms</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Jiuru Lyu</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../cv.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../photo.html"> 
+<span class="menu-text">Photograph</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blogs.html"> 
+<span class="menu-text">My Blogs</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction-to-sorting" id="toc-introduction-to-sorting" class="nav-link active" data-scroll-target="#introduction-to-sorting">Introduction to Sorting</a></li>
+  <li><a href="#selection-sort" id="toc-selection-sort" class="nav-link" data-scroll-target="#selection-sort">Selection Sort</a></li>
+  <li><a href="#bubble-sort" id="toc-bubble-sort" class="nav-link" data-scroll-target="#bubble-sort">Bubble Sort</a></li>
+  <li><a href="#insertion-sort" id="toc-insertion-sort" class="nav-link" data-scroll-target="#insertion-sort">Insertion Sort</a></li>
+  <li><a href="#merge-sort" id="toc-merge-sort" class="nav-link" data-scroll-target="#merge-sort">Merge Sort</a>
+  <ul class="collapse">
+  <li><a href="#merge-algorithm" id="toc-merge-algorithm" class="nav-link" data-scroll-target="#merge-algorithm">Merge Algorithm</a></li>
+  <li><a href="#merge-sort-algorithm" id="toc-merge-sort-algorithm" class="nav-link" data-scroll-target="#merge-sort-algorithm">Merge Sort Algorithm</a></li>
+  <li><a href="#non-recursive-merge-sort" id="toc-non-recursive-merge-sort" class="nav-link" data-scroll-target="#non-recursive-merge-sort">Non-recursive Merge Sort</a></li>
+  </ul></li>
+  <li><a href="#quick-sort" id="toc-quick-sort" class="nav-link" data-scroll-target="#quick-sort">Quick Sort</a>
+  <ul class="collapse">
+  <li><a href="#the-partition-algorithm-for-quick-sort" id="toc-the-partition-algorithm-for-quick-sort" class="nav-link" data-scroll-target="#the-partition-algorithm-for-quick-sort">The Partition Algorithm for Quick Sort</a></li>
+  <li><a href="#runtime-analysis" id="toc-runtime-analysis" class="nav-link" data-scroll-target="#runtime-analysis">Runtime Analysis</a></li>
+  <li><a href="#improvements-to-quick-sort" id="toc-improvements-to-quick-sort" class="nav-link" data-scroll-target="#improvements-to-quick-sort">Improvements to Quick Sort</a></li>
+  </ul></li>
+  <li><a href="#faster-computer-vs-better-algorithm." id="toc-faster-computer-vs-better-algorithm." class="nav-link" data-scroll-target="#faster-computer-vs-better-algorithm.">Faster Computer VS Better algorithm.</a></li>
+  <li><a href="#sorting-algorithms-in-javas-library" id="toc-sorting-algorithms-in-javas-library" class="nav-link" data-scroll-target="#sorting-algorithms-in-javas-library">Sorting Algorithms in Java’s Library</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 12 Sorting Algorithms</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Coding</div>
+    <div class="quarto-category">Java</div>
+    <div class="quarto-category">Algorithms</div>
+    <div class="quarto-category">Sorting</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    This lecture discusses various sorting algorithms and their implementation in Java. It also touches on the runtime analysis of them.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 4, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction-to-sorting" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-sorting">Introduction to Sorting</h2>
+<ul>
+<li><p>Goal of sorting: rearrange <span class="math inline">\(N\)</span> items such that their keys are in ascending (increasing) order.</p></li>
+<li><p>Sorting algorithms are based on the following operations:</p>
+<ul>
+<li><strong>Compare</strong>: compare two items and determine their relative order.</li>
+<li><strong>Exchange</strong>: swap two items.</li>
+</ul></li>
+<li><p>The preimitive operation in sorting is the <strong>comparison</strong>.</p></li>
+<li><p>Comparing items: the Java <code>Comparable</code> interface:</p>
+<ul>
+<li><p>Sorting requires that 2 items can be compared.</p></li>
+<li><p>Java defines the <code>Comparable&lt;T&gt;</code> interface to represent this requirement:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Interface <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">int</span>  <span class="fu">compareTo</span><span class="op">(</span>T o<span class="op">);</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Class that implements <code>Comparable&lt;T&gt;</code> are comparable classes, and they must implement the <code>compareTo()</code> method.</p></li>
+<li><p>Requirement of the <code>compareTo()</code> method:</p>
+<ul>
+<li><code>a.compareTo(b)</code> returns a negative value if <code>a</code> is less than <code>b</code>.</li>
+<li><code>a.compareTo(b)</code> returns zero if <code>a</code> is equal to <code>b</code>.</li>
+<li><code>a.compareTo(b)</code> returns a positive value if <code>a</code> is greater than <code>b</code>.</li>
+</ul></li>
+</ul></li>
+<li><p>Exchanging two items (objects) in an array: <code>java     public static void exch(DataType[] a, int i, int j) {         DataType help;         help = a[i];         a[i] = a[j];         a[j] = help;     }</code></p>
+<ul>
+<li>The <code>exch()</code> method will only work on objects of the type <code>DataType</code>.</li>
+<li>We can define a generic (parameterized) <code>exch()</code> so that it will only work on subclasses of <code>Comparable&lt;T&gt;</code>:</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T <span class="kw">extends</span> <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="dt">void</span> <span class="fu">exch</span><span class="op">(</span>T<span class="op">[]</span> a<span class="op">,</span> <span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    T help<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    help <span class="op">=</span> a<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    a<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> a<span class="op">[</span>j<span class="op">];</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    a<span class="op">[</span>j<span class="op">]</span> <span class="op">=</span> help<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+</section>
+<section id="selection-sort" class="level2">
+<h2 class="anchored" data-anchor-id="selection-sort">Selection Sort</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T <span class="kw">extends</span> <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="dt">void</span> <span class="fu">selectionSort</span><span class="op">(</span>T<span class="op">[]</span> list<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> list<span class="op">.</span><span class="fu">length</span><span class="op">-</span><span class="dv">1</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Find the minimum in the list[i..list.length-1]</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        T min <span class="op">=</span> list<span class="op">[</span>i<span class="op">];</span> <span class="co">// Assume first element is min</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> minIndex <span class="op">=</span> i<span class="op">;</span> <span class="co">// index where min is found</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> minIndex<span class="op">+</span><span class="dv">1</span><span class="op">;</span> k <span class="op">&lt;</span> list<span class="op">.</span><span class="fu">length</span><span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>list<span class="op">[</span>k<span class="op">].</span><span class="fu">compareTo</span><span class="op">(</span>min<span class="op">)</span> <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span> <span class="co">// compare list[k] and min</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                min <span class="op">=</span> list<span class="op">[</span>k<span class="op">];</span> <span class="co">// update min value</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                minIndex <span class="op">=</span> k<span class="op">;</span> <span class="co">// update min index</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Swap list[i] with list[minIndex] if necessary</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>minIndex <span class="op">!=</span> i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">exch</span><span class="op">(</span>list<span class="op">,</span> i<span class="op">,</span> minIndex<span class="op">);</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Runtime analysis:
+<ul>
+<li><p>The algorithm can be simplified as follows:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">-</span><span class="dv">1</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> i <span class="op">+</span> <span class="dv">1</span><span class="op">;</span> k <span class="op">&lt;</span> n<span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">doPrimitive</span><span class="op">();</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">i=</th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">…</th>
+<th style="text-align: center;">n-3</th>
+<th style="text-align: center;">n-2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">k=</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">n-2</td>
+<td style="text-align: center;">n-1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">k=</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">n-1</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">k=</td>
+<td style="text-align: center;">n-2</td>
+<td style="text-align: center;">n-1</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">k=</td>
+<td style="text-align: center;">n-1</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>So, number of iterations is <span class="math inline">\((n-1)+(n-2)+(n-3)+\cdots+2+1\)</span>, which is the triangular sum.</li>
+<li>Then, we know number of iterations=<span class="math inline">\(\dfrac{n(n-1)}{2}\)</span>.</li>
+<li>This indicates that the runtime is <span class="math inline">\(\mathcal{O}(n^2)\)</span>.</li>
+</ul></li>
+</ul></li>
+<li>Additional properties of sorting algorithms:
+<ul>
+<li><strong>In-place</strong>: a sorting algorithm is in-place if it does not require another array to execute the algorithm.</li>
+<li><strong>Stable</strong>: a sorting algorithm is stable if it preserves the relative order of equal keys in the array.</li>
+</ul></li>
+<li><strong><em>Selection sort is in-place but not stable.</em></strong></li>
+</ul>
+</section>
+<section id="bubble-sort" class="level2">
+<h2 class="anchored" data-anchor-id="bubble-sort">Bubble Sort</h2>
+<ul>
+<li>The bubble sort algorithm will:
+<ul>
+<li>Compare every pair of adjacent element</li>
+<li>Exchange(=swap) them if they are out of order.</li>
+</ul></li>
+<li>Example:</li>
+</ul>
+<table class="table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">9</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">Orignal array</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: center;"><strong>9</strong></td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2 &lt; 9 –&gt; OK, no swap</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><strong>9</strong></td>
+<td style="text-align: center;"><strong>5</strong></td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">9 &gt; 5 –&gt; swap</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;"><strong>9</strong></td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">9 &gt; 4 –&gt; swap</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;"><strong>9</strong></td>
+<td style="text-align: center;"><strong>8</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">9 &gt; 8 –&gt; swap</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;"><strong>9</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;">9 &gt; 1 –&gt; swap</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><strong>9</strong></td>
+<td style="text-align: center;">Finish first iteration</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Note that after 1 iteration, the largest element is at the end of the array (the correct position). Therefore, if we repeat <span class="math inline">\(n-1\)</span> times, the array will be sorted.</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T <span class="kw">extends</span> <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="dt">void</span> <span class="fu">bubbleSort</span><span class="op">(</span>T<span class="op">[]</span> arr<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> n <span class="op">=</span> arr<span class="op">.</span><span class="fu">length</span><span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">-</span><span class="dv">1</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span> <span class="co">// repeat n-1 times</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">// compare every adjacent pair of elements</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> n<span class="op">-</span><span class="dv">1</span><span class="op">-</span>i<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>arr<span class="op">[</span>j<span class="op">].</span><span class="fu">compareTo</span><span class="op">(</span>arr<span class="op">[</span>j<span class="op">+</span><span class="dv">1</span><span class="op">])</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span> <span class="co">// if out of order</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                <span class="fu">exch</span><span class="op">(</span>arr<span class="op">,</span> j<span class="op">,</span> j<span class="op">+</span><span class="dv">1</span><span class="op">);</span> <span class="co">// swap</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Runtime analysis:
+<ul>
+<li><p>The loop structure of bubble sort can be simplified as</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">-</span><span class="dv">1</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> n<span class="op">-</span><span class="dv">1</span><span class="op">-</span>i<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">doPrimitive</span><span class="op">();</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">i=</th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">…</th>
+<th style="text-align: center;">n-3</th>
+<th style="text-align: center;">n-2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">j=</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">j=</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">j=</td>
+<td style="text-align: center;">n-4</td>
+<td style="text-align: center;">n-4</td>
+<td style="text-align: center;">n-4</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">j=</td>
+<td style="text-align: center;">n-3</td>
+<td style="text-align: center;">n-3</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">j=</td>
+<td style="text-align: center;">n-2</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>So, number of iterations is <span class="math inline">\((n-1)+(n-2)+(n-3)+\cdots+2+1\)</span>, which is the triangular sum.</li>
+<li>Then, we know number of iterations=<span class="math inline">\(\dfrac{n(n-1)}{2}\)</span>.</li>
+<li>This indicates that the runtime is <span class="math inline">\(\mathcal{O}(n^2)\)</span>.</li>
+</ul></li>
+</ul></li>
+<li>In fact, we can improve the basic bubble sort algorithms.</li>
+<li>The idea is that if we find that the array is already sorted, we can stop the algorithm.
+<ul>
+<li>Facts:
+<ul>
+<li>In each iteration, the bubble sort algorithm will compare every pair of elements and swap only out-of-place pairs.</li>
+<li>When the array is sorted: an (entire) iteration in bubble sort will not perform any exchange operation.</li>
+</ul></li>
+<li>So, we can add a variable to track the number of swaps in each iteration. If we find that the number of swaps is zero, we can stop the algorithm.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T <span class="kw">extends</span> <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="dt">void</span> <span class="fu">bubbleSort</span><span class="op">(</span>T<span class="op">[]</span> arr<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> n <span class="op">=</span> arr<span class="op">.</span><span class="fu">length</span><span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">boolean</span> swapped<span class="op">;</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">-</span><span class="dv">1</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span> <span class="co">// repeat n-1 times</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        swapped <span class="op">=</span> <span class="kw">false</span><span class="op">;</span> <span class="co">// reset swapped to false</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">// compare every adjacent pair of elements</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> n<span class="op">-</span><span class="dv">1</span><span class="op">-</span>i<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>arr<span class="op">[</span>j<span class="op">].</span><span class="fu">compareTo</span><span class="op">(</span>arr<span class="op">[</span>j<span class="op">+</span><span class="dv">1</span><span class="op">])</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span> <span class="co">// out of order</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                <span class="fu">exch</span><span class="op">(</span>arr<span class="op">,</span> j<span class="op">,</span> j<span class="op">+</span><span class="dv">1</span><span class="op">);</span> <span class="co">// swap</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                swapped <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> <span class="co">// set swapped to true</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>swap <span class="op">==</span> <span class="kw">false</span><span class="op">)</span> <span class="op">{</span> <span class="co">// if no swap in this iteration</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span><span class="op">;</span> <span class="co">// stop the algorithm</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong><em>The bubble sort algorithm is an in-place and stable sorting algorithm.</em></strong></li>
+</ul>
+</section>
+<section id="insertion-sort" class="level2">
+<h2 class="anchored" data-anchor-id="insertion-sort">Insertion Sort</h2>
+<ul>
+<li>The insertion sort algorithm will:
+<ul>
+<li>Selections the next unsorted element/key in the array</li>
+<li>Insert(=exchange) it towards the front into its correct position</li>
+</ul></li>
+<li>Example:</li>
+</ul>
+<table class="table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 48%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">9</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">Original array</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2 is in the correct position</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><strong>9</strong></td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">9 is in the correct position</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;"><strong>5</strong></td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">5 is not in the correct position, swap</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">5 is not in the correct position, swap</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;"><strong>8</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">8 is not in the correct position, swap</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;">9 is not in the correct position, swap</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">Finished!</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb8"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T <span class="kw">extends</span> <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="dt">void</span> <span class="fu">insertionSort</span><span class="op">(</span>T<span class="op">[]</span> arr<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> n <span class="op">=</span> arr<span class="op">.</span><span class="fu">length</span><span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span> <span class="co">// Repeat n-1 times</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Compare adjacent pairs starting at (i-1, i)</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> i<span class="op">;</span> j <span class="op">&lt;</span> <span class="dv">0</span><span class="op">;</span> j<span class="op">--)</span> <span class="op">{</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>arr<span class="op">[</span>j<span class="op">-</span><span class="dv">1</span><span class="op">].</span><span class="fu">compareTo</span><span class="op">(</span>arr<span class="op">[</span>j<span class="op">])</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span> <span class="co">// out of order</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                <span class="fu">exch</span><span class="op">(</span>arr<span class="op">,</span> j<span class="op">-</span><span class="dv">1</span><span class="op">,</span> j<span class="op">);</span> <span class="co">// swap</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span><span class="op">;</span> <span class="co">// stop the inner loop</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Runtime analysis:
+<ul>
+<li><p>The loop structure of the insertion sort algorithm can be simplified as:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> i<span class="op">;</span> j <span class="op">&gt;</span> <span class="dv">0</span><span class="op">;</span> j<span class="op">--)</span> <span class="op">{</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">doPrimitive</span><span class="op">();</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">i=</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">…</th>
+<th style="text-align: center;">n-2</th>
+<th style="text-align: center;">n-1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">j=</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">n-2</td>
+<td style="text-align: center;">n-1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">j=</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">n-3</td>
+<td style="text-align: center;">n-2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">j=</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>So, number of iterations is <span class="math inline">\(1+2+3+\cdots+(n-2)+(n-1)\)</span>, which is the triangular sum.</li>
+<li>Then, we know number of iterations=<span class="math inline">\(\dfrac{n(n-1)}{2}\)</span>.</li>
+<li>This indicates that the runtime is <span class="math inline">\(\mathcal{O}(n^2)\)</span>.</li>
+</ul></li>
+</ul></li>
+<li><strong><em>The selection sort algorithm is an in-place and stable sorting algorithm.</em></strong></li>
+</ul>
+</section>
+<section id="merge-sort" class="level2">
+<h2 class="anchored" data-anchor-id="merge-sort">Merge Sort</h2>
+<section id="merge-algorithm" class="level3">
+<h3 class="anchored" data-anchor-id="merge-algorithm">Merge Algorithm</h3>
+<ul>
+<li>We are given two sorted array portions that are adjacent to each other:</li>
+</ul>
+<pre><code>Input:
+A[]:    ...... A[s] ... A[m-1] A[m] ... A[e-1] ...
+               &lt;-------------&gt; &lt;-------------&gt;
+                    sorted          sorted</code></pre>
+<ul>
+<li>We will design an efficient algorithm to merge the 2 sorted array portions. The result will then occupy the same portion in the array.</li>
+<li>Parameters of the merge algorithm:
+<ul>
+<li>They merge algorithm has 3(index) parameters: <code>s</code>, <code>m</code>, and <code>e</code>.</li>
+<li><code>s</code>: the starting index of the first sorted array portion.</li>
+<li><code>m</code>: the ending index of the first sorted array portion.</li>
+<li><code>e</code>: the ending index of the second sorted array portion.</li>
+</ul></li>
+<li>The merge algorithm will:
+<ul>
+<li>only merge the array elements inside <code>A[s] ... A[e-1]</code></li>
+<li>not affect the array elements outside the range.</li>
+</ul></li>
+<li>Variables used in the merge algorithm:
+<ul>
+<li><p>We use 2 indices <code>i</code> and <code>j</code> to point to the current elements in each sorted array portion:</p>
+<ul>
+<li>The element <code>A[i]</code> is always the smallest value in the left (sorted) portion.</li>
+<li>The element <code>A[j]</code> is always the smallest value in the right (sorted) portion.</li>
+</ul></li>
+<li><p>We also use a helper array variable <code>H[]</code> array to perform the merge operation.</p>
+<ul>
+<li>We will repeatedly copy the smallest value from both arrays to <code>H[]</code>.</li>
+<li>If <code>A[j] &lt; A[i]</code>, we will copy <code>A[j]</code> to <code>H[]</code> and increment <code>j</code>.</li>
+<li>If <code>A[i] &lt; A[j]</code>, we will copy <code>A[i]</code> to <code>H[]</code> and increment <code>i</code>.</li>
+<li>When <code>i == m</code>, we know the left portion is exhausted, so we can copy the remaining elements in the right portion to <code>H[]</code>.</li>
+<li>When <code>i == m</code> and <code>j == e</code>, both portions are exhausted, and <code>H[]</code> now contains the merged result. We will then copy <code>H[]</code> back to <code>A[]</code>.</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T <span class="kw">extends</span> <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="dt">void</span> <span class="fu">merge</span><span class="op">(</span>T<span class="op">[]</span> A<span class="op">,</span> <span class="dt">int</span> s<span class="op">,</span> <span class="dt">int</span> m<span class="op">,</span> <span class="dt">int</span> e<span class="op">,</span> T<span class="op">[]</span> H<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">// The merge() method will be invoked repeatedly. </span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">// If we create a helper array inside merge(), we would repeatedly allocated and de-allocate memory.</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">// That is inefficient.</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">// So, we create a helper array outside merge() and pass it as a parameter.</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> i <span class="op">=</span> s<span class="op">,</span> j <span class="op">=</span> m<span class="op">;</span> <span class="co">// current elements in left and right portions</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// current element in helper array</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>i <span class="op">&lt;</span> m <span class="op">||</span> j <span class="op">&lt;</span> e<span class="op">)</span> <span class="op">{</span> <span class="co">// loop as long as there are unprocessed items</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> m <span class="op">&amp;&amp;</span> j <span class="op">&lt;</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Case 1: both portions have unprocessed elements</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>A<span class="op">[</span>i<span class="op">].</span><span class="fu">compareTo</span><span class="op">(</span>A<span class="op">[</span>j<span class="op">])</span> <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>            H<span class="op">[</span>k<span class="op">++]</span> <span class="op">=</span> A<span class="op">[</span>i<span class="op">++];</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>            H<span class="op">[</span>k<span class="op">++]</span> <span class="op">=</span> A<span class="op">[</span>j<span class="op">++];</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>i <span class="op">==</span> m<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Case 2: the left portion is exhausted</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        H<span class="op">[</span>k<span class="op">++]</span> <span class="op">==</span> A<span class="op">[</span>j<span class="op">++];</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>j <span class="op">==</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Case e: the right portion is exhausted</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>        H<span class="op">[</span>k<span class="op">++]</span> <span class="op">=</span> A<span class="op">[</span>i<span class="op">++];</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co">// Copy H[] back to A[]</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> s<span class="op">,</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> e<span class="op">;</span> i<span class="op">++,</span> k<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    A<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> H<span class="op">[</span>k<span class="op">];</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul></li>
+<li>Run time analysis:
+<ul>
+<li><p>We can simplify the while-loop into:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>i <span class="op">&lt;</span> m <span class="op">||</span> j <span class="op">&lt;</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">doPrimitive</span><span class="op">();</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Then do either: </span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    i<span class="op">++;</span> <span class="co">// --&gt; i = s; i &lt; m; i++ = m-s times</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Or do: </span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    j<span class="op">++;</span> <span class="co">// --&gt; j = m; j &lt; e; j++ = e-m times</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">// Copy</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> s<span class="op">,</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> e<span class="op">;</span> i<span class="op">++,</span> k<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">// i = s; i &lt; e; i++ = e-s times</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">doPrimitive</span><span class="op">();</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>The while loop will be executed <span class="math inline">\((m-s)+(e-m) = e-m=n\)</span> times.</li>
+<li>The for loop will be executed <span class="math inline">\(e-s=n\)</span> times.</li>
+<li>In total, we have <span class="math inline">\(2n\)</span> primitive operations.</li>
+<li>The running time of the <code>merge()</code> algorithm is <span class="math inline">\(2n\)</span>, which is <span class="math inline">\(\mathcal{O}(n)\)</span>.</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="merge-sort-algorithm" class="level3">
+<h3 class="anchored" data-anchor-id="merge-sort-algorithm">Merge Sort Algorithm</h3>
+<ul>
+<li>The Merge sort algorithm will:
+<ul>
+<li>Split the array <code>a[]</code> into 2 halves:
+<ul>
+<li>an array <code>left[]</code> containing <code>a[0] ... a[n/2]</code></li>
+<li>an array <code>right[]</code> containing <code>a[n/2+1] ... a[n-1]</code></li>
+</ul></li>
+<li>Sort both halves of the arrays (by repeating the above step)</li>
+<li>Merge the sorted arrays into the final sorted array</li>
+</ul></li>
+<li>The recursive structure (illustration using <code>selectinoSort</code>):</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T <span class="kw">extends</span> <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="dt">void</span> <span class="fu">sort</span><span class="op">(</span>T<span class="op">[]</span> a<span class="op">,</span> <span class="dt">int</span> s<span class="op">,</span> <span class="dt">int</span> e<span class="op">,</span> T<span class="op">[]</span> H<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>e<span class="op">-</span>s <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="op">{</span> <span class="co">// A[s]..A[e] has 0 or 1 elements</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span><span class="op">;</span> <span class="co">// nothing to sort</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> m <span class="op">=</span> <span class="op">(</span>s<span class="op">+</span>e<span class="op">)/</span><span class="dv">2</span><span class="op">;</span> <span class="co">// m is the middle index</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">/*</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">     * Sort the left portion A[s]..A[m-1]</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">     * Sort the right portion A[m]..A[e-1]</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">     * Merge the sorted portions</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">     */</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectionSort</span><span class="op">(</span>A<span class="op">,</span> s<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectionSort</span><span class="op">(</span>A<span class="op">,</span> m<span class="op">,</span> e<span class="op">);</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Merge both sorted arrays</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">merge</span><span class="op">(</span>A<span class="op">,</span> s<span class="op">,</span> m<span class="op">,</span> e<span class="op">,</span> H<span class="op">);</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Now, the real merge sort algorithm is simply to replace <code>selectionSort()</code> with <code>mergeSort()</code>.</li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T <span class="kw">extends</span> <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="dt">void</span> <span class="fu">mergeSort</span><span class="op">(</span>T<span class="op">[]</span> a<span class="op">,</span> <span class="dt">int</span> s<span class="op">,</span> <span class="dt">int</span> e<span class="op">,</span> T<span class="op">[]</span> H<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>e<span class="op">-</span>s <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="op">{</span> <span class="co">// A[s]..A[e] has 0 or 1 elements</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span><span class="op">;</span> <span class="co">// nothing to sort</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> m <span class="op">=</span> <span class="op">(</span>s<span class="op">+</span>e<span class="op">)/</span><span class="dv">2</span><span class="op">;</span> <span class="co">// m is the middle index</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">/*</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">     * Sort the left portion A[s]..A[m-1]</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">     * Sort the right portion A[m]..A[e-1]</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">     * Merge the sorted portions</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">     */</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mergeSort</span><span class="op">(</span>A<span class="op">,</span> s<span class="op">,</span> m<span class="op">,</span> H<span class="op">);</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mergeSort</span><span class="op">(</span>A<span class="op">,</span> m<span class="op">,</span> e<span class="op">,</span> H<span class="op">);</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Merge both sorted arrays</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">merge</span><span class="op">(</span>A<span class="op">,</span> s<span class="op">,</span> m<span class="op">,</span> e<span class="op">,</span> H<span class="op">);</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong><em>The merge sort algorithm is not an in-place sorting algorithm, but it is a stable sorting algorithm.</em></strong></li>
+<li>Runtime analysis:
+<ul>
+<li><p>If we want to sort <span class="math inline">\(n\)</span> elements, we can rewrite the algorithm into</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T <span class="kw">extends</span> <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="dt">void</span> <span class="fu">mergeSort</span><span class="op">(</span>T<span class="op">[]</span> a<span class="op">,</span> <span class="dt">int</span> n<span class="op">,</span> T<span class="op">[]</span> H<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mergeSort</span><span class="op">(</span>a<span class="op">,</span> n<span class="op">/</span><span class="dv">2</span><span class="op">,</span> H<span class="op">);</span> <span class="co">// running time = T(n/2)</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mergeSort</span><span class="op">(</span>a<span class="op">,</span> n<span class="op">/</span><span class="dv">2</span><span class="op">,</span> H<span class="op">);</span> <span class="co">// running time = T(n/2)</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Final merge</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">merge</span><span class="op">(</span>a<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> n<span class="op">/</span><span class="dv">2</span><span class="op">,</span> n<span class="op">,</span> H<span class="op">);</span> <span class="co">// running time = 2n</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>So, <span class="math inline">\(T(n)=0\)</span> for <span class="math inline">\(n\leq 1\)</span> and <span class="math inline">\(T(n)=2T\left(\dfrac{n}{2}\right)+2n\)</span> for <span class="math inline">\(n\geq2\)</span>.</li>
+<li>Now, let’s solving the following relationship: <span class="math display">\[
+\begin{aligned}
+T(1)&amp;=0\\
+T(n) &amp;= 2T\left(\dfrac{n}{2}\right)+2n \\
+&amp;= 2\left[2T\left(\dfrac{n}{4}\right)+2\left(\dfrac{n}{2}\right)\right]+2n \\
+&amp;=2^2T\left(\dfrac{n}{2^2}\right)+2(2n) \\
+&amp;=2^2\left[2T\left(\dfrac{n}{2^3}\right)+2\left(\dfrac{n}{2^2}\right)\right]+2(2n) \\
+&amp;=2^3T\left(\dfrac{n}{2^3}\right)+3(2n) \\
+&amp;\vdots \\
+&amp;=2^kT\left(\dfrac{n}{2^k}\right)+k(2n) \\
+\text{Set }\dfrac{n}{2^k}=1&amp;\implies 2^k=n\implies k=\log(n)\\
+T(n)&amp;=2^kT\left(\dfrac{n}{2^k}\right)+k(2n) \\
+&amp;=2^kT(1)+2kn \\
+&amp;=0+2kn=2n\log(n) \\
+\end{aligned}
+\]</span></li>
+<li>So, the running time is <span class="math inline">\(T(n)=2n\log(n)\)</span>, which is <span class="math inline">\(\mathcal{O}(n\log(n))\)</span>.</li>
+</ul></li>
+</ul></li>
+<li>Merge sort is one of few algorithms that has a runtime of <span class="math inline">\(\mathcal{O}(n\log(n))\)</span>.
+<ul>
+<li><span class="math inline">\(\mathcal{O}(n\log(n))\)</span> is the theoretical lower bound on running time of sorting algorithms.</li>
+</ul></li>
+<li>Some problems with pure merge sort algorithm:
+<ul>
+<li>There is a very high overhead to executive a recursive algorithm for tiny sublists.</li>
+<li>Merge sort will merge even when the 2 halves are sorted.</li>
+<li>Merge sort is not an in-place algorithm.
+<ul>
+<li>Merge sort requires an additional array to perform the merge operation.</li>
+</ul></li>
+</ul></li>
+<li>To solve the first problem, we can have a cutoff value for the size of the sublist. If the size of the sublist is smaller than the cutoff value, we will use selection sort instead of merge sort. This hybrid algorithm is called <strong>Tim Sort</strong>.</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T <span class="kw">extends</span> <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="dt">void</span> <span class="fu">mergeSort</span><span class="op">(</span>T<span class="op">[]</span> A<span class="op">,</span> <span class="dt">int</span> s<span class="op">,</span> <span class="dt">int</span> e<span class="op">,</span> T<span class="op">[]</span> H<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>e <span class="op">-</span> s <span class="op">&lt;=</span> CUTOFF<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">selectionSort</span><span class="op">(</span>A<span class="op">,</span> s<span class="op">,</span> e<span class="op">);</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> m <span class="op">=</span> <span class="op">(</span>s <span class="op">+</span> e<span class="op">)</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mergeSort</span><span class="op">(</span>A<span class="op">,</span> s<span class="op">,</span> m<span class="op">,</span> H<span class="op">);</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mergeSort</span><span class="op">(</span>A<span class="op">,</span> m<span class="op">,</span> e<span class="op">,</span> H<span class="op">);</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Merge both sorted arrays</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">merge</span><span class="op">(</span>A<span class="op">,</span> s<span class="op">,</span> m<span class="op">,</span> e<span class="op">,</span> H<span class="op">);</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>To solve the second problem, we can simply add a comparison of the last element in the left portion and the first element in the right portion. If the last element in the left portion is smaller than the first element in the right portion, we can skip the merge operation.</li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T <span class="kw">extends</span> <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="dt">void</span> <span class="fu">mergeSort</span><span class="op">(</span>T<span class="op">[]</span> A<span class="op">,</span> <span class="dt">int</span> s<span class="op">,</span> <span class="dt">int</span> e<span class="op">,</span> T<span class="op">[]</span> H<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>e <span class="op">-</span> s <span class="op">&lt;=</span> CUTOFF<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">selectionSort</span><span class="op">(</span>A<span class="op">,</span> s<span class="op">,</span> e<span class="op">);</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> m <span class="op">=</span> <span class="op">(</span>s <span class="op">+</span> e<span class="op">)</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mergeSort</span><span class="op">(</span>A<span class="op">,</span> s<span class="op">,</span> m<span class="op">,</span> H<span class="op">);</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mergeSort</span><span class="op">(</span>A<span class="op">,</span> m<span class="op">,</span> e<span class="op">,</span> H<span class="op">);</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Merge both sorted arrays only when values over lap</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>A<span class="op">[</span>m<span class="op">-</span><span class="dv">1</span><span class="op">].</span><span class="fu">compareTo</span><span class="op">(</span>A<span class="op">[</span>m<span class="op">])</span> <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">merge</span><span class="op">(</span>A<span class="op">,</span> s<span class="op">,</span> m<span class="op">,</span> e<span class="op">,</span> H<span class="op">);</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="non-recursive-merge-sort" class="level3">
+<h3 class="anchored" data-anchor-id="non-recursive-merge-sort">Non-recursive Merge Sort</h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T <span class="kw">extends</span> <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="dt">void</span> <span class="fu">mergeSort</span><span class="op">(</span>T<span class="op">[]</span> A<span class="op">,</span> T<span class="op">[]</span> H<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> mergeSize <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>mergeSize <span class="op">&lt;</span> A<span class="op">.</span><span class="fu">length</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> s<span class="op">,</span> m<span class="op">,</span> e<span class="op">;</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span>s <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> s <span class="op">&lt;</span> A<span class="op">.</span><span class="fu">length</span><span class="op">;</span> s <span class="op">+=</span> <span class="dv">2</span><span class="op">*</span>mergeSize<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>            m <span class="op">=</span> s <span class="op">+</span> mergeSize<span class="op">;</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>            e <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span><span class="op">(</span>s <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>mergeSize<span class="op">,</span> A<span class="op">.</span><span class="fu">length</span><span class="op">);</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">merge</span><span class="op">(</span>A<span class="op">,</span> s<span class="op">,</span> m<span class="op">,</span> e<span class="op">,</span> H<span class="op">);</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        mergeSize <span class="op">*=</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>A[]: | mergeSize | mergeSize | mergeSize | mergeSize | ...
+     s           m          e/s          m           e</code></pre>
+</section>
+</section>
+<section id="quick-sort" class="level2">
+<h2 class="anchored" data-anchor-id="quick-sort">Quick Sort</h2>
+<ul>
+<li><p>Introduction to Quick Sort</p>
+<ul>
+<li>Quick sort is the most commonly used sorting algorithm.</li>
+<li>Quick sort was invented by Antony Hoare in 1959 and was honored as one of the top 10 algorithms in the 20th centry.</li>
+<li>Some facts on quick sort:
+<ul>
+<li>It is a divide-and-conquer algorithm. (just like merge sort)</li>
+</ul></li>
+<li>Unlike merge sort, quick sort is an <strong>in-place</strong> algorithm. So it does not require an extra array.</li>
+</ul></li>
+<li><p>Big idea of quick sort:</p>
+<ul>
+<li>We select a pivot element in the array.</li>
+<li>We partition the array into 2 portions:
+<ul>
+<li>The left portion contains elements that are smaller than the pivot.</li>
+<li>The right portion contains elements that are larger than the pivot.</li>
+</ul></li>
+<li>Insert the pivot to the correct position.</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T <span class="kw">extends</span> <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="dt">void</span> <span class="fu">quickSort</span><span class="op">(</span>T<span class="op">[]</span> A<span class="op">,</span> <span class="dt">int</span> s<span class="op">,</span> <span class="dt">int</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>e <span class="op">-</span> s <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="op">{</span> <span class="co">// Base case</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// partition sub array A[s]..A[e-1] using A[s] as pivot</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> pivotLoc <span class="op">=</span> <span class="fu">partition</span><span class="op">(</span>A<span class="op">,</span> s<span class="op">,</span> e<span class="op">);</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">// partiion(A, s, e) returns the index (=location) of the pivot element. </span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">// it is the border of the 2 sub array/groups</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quickSort</span><span class="op">(</span>A<span class="op">,</span> s<span class="op">,</span> pivotLoc<span class="op">);</span> <span class="co">// sort left portion</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quickSort</span><span class="op">(</span>A<span class="op">,</span> pivotLoc<span class="op">+</span><span class="dv">1</span><span class="op">,</span> e<span class="op">);</span> <span class="co">// sort right portion</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<section id="the-partition-algorithm-for-quick-sort" class="level3">
+<h3 class="anchored" data-anchor-id="the-partition-algorithm-for-quick-sort">The Partition Algorithm for Quick Sort</h3>
+<ul>
+<li>A simplified partition algorithm:
+<ul>
+<li><p>A partitioning algorithm maintains 2 half arrays: a low half and a high half.</p></li>
+<li><p>The simplified partitioning algorithm only compares the pivot against <code>A[high]</code>.</p>
+<pre><code>           low half                   high half
+A[] = [P L L L L L L ? ? ? ? ? ? ? X H H H H H H]
+       ^ &lt;---------&gt; ^             ^ &lt;---------&gt;
+       |     &lt;P      |             |     &gt;= P   
+     pivot          low           high
+       |                           |
+       +---------------------------+
+        compares: pivot &lt;==&gt; A[high]</code></pre>
+<ul>
+<li>If <code>A[high] (X) &gt;= pivot</code>, then <code>A[high]</code> belongs to the high partition, and we decrement <code>high</code></li>
+</ul>
+<pre><code>           low half                   high half
+A[] = [P L L L L L L ? ? ? ? ? ? ? X H H H H H H]
+       ^ &lt;---------&gt; ^           ^ &lt;-----------&gt;
+       |     &lt;P      |           |     &gt;= P   
+     pivot          low         high
+       |                         |
+       +-------------------------+
+        compares: pivot &lt;==&gt; A[high]</code></pre>
+<ul>
+<li>If <code>A[high] (X) &lt; pivot</code>, then <code>A[high]</code> belongs to the low partition: we exchange <code>X</code> and <code>Y</code> and then increment <code>low</code>.</li>
+</ul>
+<pre><code>           low half                   high half
+A[] = [P L L L L L L Y ? ? ? ? ? ? X H H H H H H]
+       ^ &lt;---------&gt; ^             ^ &lt;---------&gt;
+       |     &lt;P      |             |     &gt;= P   
+     pivot          low           high
+
+           low half                   high half
+A[] = [P L L L L L L X ? ? ? ? ? ? Y H H H H H H]
+       ^ &lt;-----------&gt; ^           ^ &lt;---------&gt;
+       |     &lt;P        |           |     &gt;= P   
+     pivot            low         high</code></pre>
+<ul>
+<li>We repeat the steps until we get <code>low &gt; high</code>. Then, we will put the pivot in its correct location by exchanging <code>pivot</code> and <code>A[high]</code>.</li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T <span class="kw">extends</span> <span class="bu">Comparable</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="dt">int</span> <span class="fu">partition</span><span class="op">(</span>T<span class="op">[]</span> A<span class="op">,</span> <span class="dt">int</span> s<span class="op">,</span> <span class="dt">int</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>T pivot <span class="op">=</span> A<span class="op">[</span>s<span class="op">];</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> low <span class="op">=</span> s<span class="op">,</span> high <span class="op">=</span> e <span class="op">-</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>low <span class="op">&lt;=</span> hight<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>A<span class="op">[</span>high<span class="op">].</span><span class="fu">compareTo</span><span class="op">(</span>pivot<span class="op">)</span> <span class="op">&gt;=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>        high<span class="op">--;</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">exch</span><span class="op">(</span>A<span class="op">,</span> low<span class="op">,</span> high<span class="op">);</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>        low<span class="op">++;</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="fu">exch</span><span class="op">(</span>A<span class="op">,</span> s<span class="op">,</span> high<span class="op">);</span> <span class="co">// A[s] = pivot</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> high<span class="op">;</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul></li>
+<li>A rather complicated partitioning algorithm:</li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="dt">int</span> <span class="fu">partition</span><span class="op">(</span><span class="dt">int</span><span class="op">[]</span> list<span class="op">,</span> <span class="dt">int</span> first<span class="op">,</span> <span class="dt">int</span> last<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> pivot <span class="op">=</span> list<span class="op">[</span>first<span class="op">];</span> <span class="co">// choose the first element as the pivot</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> low <span class="op">=</span> first <span class="op">+</span> <span class="dv">1</span><span class="op">;</span> <span class="co">// index for forward search</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> high <span class="op">=</span> last <span class="op">-</span> <span class="dv">1</span><span class="op">;</span> <span class="co">// index for backward search</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>low <span class="op">&lt;</span> high<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Search forward from left</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="op">(</span>low <span class="op">&lt;=</span> high <span class="op">&amp;&amp;</span> list<span class="op">[</span>low<span class="op">]</span> <span class="op">&lt;=</span> pivot<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>            low<span class="op">++;</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Search backward from right</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="op">(</span>low <span class="op">&lt;=</span> high <span class="op">&amp;&amp;</span> list<span class="op">[</span>high<span class="op">]</span> <span class="op">&gt;</span> pivot<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>            high<span class="op">--;</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Swap two elements in the list</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>low <span class="op">&lt;</span> high<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>            <span class="dt">int</span> temp <span class="op">=</span> list<span class="op">[</span>high<span class="op">];</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>            list<span class="op">[</span>high<span class="op">]</span> <span class="op">=</span> list<span class="op">[</span>low<span class="op">];</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>            list<span class="op">[</span>low<span class="op">]</span> <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Adjust high to find the border</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>high <span class="op">&gt;</span> first <span class="op">&amp;&amp;</span> list<span class="op">[</span>high<span class="op">]</span> <span class="op">&gt;=</span> pivot<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>        high<span class="op">--;</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Swap pivot with list[high]</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>pivot <span class="op">&gt;</span> list<span class="op">[</span>high<span class="op">])</span> <span class="op">{</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>        list<span class="op">[</span>first<span class="op">]</span> <span class="op">=</span> list<span class="op">[</span>high<span class="op">];</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>        list<span class="op">[</span>high<span class="op">]</span> <span class="op">=</span> pivot<span class="op">;</span></span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> high<span class="op">;</span></span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> first<span class="op">;</span> <span class="co">// pivot was the smallest element</span></span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong><em>The quick sort algorithm is an in-place algorithm, but it is not stable.</em></strong></li>
+</ul>
+</section>
+<section id="runtime-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="runtime-analysis">Runtime Analysis</h3>
+<ul>
+<li>Synopsis of the <code>partition()</code> algorithm <code>java     public statbic &lt;T extends Comparable&lt;T&gt;&gt; int partition(T[] A, int s, int e) {         T pivot = A[s];         int low = s+1; high = e-1;         while (low &lt;= high) {             doPrimitive(); // either high--; or low++             // --&gt; loop will run (e-1) - (s+1) times = e-1-s-1=e-s-2 times         }         doPrimitive(); // exchange pivot and A[high]         return hight;     }</code>
+<ul>
+<li>In this case, the running time will be <span class="math inline">\(n-1\approx n\)</span>. Or, <span class="math inline">\(\mathcal{O}(n)\)</span>.</li>
+</ul></li>
+<li>The running time of the quick sort algorithm depends on how <code>partition()</code> splits the input array.
+<ul>
+<li><p>IMPORTANT: the running time of quick sort depends on how large the 2 array halves are.</p></li>
+<li><p>Suppose the <code>partition(A, s, e)</code> algorithm partitions the input as follows:</p>
+<pre><code>         &lt;-------------- n ---------------&gt;
+INPUT:  [P .. .. .. .. .. .. .. .. .. .. ..]
+RESULT: [.. .. .. .. .. .. P .. .. .. .. ..]
+         &lt;------ k ------&gt;   &lt;--- n-k-1 --&gt;</code></pre>
+<ul>
+<li>The running time <span class="math inline">\(T(n)\)</span> for input size <span class="math inline">\(n\)</span> will have the following recurrence relationship: <span class="math inline">\(T(n)=T(k)+T(n-k-1)+n\)</span>.</li>
+</ul></li>
+</ul></li>
+<li>The best case running time of quick sort.
+<ul>
+<li>The best case running time of the quick sort algorithm happens when: the <code>partition()</code> algorithm always divides the input array into 2 equal halves.</li>
+<li>In this case, we have <span class="math display">\[
+\begin{aligned}
+T(n)&amp;=T(k)+T(n-k-1)+n\\
+&amp;=T(n/2) + T(n/2-1) + n\\
+&amp;\approx 2T(n/2) + n,
+\end{aligned}
+\]</span> which is similar recurrence relation as the one in merge sort.
+<ul>
+<li>So, we can solve it with telescoping and the result is <span class="math inline">\(T(n)=n\log(n)\)</span>.</li>
+</ul></li>
+</ul></li>
+<li>The worst case running time of quick sort:
+<ul>
+<li>The worst case running time of the quick sort algorithm happens when the <code>partition()</code> always divides the input array into (1) array containing the pivot and (2) an array with <span class="math inline">\(n-1\)</span> elements.</li>
+<li>In this case, we have <span class="math display">\[
+\begin{aligned}
+T(n)&amp;=T(0)+T(n-1)+n\\
+&amp;=0+T(n-1)+n\\
+&amp;=T(n-1)+n\\
+&amp;=T(n-2)+(n-1)+n\\
+&amp;=T(n-3)+(n-2)+(n-1)+n\\
+&amp;\vdots\\
+&amp;=T(0)+1+2+\cdots+(n-2)+(n-1)+n\\
+&amp;=1+2+\cdots+(n-2)+(n-1)+n&amp;\text{triangular sum}\\
+&amp;=\dfrac{n(n+1)}{2}-1\\
+&amp;=\mathcal{O}(n^2)
+\end{aligned}
+\]</span></li>
+<li>So, the worse case running time is <span class="math inline">\(\mathcal{O}(n^2)\)</span>.</li>
+<li>An example that makes quick sort achieve the worse case running time: a sorted array.
+<ul>
+<li>Because the pivot is always the smallest value, <code>partition()</code> will always produce:
+<ul>
+<li>An array containing the pivot, and</li>
+<li>An array containing the other <span class="math inline">\(n-1\)</span> elements.</li>
+</ul></li>
+</ul></li>
+<li>To prevent the worse case, a commonly used practice when using quick sort is to:
+<ul>
+<li>Shuffle the input array randomly (To ensure <code>partition()</code> will not always find the pivot as the first element)</li>
+<li>Use quick sort of the shuffled input array.</li>
+<li>Then, the quick sort will achieve the <strong>average</strong> running time performance with a randomized input array.</li>
+</ul></li>
+</ul></li>
+<li>The average running time of quick sort:
+<ul>
+<li>Recall the recurrence relation for the running time of quick sort is <span class="math inline">\(T(n)=T(k)+T(n-k-1)+n\)</span>, where <span class="math inline">\(k\)</span> is the final position of the pivot.</li>
+<li>Depending on the value of <span class="math inline">\(k\)</span>, the recurrence relation for <span class="math inline">\(T(n)\)</span> are different: <span class="math display">\[
+T(n)=T(0)+T(n-1)+n\quad\text{ if }k=0\\
+T(n)=T(1)+T(n-2)+n\quad\text{ if }k=1\\
+\cdots\\
+T(n)=T(n-1)+T(0)+n\quad\text{ if }k=n-1
+\]</span></li>
+<li>Since each value of <span class="math inline">\(k\)</span> is equally likely to occur, we can take the average by summing them and dividing the sum by <span class="math inline">\(n\)</span>. <span class="math display">\[
+nT(n)=(T(0)+\cdots+T(n-1))+(T(n-1)+\cdots+T(0))+n^2\\
+nT(n)=2T(0)+2T(1)+\cdots+2T(n-1)+n^2\\
+T(n)=\dfrac{2}{n}T(0)+\dfrac{2}{n}T(1)+\cdots+\dfrac{2}{n}T(n-1)+n
+\]</span></li>
+<li>Now, we want to solve the following recurrence relation: <span class="math display">\[
+\begin{aligned}
+T(1)&amp;=1\\
+T(n)&amp;=\dfrac{2}{n}T(0)+\dfrac{2}{n}T(1)+\cdots+\dfrac{2}{n}T(n-1)+n\\
+nT(n)&amp;=2T(0)+2T(1)+\cdots+2T(n-1)+n^2\\
+(n-1)T(n-1)&amp;=2T(0)+2T(1)+\cdots+2T(n-2)+(n-1)^2\\
+nT(n)-(n-1)T(n-1)&amp;=2T(n-1)+n^2-(n-1)^2\\
+&amp;=2T(n-1)+2n-1\\
+nT(n)&amp;=(n+1)T(n-1)+2n-1\\
+T(n)&amp;=\dfrac{n+1}{n}T(n-1)+2-\dfrac{1}{n}\\
+\dfrac{T(n)}{(n+1)}&amp;=\dfrac{T(n-1)}{n}+\dfrac{2}{(n+1)}-\dfrac{1}{n(n+1)}\\
+\dfrac{T(n-1)}{n}&amp;=\dfrac{T(n-2)}{(n-1)}+\dfrac{2}{n}-\dfrac{1}{(n-1)n}\\
+\dfrac{T(n-2)}{(n-1)}&amp;=\dfrac{T(n-3)}{(n-2)}+\dfrac{2}{(n-1)}-\dfrac{1}{(n-2)(n-1)}\\
+&amp;\vdots\\
+\dfrac{T(2)}{3}&amp;=\dfrac{T(1)}{2}+\dfrac{2}{3}-\dfrac{1}{2\cdot3}\\
+\dfrac{T(n)}{(n+1)}&amp;+\dfrac{T(n-1)}{n}+\dfrac{T(n-2)}{(n-1)}+\cdots+\dfrac{T(2)}{3}\\
+&amp;=\dfrac{T(n-1)}{n}+\dfrac{T(n-2)}{(n-1)}+\cdots+\dfrac{T(2)}{3}+\dfrac{T(1)}{2}\\
+&amp;\quad+\dfrac{2}{(n+1)}+\dfrac{2}{n}+\dfrac{2}{(n-1)}+\cdots+\dfrac{2}{3}\\
+&amp;\quad-\dfrac{1}{n(n+1)}-\dfrac{1}{(n-1)n}-\cdots-\dfrac{1}{3\cdot2}\\
+\dfrac{T(n)}{(n+1)}&amp;\approx2\left(\dfrac{1}{(n+1)}+\dfrac{1}{n}+\dfrac{1}{(n-1)}+\cdots+\dfrac{1}{3}+\dfrac{1}{2}+1\right)\\
+&amp;=2\log(n+1)
+\end{aligned}
+\]</span>
+<ul>
+<li>Therefore, <span class="math inline">\(T(n)=2(n+1)\log(n+1)\)</span>, or <span class="math inline">\(\mathcal{O}(n\log(n))\)</span>.</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="improvements-to-quick-sort" class="level3">
+<h3 class="anchored" data-anchor-id="improvements-to-quick-sort">Improvements to Quick Sort</h3>
+<ul>
+<li><p>As mentioned above, one way to improve the quick sort algorithm is to shuffle the input array randomly. ```java public static void main(String[] args) { Integer[] A = …; // Array to be sorted with quick sort</p>
+<pre><code>  // shuffle array A
+  for (int k = 0; k &lt; N; k++) {
+      int i = Math.random() * A.length;
+      int j = Math.random() * A.length;
+      exch(A, i, j);
+  }
+  quickSort(A, 0, A.length);</code></pre>
+<p>} ```</p>
+<ul>
+<li>Why shuffle?
+<ul>
+<li>Make quick sort avoid picking the smallest pivot all the time.</li>
+<li>Help quick sort achieve the average running time performance with a randomized array.</li>
+</ul></li>
+</ul></li>
+<li><p>Another way to improve the quick sort algorithm is the increase the likelihood to partition the array into 2 equal halves.</p>
+<ul>
+<li><p>The best pivot value is the median of the input array.</p></li>
+<li><p>We can improve the likelihood of picking the median by considering 3 (random value) selected from the input array. (Instead of always using the first element as pivot).</p></li>
+<li><p>The median of 3 partition method:</p>
+<pre><code>A[] = [X .. .. .. .. .. Y .. .. .. .. .. Z]
+Let M = median(X, Y, Z)
+    (1) swap M and X
+    (2) partition(A, s, e)</code></pre></li>
+<li><p>Algorithm to find the median of 3 values:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="dt">int</span> <span class="fu">medianOf3</span><span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">,</span> <span class="dt">int</span> c<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">((</span>b <span class="op">&lt;=</span> a <span class="op">&amp;&amp;</span> a <span class="op">&lt;=</span> c<span class="op">)</span> <span class="op">||</span> <span class="op">(</span>c <span class="op">&lt;=</span> a <span class="op">&amp;&amp;</span> a<span class="op">&lt;=</span> b<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> a<span class="op">;</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">((</span>a<span class="op">&lt;=</span> b <span class="op">&amp;&amp;</span> b <span class="op">&lt;=</span> c<span class="op">)</span> <span class="op">||</span> <span class="op">(</span>c <span class="op">&lt;=</span> b <span class="op">&amp;&amp;</span> b <span class="op">&lt;=</span> a<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> b<span class="op">;</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> c<span class="op">;</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>An improved (faster) algorithm: using the exclusive OR (<code>^</code>) operator.</li>
+</ul>
+<div class="sourceCode" id="cb30"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="dt">int</span> <span class="fu">medianOf3</span><span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">,</span> <span class="dt">int</span> c<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">((</span>a <span class="op">&gt;</span> b<span class="op">)</span> <span class="op">^</span> <span class="op">(</span>a <span class="op">&gt;</span> c<span class="op">))</span> <span class="op">{</span> <span class="co">// either a &gt; b or a &gt; c</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> a<span class="op">;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">((</span>b <span class="op">&gt;</span> a<span class="op">)</span> <span class="op">^</span> <span class="op">(</span>b <span class="op">&gt;</span> c<span class="op">))</span> <span class="op">{</span> <span class="co">// either b &gt; a or b &gt; c</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> b<span class="op">;</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> c<span class="op">;</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="faster-computer-vs-better-algorithm." class="level2">
+<h2 class="anchored" data-anchor-id="faster-computer-vs-better-algorithm.">Faster Computer VS Better algorithm.</h2>
+<ul>
+<li>Consider:
+<ul>
+<li>A sorting algorithm (e.g.&nbsp;merge sort) with <span class="math inline">\(\mathcal{O}(n\log(n))\)</span> running time.</li>
+<li>A sorting algorithm (e.g.&nbsp;insertion sort) with <span class="math inline">\(\mathcal{O}(n^2)\)</span> running time running on a faster computer (e.g.&nbsp;1,000,000 times faster).</li>
+</ul></li>
+<li>Which one is better?
+<ul>
+<li>The answer is: it depends.</li>
+<li>If the input size is small, the faster computer will be better.</li>
+<li>If the input size is large, the better algorithm will be better.</li>
+<li><strong><em>A better algorithm will always beat an average algorithm when the input size is sufficiently large.</em></strong></li>
+</ul></li>
+</ul>
+</section>
+<section id="sorting-algorithms-in-javas-library" class="level2">
+<h2 class="anchored" data-anchor-id="sorting-algorithms-in-javas-library">Sorting Algorithms in Java’s Library</h2>
+<ul>
+<li>The <code>sort()</code> method (an overloaded method) can be found in:
+<ul>
+<li><code>java.util.Arrays</code> to sort arrays:
+<ul>
+<li><code>sort(int[] a)</code>: the sorting algorithm is a Dual-Pivot Quick Sort.</li>
+<li><code>sort(Object[] a)</code>: This implementation is a stable, adaptive, iterative Merge Sort.</li>
+</ul></li>
+<li><code>java.util.Collections</code> to sort collections (e.g.&nbsp;<code>ArrayList</code>):
+<ul>
+<li>According to information on the Internet, they used Merge Sort in Collections.</li>
+</ul></li>
+</ul></li>
+<li>Requirement to use <code>sort()</code> methods in Java’s library:
+<ul>
+<li>The objects that are sorted must implement the <code>Comparable&lt;T&gt;</code> interface.</li>
+</ul></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
