@@ -10,6 +10,7 @@ website:
   reader-mode: true
   back-to-top-navigation: true
   bread-crumbs: true
+  favicon: media/favicion.io/favicon.ico
   navbar:
     left:
       - href: index.qmd
