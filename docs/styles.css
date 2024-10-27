@@ -22,17 +22,19 @@
 }
 
 // <uniquifier>: Use a unique and descriptive class name
-// <weight>: Use a value from 100 to 900
+// <weight>: Use a value from 300 to 800
 
-.inter-<uniquifier> {
-  font-family: "Inter", sans-serif;
+.open-sans-<uniquifier> {
+  font-family: "Open Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: <weight>;
   font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Open Sans", sans-serif;
   line-height: 1.8;
 }
 

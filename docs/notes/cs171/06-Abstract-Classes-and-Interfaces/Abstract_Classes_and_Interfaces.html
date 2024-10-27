@@ -67,6 +67,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -105,6 +106,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
 
 <link rel="stylesheet" href="../../../styles.css">
@@ -151,6 +155,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -168,7 +177,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#introduction-to-interfaces" id="toc-introduction-to-interfaces" class="nav-link" data-scroll-target="#introduction-to-interfaces">Introduction to Interfaces</a></li>
   <li><a href="#review-of-oop-concepts" id="toc-review-of-oop-concepts" class="nav-link" data-scroll-target="#review-of-oop-concepts">Review of OOP Concepts</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs171/06-Abstract-Classes-and-Interfaces/Abstract_Classes_and_Interfaces.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs171/06-Abstract-Classes-and-Interfaces/Abstract_Classes_and_Interfaces.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
@@ -227,25 +236,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>We know what the action is, but we cannot be specific about it.</li>
 </ul></li>
-<li>Sometimes, a superclass is so <code>abstract</code> that it cannot be used to create any specific instances. &gt; <strong>Abstract Class</strong>: An <code>abstract</code> class is a class that cannot be instantiated. That is, we cannot create instances of an <code>abstract</code> class.</li>
+<li>Sometimes, a superclass is so <code>abstract</code> that it cannot be used to create any specific instances.</li>
 </ul></li>
 </ul>
+<div id="nte-abstract-class" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;1: <strong>Abstract Class</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An <code>abstract</code> class is a class that cannot be instantiated. That is, we cannot create instances of an <code>abstract</code> class.</p>
+</div>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">abstract</span> <span class="kw">class</span> className <span class="op">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// same as a normal class</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li><p>Any class can be defined as <code>abstract</code>.</p></li>
-<li><p>We can define (reference) variables of an <code>abstract</code> class type</p></li>
-<li><p>We can also extend (derive a subclass from) an <code>abstract</code> class</p></li>
-<li><p>Therefore, an <code>abstract</code> class can serve as the superclass for polymorphic methods. &gt; <strong>Abstract Methods</strong>: An <code>abstract</code> method consists of only the method declaration without the method body. The method declaration consists of only the method header (data types) information.</p></li>
-<li><p>Declarations are used to convey data type information to the Java compiler.</p></li>
+<li>Any class can be defined as <code>abstract</code>.</li>
+<li>We can define (reference) variables of an <code>abstract</code> class type</li>
+<li>We can also extend (derive a subclass from) an <code>abstract</code> class</li>
+<li>Therefore, an <code>abstract</code> class can serve as the superclass for polymorphic methods.</li>
+</ul>
+<div id="nte-abstract-method" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;2: <strong>Abstract Methods</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An <code>abstract</code> method consists of only the method declaration without the method body. The method declaration consists of only the method header (data types) information.</p>
+</div>
+</div>
+<ul>
+<li>Declarations are used to convey data type information to the Java compiler.</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">abstract</span> returnType <span class="fu">methodname</span><span class="op">(</span>params<span class="op">);</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li><ul>
-<li>See <code>AbstractSort.java</code></li>
-</ul></li>
-<li><p>Relationship between <code>abstract</code> classes and <code>abstract</code> methods:</p>
+<li>See <a href="01-abstract-modifier/AbstractSort.java"><code>AbstractSort.java</code></a></li>
+<li>Relationship between <code>abstract</code> classes and <code>abstract</code> methods:
 <ul>
 <li><code>abstract</code> method:
 <ul>
@@ -261,13 +296,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Otherwise, the class can be defined as a normal class.</li>
 </ul></li>
 </ul></li>
-<li><p>An <code>abstract</code> class cannot be defined as a <code>final</code> class</p>
+<li>An <code>abstract</code> class cannot be defined as a <code>final</code> class
 <ul>
 <li>An abstract class cannot be instantiated, so it needs to be extended (i.e., not <code>final</code>) into a concrete class to become instantiable.</li>
 <li>Similarly, we can also not have <code>abstract final</code> methods. This is because an <code>abstract</code> method is incomplete (has no method body) and must be overridden (not <code>final</code>) so the method can become concrete.</li>
 <li>A class that contains an <code>abstract</code> method must be defined as an <code>abstract</code> class</li>
 </ul></li>
-<li><p>Some interesting features:</p>
+<li>Some interesting features:
 <ul>
 <li>A class can be <code>abstract</code> even if its superclass is non-abstract.</li>
 <li>An <code>abstract</code> subclass can override a non-abstract method from its superclass with an abstract method.
@@ -275,7 +310,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>When the implementation of the method in the superclass becomes invalid in the subclass.</li>
 </ul></li>
 </ul></li>
-<li><p>Practical use of <code>abstract</code> classes:</p>
+<li>Practical use of <code>abstract</code> classes:
 <ul>
 <li>When we are unsure of how a method should be defined/implemented for that class.</li>
 <li>When we do not want objects of that type being instantiated (and used) - even when the class has no abstract methods.</li>
@@ -284,9 +319,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="introduction-to-interfaces" class="level2">
 <h2 class="anchored" data-anchor-id="introduction-to-interfaces">Introduction to Interfaces</h2>
-<blockquote class="blockquote">
-<p><strong>Interface</strong>: An interface can be used to define common behavior for any classes (including unrelated classes). It is a similar mechanism as inheritance for unrelated class that share some behaviors (methods)</p>
-</blockquote>
+<div id="nte-interface" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;3: <strong>Interface</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An interface can be used to define common behavior for any classes (including unrelated classes). It is a similar mechanism as inheritance for unrelated class that share some behaviors (methods)</p>
+</div>
+</div>
 <ul>
 <li>An interface is an abstract class-like construction that contains only
 <ul>
@@ -311,20 +356,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li><p>The implementation class must override all methods declared in an interface.</p></li>
-<li><p>Example to use an interface</p>
+<li>The implementation class must override all methods declared in an interface.</li>
+</ul>
+<div id="tip-interface" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;1: Example to Use an Interface
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <ul>
-<li>we cannot instantiate an object with an interface type</li>
+<li>We cannot instantiate an object with an interface type</li>
 <li>Hence, we always upcast an object of its implementation class and assign it to an interface variable.
 <ul>
 <li>We upcast an object if the class implements the interface</li>
 <li>an interface is a superclass (of unrelated objects)</li>
+<li>See <a href="02-interface/InterfaceSort.java"><code>InterfaceSort.java</code></a></li>
 </ul></li>
-</ul></li>
-<li><ul>
-<li>See <code>InterfaceSort.java</code></li>
-</ul></li>
-<li><p>The <code>Comparable</code> interface of the Java library</p>
+</ul>
+</div>
+</div>
+</div>
+<ul>
+<li>The <code>Comparable</code> interface of the Java library
 <ul>
 <li>It is the superclass of all objects that can be compared.</li>
 </ul>
@@ -333,21 +392,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>The syntax <code>&lt;T&gt;</code> is called a generic type in Java.</li>
-<li>Example to use the Comparable Interface</li>
+</ul></li>
 </ul>
+<div id="tip-comparable-interface" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;2: Example to Use the Comparable Interface
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="sourceCode" id="cb6"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> Circle <span class="kw">extends</span> GeometricObject <span class="kw">implements</span> <span class="bu">Comparable</span><span class="op">&lt;</span>Circle<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">private</span> <span class="dt">double</span> radius<span class="op">;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// other method omitted</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">/**</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span> Arrays<span class="co">.</span>sort<span class="co">()</span> will only work with Comparable objects</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span> The Circle class must implement the Comparable interface</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span> in order to use Array<span class="co">.</span>sort<span class="co">()</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>   <span class="co">*/</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">public</span> <span class="dt">int</span> <span class="fu">compareTo</span><span class="op">(</span>Circle other<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">double</span> diff <span class="op">=</span> <span class="kw">this</span><span class="op">.</span><span class="fu">getArea</span><span class="op">()</span> <span class="op">-</span> other<span class="op">.</span><span class="fu">getArea</span><span class="op">();</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">signum</span><span class="op">(</span>diff<span class="op">);</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">double</span> radius<span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// other method omitted</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">/**</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> Arrays<span class="co">.</span>sort<span class="co">()</span> will only work with Comparable objects</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> The Circle class must implement the Comparable interface</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> in order to use Array<span class="co">.</span>sort<span class="co">()</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>     <span class="co">*/</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">int</span> <span class="fu">compareTo</span><span class="op">(</span>Circle other<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="dt">double</span> diff <span class="op">=</span> <span class="kw">this</span><span class="op">.</span><span class="fu">getArea</span><span class="op">()</span> <span class="op">-</span> other<span class="op">.</span><span class="fu">getArea</span><span class="op">();</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">signum</span><span class="op">(</span>diff<span class="op">);</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<ul>
 <li><p>A class can inherit from only one class, but a class can implement multiple interfaces.</p>
 <ul>
 <li>Each interface defines a set of capabilities or “roles”.</li>
@@ -417,7 +492,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </section>
 
-</main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -950,6 +1025,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2024, Jiuru Lyu</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs171/06-Abstract-Classes-and-Interfaces/Abstract_Classes_and_Interfaces.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs171/06-Abstract-Classes-and-Interfaces/Abstract_Classes_and_Interfaces.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jiuru-lyu/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JrLyu">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="mailto:richard.jrlyu@outlook.com">
+      <i class="bi bi-envelope" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 

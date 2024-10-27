@@ -15,7 +15,7 @@ about:
       href: https://github.com/JrLyu
     - icon: envelope
       text: Email
-      href: mailto:richard.jrlyu@outlook.com
+      href: mailto:jiuru.lyu@emory.edu
 ---
 
 Hi! My name is Jiuru Lyu, and I am a junior at Emory University studying Applied Mathematics. In my leisure time, I enjoy coffee brewing, traveling, photograph, and commercial aviation.

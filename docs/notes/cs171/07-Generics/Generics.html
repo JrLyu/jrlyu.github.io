@@ -67,6 +67,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -105,6 +106,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
 
 <link rel="stylesheet" href="../../../styles.css">
@@ -151,6 +155,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -168,7 +177,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#intro-to-generic-methods" id="toc-intro-to-generic-methods" class="nav-link" data-scroll-target="#intro-to-generic-methods">Intro to Generic Methods</a></li>
   <li><a href="#bounded-and-unbounded-parameter-type" id="toc-bounded-and-unbounded-parameter-type" class="nav-link" data-scroll-target="#bounded-and-unbounded-parameter-type">Bounded and Unbounded Parameter Type</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs171/07-Generics/Generics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs171/07-Generics/Generics.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
@@ -216,13 +225,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="intro-to-generic-classes" class="level2">
 <h2 class="anchored" data-anchor-id="intro-to-generic-classes">Intro to Generic Classes</h2>
-<blockquote class="blockquote">
-<p><strong>Generic class</strong>: A generic class is a parameterized class where the parameters are always object types.</p>
-</blockquote>
+<div id="nte-generic-class" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;1: <strong>Generic class</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A generic class is a parameterized class where the parameters are always object types.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// T1, T2, ... are object type parameters</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ClassName<span class="op">&lt;</span>T1<span class="op">,</span> T2<span class="op">,</span> <span class="kw">...</span><span class="op">&gt;</span> <span class="op">{</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// we can use T1, T2, ... as type specifier here</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> GenericStroe<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="op">{</span><span class="co">// T is the type parameter</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> T data<span class="op">;</span> <span class="co">// variable of the T type</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">GenericStore</span><span class="op">(</span>T data<span class="op">)</span> <span class="op">{</span></span>
@@ -238,15 +257,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>When the parameter type is <code>&lt;T&gt;</code>, the Java compiler will replace every occurrence of <code>&lt;T&gt;</code> by <code>Object</code>.</li>
 <li>When we define a variable of a generic class, we specify the object type parameter along with the class name:</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    GenericsStore<span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> a <span class="op">=</span> <span class="kw">new</span> GenericsStore<span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;();</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    GenericsStore<span class="op">&lt;</span><span class="bu">Integer</span><span class="op">&gt;</span> b <span class="op">=</span> <span class="kw">new</span> GenericsStore<span class="op">&lt;</span><span class="bu">Integer</span><span class="op">&gt;();</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>GenericsStore<span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> a <span class="op">=</span> <span class="kw">new</span> GenericsStore<span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;();</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>GenericsStore<span class="op">&lt;</span><span class="bu">Integer</span><span class="op">&gt;</span> b <span class="op">=</span> <span class="kw">new</span> GenericsStore<span class="op">&lt;</span><span class="bu">Integer</span><span class="op">&gt;();</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li><p>The result will be:</p>
+<li>The result will be:
 <ul>
 <li>The Java compiler will remember the parameter type of each variable, and</li>
 <li>Insert the proper casting operation before using the value returned by their methods.</li>
 </ul></li>
-<li><p>The parameters of a generic class must be object (reference) types</p>
+<li>The parameters of a generic class must be object (reference) types
 <ul>
 <li>We cannot define generic class variables using primitive types:</li>
 </ul>
@@ -254,39 +273,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Use a wrapper class if we need to use a primitive type.</li>
 </ul></li>
-<li><p>We can use a short hand notation to define a generic class variable:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  GenericsStore<span class="op">&lt;</span><span class="bu">Integer</span><span class="op">&gt;</span> a <span class="op">=</span> <span class="kw">new</span> GenericsStore<span class="op">&lt;&gt;();</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<li>We can use a short hand notation to define a generic class variable: <code>java       GenericsStore&lt;Integer&gt; a = new GenericsStore&lt;&gt;();</code>
 <ul>
 <li>The Java compiler can infer the second parameter</li>
 </ul></li>
-<li><p>Commonly parameter names used are: <code>T</code> (Type), <code>E</code> (Element), <code>K</code> (Key), and <code>V</code> (Value)</p></li>
+<li>Commonly parameter names used are: <code>T</code> (Type), <code>E</code> (Element), <code>K</code> (Key), and <code>V</code> (Value)</li>
 </ul>
 </section>
 <section id="intro-to-generic-methods" class="level2">
 <h2 class="anchored" data-anchor-id="intro-to-generic-methods">Intro to Generic Methods</h2>
 <ul>
 <li><p>Syntax to define a generic (parameterized) method</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T1<span class="op">,</span> T2<span class="op">,</span> <span class="kw">...</span><span class="op">&gt;</span> returnType <span class="fu">methodName</span><span class="op">(</span>params<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// method body</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>We can use the type parameters <code>T1, T1, ...</code> to declare parameter variables, local variables, and the return type of the method.</li>
-</ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="dt">void</span> <span class="fu">print</span><span class="op">(</span>T<span class="op">[]</span> list<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> list<span class="op">.</span><span class="fu">length</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>      <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span>list<span class="op">[</span>i<span class="op">]);</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span>   </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T1<span class="op">,</span> T2<span class="op">,</span> <span class="kw">...</span><span class="op">&gt;</span> returnType <span class="fu">methodName</span><span class="op">(</span>params<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>      <span class="co">// method body</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    ```</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="op">-</span>   We can use the type parameters `T1<span class="op">,</span> T1<span class="op">,</span> <span class="kw">...</span>` to declare parameter variables<span class="op">,</span> local variables<span class="op">,</span> and the <span class="cf">return</span> type of the method<span class="op">.</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>``` java</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="dt">void</span> <span class="fu">print</span><span class="op">(</span>T<span class="op">[]</span> list<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> list<span class="op">.</span><span class="fu">length</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span>list<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span>   </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>The generic method will be made specific (with a data type) in the invocation.</li>
 </ul></li>
 <li><p>When we write a generic method, the Java compiler will replace every occurrence of <code>&lt;T&gt;</code> by <code>Object</code> and will remember that <code>list[]</code> is a parameterized class variable.</p>
 <ul>
-<li>When the <code>print()</code> method is used, the Java compiler will insert the appropriate casting operator.</li>
+<li>When the <code>print()</code> method is used, the Java compiler will insert the appropriate casting operator</li>
 </ul></li>
 <li><p>Syntax to invoke a generic (parameterized) method:</p></li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>    Classname<span class="op">.&lt;</span>T1<span class="op">,</span> T2<span class="op">,</span> <span class="kw">...</span><span class="op">&gt;</span><span class="fu">methodName</span><span class="op">(</span>arguments<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    Classname<span class="op">.&lt;</span>T1<span class="op">,</span> T2<span class="op">,</span> <span class="kw">...</span><span class="op">&gt;</span><span class="fu">methodName</span><span class="op">(</span>arguments<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="bounded-and-unbounded-parameter-type" class="level2">
 <h2 class="anchored" data-anchor-id="bounded-and-unbounded-parameter-type">Bounded and Unbounded Parameter Type</h2>
@@ -308,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </section>
 
-</main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -841,6 +859,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2024, Jiuru Lyu</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs171/07-Generics/Generics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs171/07-Generics/Generics.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jiuru-lyu/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JrLyu">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="mailto:richard.jrlyu@outlook.com">
+      <i class="bi bi-envelope" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 

@@ -16,7 +16,12 @@ draft: false # setting this to `true` will prevent your post from appearing on y
     -   the superclass contains common features of all subclasses
     -   Sometimes, a common action (method) is not well-defined:
         -   We know what the action is, but we cannot be specific about it.
-    -   Sometimes, a superclass is so `abstract` that it cannot be used to create any specific instances. \> **Abstract Class**: An `abstract` class is a class that cannot be instantiated. That is, we cannot create instances of an `abstract` class.
+    -   Sometimes, a superclass is so `abstract` that it cannot be used to create any specific instances. 
+
+:::{#nte-abstract-class .callout-note}
+## **Abstract Class**
+An `abstract` class is a class that cannot be instantiated. That is, we cannot create instances of an `abstract` class.
+:::
 
 ``` java
 public abstract class className {
@@ -25,25 +30,22 @@ public abstract class className {
 ```
 
 -   Any class can be defined as `abstract`.
-
 -   We can define (reference) variables of an `abstract` class type
-
 -   We can also extend (derive a subclass from) an `abstract` class
+-   Therefore, an `abstract` class can serve as the superclass for polymorphic methods. 
 
--   Therefore, an `abstract` class can serve as the superclass for polymorphic methods. \> **Abstract Methods**: An `abstract` method consists of only the method declaration without the method body. The method declaration consists of only the method header (data types) information.
+:::{#nte-abstract-method .callout-note}
+## **Abstract Methods**
+An `abstract` method consists of only the method declaration without the method body. The method declaration consists of only the method header (data types) information.
+:::
 
 -   Declarations are used to convey data type information to the Java compiler.
 
 ``` java
 public abstract returnType methodname(params);
 ```
-
--   
-
-    -   See `AbstractSort.java`
-
+- See [`AbstractSort.java`](01-abstract-modifier/AbstractSort.java)
 -   Relationship between `abstract` classes and `abstract` methods:
-
     -   `abstract` method:
         -   An `abstract` method is an incomplete method. It cannot be executed (because it has no method body)
     -   Rule: A class that contains an `abstract` method must be defined as an `abstract` class.
@@ -51,27 +53,25 @@ public abstract returnType methodname(params);
     -   Subclasses of `abstract` classes:
         -   A subclass that do not define all the `abstract` methods must be defined as an `abstract` class
         -   Otherwise, the class can be defined as a normal class.
-
 -   An `abstract` class cannot be defined as a `final` class
-
     -   An abstract class cannot be instantiated, so it needs to be extended (i.e., not `final`) into a concrete class to become instantiable.
     -   Similarly, we can also not have `abstract final` methods. This is because an `abstract` method is incomplete (has no method body) and must be overridden (not `final`) so the method can become concrete.
     -   A class that contains an `abstract` method must be defined as an `abstract` class
 
 -   Some interesting features:
-
     -   A class can be `abstract` even if its superclass is non-abstract.
     -   An `abstract` subclass can override a non-abstract method from its superclass with an abstract method.
         -   When the implementation of the method in the superclass becomes invalid in the subclass.
 
 -   Practical use of `abstract` classes:
-
     -   When we are unsure of how a method should be defined/implemented for that class.
     -   When we do not want objects of that type being instantiated (and used) - even when the class has no abstract methods.
 
 ## Introduction to Interfaces
-
-> **Interface**: An interface can be used to define common behavior for any classes (including unrelated classes). It is a similar mechanism as inheritance for unrelated class that share some behaviors (methods)
+:::{#nte-interface .callout-note}
+## **Interface**
+An interface can be used to define common behavior for any classes (including unrelated classes). It is a similar mechanism as inheritance for unrelated class that share some behaviors (methods)
+:::
 
 -   An interface is an abstract class-like construction that contains only
     -   method declarations and
@@ -100,56 +100,50 @@ public class myClass implements myInterface {
 
 -   The implementation class must override all methods declared in an interface.
 
--   Example to use an interface
-
-    -   we cannot instantiate an object with an interface type
-    -   Hence, we always upcast an object of its implementation class and assign it to an interface variable.
-        -   We upcast an object if the class implements the interface
-        -   an interface is a superclass (of unrelated objects)
-
--   
-
-    -   See `InterfaceSort.java`
+:::{#tip-interface .callout-tip collapse="true"}
+## Example to Use an Interface
+- We cannot instantiate an object with an interface type
+- Hence, we always upcast an object of its implementation class and assign it to an interface variable.
+  - We upcast an object if the class implements the interface
+  - an interface is a superclass (of unrelated objects)
+  -  See [`InterfaceSort.java`](02-interface/InterfaceSort.java)
+:::
 
 -   The `Comparable` interface of the Java library
-
     -   It is the superclass of all objects that can be compared.
-
     ``` java
     public interface Comparable<E> {
       public int compareTo(E o);
     }
     ```
-
     -   The syntax `<T>` is called a generic type in Java.
-    -   Example to use the Comparable Interface
 
-    ``` java
-    public class Circle extends GeometricObject implements Comparable<Circle> {
-      private double radius;
-      // other method omitted
-      /**
-       * Arrays.sort() will only work with Comparable objects
-       * The Circle class must implement the Comparable interface
-       * in order to use Array.sort()
-       */
-      public int compareTo(Circle other) {
-          double diff = this.getArea() - other.getArea();
-          return (int) Math.signum(diff);
-      }
+:::{#tip-comparable-interface .callout-tip collapse="true"}
+## Example to Use the Comparable Interface
+``` java
+public class Circle extends GeometricObject implements Comparable<Circle> {
+    private double radius;
+    // other method omitted
+    /**
+     * Arrays.sort() will only work with Comparable objects
+     * The Circle class must implement the Comparable interface
+     * in order to use Array.sort()
+     */
+    public int compareTo(Circle other) {
+        double diff = this.getArea() - other.getArea();
+        return (int) Math.signum(diff);
     }
-    ```
+}
+```
+:::
 
 -   A class can inherit from only one class, but a class can implement multiple interfaces.
-
     -   Each interface defines a set of capabilities or "roles".
     -   Implementing an interface allows a class to fulfill the role defined by an interface.
     -   Therefore: a class in java can fulfill multiple roles.
 
 -   `instanceof`
-
     -   The `instanceof` operator tells us whether a variable is a member of a class or an interface (i.e., an interface is similar to a class in Java)
-
 -   Methods with a `default` implementation in an interface
 
     ``` java
@@ -159,11 +153,9 @@ public class myClass implements myInterface {
       }
     }
     ```
-
     -   Usage: when the implementing class does not override a method with a default implementation, the Java compiler will use the default implementation as the overriding method.
-
 -   Unlike classes that can extend only 1 class, an interface can extend one or more interfaces
-
+  
 ``` java
 public interface Insurable extends Sellable, Transportable {
     public int insuredValue();
