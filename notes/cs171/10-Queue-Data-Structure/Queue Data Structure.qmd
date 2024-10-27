@@ -13,7 +13,13 @@ draft: false
 
 -   Recall: there are two commonly used data structures in computer science:
     -   Stack (LIFO)
-    -   Queue (FIFO) \> **Queue data structure**: A queue is a data structure that organizes the stored data in a First In First Out (FIFO) manner.
+    -   Queue (FIFO) 
+
+:::{#nte-queue .callout-note}
+## **Queue data structure**
+A queue is a data structure that organizes the stored data in a First In First Out (FIFO) manner.
+:::
+
 -   To achieve the FIFO behavior, the queue only provide the following two methods to access the data stored in a queue:
     -   `enqueue(x)`: add `x` to the tail/back of the queue
     -   `dequeue()`: remove the item at the head/front of the queue and return it.
@@ -47,7 +53,13 @@ public interface MyQueueInterface<E> {
     -   `tail` = location of the open spot at the tail (last position) of the queue
 -   The `enqueue(x)` method will append the element `x` at the tail of the queue.
 -   However, elements dequeued from the front of the array will cause some spaces unused. To solve it, we need to copy the elements to the front of the array, which requires many copy operations.
--   Then, to avoid frequently copying arrays to save spaces, we will use a circular array instead. \> **Circular Buffer**: also known as circular array or ring buffer, is a data structure that uses an array as if it were connected end-to-end.
+-   Then, to avoid frequently copying arrays to save spaces, we will use a circular array instead. 
+
+:::{#nte-circular-buffer .callout-note}
+## **Circular Buffer**
+Also known as circular array or ring buffer, is a data structure that uses an array as if it were connected end-to-end.
+:::
+
 -   The circular buffer data structure consists of an array with 2 pointers or indices:
     -   `read` pointer = the index of the read position in the array
     -   `write` pointer = the index of the write position in the array
@@ -155,11 +167,42 @@ public class IntegerQueue implements MyQueueInterface<Integer> {
 
 ## Other Kinds of Queues - Double Ended (DE) Queue
 
-> **Double Ended Queue**: A double ended queue is a data structure where we can insert or delete elements from either end - The operations on a `Deque` are: - `addFirst(x)`: insert `x` at the front of the `Deque` - `addLast(x)`: insert `x` at the tail of the `Deque` - `removeFirst(x)`: remove the element at the front of the `Deque` and return it - `removeLast(x)`: remove the element at the tail of the `Deque` and return it - A Double Ended Queue can work/operate like a stack. It can also work/operate like a queue.
+:::{#nte-deque .callout-note}
+## **Double Ended Queue**
+A double ended queue is a data structure where we can insert or delete elements from either end 
+
+- The operations on a `Deque` are: 
+  - `addFirst(x)`: insert `x` at the front of the `Deque` 
+  - `addLast(x)`: insert `x` at the tail of the `Deque` 
+  - `removeFirst(x)`: remove the element at the front of the `Deque` and return it 
+  - `removeLast(x)`: remove the element at the tail of the `Deque` and return it - 
+- A Double Ended Queue can work/operate like a stack. It can also work/operate like a queue.
+:::
 
 ## Other Kinds of Queues - Priority Queue
 
-> **Priority Queue**: A priority queue is a data structure where - The stored data items can be ranked by some field `rank` in the data - The `dequeue()` operation will always remove the item in the priority queue that has the highest value in the `rank` field. - The priority queue is important in time cricical applications: - Select the next job to run (pick the most urgent one) - Select the next patient to treat, etc. - A native implementation of the priority queue: - Use a fixed size array - `enqueue(x)` must make sure the array is sorted all the time (from large to small) - `dequeue(x)` removes the first element in the array - Another naive implementation of the priority queue: - Use a fixed size array - `enqueue(x)` insert the element at the end - `dequeue(x)` search the array for the largest element and remove it - An efficient implementation of the priority queue: - The heat data structure - A heap is a complete binary tree data structure where the largest value is always stored in the root of the tree.
+:::{#nte-priority-queue .callout-note}
+## **Priority Queue**
+A priority queue is a data structure where 
+
+- The stored data items can be ranked by some field `rank` in the data 
+- The `dequeue()` operation will always remove the item in the priority queue that has the highest value in the `rank` field. 
+:::
+
+- The priority queue is important in time cricical applications:
+  - Select the next job to run (pick the most urgent one) 
+  - Select the next patient to treat, etc. 
+- A native implementation of the priority queue: 
+  - Use a fixed size array 
+  - `enqueue(x)` must make sure the array is sorted all the time (from large to small)
+  - `dequeue(x)` removes the first element in the array 
+- Another naive implementation of the priority queue: 
+  - Use a fixed size array 
+  - `enqueue(x)` insert the element at the end 
+  - `dequeue(x)` search the array for the largest element and remove it 
+- An efficient implementation of the priority queue: 
+  - The heat data structure 
+  - A heap is a complete binary tree data structure where the largest value is always stored in the root of the tree.
 
 ## Use a `Queue` in Java's Library
 

@@ -67,6 +67,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -105,6 +106,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
 
 <link rel="stylesheet" href="../../../styles.css">
@@ -132,7 +136,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../cv.html"> 
+    <a class="nav-link" href="../../../cv/cv.pdf"> 
 <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item">
@@ -145,12 +149,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../../blogs.html"> 
-<span class="menu-text">My Blogs</span></a>
+<span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -171,7 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#other-kinds-of-queues---priority-queue" id="toc-other-kinds-of-queues---priority-queue" class="nav-link" data-scroll-target="#other-kinds-of-queues---priority-queue">Other Kinds of Queues - Priority Queue</a></li>
   <li><a href="#use-a-queue-in-javas-library" id="toc-use-a-queue-in-javas-library" class="nav-link" data-scroll-target="#use-a-queue-in-javas-library">Use a <code>Queue</code> in Java’s Library</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs171/10-Queue-Data-Structure/Queue Data Structure.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs171/10-Queue-Data-Structure/Queue Data Structure.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
@@ -224,8 +233,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Recall: there are two commonly used data structures in computer science:
 <ul>
 <li>Stack (LIFO)</li>
-<li>Queue (FIFO) &gt; <strong>Queue data structure</strong>: A queue is a data structure that organizes the stored data in a First In First Out (FIFO) manner.</li>
+<li>Queue (FIFO)</li>
 </ul></li>
+</ul>
+<div id="nte-queue" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;1: <strong>Queue data structure</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A queue is a data structure that organizes the stored data in a First In First Out (FIFO) manner.</p>
+</div>
+</div>
+<ul>
 <li>To achieve the FIFO behavior, the queue only provide the following two methods to access the data stored in a queue:
 <ul>
 <li><code>enqueue(x)</code>: add <code>x</code> to the tail/back of the queue</li>
@@ -269,7 +293,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 <li>The <code>enqueue(x)</code> method will append the element <code>x</code> at the tail of the queue.</li>
 <li>However, elements dequeued from the front of the array will cause some spaces unused. To solve it, we need to copy the elements to the front of the array, which requires many copy operations.</li>
-<li>Then, to avoid frequently copying arrays to save spaces, we will use a circular array instead. &gt; <strong>Circular Buffer</strong>: also known as circular array or ring buffer, is a data structure that uses an array as if it were connected end-to-end.</li>
+<li>Then, to avoid frequently copying arrays to save spaces, we will use a circular array instead.</li>
+</ul>
+<div id="nte-circular-buffer" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;2: <strong>Circular Buffer</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Also known as circular array or ring buffer, is a data structure that uses an array as if it were connected end-to-end.</p>
+</div>
+</div>
+<ul>
 <li>The circular buffer data structure consists of an array with 2 pointers or indices:
 <ul>
 <li><code>read</code> pointer = the index of the read position in the array</li>
@@ -373,15 +412,73 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="other-kinds-of-queues---double-ended-de-queue" class="level2">
 <h2 class="anchored" data-anchor-id="other-kinds-of-queues---double-ended-de-queue">Other Kinds of Queues - Double Ended (DE) Queue</h2>
-<blockquote class="blockquote">
-<p><strong>Double Ended Queue</strong>: A double ended queue is a data structure where we can insert or delete elements from either end - The operations on a <code>Deque</code> are: - <code>addFirst(x)</code>: insert <code>x</code> at the front of the <code>Deque</code> - <code>addLast(x)</code>: insert <code>x</code> at the tail of the <code>Deque</code> - <code>removeFirst(x)</code>: remove the element at the front of the <code>Deque</code> and return it - <code>removeLast(x)</code>: remove the element at the tail of the <code>Deque</code> and return it - A Double Ended Queue can work/operate like a stack. It can also work/operate like a queue.</p>
-</blockquote>
+<div id="nte-deque" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;3: <strong>Double Ended Queue</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A double ended queue is a data structure where we can insert or delete elements from either end</p>
+<ul>
+<li>The operations on a <code>Deque</code> are:
+<ul>
+<li><code>addFirst(x)</code>: insert <code>x</code> at the front of the <code>Deque</code></li>
+<li><code>addLast(x)</code>: insert <code>x</code> at the tail of the <code>Deque</code></li>
+<li><code>removeFirst(x)</code>: remove the element at the front of the <code>Deque</code> and return it</li>
+<li><code>removeLast(x)</code>: remove the element at the tail of the <code>Deque</code> and return it -</li>
+</ul></li>
+<li>A Double Ended Queue can work/operate like a stack. It can also work/operate like a queue.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="other-kinds-of-queues---priority-queue" class="level2">
 <h2 class="anchored" data-anchor-id="other-kinds-of-queues---priority-queue">Other Kinds of Queues - Priority Queue</h2>
-<blockquote class="blockquote">
-<p><strong>Priority Queue</strong>: A priority queue is a data structure where - The stored data items can be ranked by some field <code>rank</code> in the data - The <code>dequeue()</code> operation will always remove the item in the priority queue that has the highest value in the <code>rank</code> field. - The priority queue is important in time cricical applications: - Select the next job to run (pick the most urgent one) - Select the next patient to treat, etc. - A native implementation of the priority queue: - Use a fixed size array - <code>enqueue(x)</code> must make sure the array is sorted all the time (from large to small) - <code>dequeue(x)</code> removes the first element in the array - Another naive implementation of the priority queue: - Use a fixed size array - <code>enqueue(x)</code> insert the element at the end - <code>dequeue(x)</code> search the array for the largest element and remove it - An efficient implementation of the priority queue: - The heat data structure - A heap is a complete binary tree data structure where the largest value is always stored in the root of the tree.</p>
-</blockquote>
+<div id="nte-priority-queue" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4: <strong>Priority Queue</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A priority queue is a data structure where</p>
+<ul>
+<li>The stored data items can be ranked by some field <code>rank</code> in the data</li>
+<li>The <code>dequeue()</code> operation will always remove the item in the priority queue that has the highest value in the <code>rank</code> field.</li>
+</ul>
+</div>
+</div>
+<ul>
+<li>The priority queue is important in time cricical applications:
+<ul>
+<li>Select the next job to run (pick the most urgent one)</li>
+<li>Select the next patient to treat, etc.</li>
+</ul></li>
+<li>A native implementation of the priority queue:
+<ul>
+<li>Use a fixed size array</li>
+<li><code>enqueue(x)</code> must make sure the array is sorted all the time (from large to small)</li>
+<li><code>dequeue(x)</code> removes the first element in the array</li>
+</ul></li>
+<li>Another naive implementation of the priority queue:
+<ul>
+<li>Use a fixed size array</li>
+<li><code>enqueue(x)</code> insert the element at the end</li>
+<li><code>dequeue(x)</code> search the array for the largest element and remove it</li>
+</ul></li>
+<li>An efficient implementation of the priority queue:
+<ul>
+<li>The heat data structure</li>
+<li>A heap is a complete binary tree data structure where the largest value is always stored in the root of the tree.</li>
+</ul></li>
+</ul>
 </section>
 <section id="use-a-queue-in-javas-library" class="level2">
 <h2 class="anchored" data-anchor-id="use-a-queue-in-javas-library">Use a <code>Queue</code> in Java’s Library</h2>
@@ -414,7 +511,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </section>
 
-</main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -947,6 +1044,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2024, Jiuru Lyu</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs171/10-Queue-Data-Structure/Queue Data Structure.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs171/10-Queue-Data-Structure/Queue Data Structure.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jiuru-lyu/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JrLyu">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="mailto:jiuru.lyu@emory.edu">
+      <i class="bi bi-envelope" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 

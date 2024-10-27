@@ -9,204 +9,163 @@ categories: [Coding, Java, Algorithms, Complexity Analysis]
 draft: false
 ---
 
-\documentclass[12pt, a4paper]{article}
 
-\usepackage[utf8]{inputenc}
-\usepackage[framemethod=TikZ]{mdframed}
-\usepackage{mathtools, amssymb, amsmath, cleveref, geometry, tcolorbox, graphicx, float, subfigure, arydshln, setspace, framed, pifont, physics, ntheorem, utopia}
-%%% for coding %%%
-\usepackage{listings}
-\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
 
-\geometry{a4paper, left=1.2cm, right=1.2cm, bottom=1.5cm, top=1.2cm}
+## Intro to Algorithm Analysis
+- We want to know how can we measure the "goodness" of a program/algorithm?
+- We have some ways to measure:
+  - Running time (the shorter, the better)
+  -  Memory utilization (the less the better)
+  -  Amount of code (?)
+  -  Etc.
+- The most commonly used performance measure is the **running time**.
+- To measure running time, we can use a stop watch (i.e., use real time as measure). However, there are some problems associated: 
+  - The same program can have different running time on different computers
+  - Different inputs can result in different running time - hard to find their relationship
+- So, we need to rely on an more objective measure: count the number of instructions executed by a program for a given input size. 
+- However, this measure is not practical. In practice, we will count the number of "primitive operations" executed by a program for a given input size. 
+- Algorithms make repeated steps towards the solution. The **primitive operation** is a step in the algorithm. 
 
-\definecolor{grey}{RGB}{177, 179, 179}
-\definecolor{comment}{RGB}{96, 108, 120}
-\definecolor{keyword}{RGB}{148, 57, 149}
-\definecolor{string}{RGB}{180, 47, 36}
+```java
+for (int i = 0; i < N; i++) {
+    S1;
+    S2;
+    ...
+    SN
+}
+```
+The primitive operation of this algorithm consists of the statement`S1; S2; ...; SN`. 
 
-%%% for coding %%%
-\lstset{language = java, basicstyle = \ttfamily\small,commentstyle = \rmfamily\color{comment}\textit, deletekeywords = {...}, escapeinside = {\%*}{*)}, frame = single, framesep = 0.5em, keywordstyle = \color{keyword}\textbf, morekeywords = {System, out}, emph = {self}, emphstyle=\bfseries\color{red}, numbers = left, numbersep = 1.5em, numberstyle = \ttfamily\small\color{grey},  rulecolor = \color{black}, showstringspaces = false, stringstyle = \ttfamily\color{string}, tabsize = 4, columns = flexible}
+- Principles of Algorithm Analysis
+  - Algorithm analysis consists of
+    - Determine frequency (=count) of primitive operations
+    - Characterize the frequency as a function of the input size
+  - The algorithm analysis must
+    - Take into account all possible inputs (good ones and bad ones)
+    - Be independent of hardware/software environment
+    - Be independent from the programming language
+    - Give a good estimate that is proportional to the actual running time of the algorihtm
+- Good inputs, Bad inputs, and Average cases
+  - Input data can affect the running time of algorithms
+  -  The best case are not studied because we cannot count on luck.
+  -  The worst case gives us an upper bound
+     - The worst case analysis provides an upper bound on the running time of an algorithm.
+     - The analysis is easier to do compare to average case analysis.
+  - The average case is what we would expect.
+    - Take the average running time over all possible inputs of the same size
+    - The analysis depends on input distribution
+    - The analysis is harder to do because it uses probability techniques. 
+- Techniques used in Algorithm Analysis
+  -  There are two main techniques used in Algorithm Analysis: 
+     -   Loop analysis
+     -   Recurrence relations
+  - A program spends the most amount of time in loops. One of the technique used in algorithm analysis is loop analysis.
+  - Some algorithms are recursive. The running time complexity of recursive algorithms are often expressions as recurrence relations. Another technique is solving recurrence relations
 
-\newcounter{index}
-\setcounter{index}{0}
-\newenvironment*{df}[1]{\par\noindent\textbf{Definition \stepcounter{index}\theindex\ (#1).}}{\par}
+:::{#tip-example-1 .callout-tip collapse="true"}
+## Recurrence Relation
+$$ C(n)=2\times C(n/2)+1 $$
+:::
 
-\newenvironment*{eg}{\par\begin{tcolorbox}\noindent\textbf{Example}\quad}{\end{tcolorbox}\par}
+### Intro and the Big-Oh Notation
 
-\newenvironment*{thm}[1]{\begin{tcolorbox}\par\noindent\textbf{Theorem \stepcounter{index}\theindex\ #1} \par}{\par\end{tcolorbox}}
+- Consider the following program fragment, how many times is the loop body executed? 
+```java
+double sum = 0
+for (int i = 0; i < n; i++) {
+    sum += array[i];
+}
+```
 
-\newenvironment*{cor}[1]{\par\noindent\textbf{Corollary \thesubsection.\stepcounter{index}\theindex\ #1}}{\par}
-\newenvironment*{lem}[1]{\par\noindent\textbf{Lemma \thesubsection.\stepcounter{index}\theindex\ #1}}{\par}
-\newenvironment*{ax}[1]{\par\noindent\textbf{Axiom \thesubsection.\stepcounter{index}\theindex\ #1}}{\par}
-\newenvironment*{prop}[1]{\par\noindent\textbf{Proposition \thesubsection.\stepcounter{index}\theindex\ #1}}{\par}
-\newenvironment*{conj}[1]{\par\noindent\textbf{Conjecture \thesubsection.\stepcounter{index}\theindex\ #1}}{\par}
-\newenvironment*{nota}{\par\noindent\textbf{Notation \thesubsection.\stepcounter{index}\theindex.}}{\par}
+:::{#tip-solution-1 .callout-tip collapse="true"}
+## Solution 1
+$$n$$
+:::
 
-\newcounter{nprf}[subsection]
-\setcounter{nprf}{0}
-\newenvironment*{prf}{\par\indent\textbf{\textit{Proof \stepcounter{nprf}\thenprf.\quad}}}{\hfill$\blacksquare$\par}
-\newenvironment*{dis}{\par\indent\textbf{\textit{Disproof \stepcounter{nprf}\thenprf.\quad}}}{\hfill$\blacksquare$\par}
-\newenvironment*{sol}{\par \indent\textbf{\textit{Solution \stepcounter{nprf}\thenprf.\quad}}}{\hfill{$\square$}\par}
+```java
+double sum = 0
+for (int i = 0; i < n; i = i + 2) {
+    sum += array[i];
+}
+```
+:::{#tip-solution-2 .callout-tip collapse="true"}
+## Solution 2
+$$\dfrac{n}{2}$$
+:::
 
-\newtheorem*{hint}{Hint.}
-\newtheorem*{rmk}{Remark.}
-\newtheorem*{ext}{Extension.}
-
-\linespread{1.15}
-
-\title{\textbf{This is a title}}
-\author{Jiuru Lyu}
-\date{\today}
-
-\def\Z{{\mathbb{Z}}}
-\def\R{{\mathbb{R}}}
-\def\C{{\mathbb{C}}}
-\def\Q{{\mathbb{Q}}}
-\def\E{{\mathbb{E}}}
-\def\d{{\mathrm{d}}}
-\def\epsilon{\varepsilon}
-\def\emptyset{\varnothing}
-\def\O{\mathcal{O}}
-\def\st{\emph{ s.t. }}
-
-\begin{document}
-\section*{Running Time/Complexity Analysis of Algorithms}
-\subsection*{Intro to Algorithm Analysis}
-\begin{itemize}
-    \item We want to know how can we measure the ``goodness'' of a program/algorithm?
-    \item We have some ways to measure:
-    \begin{itemize}
-        \item Running time (the shorter, the better)
-        \item Memory utilization (the less the better)
-        \item Amount of code (?)
-        \item Etc.
-    \end{itemize}
-    \item The most commonly used performance measure is the \textbf{running time}.
-    \item To measure running time, we can use a stop watch (i.e., use real time as measure). However, there are some problems associated: 
-    \begin{itemize}
-        \item The same program can have different running time on different computers
-        \item Different inputs can result in different running time - hard to find their relationship
-    \end{itemize}
-    \item So, we need to rely on an more objective measure: count the number of instructions executed by a program for a given input size. 
-    \item However, this measure is not practical. In practice, we will count the number of ``primitive operations'' executed by a program for a given input size. 
-    \item Algorithms make repeated steps towards the solution. The \textbf{primitive operation} is a step in the algorithm. 
-\begin{lstlisting}
-    for (int i = 0; i < N; i++) {
-        S1;
-        S2;
-        ...
-        SN
+```java
+double sum = 0
+for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; ++) { 
+        sum += array[i] * array[j]; 
     }
-\end{lstlisting}
-The primitive operation of this algorithm consists of the statement \texttt{S1; S2; ...; SN}. 
-    \item Principles of Algorithm Analysis
-    \begin{itemize}
-        \item Algorithm analysis consists of
-        \begin{itemize}
-            \item Determine frequency (=count) of primitive operations
-            \item Characterize the frequency as a function of the input size
-        \end{itemize}
-        \item The algorithm analysis must
-        \begin{itemize}
-            \item Take into account all possible inputs (good ones and bad ones)
-            \item Be independent of hardware/software environment
-            \item Be independent from the programming language
-            \item Give a good estimate that is proportional to the actual running time of the algorihtm
-        \end{itemize}
-    \end{itemize}
-    \item Good inputs, Bad inputs, and Average cases
-    \begin{itemize}
-        \item Input data can affect the running time of algorithms
-        \item The best case are not studied because we cannot count on luck.
-        \item The worst case gives us an upper bound
-        \begin{itemize}
-            \item The worst case analysis provides an upper bound on the running time of an algorithm.
-            \item The analysis is easier to do compare to average case analysis.
-        \end{itemize}
-        \item The average case is what we would expect.
-        \begin{itemize}
-            \item Take the average running time over all possible inputs of the same size
-            \item The analysis depends on input distribution
-            \item The analysis is harder to do because it uses probability techniques. 
-        \end{itemize} 
-    \end{itemize}
-    \item Techniques used in Algorithm Analysis
-    \begin{itemize}
-        \item There are two main techniques used in Algorithm Analysis: 
-        \begin{itemize}
-            \item Loop analysis
-            \item Recurrence relations
-        \end{itemize}
-        \item A program spends the most amount of time in loops. One of the technique used in algorithm analysis is loop analysis.
-        \item Some algorithms are recursive. The running time complexity of recursive algorithms are often expressions as recurrence relations. Another technique is solving recurrence relations. \bgroup \par\begin{tcolorbox}\noindent\textbf{Example}\quad\[C(n)=2\times C(n/2)+1\]\end{tcolorbox}\par\egroup   
+}
+```
+:::{#tip-solution-3 .callout-tip collapse="true"}
+## Solution 3
+$$n\times n=n^2$$
+:::
 
-    \end{itemize}
-\end{itemize}
-\subsection*{Intro and the Big-Oh Notation}
-\begin{itemize}
-\item Consider the following program fragment, how many times is the loop body executed? 
-\begin{lstlisting}
-    double sum = 0
-    for (int i = 0; i < n; i++) {
-        sum += array[i];
-    }
-\end{lstlisting}
-\bgroup \par \indent\textbf{\textit{Solution \stepcounter{nprf}\thenprf.\quad}}$n$\hfill{$\square$}\par\egroup 
-\begin{lstlisting}
-    double sum = 0
-    for (int i = 0; i < n; i = i + 2) {
-        sum += array[i];
-    }
-\end{lstlisting}
-\bgroup \par \indent\textbf{\textit{Solution \stepcounter{nprf}\thenprf.\quad}}$\frac{n}{2}$\hfill{$\square$}\par\egroup 
-\begin{lstlisting}
-    double sum = 0
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; ++) { 
-            sum += array[i] * array[j]; 
-        }
-    }
-\end{lstlisting}
-\bgroup \par \indent\textbf{\textit{Solution \stepcounter{nprf}\thenprf.\quad}}$n\times n=n^2$\hfill{$\square$}\par\egroup 
-\item The running time in terms of the input size ($n$) can be a general mathematical function. However, we are interested in the \textbf{order} of the growth function (but not the exact function). 
-\item \bgroup \par\noindent\textbf{Definition \stepcounter{index}\theindex\ (Approximate Definition of Order, Similar/$\sim$).}
-        Given 2 functions $f(x)$ and $g(x)$, we say $f(x)\sim g(x)$ if $\frac{f(x)}{g(x)}=1$ when $n\to\infty$. \par\egroup 
-\begin{rmk}In running time analysis, we can ignore the less significant terms.\end{rmk}
-\bgroup \par\noindent\textbf{Definition \stepcounter{index}\theindex\ (Precise Definition of Order, $\mathcal{O}$ notation).}
-Given two functions $f(n)$ and $g(n)$. The function $f(n)$ is $\mathcal{O}(g(n))$ (order of $g(n)$) if $\exists\ c,n_0\emph{ s.t. }f(n)\leq cg(n)\forall n\geq n_0$\par\egroup  \begin{rmk}A function $f(n)$ is Big-Oh of $g(n)$ if $f(n)\leq cg(n)$ for large values of $n$. That is, $f(n)$ is dominant by some multiple of $g(n)$ when $n$ is large. \end{rmk}
-\bgroup \par\begin{tcolorbox}\noindent\textbf{Example}\quad
-    $f(n)=2n+10$ is $\mathcal{O}(n)$. \bgroup \par\indent\textbf{\textit{Proof \stepcounter{nprf}\thenprf.\quad}}For $n>10$, we have $2n+10<3n$. Therefore, we found $c=3$ and $n_0=10$ for which $f(n)\leq cg(n)$ when $n\geq n_0$.\hfill$\blacksquare$\par\egroup 
-    However, we know that $f(n)=n^2$ is not $\mathcal{O}(n)$. Picking $n=c+1$, the condition $n\leq c$ will never be satisfied. 
-\end{tcolorbox}\par\egroup 
-\item Big-Oh and Growth rate
-\begin{itemize}
-    \item The Big-Oh notation gives an upper bound on the growth rate of a function $f(n)$ that represents the run time complexity of some algorithm
-    \item If $f(n)$ is $\mathcal{O}(g(n))$, then the growth rate of $f(n)$ is no more than the growth rate of $g(n)$.
-    \item In algorithm analysis, we use $\mathcal{O}(g(n))$ to rank (=categorize) functions by their growth rate. 
-    \bgroup \par\begin{tcolorbox}\noindent\textbf{Example}\quad
-        $2n+4$, $7n+9$, $10000n+999$ are all $\mathcal{O}(n)$, so in algorithm analysis we consider all these functions grow at the same rate.   
-    \end{tcolorbox}\par\egroup 
-\end{itemize}
-\item Common Running Times: 
-\begin{center}\begin{tabular}{c|c}
-    $\mathcal{O}(1)$ & Constant Time\\
-    $\mathcal{O}(\log(n))$ & Logarithmic\\ 
-    $\mathcal{O}(n)$ & Linear\\
-    $\mathcal{O}(n\log(n))$ & Log Linear\\
-    $\mathcal{O}(n^2)$ & Quadratic
-\end{tabular}\end{center}
-\end{itemize}
+- The running time in terms of the input size ($n$) can be a general mathematical function. However, we are interested in the **order** of the growth function (but not the exact function). 
 
-\subsection*{Useful Formula in Algorithm Analysis}
-\begin{itemize}
-    \item Triangular Sums: \[1+2+3+4+\cdots+N=\dfrac{N(N+1)}{2}\approx\dfrac{N^2}{2}.\]
-    \item Geometric Sums: \[1+2+4+8+\cdots+N(=2^n)=2N-1\approx 2N\]\[1+\dfrac{1}{2}+\dfrac{1}{4}+\cdots+\dfrac{1}{N}(=\dfrac{1}{2^n})=2-\dfrac{1}{N}\approx2\]
-    \item Harmonic Sum: \[1+\dfrac{1}{2}+\dfrac{1}{3}+\cdots+\dfrac{1}{N}\approx\ln(N)\]
-    \item Sterling's Approximation: \[\log(1)+\log(2)+\log(3)+\cdots+\log(N)=\log(N!)\approx N\log(N)\]
-\end{itemize}
+:::{#nte-approx-def .callout-note}
+## Approximate Definition of Order, Similar/$\sim$
+Given 2 functions $f(x)$ and $g(x)$, we say $f(x)\sim g(x)$ if $\dfrac{f(x)}{g(x)}=1$ when $n\to\infty$.
+::: 
 
-\subsection*{Loop Analysis}
+:::{#warning-approx-def .callout-warning}
+In running time analysis, we can ignore the less significant terms.
+:::
+
+:::{#nte-def-order .callout-note}
+## Precise Definition of Order, $\mathcal{O}$ notation
+Given two functions $f(n)$ and $g(n)$. The function $f(n)$ is $\mathcal{O}(g(n))$ (order of $g(n)$) if $\exists\ c,n_0\textit{ s.t. }f(n)\leq cg(n)\forall n\geq n_0$
+:::
+
+:::{#warning-approx-def .callout-warning}
+A function $f(n)$ is Big-Oh of $g(n)$ if $f(n)\leq cg(n)$ for large values of $n$. That is, $f(n)$ is dominant by some multiple of $g(n)$ when $n$ is large.
+:::
+
+:::{#tip-example-2 .callout-tip collapse="true"}
+## Examples of Big-Oh Notation
+$f(n)=2n+10$ is $\mathcal{O}(n)$.
+
+***Proof.*** 
+For $n>10$, we have $2n+10<3n$. 
+Therefore, we found $c=3$ and $n_0=10$ for which $f(n)\leq cg(n)$ when $n\geq n_0$. 
+<p align="right">$\quad\text{Q.E.D.}\ \blacksquare$</p>
+
+- However, we know that $f(n)=n^2$ is not $\mathcal{O}(n)$. Picking $n=c+1$, the condition $n\leq c$ will never be satisfied. 
+:::
+
+- Big-Oh and Growth rate
+  -  The Big-Oh notation gives an upper bound on the growth rate of a function $f(n)$ that represents the run time complexity of some algorithm
+  -  If $f(n)$ is $\mathcal{O}(g(n))$, then the growth rate of $f(n)$ is no more than the growth rate of $g(n)$.
+  -  In algorithm analysis, we use $\mathcal{O}(g(n))$ to rank (=categorize) functions by their growth rate. 
+
+:::{#tip-example-3 .callout-tip collapse="true"}
+## Examples of Growth Rate
+$2n+4$, $7n+9$, $10000n+999$ are all $\mathcal{O}(n)$, so in algorithm analysis we consider all these functions grow at the same rate.   
+:::
+
+- Common Running Times: 
+
+    | Running Time | Name |
+    |:---:|:---:|
+    | $\mathcal{O}(1)$ | Constant Time |
+    | $\mathcal{O}(\log(n))$ | Logarithmic |
+    | $\mathcal{O}(n)$ | Linear |
+    | $\mathcal{O}(n\log(n))$ | Log Linear |
+    | $\mathcal{O}(n^2)$ | Quadratic |
+
+### Useful Formula in Algorithm Analysis
+- Triangular Sums: $$1+2+3+4+\cdots+N=\dfrac{N(N+1)}{2}\approx\dfrac{N^2}{2}.$$
+- Geometric Sums: $$1+2+4+8+\cdots+N(=2^n)=2N-1\approx 2N$$
+$$1+\dfrac{1}{2}+\dfrac{1}{4}+\cdots+\dfrac{1}{N}(=\dfrac{1}{2^n})=2-\dfrac{1}{N}\approx2$$
+- Harmonic Sum: $$1+\dfrac{1}{2}+\dfrac{1}{3}+\cdots+\dfrac{1}{N}\approx\ln(N)$$
+- Sterling's Approximation: $$\log(1)+\log(2)+\log(3)+\cdots+\log(N)=\log(N!)\approx N\log(N)$$
+
+## Loop Analysis
 \begin{lstlisting}
     for (int i = 0; i < 10; i++) {
         doPrimitive();

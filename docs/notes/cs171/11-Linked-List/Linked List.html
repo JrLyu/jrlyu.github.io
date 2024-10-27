@@ -67,6 +67,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -105,6 +106,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
 
 <link rel="stylesheet" href="../../../styles.css">
@@ -132,7 +136,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../cv.html"> 
+    <a class="nav-link" href="../../../cv/cv.pdf"> 
 <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item">
@@ -145,12 +149,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../../blogs.html"> 
-<span class="menu-text">My Blogs</span></a>
+<span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -174,7 +183,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#implementing-queue-using-a-linked-list" id="toc-implementing-queue-using-a-linked-list" class="nav-link" data-scroll-target="#implementing-queue-using-a-linked-list">Implementing Queue Using a Linked List</a></li>
   <li><a href="#javas-linkedliste-class" id="toc-javas-linkedliste-class" class="nav-link" data-scroll-target="#javas-linkedliste-class">Java’s <code>LinkedList&lt;E&gt;</code> Class</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs171/11-Linked-List/Linked List.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs171/11-Linked-List/Linked List.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
@@ -223,9 +232,78 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<blockquote class="blockquote">
-<p><strong>Data Structure$</strong>: Variables that store information used by algorithms - Ideal data structure: - Fast insertion (when adding a new item to data structure) - Fast deletion (when removing an item from the data structure) - Fast lookup - Minimum memory usage - Unfortunately: there is no ideal data structure. - Two basic data structures: - Array - Linked List - Array: - Array is a series of variable that - are of the same data type and - are stored in consecutive memory locations - The memory used to store an array must be allocated up front - Strength: Fast access using an array index (because the memory address of <code>x[i]</code> can be computed easily). - Weakness of an array: cannot increase the array size - To increase the array, we must use memory cells that follows the last element of the array. - However, these memory cells may not be available (since they are used by another variable). - Weakness of an array: it takes a long time to insert a value in the middle of an array. - We have to shift many elements over. - The linked list data structure: - The linked list and array are complementary to each other. - Characteristics of a linked list: - Each list element is allocated individually (and then linked into the list) - Memory for all array elements are allocated up front - It’s easy to insert/delete elements from a linked list - It’s hard to insert/delete elements from an array - It is slow to look up elements in a linked list by its index - It is fast to look up elements in an array by its index - A linked list consists of a chain of list objects. A list object is often called a <strong>node</strong>. - Every node consists of two parts: - One of more data fields (contain the information stored in the linked list) - A link (reference variable) (contains the reference (=address) of the next node/list element). - The link in the last node is <code>null</code> (=end of the list). - A Java program will have a reference variable (commonly named as <code>head</code> or <code>first</code>) that contains the reference to the first node (=list element). - Consequently, only the data stored in the first node is immediately accessible. - Accessing the data stored in the other nodes will reply on the reference stored in the first node.</p>
-</blockquote>
+<div id="nte-linked-list" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;1: <strong>Data Structure</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Variables that store information used by algorithms</p>
+</div>
+</div>
+<ul>
+<li>Ideal data structure:
+<ul>
+<li>Fast insertion (when adding a new item to data structure)</li>
+<li>Fast deletion (when removing an item from the data structure)</li>
+<li>Fast lookup</li>
+<li>Minimum memory usage</li>
+</ul></li>
+<li>Unfortunately: there is no ideal data structure.</li>
+<li>Two basic data structures:
+<ul>
+<li>Array</li>
+<li>Linked List</li>
+</ul></li>
+<li>Array:
+<ul>
+<li>Array is a series of variable that
+<ul>
+<li>are of the same data type and</li>
+<li>are stored in consecutive memory locations</li>
+</ul></li>
+<li>The memory used to store an array must be allocated up front</li>
+<li>Strength: Fast access using an array index (because the memory address of <code>x[i]</code> can be computed easily).</li>
+</ul></li>
+<li>Weakness of an array: cannot increase the array size
+<ul>
+<li>To increase the array, we must use memory cells that follows the last element of the array.</li>
+<li>However, these memory cells may not be available (since they are used by another variable).</li>
+</ul></li>
+<li>Weakness of an array: it takes a long time to insert a value in the middle of an array.
+<ul>
+<li>We have to shift many elements over.</li>
+</ul></li>
+<li>The linked list data structure:
+<ul>
+<li>The linked list and array are complementary to each other.</li>
+<li>Characteristics of a linked list:
+<ul>
+<li>Each list element is allocated individually (and then linked into the list)</li>
+</ul></li>
+</ul></li>
+<li>Comparison of Arrays and Linked Lists:
+<ul>
+<li>It’s easy to insert/delete elements from a linked list</li>
+<li>It’s hard to insert/delete elements from an array</li>
+<li>It is slow to look up elements in a linked list by its index</li>
+<li>It is fast to look up elements in an array by its index</li>
+</ul></li>
+<li>A linked list consists of a chain of list objects. A list object is often called a <strong>node</strong>.</li>
+<li>Every node consists of two parts:
+<ul>
+<li>One of more data fields (contain the information stored in the linked list)</li>
+<li>A link (reference variable) (contains the reference (=address) of the next node/list element).</li>
+</ul></li>
+<li>The link in the last node is <code>null</code> (=end of the list).</li>
+<li>A Java program will have a reference variable (commonly named as <code>head</code> or <code>first</code>) that contains the reference to the first node (=list element).</li>
+<li>Consequently, only the data stored in the first node is immediately accessible.</li>
+<li>Accessing the data stored in the other nodes will reply on the reference stored in the first node.</li>
+</ul>
 <div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> <span class="bu">Node</span><span class="op">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> item<span class="op">;</span> <span class="co">// int data stored in the Node</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">Node</span> next<span class="op">;</span> <span class="co">// Link that reference to the next node</span></span>
@@ -336,15 +414,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// process data p.item in node p</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> p<span class="op">.</span><span class="fu">next</span><span class="op">;</span> <span class="co">// advances p to next node</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Example: Use the list traversal algorithm to print out all items in a list:</li>
-</ul>
+<div id="tip-list-traversal" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;1: Use the list traversal algorithm to print out all items in a list
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="sourceCode" id="cb4"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Node</span> current<span class="op">;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>current <span class="op">=</span> first<span class="op">;</span> <span class="co">// initialize current to the first node</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>p <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span>current<span class="op">.</span><span class="fu">item</span><span class="op">);</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    current <span class="op">=</span> current<span class="op">.</span><span class="fu">next</span><span class="op">;</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 <ul>
 <li>Enhancements of the list traversal algorithm: find a node that contains <code>X</code>.</li>
 </ul>
@@ -837,7 +927,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </section>
 
-</main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1370,6 +1460,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2024, Jiuru Lyu</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs171/11-Linked-List/Linked List.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs171/11-Linked-List/Linked List.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jiuru-lyu/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JrLyu">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="mailto:jiuru.lyu@emory.edu">
+      <i class="bi bi-envelope" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 

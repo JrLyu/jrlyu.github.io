@@ -11,7 +11,47 @@ draft: false
 
 ## Introduction
 
-> **Data Structure\$**: Variables that store information used by algorithms - Ideal data structure: - Fast insertion (when adding a new item to data structure) - Fast deletion (when removing an item from the data structure) - Fast lookup - Minimum memory usage - Unfortunately: there is no ideal data structure. - Two basic data structures: - Array - Linked List - Array: - Array is a series of variable that - are of the same data type and - are stored in consecutive memory locations - The memory used to store an array must be allocated up front - Strength: Fast access using an array index (because the memory address of `x[i]` can be computed easily). - Weakness of an array: cannot increase the array size - To increase the array, we must use memory cells that follows the last element of the array. - However, these memory cells may not be available (since they are used by another variable). - Weakness of an array: it takes a long time to insert a value in the middle of an array. - We have to shift many elements over. - The linked list data structure: - The linked list and array are complementary to each other. - Characteristics of a linked list: - Each list element is allocated individually (and then linked into the list) - Memory for all array elements are allocated up front - It's easy to insert/delete elements from a linked list - It's hard to insert/delete elements from an array - It is slow to look up elements in a linked list by its index - It is fast to look up elements in an array by its index - A linked list consists of a chain of list objects. A list object is often called a **node**. - Every node consists of two parts: - One of more data fields (contain the information stored in the linked list) - A link (reference variable) (contains the reference (=address) of the next node/list element). - The link in the last node is `null` (=end of the list). - A Java program will have a reference variable (commonly named as `head` or `first`) that contains the reference to the first node (=list element). - Consequently, only the data stored in the first node is immediately accessible. - Accessing the data stored in the other nodes will reply on the reference stored in the first node.
+:::{#nte-linked-list .callout-note}
+## **Data Structure**
+Variables that store information used by algorithms
+::: 
+- Ideal data structure: 
+  - Fast insertion (when adding a new item to data structure) 
+  - Fast deletion (when removing an item from the data structure) 
+  - Fast lookup
+  - Minimum memory usage 
+- Unfortunately: there is no ideal data structure. 
+- Two basic data structures: 
+  - Array
+  - Linked List 
+- Array: 
+  - Array is a series of variable that 
+    - are of the same data type and 
+    - are stored in consecutive memory locations 
+  - The memory used to store an array must be allocated up front 
+  - Strength: Fast access using an array index (because the memory address of `x[i]` can be computed easily). 
+- Weakness of an array: cannot increase the array size 
+  - To increase the array, we must use memory cells that follows the last element of the array. 
+  - However, these memory cells may not be available (since they are used by another variable). 
+- Weakness of an array: it takes a long time to insert a value in the middle of an array. 
+  - We have to shift many elements over. 
+- The linked list data structure: 
+  - The linked list and array are complementary to each other. 
+  - Characteristics of a linked list: 
+    - Each list element is allocated individually (and then linked into the list) 
+- Comparison of Arrays and Linked Lists:
+  - It's easy to insert/delete elements from a linked list 
+  - It's hard to insert/delete elements from an array
+  - It is slow to look up elements in a linked list by its index 
+  - It is fast to look up elements in an array by its index
+- A linked list consists of a chain of list objects. A list object is often called a **node**. 
+- Every node consists of two parts: 
+  - One of more data fields (contain the information stored in the linked list) 
+  - A link (reference variable) (contains the reference (=address) of the next node/list element). 
+- The link in the last node is `null` (=end of the list). 
+- A Java program will have a reference variable (commonly named as `head` or `first`) that contains the reference to the first node (=list element). 
+- Consequently, only the data stored in the first node is immediately accessible. 
+- Accessing the data stored in the other nodes will reply on the reference stored in the first node.
 
 ``` java
 public class Node{
@@ -87,7 +127,8 @@ while (p != null) {
 }
 ```
 
--   Example: Use the list traversal algorithm to print out all items in a list:
+:::{#tip-list-traversal .callout-tip collapse="true"}
+## Use the list traversal algorithm to print out all items in a list
 
 ``` java
 Node current;
@@ -97,6 +138,7 @@ while (p != null) {
     current = current.next;
 }
 ```
+:::
 
 -   Enhancements of the list traversal algorithm: find a node that contains `X`.
 

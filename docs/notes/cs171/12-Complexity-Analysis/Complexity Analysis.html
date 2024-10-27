@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2023-11-11">
 <meta name="description" content="Starting from this lecture, we will discuss some sorting algorithms and their complexity analysis. This lecture offers an overview of running time analysis.">
 
-<title>Jiuru Lyu – Lecture 11 Complexity Analysis</title>
+<title>Jiuru Lyu - Lecture 11 Complexity Analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,6 +23,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -33,6 +67,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -73,8 +108,37 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../../styles.css">
 </head>
@@ -101,7 +165,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../cv.html"> 
+    <a class="nav-link" href="../../../cv/cv.pdf"> 
 <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item">
@@ -114,12 +178,17 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../../blogs.html"> 
-<span class="menu-text">My Blogs</span></a>
+<span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -128,11 +197,22 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#intro-to-algorithm-analysis" id="toc-intro-to-algorithm-analysis" class="nav-link active" data-scroll-target="#intro-to-algorithm-analysis">Intro to Algorithm Analysis</a>
+  <ul class="collapse">
+  <li><a href="#intro-and-the-big-oh-notation" id="toc-intro-and-the-big-oh-notation" class="nav-link" data-scroll-target="#intro-and-the-big-oh-notation">Intro and the Big-Oh Notation</a></li>
+  <li><a href="#useful-formula-in-algorithm-analysis" id="toc-useful-formula-in-algorithm-analysis" class="nav-link" data-scroll-target="#useful-formula-in-algorithm-analysis">Useful Formula in Algorithm Analysis</a></li>
+  </ul></li>
+  <li><a href="#loop-analysis" id="toc-loop-analysis" class="nav-link" data-scroll-target="#loop-analysis">Loop Analysis</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs171/12-Complexity-Analysis/Complexity Analysis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs171/12-Complexity-Analysis/Complexity Analysis.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -152,7 +232,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 
 
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta column-page-left">
 
     <div>
     <div class="quarto-title-meta-heading">Author</div>
@@ -176,9 +256,314 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="intro-to-algorithm-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="intro-to-algorithm-analysis">Intro to Algorithm Analysis</h2>
+<ul>
+<li>We want to know how can we measure the “goodness” of a program/algorithm?</li>
+<li>We have some ways to measure:
+<ul>
+<li>Running time (the shorter, the better)</li>
+<li>Memory utilization (the less the better)</li>
+<li>Amount of code (?)</li>
+<li>Etc.</li>
+</ul></li>
+<li>The most commonly used performance measure is the <strong>running time</strong>.</li>
+<li>To measure running time, we can use a stop watch (i.e., use real time as measure). However, there are some problems associated:
+<ul>
+<li>The same program can have different running time on different computers</li>
+<li>Different inputs can result in different running time - hard to find their relationship</li>
+</ul></li>
+<li>So, we need to rely on an more objective measure: count the number of instructions executed by a program for a given input size.</li>
+<li>However, this measure is not practical. In practice, we will count the number of “primitive operations” executed by a program for a given input size.</li>
+<li>Algorithms make repeated steps towards the solution. The <strong>primitive operation</strong> is a step in the algorithm.</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    S1<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    S2<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">...</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    SN</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The primitive operation of this algorithm consists of the statement<code>S1; S2; ...; SN</code>.</p>
+<ul>
+<li>Principles of Algorithm Analysis
+<ul>
+<li>Algorithm analysis consists of
+<ul>
+<li>Determine frequency (=count) of primitive operations</li>
+<li>Characterize the frequency as a function of the input size</li>
+</ul></li>
+<li>The algorithm analysis must
+<ul>
+<li>Take into account all possible inputs (good ones and bad ones)</li>
+<li>Be independent of hardware/software environment</li>
+<li>Be independent from the programming language</li>
+<li>Give a good estimate that is proportional to the actual running time of the algorihtm</li>
+</ul></li>
+</ul></li>
+<li>Good inputs, Bad inputs, and Average cases
+<ul>
+<li>Input data can affect the running time of algorithms</li>
+<li>The best case are not studied because we cannot count on luck.</li>
+<li>The worst case gives us an upper bound
+<ul>
+<li>The worst case analysis provides an upper bound on the running time of an algorithm.</li>
+<li>The analysis is easier to do compare to average case analysis.</li>
+</ul></li>
+<li>The average case is what we would expect.
+<ul>
+<li>Take the average running time over all possible inputs of the same size</li>
+<li>The analysis depends on input distribution</li>
+<li>The analysis is harder to do because it uses probability techniques.</li>
+</ul></li>
+</ul></li>
+<li>Techniques used in Algorithm Analysis
+<ul>
+<li>There are two main techniques used in Algorithm Analysis:
+<ul>
+<li>Loop analysis</li>
+<li>Recurrence relations</li>
+</ul></li>
+<li>A program spends the most amount of time in loops. One of the technique used in algorithm analysis is loop analysis.</li>
+<li>Some algorithms are recursive. The running time complexity of recursive algorithms are often expressions as recurrence relations. Another technique is solving recurrence relations</li>
+</ul></li>
+</ul>
+<div id="tip-example-1" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;1: Recurrence Relation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[ C(n)=2\times C(n/2)+1 \]</span></p>
+</div>
+</div>
+</div>
+<section id="intro-and-the-big-oh-notation" class="level3">
+<h3 class="anchored" data-anchor-id="intro-and-the-big-oh-notation">Intro and the Big-Oh Notation</h3>
+<ul>
+<li>Consider the following program fragment, how many times is the loop body executed?</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> sum <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    sum <span class="op">+=</span> array<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tip-solution-1" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;2: Solution 1
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[n\]</span></p>
+</div>
+</div>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> sum <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i <span class="op">=</span> i <span class="op">+</span> <span class="dv">2</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    sum <span class="op">+=</span> array<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tip-solution-2" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;3: Solution 2
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[\dfrac{n}{2}\]</span></p>
+</div>
+</div>
+</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> sum <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> n<span class="op">;</span> <span class="op">++)</span> <span class="op">{</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        sum <span class="op">+=</span> array<span class="op">[</span>i<span class="op">]</span> <span class="op">*</span> array<span class="op">[</span>j<span class="op">];</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tip-solution-3" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;4: Solution 3
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[n\times n=n^2\]</span></p>
+</div>
+</div>
+</div>
+<ul>
+<li>The running time in terms of the input size (<span class="math inline">\(n\)</span>) can be a general mathematical function. However, we are interested in the <strong>order</strong> of the growth function (but not the exact function).</li>
+</ul>
+<div id="nte-approx-def" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;1: Approximate Definition of Order, Similar/<span class="math inline">\(\sim\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Given 2 functions <span class="math inline">\(f(x)\)</span> and <span class="math inline">\(g(x)\)</span>, we say <span class="math inline">\(f(x)\sim g(x)\)</span> if <span class="math inline">\(\dfrac{f(x)}{g(x)}=1\)</span> when <span class="math inline">\(n\to\infty\)</span>.</p>
+</div>
+</div>
+<div id="warning-approx-def" class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In running time analysis, we can ignore the less significant terms.</p>
+</div>
+</div>
+<div id="nte-def-order" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;2: Precise Definition of Order, <span class="math inline">\(\mathcal{O}\)</span> notation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Given two functions <span class="math inline">\(f(n)\)</span> and <span class="math inline">\(g(n)\)</span>. The function <span class="math inline">\(f(n)\)</span> is <span class="math inline">\(\mathcal{O}(g(n))\)</span> (order of <span class="math inline">\(g(n)\)</span>) if <span class="math inline">\(\exists\ c,n_0\textit{ s.t. }f(n)\leq cg(n)\forall n\geq n_0\)</span></p>
+</div>
+</div>
+<div id="warning-approx-def" class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A function <span class="math inline">\(f(n)\)</span> is Big-Oh of <span class="math inline">\(g(n)\)</span> if <span class="math inline">\(f(n)\leq cg(n)\)</span> for large values of <span class="math inline">\(n\)</span>. That is, <span class="math inline">\(f(n)\)</span> is dominant by some multiple of <span class="math inline">\(g(n)\)</span> when <span class="math inline">\(n\)</span> is large.</p>
+</div>
+</div>
+<div id="tip-example-2" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;5: Examples of Big-Oh Notation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(f(n)=2n+10\)</span> is <span class="math inline">\(\mathcal{O}(n)\)</span>.</p>
+<strong><em>Proof.</em></strong> For <span class="math inline">\(n&gt;10\)</span>, we have <span class="math inline">\(2n+10&lt;3n\)</span>. Therefore, we found <span class="math inline">\(c=3\)</span> and <span class="math inline">\(n_0=10\)</span> for which <span class="math inline">\(f(n)\leq cg(n)\)</span> when <span class="math inline">\(n\geq n_0\)</span>.
+<p align="right">
+<span class="math inline">\(\quad\text{Q.E.D.}\ \blacksquare\)</span>
+</p>
+<ul>
+<li>However, we know that <span class="math inline">\(f(n)=n^2\)</span> is not <span class="math inline">\(\mathcal{O}(n)\)</span>. Picking <span class="math inline">\(n=c+1\)</span>, the condition <span class="math inline">\(n\leq c\)</span> will never be satisfied.</li>
+</ul>
+</div>
+</div>
+</div>
+<ul>
+<li>Big-Oh and Growth rate
+<ul>
+<li>The Big-Oh notation gives an upper bound on the growth rate of a function <span class="math inline">\(f(n)\)</span> that represents the run time complexity of some algorithm</li>
+<li>If <span class="math inline">\(f(n)\)</span> is <span class="math inline">\(\mathcal{O}(g(n))\)</span>, then the growth rate of <span class="math inline">\(f(n)\)</span> is no more than the growth rate of <span class="math inline">\(g(n)\)</span>.</li>
+<li>In algorithm analysis, we use <span class="math inline">\(\mathcal{O}(g(n))\)</span> to rank (=categorize) functions by their growth rate.</li>
+</ul></li>
+</ul>
+<div id="tip-example-3" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;6: Examples of Growth Rate
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(2n+4\)</span>, <span class="math inline">\(7n+9\)</span>, <span class="math inline">\(10000n+999\)</span> are all <span class="math inline">\(\mathcal{O}(n)\)</span>, so in algorithm analysis we consider all these functions grow at the same rate.</p>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Common Running Times:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Running Time</th>
+<th style="text-align: center;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+<td style="text-align: center;">Constant Time</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(\log(n))\)</span></td>
+<td style="text-align: center;">Logarithmic</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(n)\)</span></td>
+<td style="text-align: center;">Linear</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(n\log(n))\)</span></td>
+<td style="text-align: center;">Log Linear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(n^2)\)</span></td>
+<td style="text-align: center;">Quadratic</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</section>
+<section id="useful-formula-in-algorithm-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="useful-formula-in-algorithm-analysis">Useful Formula in Algorithm Analysis</h3>
+<ul>
+<li>Triangular Sums: <span class="math display">\[1+2+3+4+\cdots+N=\dfrac{N(N+1)}{2}\approx\dfrac{N^2}{2}.\]</span></li>
+<li>Geometric Sums: <span class="math display">\[1+2+4+8+\cdots+N(=2^n)=2N-1\approx 2N\]</span> <span class="math display">\[1+\dfrac{1}{2}+\dfrac{1}{4}+\cdots+\dfrac{1}{N}(=\dfrac{1}{2^n})=2-\dfrac{1}{N}\approx2\]</span></li>
+<li>Harmonic Sum: <span class="math display">\[1+\dfrac{1}{2}+\dfrac{1}{3}+\cdots+\dfrac{1}{N}\approx\ln(N)\]</span></li>
+<li>Sterling’s Approximation: <span class="math display">\[\log(1)+\log(2)+\log(3)+\cdots+\log(N)=\log(N!)\approx N\log(N)\]</span></li>
+</ul>
+</section>
+</section>
+<section id="loop-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="loop-analysis">Loop Analysis</h2>
+<p>\end{document}</p>
 
 
-</main> <!-- /main -->
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -711,6 +1096,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2024, Jiuru Lyu</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs171/12-Complexity-Analysis/Complexity Analysis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs171/12-Complexity-Analysis/Complexity Analysis.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jiuru-lyu/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JrLyu">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="mailto:jiuru.lyu@emory.edu">
+      <i class="bi bi-envelope" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 

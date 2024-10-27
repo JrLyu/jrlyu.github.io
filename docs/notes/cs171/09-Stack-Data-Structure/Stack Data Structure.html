@@ -67,6 +67,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -105,6 +106,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -161,7 +165,7 @@ window.Quarto = {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../cv.html"> 
+    <a class="nav-link" href="../../../cv/cv.pdf"> 
 <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item">
@@ -174,12 +178,17 @@ window.Quarto = {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../../blogs.html"> 
-<span class="menu-text">My Blogs</span></a>
+<span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -199,10 +208,9 @@ window.Quarto = {
   <li><a href="#implement-the-stack-with-a-dynamic-array" id="toc-implement-the-stack-with-a-dynamic-array" class="nav-link" data-scroll-target="#implement-the-stack-with-a-dynamic-array">Implement the stack with a dynamic array</a></li>
   <li><a href="#generic-stack" id="toc-generic-stack" class="nav-link" data-scroll-target="#generic-stack">Generic Stack</a></li>
   <li><a href="#javas-stack-library" id="toc-javas-stack-library" class="nav-link" data-scroll-target="#javas-stack-library">Java’s Stack Library</a></li>
-  <li><a href="#application-of-stack-reverse-polish-expression-evaluation" id="toc-application-of-stack-reverse-polish-expression-evaluation" class="nav-link" data-scroll-target="#application-of-stack-reverse-polish-expression-evaluation">Application of Stack: Reverse Polish Expression Evaluation</a></li>
   <li><a href="#stack-application-edsger-dijkstra-algorithm-for-fully-parenthesized-arithmetic-expression" id="toc-stack-application-edsger-dijkstra-algorithm-for-fully-parenthesized-arithmetic-expression" class="nav-link" data-scroll-target="#stack-application-edsger-dijkstra-algorithm-for-fully-parenthesized-arithmetic-expression">Stack Application: Edsger Dijkstra Algorithm for Fully Parenthesized Arithmetic Expression</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs171/09-Stack-Data-Structure/Stack Data Structure.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs171/09-Stack-Data-Structure/Stack Data Structure.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
@@ -252,19 +260,19 @@ window.Quarto = {
 <section id="introduction-to-stack" class="level2">
 <h2 class="anchored" data-anchor-id="introduction-to-stack">Introduction to Stack</h2>
 <ul>
-<li><p>There are 2 commonly used data structures:</p>
+<li>There are 2 commonly used data structures:
 <ul>
 <li>Stack (LIFO)</li>
 <li>Queue (FIFO)</li>
 </ul></li>
-<li><p>A <strong>stack</strong> is a data structure that organize the stored data in a <strong>Last In First Out (LIFO)</strong> manner.</p></li>
-<li><p>To achieve the LIFO behavior, the stack only provide the following 2 methods to access the data stored in a stack:</p>
+<li>A <strong>stack</strong> is a data structure that organize the stored data in a <strong>Last In First Out (LIFO)</strong> manner.</li>
+<li>To achieve the LIFO behavior, the stack only provide the following 2 methods to access the data stored in a stack:
 <ul>
 <li><code>push(x)</code>: add <code>x</code> to the “top” of the stack.</li>
 <li><code>pop()</code>: remove the item at the “top” of the stack and return it.</li>
 <li>The item removed by <code>pop()</code> is always the last item that was pushed.</li>
 </ul></li>
-<li><p>Method invocation/return:</p>
+<li>Method invocation/return:
 <ul>
 <li>If the order of method invocation is</li>
 </ul>
@@ -281,7 +289,7 @@ window.Quarto = {
 <section id="the-stack-interface" class="level2">
 <h2 class="anchored" data-anchor-id="the-stack-interface">The Stack Interface</h2>
 <ul>
-<li><p>The stack interface definition:</p>
+<li>The stack interface definition:
 <ul>
 <li>The stack only defines a behavior on the access of the data stored in a stack: <code>pop()</code> must return the last item that was pushed</li>
 <li>The stack does not specify how the data must be stored.</li>
@@ -310,8 +318,8 @@ window.Quarto = {
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="bu">Integer</span><span class="op">[]</span> item<span class="op">;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">int</span> stackTop<span class="op">;</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">IntegerStack</span><span class="op">(</span><span class="dt">int</span> N<span class="op">)</span> <span class="op">{</span> <span class="co">// Create a stack of size N</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    item <span class="op">=</span> <span class="kw">new</span> <span class="bu">Integer</span><span class="op">[</span>N<span class="op">];</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    stackTop <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        item <span class="op">=</span> <span class="kw">new</span> <span class="bu">Integer</span><span class="op">[</span>N<span class="op">];</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        stackTop <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">isEmpty</span><span class="op">()</span> <span class="op">{</span> <span class="co">// Test if stack is empty</span></span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> stackTop <span class="op">==</span> <span class="dv">0</span><span class="op">;</span></span>
@@ -337,9 +345,7 @@ window.Quarto = {
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li><ul>
-<li>See <code>IntegerStack.java</code> and <code>TestIntegerStack.java</code>.</li>
-</ul></li>
+<li>See <a href="IntegerStack.java"><code>IntegerStack.java</code></a> and <a href="TestIntegerStack.java"><code>TestIntegerStack.java</code></a>.</li>
 </ul>
 </section>
 <section id="implement-the-stack-with-a-dynamic-array" class="level2">
@@ -353,8 +359,8 @@ window.Quarto = {
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">final</span> <span class="dt">double</span> DELTA <span class="op">=</span> <span class="fl">0.25</span><span class="op">;</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">IntegerStack</span><span class="op">(</span><span class="dt">int</span> N<span class="op">)</span> <span class="op">{</span> <span class="co">// Create a stack of size N</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    item <span class="op">=</span> <span class="kw">new</span> <span class="bu">Integer</span><span class="op">[</span>N<span class="op">];</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    stackTop <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        item <span class="op">=</span> <span class="kw">new</span> <span class="bu">Integer</span><span class="op">[</span>N<span class="op">];</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        stackTop <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">isEmpty</span><span class="op">()</span> <span class="op">{</span> <span class="co">// Test if stack is empty</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> stackTop <span class="op">==</span> <span class="dv">0</span><span class="op">;</span></span>
@@ -570,29 +576,24 @@ window.Quarto = {
 <div class="sourceCode" id="cb9"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Stack</span><span class="op">&lt;</span><span class="bu">Integer</span><span class="op">&gt;</span> iStack <span class="op">=</span> <span class="kw">new</span> <span class="bu">Stack</span><span class="op">&lt;&gt;();</span> <span class="co">// Integer Stack</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Stack</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> sStack <span class="op">=</span> <span class="kw">new</span> <span class="bu">Stack</span><span class="op">&lt;&gt;();</span> <span class="co">// String Stack</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li><p>The <code>Stack</code> class contains the following instance methods: <code>boolean empty()</code>; <code>E peek()</code>; <code>E push(E item)</code>; <code>E pop()</code>.</p></li>
-<li><p>For some reasons, the <code>Stack</code> class is a subclass of the <code>Vector</code> class, which can access the sotred data using an index.</p>
+<li>The <code>Stack</code> class contains the following instance methods: <code>boolean empty()</code>; <code>E peek()</code>; <code>E push(E item)</code>; <code>E pop()</code>.</li>
+<li>For some reasons, the <code>Stack</code> class is a subclass of the <code>Vector</code> class, which can access the sotred data using an index.
 <ul>
 <li>As a subclass, <code>Stack</code> inherits those methods:</li>
 </ul>
 <div class="sourceCode" id="cb10"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get</span><span class="op">(</span><span class="dt">int</span> index<span class="op">);</span> <span class="co">// Returns the element at the specified position</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">remove</span><span class="op">(</span><span class="dt">int</span> index<span class="op">);</span> <span class="co">// Removes the element at the specified position</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>However, this inheritance makes the FIFO behavior not guaranteed.</li>
+<li>However, this inheritance makes the FIFO behavior not guaranteed. ## Application of Stack: Reverse Polish Expression Evaluation</li>
 </ul></li>
-</ul>
-</section>
-<section id="application-of-stack-reverse-polish-expression-evaluation" class="level2">
-<h2 class="anchored" data-anchor-id="application-of-stack-reverse-polish-expression-evaluation">Application of Stack: Reverse Polish Expression Evaluation</h2>
-<ul>
-<li><p>There are 3 ways to write arithmetic expressions:</p>
+<li>There are 3 ways to write arithmetic expressions:
 <ul>
 <li>In-fix: operators are placed between their operands: <span class="math inline">\((A+B)\times C=(A+B)\times C\)</span>.</li>
 <li>Pre-fix: operators are placed before their operands: <span class="math inline">\(\times + A\ B\ C\ =(A + B)\times C\)</span>.</li>
 <li>Post-fix: operators are placed after their operands: <span class="math inline">\(A\ B+C\times=(A+B)\times C\)</span>.</li>
 <li>The pre-fix and post-fix notations do no use parenthesis to write arithmetic expressions.</li>
 </ul></li>
-<li><p>Reverse Polish Notation (RPN):</p>
+<li>Reverse Polish Notation (RPN):
 <ul>
 <li>The operator always follows its (2) operands: <code>3 4 + ==&gt; 3 + 4 = 7</code></li>
 <li>When we evaluate an operation in RPN, the result is used an operand of another operation: <code>3 4 + 1 - ==&gt; 7 1 - ==&gt; 6</code></li>
@@ -709,7 +710,7 @@ window.Quarto = {
 
 </section>
 
-</main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1242,6 +1243,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2024, Jiuru Lyu</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs171/09-Stack-Data-Structure/Stack Data Structure.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs171/09-Stack-Data-Structure/Stack Data Structure.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jiuru-lyu/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JrLyu">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="mailto:jiuru.lyu@emory.edu">
+      <i class="bi bi-envelope" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 

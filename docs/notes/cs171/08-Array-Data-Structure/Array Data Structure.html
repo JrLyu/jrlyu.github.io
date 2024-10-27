@@ -67,6 +67,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -105,6 +106,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -161,7 +165,7 @@ window.Quarto = {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../cv.html"> 
+    <a class="nav-link" href="../../../cv/cv.pdf"> 
 <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item">
@@ -174,12 +178,17 @@ window.Quarto = {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../../blogs.html"> 
-<span class="menu-text">My Blogs</span></a>
+<span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -196,7 +205,7 @@ window.Quarto = {
   <li><a href="#linear-search-and-the-binary-search-algorithms-for-arrays" id="toc-linear-search-and-the-binary-search-algorithms-for-arrays" class="nav-link active" data-scroll-target="#linear-search-and-the-binary-search-algorithms-for-arrays">Linear Search and the Binary Search Algorithms for arrays</a></li>
   <li><a href="#adding-or-deleting-elements-from-an-array." id="toc-adding-or-deleting-elements-from-an-array." class="nav-link" data-scroll-target="#adding-or-deleting-elements-from-an-array.">Adding or Deleting Elements from an Array.</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs171/08-Array-Data-Structure/Array Data Structure.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs171/08-Array-Data-Structure/Array Data Structure.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
@@ -255,8 +264,26 @@ window.Quarto = {
 <ul>
 <li>Arrays are often used to store a large amount of data.</li>
 <li>Searching is the process of looking for a specific element in an array.</li>
-<li>There are two search techniques for arrays: <strong>linear search</strong> and <strong>binary search</strong>. &gt; <strong>The Search Problem for Arrays</strong>: &gt; - For a given search value <code>key</code>, find the index of the first array element that contains the search value <code>key</code>. &gt; - Return <code>-1</code> when the <code>key</code> is not found in the array.</li>
+<li>There are two search techniques for arrays: <strong>linear search</strong> and <strong>binary search</strong>.</li>
 </ul></li>
+</ul>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<strong>The Search Problem for Arrays</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For a given search value <code>key</code>, find the index of the first array element that contains the search value <code>key</code>.</p>
+<ul>
+<li>Return <code>-1</code> when the <code>key</code> is not found in the array.</li>
+</ul>
+</div>
+</div>
+<ul>
 <li>Linear Search algorithm:
 <ul>
 <li>The linear search algorithm compares the search value <code>key</code> sequentially with each element in the array.</li>
@@ -282,7 +309,7 @@ window.Quarto = {
 <ul>
 <li>Best case scenario: the first element in the array contains the search key. Running time = 1 step (iteration)</li>
 <li>Worst case scenario: array does not contain the search key. We run through the whole array. Running time = <span class="math inline">\(N\)</span> steps.</li>
-<li>Average case scenario: on average, we will probe half of the array elements. Running time = <span class="math inline">\(\frac{N}{2}\)</span> steps.</li>
+<li>Average case scenario: on average, we will probe half of the array elements. Running time = <span class="math inline">\(\dfrac{N}{2}\)</span> steps.</li>
 </ul></li>
 <li>Binary search is a more efficient (faster) search algorithm for arrays.
 <ul>
@@ -318,7 +345,7 @@ window.Quarto = {
 <li>Complexity Analysis:
 <ul>
 <li>Best case scenario: the middle element in the array contains the search key. Running time = 1 step (iteration).</li>
-<li>Worse case scenario: Suppose the binary search takes <span class="math inline">\(k\)</span> iterations to complete, then <span class="math inline">\(\frac{N}{2^k}=1\)</span> (after halving <span class="math inline">\(N\)</span> elements for <span class="math inline">\(k\)</span> times, we get 1). Solving the equation, we get <span class="math inline">\(k=\log(N)+1\)</span>. So, running time <span class="math inline">\(\approx\log(N)\)</span> steps.</li>
+<li>Worse case scenario: Suppose the binary search takes <span class="math inline">\(k\)</span> iterations to complete, then <span class="math inline">\(\dfrac{N}{2^k}=1\)</span> (after halving <span class="math inline">\(N\)</span> elements for <span class="math inline">\(k\)</span> times, we get 1). Solving the equation, we get <span class="math inline">\(k=\log(N)+1\)</span>. So, running time <span class="math inline">\(\approx\log(N)\)</span> steps.</li>
 <li>Average case scenario: it is very hard to estimate, but we can use the worse case scenario as an upper bound for the running time in average.</li>
 </ul></li>
 </ul>
@@ -328,8 +355,8 @@ window.Quarto = {
 <ul>
 <li><p>Adding an element at the end of an array</p>
 <ul>
-<li><p>The array size is fixed after its creation.</p></li>
-<li><p>To add a new element to the end of an array:</p>
+<li>The array size is fixed after its creation.</li>
+<li>To add a new element to the end of an array:
 <ul>
 <li>Create a new array with the 1 more element</li>
 <li>Copy the elements in the original array to the new array.</li>
@@ -337,30 +364,30 @@ window.Quarto = {
 <li>Change the array reference to point to the new array.</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="dt">int</span><span class="op">[]</span> <span class="fu">addElement</span><span class="op">(</span><span class="dt">int</span><span class="op">[]</span> x<span class="op">,</span> <span class="dt">int</span> e<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span><span class="op">[]</span> temp <span class="op">=</span> <span class="kw">new</span> <span class="dt">int</span><span class="op">[</span>x<span class="op">.</span><span class="fu">length</span> <span class="op">+</span> <span class="dv">1</span><span class="op">];</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> x<span class="op">.</span><span class="fu">length</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span><span class="co">// copying</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    temp<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> x<span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>temp<span class="op">[</span>temp<span class="op">.</span><span class="fu">length</span> <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> e<span class="op">;</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> temp<span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span><span class="op">[]</span> temp <span class="op">=</span> <span class="kw">new</span> <span class="dt">int</span><span class="op">[</span>x<span class="op">.</span><span class="fu">length</span> <span class="op">+</span> <span class="dv">1</span><span class="op">];</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> x<span class="op">.</span><span class="fu">length</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span><span class="co">// copying</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        temp<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> x<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    temp<span class="op">[</span>temp<span class="op">.</span><span class="fu">length</span> <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> e<span class="op">;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> temp<span class="op">;</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul></li>
 <li><p>The algorithm executes <span class="math inline">\(\texttt{x.length}+1\)</span> data copy statements per addition.</p></li>
 <li><p>Deleting the last element from an array.</p>
 <ul>
-<li><p>The array size is fixed after its creation.</p></li>
-<li><p>To delete the last element from an array:</p>
+<li>The array size is fixed after its creation.</li>
+<li>To delete the last element from an array:
 <ul>
 <li>Create a new array with the 1 less element.</li>
 <li>Copy all except the last elements in the original array to the new array.</li>
 <li>Change the array reference to point to the new array.</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="dt">int</span><span class="op">[]</span> <span class="fu">deleteElement</span><span class="op">(</span><span class="dt">int</span><span class="op">[]</span> x<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span><span class="op">[]</span> temp <span class="op">=</span> <span class="kw">new</span> <span class="dt">int</span><span class="op">[</span>x<span class="op">.</span><span class="fu">lenght</span> <span class="op">-</span> <span class="dv">1</span><span class="op">];</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> temp<span class="op">.</span><span class="fu">length</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    temp<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> x<span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> temp<span class="op">;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span><span class="op">[]</span> temp <span class="op">=</span> <span class="kw">new</span> <span class="dt">int</span><span class="op">[</span>x<span class="op">.</span><span class="fu">lenght</span> <span class="op">-</span> <span class="dv">1</span><span class="op">];</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> temp<span class="op">.</span><span class="fu">length</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        temp<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> x<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> temp<span class="op">;</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul></li>
 <li><p>We can delete an element at a different location with a similar algorithm.</p></li>
@@ -388,15 +415,15 @@ window.Quarto = {
 <li>To use it, we <code>import java.util.ArrayList;</code></li>
 <li>Syntax to define an <code>ArrayList</code> (reference) variable:</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>  <span class="bu">ArrayList</span><span class="op">&lt;</span>ObjectType<span class="op">&gt;</span> varName</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">ArrayList</span><span class="op">&lt;</span>ObjectType<span class="op">&gt;</span> varName</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Syntax to create an <code>ArrayList</code> object</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">new</span> <span class="bu">ArrayList</span><span class="op">&lt;</span><span class="bu">Object</span> <span class="bu">Type</span><span class="op">&gt;</span> <span class="op">();</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">new</span> <span class="bu">ArrayList</span><span class="op">&lt;</span><span class="bu">Object</span> <span class="bu">Type</span><span class="op">&gt;</span> <span class="op">();</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>The <code>ArrayList</code> object will start with an array of limited size (about 10).</li>
 <li><ul>
-<li>See <code>DynamicArray.java</code></li>
+<li>See <a href="04-DynamicArray/DynamicArray.java"><code>DynamicArray.java</code></a></li>
 </ul></li>
 </ul></li>
 <li><p>Commonly used methods in the <code>ArrayList</code> class</p>
@@ -476,7 +503,7 @@ window.Quarto = {
 
 </section>
 
-</main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1009,6 +1036,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2024, Jiuru Lyu</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs171/08-Array-Data-Structure/Array Data Structure.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs171/08-Array-Data-Structure/Array Data Structure.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jiuru-lyu/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JrLyu">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="mailto:jiuru.lyu@emory.edu">
+      <i class="bi bi-envelope" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 

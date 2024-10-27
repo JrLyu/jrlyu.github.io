@@ -12,42 +12,31 @@ draft: false
 ## Introduction to Stack
 
 -   There are 2 commonly used data structures:
-
     -   Stack (LIFO)
     -   Queue (FIFO)
 
 -   A **stack** is a data structure that organize the stored data in a **Last In First Out (LIFO)** manner.
-
 -   To achieve the LIFO behavior, the stack only provide the following 2 methods to access the data stored in a stack:
-
     -   `push(x)`: add `x` to the "top" of the stack.
     -   `pop()`: remove the item at the "top" of the stack and return it.
     -   The item removed by `pop()` is always the last item that was pushed.
 
 -   Method invocation/return:
-
     -   If the order of method invocation is
-
     ```         
     M1() --> M2() --> M3() --> M4()
     ```
-
     -   Then the order in which the methods return form their invocation is the reverse order:
-
     ```         
     M4() --> M3() --> M2() --> M1()
     ```
-
     -   Some computer algorithms/processes with a natural LIFO behavior: undo algorithm in a text editor (it uses a stack to store the history of edit changes); back algorithm in a browser (it uses a stack to store the browser history)
 
 ## The Stack Interface
-
 -   The stack interface definition:
-
     -   The stack only defines a behavior on the access of the data stored in a stack: `pop()` must return the last item that was pushed
     -   The stack does not specify how the data must be stored.
     -   There are different ways to implement the same behavior
-
     ``` java
     public interface MyStackInterface<E> {
       boolean isEmpty(); // returns true if stack is empty
@@ -70,8 +59,8 @@ public class IntegerStack implements Stack<Integer> {
     private Integer[] item;
     private int stackTop;
     public IntegerStack(int N) { // Create a stack of size N
-    item = new Integer[N];
-    stackTop = 0;
+        item = new Integer[N];
+        stackTop = 0;
     }
     public boolean isEmpty() { // Test if stack is empty
         return stackTop == 0;
@@ -97,10 +86,7 @@ public class IntegerStack implements Stack<Integer> {
     }
 }
 ```
-
--   
-
-    -   See `IntegerStack.java` and `TestIntegerStack.java`.
+-   See [`IntegerStack.java`](IntegerStack.java) and [`TestIntegerStack.java`](TestIntegerStack.java).
 
 ## Implement the stack with a dynamic array
 
@@ -113,8 +99,8 @@ public class IntegerStack implements Stack<Integer> {
     private final double DELTA = 0.25;
     
     public IntegerStack(int N) { // Create a stack of size N
-    item = new Integer[N];
-    stackTop = 0;
+        item = new Integer[N];
+        stackTop = 0;
     }
     public boolean isEmpty() { // Test if stack is empty
         return stackTop == 0;
@@ -275,31 +261,23 @@ public class GenericStack<T> implements MyStackInterface<T> {
 Stack<Integer> iStack = new Stack<>(); // Integer Stack
 Stack<String> sStack = new Stack<>(); // String Stack
 ```
-
 -   The `Stack` class contains the following instance methods: `boolean empty()`; `E peek()`; `E push(E item)`; `E pop()`.
-
 -   For some reasons, the `Stack` class is a subclass of the `Vector` class, which can access the sotred data using an index.
-
     -   As a subclass, `Stack` inherits those methods:
-
     ``` java
     get(int index); // Returns the element at the specified position
     remove(int index); // Removes the element at the specified position
     ```
-
     -   However, this inheritance makes the FIFO behavior not guaranteed.
-
 ## Application of Stack: Reverse Polish Expression Evaluation
 
 -   There are 3 ways to write arithmetic expressions:
-
     -   In-fix: operators are placed between their operands: $(A+B)\times C=(A+B)\times C$.
     -   Pre-fix: operators are placed before their operands: $\times + A\ B\ C\ =(A + B)\times C$.
     -   Post-fix: operators are placed after their operands: $A\ B+C\times=(A+B)\times C$.
     -   The pre-fix and post-fix notations do no use parenthesis to write arithmetic expressions.
 
 -   Reverse Polish Notation (RPN):
-
     -   The operator always follows its (2) operands: `3 4 + ==> 3 + 4 = 7`
     -   When we evaluate an operation in RPN, the result is used an operand of another operation: `3 4 + 1 - ==> 7 1 - ==> 6`
     -   Conclusion:
@@ -362,7 +340,6 @@ Stack<String> sStack = new Stack<>(); // String Stack
 ## Stack Application: Edsger Dijkstra Algorithm for Fully Parenthesized Arithmetic Expression
 
 -   Problem description:
-
     -   We are given a fully parenthesized arithmetic expression using only `x`, `/`, `+`, and `-` operations.
     -   Write an algorithm to evaluate expressions in this form.
     -   We will need 2 stakcs:
@@ -370,7 +347,6 @@ Stack<String> sStack = new Stack<>(); // String Stack
         -   An `operator` stack that stores the operators in the input.
 
 -   Algorithm:
-
     -   Find the first occurrence of a right parenthesis `)`: observe the last 2 operands and the last operation prior to the right parenthesis.
         -   This guarantees the most inner `()` will be the first to be evaluated.
         -   The result of an operation must be pushed on to operand stack.
