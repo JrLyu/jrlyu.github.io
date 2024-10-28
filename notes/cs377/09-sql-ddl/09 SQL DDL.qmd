@@ -1,0 +1,451 @@
+---
+title: "9 SQL DDL"
+description: "This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 10-28-2024
+categories: [Coding, SQL, Database, DDL]
+draft: true
+---
+
+## Database Modifications
+### Insert Tuples
+- Two ways to insert tuples, either into an empty or non-empty table:
+		- `INSERT INTO <relation> VALUES <list of tuples>;`
+		- `INSERT INTO <relation> (<subquery>);`
+
+```sql
+CREATE TABLE Invite(
+	name TEXT,
+	campus TEXT DEFAULT 'StG',
+	email TEXT,
+	age INT
+);
+
+INSERT INTO Invite VALUES ('Mark', 'StG', 'm@m.com', 18);
+INSERT INTO Invite(name, email) VALUES ('Mark', 'm@m.com');
+
+-- the order of columns can be controlled for inserts
+INSERT INTO Invite(email, name) VALUES ('m@m.com', 'Mark');
+
+INSERT INTO Invite(name, email) (
+	SELECT firstname, email
+	FROM Student
+	WHERE cgpa > 3.4
+);
+```
+- Naming attributes in `INSERT`
+	- Sometimes we want to insert tuples, but we don’t have values for all attributes.
+	- If we name the attributes we are providing values for, the system will use `NULL` or a default for the rest.
+	- Convenient!
+```sql
+-- Insert multiple values
+INSERT INTO Invite VALUES
+	('Mark', 'StG','m@m.com',18),
+	('Sasha', 'UTM','s@s.com',19),
+	('Al','StG','a@a.com',20),
+	('Link','StG','li@li.com',18);
+```
+### Delete Tuples
+- Deletion
+	- Delete tuples satisfying a condition: `DELETE FROM <relation> WHERE <condition>;`
+	- Delete all tuples: `DELETE FROM <relation>;`
+```sql
+-- Delete tough courses where no student has passed…  
+DELETE FROM Course  
+       WHERE NOT EXISTS (  
+       SELECT *  
+       FROM Took JOIN Offering ON Took.oid = Offering.oid  
+       WHERE  
+           grade > 60 AND  
+           Offering.dept = Course.dept AND  
+           Offering.cnum = Course.cnum  
+);
+```
+### Update
+- To change the value of certain attributes in certain tuples to given values:
+```sql
+UPDATE <relation>
+SET <list of attribute assignments>
+WHERE <condition on tuples>;
+```
+
+:::{#tip-update .callout-tip collapse="true"}
+## Example of `UPDATE`
+```sql
+UPDATE Student
+SET campus = 'UTM'
+WHERE sid = 999999;
+
+UPDATE Took
+SET grade = 50
+WHERE grade >= 47 and grade < 50;
+```
+:::
+### Create
+```sql
+CREATE TABLE <table name> (
+	<column_name1> <data type>,
+	<column_name2> <data type>,
+	<column_name3> <data type>,
+);
+```
+
+## SQL Schemas
+- Schema: a kind of namespace
+	- When you connect to your psql cloud instance, by default you’re in the `public` schema
+	- Everything defined (tables, types, etc.) goes into one big pot.
+	- Schemas let you create different namespaces.
+	- Useful for logical organization, and for avoiding name clashes.
+- You already have a schema called “public”.
+- You can also create your own. 
+	- Example: `CREATE SCHEMA University;`
+- To refer to things inside a particular schema, you can use dot notation:
+```sql
+CREATE TABLE University.Student (...);
+SELECT * FROM University.Student;
+```
+- The search path
+	- To see the current search path: `SHOW SEARCH_PATH;`
+	- You can set the search path yourself. 
+		- Example: `SET SEARCH_PATH to University, public;`
+
+## Types
+- Table attributes have types
+	- When creating a table, you must define the type of each attribute.
+	- Analogous to declaring a variable’s type in a program. 
+		- Eg, `int num;` in Java or C.
+		- Some programming languages don’t require type declarations. Eg, Python.
+	- Why are type declarations required in SQL?
+		- Usually worth the cost in the world of DB systems, since validity of data is important
+- Built-in types
+	- `CHAR(n)`: fixed-length string of n characters. Padded with blanks if necessary.
+	- `VARCHAR(n)`: variable-length string of _up to_ n characters.
+	- `TEXT`: variable-length, unlimited. Not in the SQL standard, but psql and others support it. E.g. `'Macbeth', 'Shakespeare''s Sonnets'`
+	- `INT` = INTEGER, e.g. `37`
+	- `FLOAT` = REAL, e.g. `1.49, 37.96e2`
+	- `BOOLEAN` = `TRUE, FALSE`
+	- `DATE` e.g. `'2011-09-22'`
+	- `TIME` e.g. `'15:00:02', '15:00:02.5'`
+	- `TIMESTAMP` (date plus time), e.g. `'Jan-12-2011 10:25'`
+	- ... [Documentation](https://www.postgresql.org/docs/9.6/datatype.html)
+- User-defined types (...in PostgreSQL)
+	- Defined in terms of a built-in type.
+	- You make it more specific by defining constraints (and perhaps a default value).
+
+:::{#tip-user-defined .callout-tip collapse="true"}
+## Example of User-defined Types
+```sql
+CREATE DOMAIN Grade AS int
+	DEFAULT null
+	CHECK (VALUE >= 0 AND VALUE <= 100);
+
+CREATE DOMAIN Campus AS varchar(4)
+	DEFAULT 'StG'
+	CHECK (VALUE IN ('StG','UTM','UTSC'));
+```
+:::
+
+- Semantics of type constraints
+	- Constraints on a type are checked every time a value is assigned to an attribute of that type.
+	- You can use these to create a powerful type system.
+- Semantics of default values
+	- The default value for a type is used when _no_ value has been specified.
+	- Useful! You can run a query and insert the resulting tuples into a relation -- even if the query does not give values for all attributes.
+	- Table attributes can also have default values.
+
+```sql
+-- attribute default: for that one attribute in that one table
+CREATE TABLE Awards (
+	sID Integer,
+	numAwards Integer DEFAULT 0,
+	FOREIGN KEY (sID) REFERENCE Student
+);
+
+-- type default: for for every attribute defined to be of that type
+CREATE DOMAIN CGPA AS NUMERIC(10, 2)
+	DEFAULT 0
+	CHECK (VALUE >= 0 AND VALUE <= 4.0)
+```
+
+## Keys and Foreign Keys
+- Key constraints
+	- Declaring that a set of one or more attributes are the `PRIMARY KEY` for a relation means:
+		- they form a key (unique, minimal)
+		- their values will never be null (you don’t need to separately declare that)
+	- Big hint to the DBMS: optimize for searches by this set of attributes!
+	- Every table must have 0 or 1 primary key.
+		- A table can have no primary key, but in practice, every table should have one.
+		- You cannot declare more than one primary key. (Think of the PK as the _identity_ of a row..)
+- Declaring primary keys
+	- For a single-attribute key, can be part of the attribute definition.
+	- Or can be at the end of the table definition. (This is the only way for multi-attribute keys.) The brackets are required.
+
+```sql
+CREATE TABLE Blah (
+	ID INTEGER PRIMARY KEY,
+	name VARCHAR(25)
+);
+
+CREATE TABLE Blah (
+	ID INTEGER,
+	name VARCHAR(25),
+	PRIMARY KEY (ID, name)
+);
+```
+
+- Uniqueness constraints
+	- Declaring that a set of one or more attributes is `UNIQUE` for a relation means:
+		- they form a key
+		- their values _can_ be null; if they mustn’t, you need to separately declare that
+	- You can declare more than one set of attributes to be `UNIQUE`.
+	- Used to enforce unique constraints on a column (or group of columns) which is not a primary key.
+	- Example: Make `SID` primary key, and `SSN` unique (it’s okay if it’s NULL but if you _do_ have SSN then it must be unique!)
+- Declaring `UNIQUE`
+	- If only one attribute is involved, can be part of the attribute definition.
+	- Or can be at the end of the table definition. (This is the only way if multiple attributes are involved.) The brackets are required.
+
+```sql
+CREATE TABLE Blah (
+	ID integer UNIQUE,
+	name varchar(25)
+);
+
+CREATE TABLE Blah (
+	ID integer,
+	name varchar(25),
+	UNIQUE (ID)
+);
+```
+- We saw earlier how nulls affect “unique”
+	- For uniqueness constraints, no two nulls are considered equal.
+
+:::{#tip-unique .callout-tip collapse="true"}
+## Example of `UNIQUE`
+- Consider:
+```sql
+CREATE TABLE Testunique (
+	first VARCHAR(25),
+	last VARCHAR(25),
+	UNIQUE(first, last))
+```
+
+- This would prevent two insertions of `('Stephen', 'Cook')`
+- But it would allow two insertions of `(null, 'Rackoff')`
+- This can’t occur with a primary key because primary key will consider two nulls as equal.
+:::
+
+- Foreign key constraints
+	- Example from table Took: `FOREIGN KEY (sID) REFERENCES Student`
+	- Means that attribute sID in this table is a foreign key that references the primary key of table Student.
+	- Every value for sID in this table must actually occur in the Student table.
+	- Requirements:
+		- Must be declared either primary key or unique in the “home” table (i.e. table “Student” in the above example)
+- Declaring foreign keys
+	- Again, declare with the attribute (only possible if just a single attribute is involved) or as a separate table element.
+	- Can reference attribute(s) that are not the primary key as long as they are unique; just name them.
+
+```sql
+CREATE TABLE People (
+	SIN INTEGER PRIMARY KEY,
+	name TEXT,
+	AETNA TEXT UNIQUE
+);
+
+CREATE TABLE Volunteers (
+	email TEXT PRIMARY KEY,
+	AETNAnum text REFERENCES People(AETNA)
+);
+
+-- What if we run the following?
+CREATE TABLE Volunteers (
+	email TEXT PRIMARY KEY,
+	AETNAnum text REFERENCES People -- referring to the primary key by default
+);
+```
+
+- Enforcing foreign-key constraints
+	- Suppose there is a foreign-key constraint from relation $R$ to relation $S$.
+	- How/when can the DBMS ensure that:
+		- the referenced attributes are `PRIMARY KEY` or `UNIQUE`?
+		- the values actually exist?
+	- What could cause a violation?
+		- Example: a row is deleted from **Course**; **Offering** is now referring to a course that doesn’t exist.
+	- You get to define what the DBMS should do.
+	- This is called specifying a “**reaction policy**.”
+
+## Reaction Policies
+- Possible Politicies
+  - `CASCADE`: propagate the change to the refering table
+
+:::{#tip-cascade .callout-tip collapse="true"}
+## Example of `CASCADE`
+if a Student leaves university, delete all their referrals in Took!
+:::
+
+  - `SET NULL`: set the referring attribute(s) to `NULL`
+  - If you say nothing, the default is to forbid the change in the referred-to table. i.e., `RESTRICT`
+
+:::{#wrn-assymetry .callout-warning}
+## Note the Assymetry
+- Suppose table `T` refers to table `S`.
+- You can define "fixes" that propogate changes backwards from `S` to `T`.
+- (You define them in table `T` because it is the table that will be affected)
+- You cannot define fixes that propogate forward from `T` to `S`.
+:::
+
+:::{#cau-syntax-reaction .callout-caution}
+## Syntax for Reaction Policies
+- Add your reaction policy where you specify the foreign key constraint
+- Example:
+```sql
+CREATE TABLE Took {
+	...
+	FOREIGN KEY (sID) REFERENCES Student ON DELETE CASCADE
+}
+```
+:::
+
+- What you can react to: Your reaction policy can specify what to do either
+    - on `delete`, i.e., when a deletion creates a dangling reference,
+    - on `update`, i.e., when an update creates a dangling reference,
+    - or `both`. Just put them one after the other.
+
+:::{#tip-restrict-cascade .callout-tip collapse="true"}
+## Example of What We Can React to
+```sql
+ON DELETE RESTRICT 
+ON UPDATE CASCADE
+```
+:::
+
+- What your reaction can be: Your policy can specify one of these reactions (there are others):
+  - `RESTRICT`: Don’t allow the deletion/update.
+  - `CASCADE`: Make the same deletion/update in the referring tuple.
+  - `SET NULL`: Set the corresponding value in the referring
+tuple to null.
+
+## Removing Schema
+- Removing a schema
+  - Easy: `DROP SCHEMA University CASCADE;`
+    - `CASCADE` means everything inside it is dropped too.
+  - To avoid getting an error message if the schema does not exist, add `IF EXISTS`.
+
+- Usage pattern
+  - You can use this at the top of every DDL file:
+```sql
+DROP SCHEMA IF EXISTS University CASCADE;
+CREATE SCHEMA University;
+SET search_path TO University;
+```
+  - Helpful during development, when you may want to change the schema, or test queries under different conditions.
+- Updating the schema itself
+  - `ALTER`: alter a domain or table or column
+```sql
+-- You can add a column to a table
+ALTER TABLE Course
+ADD COLUMN numSections INTEGER;
+-- You can drop a column entirely from a table
+ALTER TABLE Course
+DROP COLUMN breadth;
+-- You can change the type of a column in a table
+ALTER TABLE Course
+ALTER COLUMN dept TYPE VARCHAR(40);
+```
+  - `DROP`: can also be used to remove a domain, table, view, or whole schema 
+    - `DROP TABLE course;`
+    - How is that different from this?
+      - `DELETE FROM course;` 
+    - If you drop a table that is referenced by another table, you must specify `CASCADE`
+    - This removes all referring rows.
+  - `CHECK`: we've seen a check clause on a user-defined domain: 
+```sql
+CREATE DOMAIN Grade AS as smallint
+	DEFAULT NULL
+	CHECK (VALUE >=0 AND VALUE <=100);
+```
+  - You can also define a check constraint:
+    - on an attribute
+    - on the tuples of a relation
+    - across relations
+  - Attribute-based `CHECK` constraints
+    - Defined with a single attribute and constrain its value (in every tuple)
+    - Refer to attributes by attributes by their names (do not use the keyword value)
+    - Checked when a tuple is inserted into that relation, or its value for that attribute is updated.
+
+:::{#tip-check .callout-tip collapse="true"}
+## Example of Attribute-based `CHECK` constraints
+```sql
+CREATE TABLE GradStudent (
+	sID INTEGER,
+	program VARCHAR(3) CHECK
+		(program IN ('MS', 'PhD')),
+	firstName VARCHAR(15) NOT NULL, ...);
+```
+:::
+    - `NOT NULL`constraint: 
+      - You can declare that an attribute of a table is `NOT NULL`.
+```sql
+CREATE TABLE Course (
+	cNum INTEGER,
+	name VARCHAR(40) NOT NULL,
+	dept Department,
+	breadth BOOLEAN,
+	PRIMARY KEY (cNum, dept));
+```
+    - In practise, many attributes should be not null.
+    - This is a very specific kind of attribute-based constraint.
+  - Tuple-based `CHECK constraints
+    - Defined as a separate element of the table schema so can refer to any attributes of the table.
+    - Checked when a tuple is inserted into that relation, or updated.
+
+:::{#tip-tuple-based .callout-tip collapse="true"}
+## Example of Tuple-based `CHECK` constraints
+```sql
+CREATE TABLE Student (
+	sID INTEGER,
+	age INTEGER,
+	year INTEGER,
+	college VARCHAR(4),
+		CHECK (YEAR = age - 18)
+);
+```
+:::
+- How nulls affect `CHECK` constraints
+  - A check constraint only fails if it evaluates to `FALSE`.
+  - It is not picky like a `WHERE` condition.
+
+:::{#tip-null-check .callout-tip collapse="true"}
+## Example of How Nulls Affect `CHECK` Constraints
+Suppose `CHECK (age > 0)`
+| age | Value of condition | `CHECK` outcome | `WHERE` outcome |
+|:---:|:-------------------:|:---------------:|:---------------:|
+|19 | `TRUE`| pass| pass|
+|-5 | `FALSE`| fail| fail|
+|`NULL` | `UNKNOWN`| pass| fail|
+:::
+
+:::{#tip-not-null .callout-tip collapse="true"}
+## Example of `NOT NULL` Constraint
+- Suppose you created this table:
+```sql 
+CREATE TABLE Tester (
+	num INTEGER,
+	word VARCHAR(10),
+		CHECK (num > 5));
+```
+- It would allow you to insert `(NULL, ‘hello’)`
+- If you need to prevent that, use a `NOT NULL` constraint.
+```sql
+CREATE TABLE Tester (
+	num INTEGER NOT NULL,
+	word VARCHAR(10),
+		CHECK (num > 5));
+```
+:::
+
+:::{#wrn-check .callout-warning}
+## Order of Constraints
+Order of constraints doesn’t matter, and doesn’t dictate the order in which they’re checked
+:::

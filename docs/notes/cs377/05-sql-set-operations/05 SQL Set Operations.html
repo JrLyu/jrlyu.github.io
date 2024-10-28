@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Jiuru Lyu - Class Notes</title>
+<title>Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,28 +20,62 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href=".//media/favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -73,8 +107,37 @@ ul.task-list li input[type="checkbox"] {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -84,7 +147,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Jiuru Lyu</span>
     </a>
   </div>
@@ -95,23 +158,23 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./cv/cv.pdf"> 
+    <a class="nav-link" href="../../../cv/cv.pdf"> 
 <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./notes.html" aria-current="page"> 
+    <a class="nav-link" href="../../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./photo.html"> 
+    <a class="nav-link" href="../../../photo.html"> 
 <span class="menu-text">Photograph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blogs.html"> 
+    <a class="nav-link" href="../../../blogs.html"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
@@ -136,86 +199,155 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#high-school-level-math" id="toc-high-school-level-math" class="nav-link active" data-scroll-target="#high-school-level-math">High School Level Math</a></li>
-  <li><a href="#college-level-math" id="toc-college-level-math" class="nav-link" data-scroll-target="#college-level-math">College Level Math</a></li>
-  <li><a href="#computer-science" id="toc-computer-science" class="nav-link" data-scroll-target="#computer-science">Computer Science</a></li>
-  <li><a href="#other-fields" id="toc-other-fields" class="nav-link" data-scroll-target="#other-fields">Other Fields</a></li>
+  <li><a href="#duplicates-in-sql" id="toc-duplicates-in-sql" class="nav-link active" data-scroll-target="#duplicates-in-sql">Duplicates in SQL</a>
+  <ul class="collapse">
+  <li><a href="#bags-in-sql" id="toc-bags-in-sql" class="nav-link" data-scroll-target="#bags-in-sql">Bags in SQL</a></li>
+  </ul></li>
+  <li><a href="#views" id="toc-views" class="nav-link" data-scroll-target="#views">Views</a>
+  <ul class="collapse">
+  <li><a href="#the-idea" id="toc-the-idea" class="nav-link" data-scroll-target="#the-idea">The idea</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/05-sql-set-operations/05 SQL Set Operations.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/05-sql-set-operations/05 SQL Set Operations.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Class Notes</h1>
-</div>
 
 
 
-<div class="quarto-title-meta column-page-left">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<section id="high-school-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="high-school-level-math">High School Level Math</h3>
+<section id="duplicates-in-sql" class="level2">
+<h2 class="anchored" data-anchor-id="duplicates-in-sql">Duplicates in SQL</h2>
 <ul>
-<li><a href="./notes/IBMath.html">IB Math AA HL Notes</a></li>
-</ul>
-</section>
-<section id="college-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="college-level-math">College Level Math</h3>
-<section id="math-fundamentals" class="level4">
-<h4 class="anchored" data-anchor-id="math-fundamentals">Math Fundamentals</h4>
+<li>A table can have duplicate tuples, unless this would violate an integrity constraint.</li>
+<li>And <code>SELECT-FROM-WHERE (SFW)</code> statements leave duplicates in, unless you say not to!</li>
+<li>Why?
 <ul>
-<li><a href="./notes/Calc2.html">Calculus II</a></li>
-<li><a href="./notes/Calc3.html">Multivariable Calculus/Advanced Calculus/Calculus III</a></li>
-<li><a href="./notes/LA.html">Linear Algebra</a></li>
-<li><a href="./notes/Proofs.html">Mathematical Proofs</a></li>
-</ul>
-</section>
-<section id="applied-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="applied-mathematics">Applied Mathematics</h4>
-<ul>
-<li><a href="./notes/ODE.html">Ordinary Differential Equations</a></li>
-<li><a href="./notes/nonlinearOpt.html">Nonlinear Optimization</a></li>
-<li><a href="./notes/NumericalAnalysis1.html">Undergraduate-Level Numerical Analysis</a></li>
-</ul>
-</section>
-<section id="data-science-statistics-and-causal-inference" class="level4">
-<h4 class="anchored" data-anchor-id="data-science-statistics-and-causal-inference">Data Science, Statistics, and Causal Inference</h4>
-<ul>
-<li><a href="https://jrlyu.github.io/qtm110.io/">Introduction to Causal Inference</a></li>
-<li><a href="./notes/MathStats.html">Mathematical Statistics</a></li>
-<li><a href="https://jrlyu.github.io/google_analytics.io/">Google Data Analytics Learning Notes</a></li>
-</ul>
-</section>
-</section>
-<section id="computer-science" class="level3">
-<h3 class="anchored" data-anchor-id="computer-science">Computer Science</h3>
-<ul>
-<li><a href="./notes/cs171.html">Object-Oriented Programming &amp; Introduction to Data Structures</a></li>
-<li>Introduction to Data Structure and Algorithms</li>
-<li><ul>
-<li><a href="./notes/cs377.html">Database Systems</a></li>
+<li>Getting rid of duplicates is expensive!</li>
+<li>We may want the duplicates because they tell us how many times something occurred.</li>
 </ul></li>
 </ul>
-</section>
-<section id="other-fields" class="level3">
-<h3 class="anchored" data-anchor-id="other-fields">Other Fields</h3>
+<section id="bags-in-sql" class="level3">
+<h3 class="anchored" data-anchor-id="bags-in-sql">Bags in SQL</h3>
 <ul>
-<li><a href="https://jrlyu.github.io/intro_to_socio.io/">Introduction to Sociology</a></li>
+<li><p>SQL treats tables as “bags” (or “multisets”) rather than sets.</p></li>
+<li><p>Bags are just like sets, but duplicates are allowed. &gt;[!example] &gt;- <span class="math inline">\(\{6, 2, 7, 1, 9\}\)</span> is a set and a bag &gt;- <span class="math inline">\(\{6, 2, 7, 1, 9, 1\}\)</span> is not a set but a bag</p></li>
+<li><p>Let sets, order doesn’t matter: <span class="math inline">\(\{6, 2, 7, 1, 9, 1\}=\{1, 1, 2, 6, 7, 9\}\)</span></p></li>
+<li><p>Operations <span class="math inline">\(\cap\)</span>, <span class="math inline">\(\cup\)</span>, and <span class="math inline">\(-\)</span> with bags:</p>
+<ul>
+<li>For <span class="math inline">\(\cap\)</span>, <span class="math inline">\(\cup\)</span>, and <span class="math inline">\(-\)</span> the number of occurrences of a tuple in the result requires some thought.</li>
+<li>Suppose tuple <span class="math inline">\(t\)</span> occurs:
+<ul>
+<li><span class="math inline">\(m\)</span> times in relation <span class="math inline">\(R\)</span>, and</li>
+<li><span class="math inline">\(n\)</span> times in relation <span class="math inline">\(S\)</span></li>
+</ul></li>
+</ul></li>
 </ul>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Operation</th>
+<th style="text-align: center;">Number of Occurrences of <span class="math inline">\(t\)</span> in tuples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(R\cap S\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\min(m,n)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(R\cup S\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(m+n\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(R-S\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\max(m-n,0)\)</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><span class="math inline">\(\cap\)</span>, <span class="math inline">\(\cup\)</span>, and <span class="math inline">\(-\)</span> in SQL:</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(<span class="op">&lt;</span>subquery<span class="op">&gt;</span>) <span class="kw">UNION</span> (<span class="op">&lt;</span>subquery<span class="op">&gt;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>(<span class="op">&lt;</span>subquery<span class="op">&gt;</span>) <span class="kw">INTERSECT</span> (<span class="op">&lt;</span>subquery<span class="op">&gt;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>(<span class="op">&lt;</span>subquery<span class="op">&gt;</span>) <span class="kw">EXCEPT</span> (<span class="op">&lt;</span>subquery<span class="op">&gt;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>The parentheses <code>()</code> are mandatory</li>
+<li>The operands must be queries; you can’t simply use a relation name. &gt;[!example] &gt;<code>sql &gt;(SELECT sid &gt; FROM Took &gt; WHERE grade &gt; 95) &gt;   UNION &gt;(SELECT sid &gt; FROM Took &gt; WHERE grade &lt; 50); &gt;</code></li>
+<li>Bag vs.&nbsp;Set Semantics: which is used and when
+<ul>
+<li>A <code>SELECT-FROM-WHERE</code> statement uses <em>bag</em> semantics by default.
+<ul>
+<li>Duplicates are <em>kept</em> in the result</li>
+</ul></li>
+<li>The set (<code>INTERSECT/UNION/EXCEPT</code>) operations use <em>set</em> semantics by default
+<ul>
+<li>Duplicates are <em>eliminated</em> from the result</li>
+</ul></li>
+</ul></li>
+<li>Motivation: Efficiency
+<ul>
+<li>When doing projection, it is easier not to eliminate duplicate
+<ul>
+<li>Just work one tuple at a time</li>
+</ul></li>
+<li>For intersection or difference, it is most efficient to sort the relations first.
+<ul>
+<li>At that point you may was well eliminate the duplicates anyway</li>
+</ul></li>
+</ul></li>
+<li>However, we can control which semantic is used.
+<ul>
+<li>We can force the result of a <code>SFW</code> query to be a set by using <code>SELECT DISTINCT</code></li>
+<li>We can force the result of a set operation to be a bag by using <code>ALL</code>. &gt;[!example] &gt;<code>sql &gt;(SELECT sid &gt; FROM Took &gt; WHERE grade &gt; 95) &gt;   UNION ALL &gt;(SELECT sid &gt; FROM Took &gt; WHERE grade &lt; 50); &gt;</code></li>
+</ul></li>
+</ul>
+<blockquote class="blockquote">
+<p>[!example]</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> x <span class="kw">FROM</span> A) <span class="kw">EXCEPT</span> (<span class="kw">SELECT</span> x <span class="kw">FROM</span> B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>A single occurrence of a value for x in <strong>B</strong> wipes out all occurrences of it from <strong>A</strong></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> x <span class="kw">FROM</span> A) <span class="kw">EXCEPT</span> (<span class="kw">SELECT</span> x <span class="kw">FROM</span> B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>with <code>EXCEPT ALL</code>, we match up the value one by one</li>
+</ul>
+</blockquote>
+</section>
+</section>
+<section id="views" class="level2">
+<h2 class="anchored" data-anchor-id="views">Views</h2>
+<section id="the-idea" class="level3">
+<h3 class="anchored" data-anchor-id="the-idea">The idea</h3>
+<ul>
+<li>A view is a relation defined in terms of stored tables (called base tables) and possibly also other views.</li>
+<li>Access a view like any base table.</li>
+<li>Two kinds of view:
+<ul>
+<li><strong>Virtual</strong>: no tuples are stored; view is just a <em>query</em> for constructing the relation when needed.</li>
+<li><strong>Materialized</strong>: actually constructed and stored. Expensive to maintain.</li>
+</ul></li>
+<li>Views are particularly important when you want to give different access rights (i.e.&nbsp;permissions) to different users viewing data in your tables! &gt;[!example] &gt;Canvas student page vs.&nbsp;instructor page</li>
+</ul>
+<blockquote class="blockquote">
+<p>[!example] A view for students who earned an 80 or higher in a CSC course:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">VIEW</span> topresults <span class="kw">AS</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> firstname, surname, cnum</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student, Took, Offering</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  Student.sid <span class="op">=</span> Took.sid <span class="kw">AND</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  Took.<span class="kw">oid</span> <span class="op">=</span> Offering.<span class="kw">oid</span> <span class="kw">AND</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  grade <span class="op">&gt;=</span> <span class="dv">80</span> <span class="kw">AND</span> dept <span class="op">=</span> <span class="st">'CSC'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<h3 id="uses-of-views" class="anchored">Uses of Views</h3>
+<ul>
+<li>Break down a large query</li>
+<li>Provide another way of looking at the same data, e.g.&nbsp;for one category of user</li>
+<li>Wrap commonly used complex queries</li>
+</ul>
+</blockquote>
 
 
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
@@ -758,7 +890,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/05-sql-set-operations/05 SQL Set Operations.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/05-sql-set-operations/05 SQL Set Operations.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

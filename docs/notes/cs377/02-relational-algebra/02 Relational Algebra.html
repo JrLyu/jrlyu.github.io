@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Jiuru Lyu - Class Notes</title>
+<title>Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,25 +23,25 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href=".//media/favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -73,8 +73,37 @@ ul.task-list li input[type="checkbox"] {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -84,7 +113,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Jiuru Lyu</span>
     </a>
   </div>
@@ -95,23 +124,23 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./cv/cv.pdf"> 
+    <a class="nav-link" href="../../../cv/cv.pdf"> 
 <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./notes.html" aria-current="page"> 
+    <a class="nav-link" href="../../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./photo.html"> 
+    <a class="nav-link" href="../../../photo.html"> 
 <span class="menu-text">Photograph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blogs.html"> 
+    <a class="nav-link" href="../../../blogs.html"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
@@ -136,83 +165,255 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#high-school-level-math" id="toc-high-school-level-math" class="nav-link active" data-scroll-target="#high-school-level-math">High School Level Math</a></li>
-  <li><a href="#college-level-math" id="toc-college-level-math" class="nav-link" data-scroll-target="#college-level-math">College Level Math</a></li>
-  <li><a href="#computer-science" id="toc-computer-science" class="nav-link" data-scroll-target="#computer-science">Computer Science</a></li>
-  <li><a href="#other-fields" id="toc-other-fields" class="nav-link" data-scroll-target="#other-fields">Other Fields</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#select-choose-rows" id="toc-select-choose-rows" class="nav-link" data-scroll-target="#select-choose-rows">Select: choose rows</a></li>
+  <li><a href="#project-choose-columns" id="toc-project-choose-columns" class="nav-link" data-scroll-target="#project-choose-columns">Project: choose columns</a></li>
+  <li><a href="#combining-tables" id="toc-combining-tables" class="nav-link" data-scroll-target="#combining-tables">Combining Tables</a>
+  <ul class="collapse">
+  <li><a href="#cartesian-product-combine-tables" id="toc-cartesian-product-combine-tables" class="nav-link" data-scroll-target="#cartesian-product-combine-tables">Cartesian Product: Combine Tables</a></li>
+  <li><a href="#natural-join" id="toc-natural-join" class="nav-link" data-scroll-target="#natural-join">Natural Join</a></li>
+  <li><a href="#theta-join" id="toc-theta-join" class="nav-link" data-scroll-target="#theta-join">Theta Join</a></li>
+  <li><a href="#outer-join" id="toc-outer-join" class="nav-link" data-scroll-target="#outer-join">Outer Join</a></li>
+  <li><a href="#cardinality-of-some-operators" id="toc-cardinality-of-some-operators" class="nav-link" data-scroll-target="#cardinality-of-some-operators">Cardinality of Some Operators</a></li>
+  </ul></li>
+  <li><a href="#composing-larger-expressions" id="toc-composing-larger-expressions" class="nav-link" data-scroll-target="#composing-larger-expressions">Composing Larger Expressions</a>
+  <ul class="collapse">
+  <li><a href="#assignment-and-rename-operator" id="toc-assignment-and-rename-operator" class="nav-link" data-scroll-target="#assignment-and-rename-operator">Assignment and Rename Operator</a></li>
+  <li><a href="#set-operations" id="toc-set-operations" class="nav-link" data-scroll-target="#set-operations">Set Operations</a></li>
+  </ul></li>
+  <li><a href="#precedence-of-operators" id="toc-precedence-of-operators" class="nav-link" data-scroll-target="#precedence-of-operators">Precedence of Operators</a></li>
+  <li><a href="#specific-types-of-query" id="toc-specific-types-of-query" class="nav-link" data-scroll-target="#specific-types-of-query">Specific Types of Query</a>
+  <ul class="collapse">
+  <li><a href="#max" id="toc-max" class="nav-link" data-scroll-target="#max">Max</a></li>
+  <li><a href="#exactly-k" id="toc-exactly-k" class="nav-link" data-scroll-target="#exactly-k">Exactly <span class="math inline">\(k\)</span></a></li>
+  </ul></li>
+  <li><a href="#integrity-constraints-via-ra" id="toc-integrity-constraints-via-ra" class="nav-link" data-scroll-target="#integrity-constraints-via-ra">Integrity Constraints via RA</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/02-relational-algebra/02 Relational Algebra.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/02-relational-algebra/02 Relational Algebra.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Class Notes</h1>
-</div>
 
 
 
-<div class="quarto-title-meta column-page-left">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<section id="high-school-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="high-school-level-math">High School Level Math</h3>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <ul>
-<li><a href="./notes/IBMath.html">IB Math AA HL Notes</a></li>
-</ul>
-</section>
-<section id="college-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="college-level-math">College Level Math</h3>
-<section id="math-fundamentals" class="level4">
-<h4 class="anchored" data-anchor-id="math-fundamentals">Math Fundamentals</h4>
+<li>Operands: Table</li>
+<li>Operators:
 <ul>
-<li><a href="./notes/Calc2.html">Calculus II</a></li>
-<li><a href="./notes/Calc3.html">Multivariable Calculus/Advanced Calculus/Calculus III</a></li>
-<li><a href="./notes/LA.html">Linear Algebra</a></li>
-<li><a href="./notes/Proofs.html">Mathematical Proofs</a></li>
-</ul>
-</section>
-<section id="applied-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="applied-mathematics">Applied Mathematics</h4>
-<ul>
-<li><a href="./notes/ODE.html">Ordinary Differential Equations</a></li>
-<li><a href="./notes/nonlinearOpt.html">Nonlinear Optimization</a></li>
-<li><a href="./notes/NumericalAnalysis1.html">Undergraduate-Level Numerical Analysis</a></li>
-</ul>
-</section>
-<section id="data-science-statistics-and-causal-inference" class="level4">
-<h4 class="anchored" data-anchor-id="data-science-statistics-and-causal-inference">Data Science, Statistics, and Causal Inference</h4>
-<ul>
-<li><a href="https://jrlyu.github.io/qtm110.io/">Introduction to Causal Inference</a></li>
-<li><a href="./notes/MathStats.html">Mathematical Statistics</a></li>
-<li><a href="https://jrlyu.github.io/google_analytics.io/">Google Data Analytics Learning Notes</a></li>
-</ul>
-</section>
-</section>
-<section id="computer-science" class="level3">
-<h3 class="anchored" data-anchor-id="computer-science">Computer Science</h3>
-<ul>
-<li><a href="./notes/cs171.html">Object-Oriented Programming &amp; Introduction to Data Structures</a></li>
-<li>Introduction to Data Structure and Algorithms</li>
-<li><ul>
-<li><a href="./notes/cs377.html">Database Systems</a></li>
+<li>choose only the rows (tuples) you want<br>
+</li>
+<li>choose only the columns (attributes) you want</li>
+<li>combine tables<br>
+</li>
+<li>and a few other things..</li>
 </ul></li>
 </ul>
 </section>
-<section id="other-fields" class="level3">
-<h3 class="anchored" data-anchor-id="other-fields">Other Fields</h3>
+<section id="select-choose-rows" class="level2">
+<h2 class="anchored" data-anchor-id="select-choose-rows">Select: choose rows</h2>
+<blockquote class="blockquote">
+<p>[! notation] Notation: Select <span class="math inline">\({\Large\sigma}_C(R)\)</span>, where - <span class="math inline">\(R\)</span> is the relation/table, - Condition <span class="math inline">\(c\)</span> is a boolean expression.</p>
+</blockquote>
 <ul>
-<li><a href="https://jrlyu.github.io/intro_to_socio.io/">Introduction to Sociology</a></li>
+<li>It can use comparison operators and boolean operators</li>
+<li>The operands are either constants or attributes of R.</li>
+<li>The result is a relation:
+<ul>
+<li>with the same schema as the operand<br>
+</li>
+<li>but with only the tuples that satisfy the condition. &gt;[! example] &gt;To select all British actors, we can use <span class="math inline">\({\Large\sigma}_{\text{nationality}=\text{``British''}}(\texttt{Artists})\)</span>. To select all movies from the 1970s, we can use <span class="math inline">\({\Large\sigma}_{\text{year}&gt;1969\text{ and }\text{year}&lt;1980}(\texttt{Movies})\)</span>. Instead of using the word “<span class="math inline">\(\text{and}\)</span>,” we can also use the and operator in logic: <span class="math inline">\(\land\)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="project-choose-columns" class="level2">
+<h2 class="anchored" data-anchor-id="project-choose-columns">Project: choose columns</h2>
+<blockquote class="blockquote">
+<p>[!notation] Notation: Project <span class="math inline">\({\Large\pi}_L(R)\)</span>, where - <span class="math inline">\(R\)</span> is a relation/table, - <span class="math inline">\(L\)</span> is a subset of the attributes of <span class="math inline">\(R\)</span>.</p>
+</blockquote>
+<ul>
+<li>The result is a relation
+<ul>
+<li>with all the tuples from <span class="math inline">\(R\)</span><br>
+</li>
+<li>but with only the attributes in <span class="math inline">\(L\)</span>, and in that order.</li>
+</ul></li>
+<li>The project operator removes duplicates:
+<ul>
+<li>This is due to that we are using the set notation, and so we cannot have duplicate tuples in a table. &gt;[!example] &gt;<span class="math inline">\({\Large\pi}_{\text{director}}(\texttt{Movies})\)</span> will result <span class="math inline">\(\{\text{Kubrick}, \text{Altman}, \text{Polanski}, \text{Lucas}\}\)</span> although the original table has <span class="math inline">\(7\)</span> director names.</li>
+</ul></li>
+</ul>
+<blockquote class="blockquote">
+<p>[!example] Example: Combine select and project <strong><em>Q: Write an RA expression to find the names of all directors of movies from the 1970s.</em></strong> A: <span class="math inline">\({\Large\pi}_{\text{director}}{\Large\sigma}_{\text{year}&gt;1969\land\text{year}&lt;1980}(\texttt{Movies})\)</span> - Note that, as we want to find the names of directors, so we will to the project operator as the last step. - Hence, we will do select first, and then project.</p>
+</blockquote>
+</section>
+<section id="combining-tables" class="level2">
+<h2 class="anchored" data-anchor-id="combining-tables">Combining Tables</h2>
+<section id="cartesian-product-combine-tables" class="level3">
+<h3 class="anchored" data-anchor-id="cartesian-product-combine-tables">Cartesian Product: Combine Tables</h3>
+<blockquote class="blockquote">
+<p>[!notation] Notation: Cartesian Production <span class="math inline">\(R_1\times R_2\)</span>, where - <span class="math inline">\(R_1\)</span> and <span class="math inline">\(R_2\)</span> are tables.</p>
+</blockquote>
+<ul>
+<li><p>The result is a relation with</p>
+<ul>
+<li>every combination of a tuple from <span class="math inline">\(R1\)</span> concatenated to a tuple from <span class="math inline">\(R_2\)</span></li>
+<li>Its schema is every attribute from <span class="math inline">\(R_1\)</span> followed by every attribute of <span class="math inline">\(R_2\)</span>, in order.</li>
+</ul></li>
+<li><p>The number of tuples in <span class="math inline">\(R_1\times R_2\)</span> is given by <span class="math inline">\(|R_1|\times|R_2|\)</span>, where <span class="math inline">\(|R|\)</span> is the cardinality of <span class="math inline">\(R\)</span>.</p></li>
+<li><p>If an attribute occurs in both relations, it occurs twice in the result, prefixed by relation name. &gt;[!example] &gt;In the result of <span class="math inline">\(\texttt{Movie}\times\texttt{Roles}\)</span>, we will see <span class="math inline">\(\text{Movies.mID}\)</span> and <span class="math inline">\(\text{Roles.mID}\)</span>.</p></li>
+<li><p>However, Cartesian product can be inconvenient</p>
+<ul>
+<li>It can introduce <strong>nonsense</strong> tuples.</li>
+<li>However, we can get rid of them with select operators.</li>
+</ul></li>
+<li><p>Due to this inconvenience, we need <strong><em>join</em></strong> operators.</p></li>
+</ul>
+</section>
+<section id="natural-join" class="level3">
+<h3 class="anchored" data-anchor-id="natural-join">Natural Join</h3>
+<blockquote class="blockquote">
+<p>[!notation] Notation: Natural Join <span class="math inline">\(R\bowtie S\)</span>, where - <span class="math inline">\(R\)</span> and <span class="math inline">\(S\)</span> are tables - <span class="math inline">\(\bowtie\)</span> is the natural join operator.</p>
+</blockquote>
+<ul>
+<li>The result is formed by
+<ul>
+<li>taking the Cartesian product,</li>
+<li>select to ensure equality on attributes that are in both relations (determine by name),</li>
+<li>projecting to remove duplicate attributes. &gt;[!important] Properties of Natural Join &gt;- Commutativity (although attribute orders may vary): <span class="math display">\[R\bowtie S=S\bowtie R\]</span> &gt;- Associativity: <span class="math display">\[R\bowtie(S\bowtie T)=(R\bowtie S)\bowtie T\]</span> &gt;- When writing <span class="math inline">\(n\)</span>-ary joins, brackets are irrelevant. We can just write: <span class="math display">\[R_1\bowtie R_2\bowtie\cdots\bowtie R_n.\]</span></li>
+</ul></li>
+<li>Special cases of Natural Join
+<ul>
+<li>If there is not tuple match, natural join will result in the empty set <span class="math inline">\(\emptyset\)</span>.</li>
+<li>Natural join is looking for <strong>exact match</strong>.</li>
+<li>If there is no attributes in common, the result will be the <strong>Cartesian product</strong> of the two relations.</li>
+</ul></li>
+<li>Natural join can <strong>over-match</strong>
+<ul>
+<li>Natural join bases the matching on attribute names.</li>
+<li>What if two attributes have the same name, but we don’t want them to have to match?</li>
+</ul></li>
+<li>Natural join can <strong>under-match</strong>
+<ul>
+<li><ul>
+<li>What if two attributes don’t have the same name and we do want them to match?</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="theta-join" class="level3">
+<h3 class="anchored" data-anchor-id="theta-join">Theta Join</h3>
+<blockquote class="blockquote">
+<p>[!definition] Definition: Theta Join <span class="math inline">\({\Large\bowtie}_{\text{condition}}\)</span> - Rationale: it is easier to check conditions after making the Cartesian production: <span class="math inline">\({\Large\sigma}_{\text{condition}}(R\times S)\)</span> - Syntax: <span class="math inline">\(R\ {\Large\bowtie}_{\text{condition}}\ S\)</span> - The result is the same as Cartesian product (not natural join!) followed by select: <span class="math display">\[R\ {\Large\bowtie}_{\text{condition}}\ S={\Large\sigma}_{\text{condition}}(R\times S)\]</span></p>
+</blockquote>
+</section>
+<section id="outer-join" class="level3">
+<h3 class="anchored" data-anchor-id="outer-join">Outer Join</h3>
+<ul>
+<li>Outer Join keeps all the tuples and adds <code>null</code> values whenever no value exists</li>
+<li>Three variants:
+<ul>
+<li><strong>Left Outer Join</strong>: only do this “null padding” for left operand: ⟕</li>
+<li><strong>Right Outer Join</strong>: only do this “null padding” for right operand: ⟖</li>
+<li><strong>Full Outer Join</strong>: pad other operands: ⟗</li>
+</ul></li>
+</ul>
+</section>
+<section id="cardinality-of-some-operators" class="level3">
+<h3 class="anchored" data-anchor-id="cardinality-of-some-operators">Cardinality of Some Operators</h3>
+<ul>
+<li>Given <span class="math inline">\(R_1(X_1)\)</span> and <span class="math inline">\(R_2(X_2)\)</span>, the cardinality (number of tuples) of
+<ul>
+<li>Cartesian product: <span class="math inline">\(|R_1\times R_2|=|R_1|\times|R_2|\)</span></li>
+<li>Natural join: <span class="math inline">\(0\leq|R_1\Join R_2|\leq|R_1|\times|R_2|\)</span>
+<ul>
+<li>Notice that if the attributes used in a natural join (i.e., the attributes in <span class="math inline">\(X_1\cap X_2\)</span>) contain a key of <span class="math inline">\(R_2\)</span>, then <span class="math display">\[0\leq|R_1\Join R_2|\leq|R_1|\]</span></li>
+</ul></li>
+<li>Same applies for left/right outer joins, if and only if the “outer” part is pointint to the table with the non-key attribute.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="composing-larger-expressions" class="level2">
+<h2 class="anchored" data-anchor-id="composing-larger-expressions">Composing Larger Expressions</h2>
+<section id="assignment-and-rename-operator" class="level3">
+<h3 class="anchored" data-anchor-id="assignment-and-rename-operator">Assignment and Rename Operator</h3>
+<blockquote class="blockquote">
+<p>[!notation] Notation: Assignment <span class="math inline">\(R\coloneqq\text{Expression}\)</span> or <span class="math inline">\(R(A_1,\dots,A_n)\coloneqq\text{Expression}\)</span> - The later notation lets us name all the attributes of the new relation - Sometimes, we don’t want the name they would get from Expression - <span class="math inline">\(R\)</span> must be a temporary variable, <strong>not one of the relations in the schema</strong>. That is, we are not updating the content of a relation.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[!example] Using Assignment <span class="math display">\[\begin{aligned}\text{Temp }1&amp;\coloneqq Q\times R\\\text{Temp }2&amp;\coloneqq{\Large\sigma}_{a=99}(\text{Temp }1)\times S\\\text{Answer}(\text{part},\text{price})&amp;\coloneqq{\Large\pi}_{b,c}(\text{Temp }2)\end{aligned}\]</span> - This is all for <strong>readability</strong>. - Assignment helps us break a problem down. - It also allows us to change the names of relations (and attributes).</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[!notation] Notation: Rename <span class="math inline">\({\Large\rho}_{R_1}R_2\)</span> or <span class="math inline">\({\Large\rho}_{R_1(A_1,\dots,A_n)}(R_2)\)</span> - The later notation lets us rename all the attributes as well as the relation.</p>
+</blockquote>
+<ul>
+<li>Equivalent Notations: <span class="math display">\[R_1(A_1,\dots,A_n)\coloneqq R_2\equiv R_1\coloneqq{\Large\rho}_{R_1(A_1,\dots,A_n)}(R_2)\]</span></li>
+<li><span class="math inline">\(\rho\)</span> is useful if we want to rename within an expression.</li>
+</ul>
+</section>
+<section id="set-operations" class="level3">
+<h3 class="anchored" data-anchor-id="set-operations">Set Operations</h3>
+<ul>
+<li>Because relations are sets, we can use set <strong>intersection</strong> (<span class="math inline">\(\cap\)</span>), <strong>union</strong> (<span class="math inline">\(\cup\)</span>), and <strong>difference</strong> (<span class="math inline">\(-\)</span>). But only if the operands are relations over the <em>same</em> attributes (in number, name, and order). <strong><em>Schema needs to be identical</em></strong>.</li>
+</ul>
+</section>
+</section>
+<section id="precedence-of-operators" class="level2">
+<h2 class="anchored" data-anchor-id="precedence-of-operators">Precedence of Operators</h2>
+<ul>
+<li>Expressions can be composed recursively</li>
+<li>Parentheses <span class="math inline">\(()\)</span> and precedence rules define the order of evaluation</li>
+<li>Precedence, from highest to lowest, is:
+<ul>
+<li><span class="math inline">\(\Large{\sigma,\ \pi, \rho}\)</span></li>
+<li><span class="math inline">\(\Large{\times,\ \Join}\)</span></li>
+<li><span class="math inline">\(\Large{\cap}\)</span></li>
+<li><span class="math inline">\(\Large{\cup,\ -}\)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="specific-types-of-query" class="level2">
+<h2 class="anchored" data-anchor-id="specific-types-of-query">Specific Types of Query</h2>
+<section id="max" class="level3">
+<h3 class="anchored" data-anchor-id="max">Max</h3>
+<ul>
+<li>The function <code>Max</code> is not directly supported in relational algebra.</li>
+<li>Idea:
+<ul>
+<li>Pair tuples and find those that are <em>not</em> the max</li>
+<li>Then, subtract from all to find the maxes.</li>
+</ul></li>
+<li>Procedure: <span class="math inline">\(S\)</span> to be the table and we want to find <span class="math inline">\(\max(\text{GPA})\)</span>
+<ul>
+<li>Create the pair of tuples: <span class="math inline">\({\Large\rho}_{S_1}(S)\times{\Large\rho}_{S_2}(S)\)</span></li>
+<li>Filter those GPA that is smaller than the other one in each pair: we will left will everything “smaller;” that is, <span class="math inline">\(\max{\text{GPA}}\)</span> will not be present. <span class="math display">\[S_3(\text{GPA})\coloneqq{\Large\pi}_{S_1.\text{GPA}}{\Large\sigma}_{(S_1.\text{GPA}&lt;S_2.\text{GPA})}({\Large\rho}_{S_1}(S)\times{\Large\rho}_{S_2}(S))\]</span></li>
+<li>Then, doing the subtraction, we will get the maximum: <span class="math display">\[\max(\text{GPA})={\Large\pi}_\text{GPA}(S)-{\Large\pi}_\text{GPA}(S_3)\]</span> ### <span class="math inline">\(k\)</span> or more</li>
+</ul></li>
+<li>To write a query about something like “students with two or more classes with grade &gt; 80” we:
+<ul>
+<li>Make all combos of <span class="math inline">\(k\)</span> different tuples that satisfy the condition. &gt;[!example] &gt; <span class="math display">\[S\coloneqq{\Large\rho_{R_1}}(R)\times{\Large\rho_{R_2}}(R)\]</span> <span class="math display">\[R_3={\Large\sigma}_{(R_1.\text{sID}=R_2.\text{sID}\land R_1.\text{Class}\neq R_2.\text{Class})}(S)\]</span> <span class="math display">\[{\Large\pi}_{\text{sID}}{\Large\sigma}_{(R_1.\text{Grade}&gt;80\land R_2.\text{Grade}&gt;80)}(R_3)\]</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="exactly-k" class="level3">
+<h3 class="anchored" data-anchor-id="exactly-k">Exactly <span class="math inline">\(k\)</span></h3>
+<ul>
+<li>“<span class="math inline">\(k\)</span> or more” – “<span class="math inline">\((k+1)\)</span> or more”</li>
+</ul>
+</section>
+</section>
+<section id="integrity-constraints-via-ra" class="level2">
+<h2 class="anchored" data-anchor-id="integrity-constraints-via-ra">Integrity Constraints via RA</h2>
+<ul>
+<li>In a schema description, we can express integrity constraints using a relational algebra expression</li>
+<li>We use the notation
+<ul>
+<li><span class="math inline">\(R=\emptyset\)</span>, or</li>
+<li><span class="math inline">\(R\subseteq S\)</span> &gt;[!example] &gt;- Courses at the 400-level cannot count for breadth. <span class="math display">\[{\Large\sigma}_(400\leq\text{cNum}\leq500)\land\text{breadth}(\text{Course})=\emptyset\]</span> &gt;- In terms when CS 490 is offered, CS 454 must be offered. <span class="math display">\[\text{CS490Terms}(\text{term})\coloneqq{\Large\pi}_\text{term}({\Large\sigma}_{(\text{dept}=\text{'CS'}\land\text{cNum}=490)}(\text{Offering}))\]</span><span class="math display">\[\text{CS454Terms}(\text{term})\coloneqq{\Large\pi}_\text{term}({\Large\sigma}_{(\text{dept}=\text{'CS'}\land\text{cNum}=454)}(\text{Offering}))\]</span> <span class="math display">\[\text{CS490Terms}-\text{CS454Terms}=\emptyset\]</span></li>
+</ul></li>
 </ul>
 
 
@@ -758,7 +959,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/02-relational-algebra/02 Relational Algebra.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/02-relational-algebra/02 Relational Algebra.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

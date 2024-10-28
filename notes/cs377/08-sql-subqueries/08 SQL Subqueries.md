@@ -1,0 +1,136 @@
+## Subqueries in a `FROM` clause
+- Instead of a relation name in the `FROM` clause, we can use a subquery.
+- The subquery must be parenthesized.
+- Must _name_ the result, so you can refer to it in the outer query.
+>[!example]
+>```sql
+>SELECT sid, dept||cnum as course, grade
+>FROM Took,
+>(SELECT *
+>FROM Offering
+>WHERE instructor=‘Horton’) Hoffering
+>WHERE Took.oid = Hoffering.oid;
+>```
+>- This is equiv. to $\texttt{Took}\times\rho_\texttt{Hoffering} (<\texttt{subquery}>)$
+
+## Subqueries in a `WHERE` Clause (Or `HAVING` Clause)
+- If a subquery is guaranteed to produce exactly one tuple, then the subquery can be used as a value.
+• Simplest situation: that one tuple has only one attribute.
+>[!example]
+>```sql
+>SELECT sid, surname
+>FROM Student
+>WHERE cgpa >
+>(SELECT cgpa
+>FROM Student
+>WHERE sid = 99999);
+>```
+
+## More Examples
+- Student(s) whose cgpa is equal to max cgpa?
+```sql
+-- Incorrect:  
+SELECT *  
+FROM Student  
+WHERE cgpa = MAX(cgpa);  
+  
+-- Correct:  
+SELECT *  
+FROM Student  
+WHERE cgpa = (SELECT MAX(cgpa) FROM Student);
+```
+- If needed: we can add an ORDER BY clause at the end of the main (outer) query.
+```sql
+SELECT *  
+FROM Student  
+WHERE cgpa >= 
+	(SELECT MAX(cgpa) FROM Student);
+ORDER BY cgpa DESC;
+```
+
+## Scope
+- Queries are evaluated from the inside out.
+- If a name might refer to more than one thing, use the most closely nested one.
+- If a subquery refers only to names defined inside it, it can be evaluated *once* and used repeatedly in the outer query.
+- If it refers to any name defined outside of itself, it must be evaluated *once for each tuple in the outer query*. These are called **correlated subqueries**.
+
+## Special Case
+- What if the subquery returns `NULL`?
+	- Evaluates to `UNKNOWN`, tuple not returned
+- What if the subquery could return more than one value?
+- When a subquery can return multiple values, we can make comparisons using a quantifier:
+	- `cgpa > at least one of them (ANY)`
+	- `cgpa > all of them (ALL)`
+### The Operator `ALL`
+- Syntax: `x <comparison> ALL (<subquery>)`
+- Semantics: Its value is true $\iff$ the comparison holds for every tuple in the subquery result, i.e., $$\forall\ y ∈ \texttt{<subquery results>},\text{ we have } x \texttt{<comparison>} y$$
+```sql
+-- Incorrect: 
+SELECT * 
+FROM Student
+WHERE cgpa =
+	(SELECT cgpa FROM Student);
+
+-- Correct: 
+SELECT * 
+FROM Student
+WHERE cgpa >= ALL
+	(SELECT cgpa FROM Student);
+```
+### The Operator `ANY`
+-  Syntax: 
+	- `x <comparison> ANY (<subquery>)` 
+	- Or equiv. `x <comparison> SOME (<subquery>) -- Only valid in Postgres`
+-  Semantics: Its value is true $\iff$ the comparison holds for at least one tuple in the subquery result, i.e., $$\exists\ y\in \texttt{<subquery results>}\text{ such that } x \texttt{<comaprison>} y$$
+```sql
+SELECT *  
+FROM Student  
+WHERE campus = 'StG'  
+  AND cgpa > ANY  
+      (SELECT cgpa  
+       FROM Student  
+       WHERE campus = 'UTSC');
+```
+### The Operator `IN`
+- Syntax: `x IN (<subquery>)`
+- Semantics: Ifs value is true $\iff x$ equals at least one of the tuples in the subquery result. 
+	- $x$ can be a list of attributes, and psql does support this feature. 
+```sql
+SELECT *  
+FROM Student  
+WHERE campus IN  
+      (SELECT campus  
+       FROM Student  
+       WHERE cgpa > 3.7);
+```
+- We can hard-code the list
+```sql
+SELECT *  
+FROM Course  
+WHERE dept IN ('CSC', 'HIS', 'ENV');
+```
+### The Operator `EXISTS`
+- Syntax: `EXISTS (<subquery>)`
+- Semantics: Its value is true $\iff$ the subquery has at least one tuple.
+```sql
+-- This is also an example of correlated query:  
+-- Subquery must be evaluated once for each tuple in outer query!
+SELECT instructor
+FROM Offering Off1
+WHERE NOT EXISTS (
+	SELECT *
+	FROM Offering
+	WHERE oid <> Off1.oid AND -- <> is equiv. to !=
+		  instructor = Off1.instructor);
+```
+- `NOT EXISTS (<subquery>)`: `WHERE` clause yields true $\iff$ the subquery returns an *empty* result set!
+- Renaming makes the scope more explicit: 
+```sql
+SELECT instructor
+FROM Offering Off1
+WHERE NOT EXISTS (
+	SELECT *
+	FROM Offering Off2
+	WHERE Off2.oid <> Off1.oid AND
+		  Off2.instructor = Off1.instructor);
+```

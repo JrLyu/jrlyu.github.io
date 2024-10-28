@@ -1,0 +1,101 @@
+## Aggregation
+- Computing on a column
+	- We often want to compute something across the values in a column
+	- `SUM`, `AVG`, `MIN`, and `MAX`
+	- We can also count the number of tuples (rows) by using `COUNT(*)`
+```sql
+SELECT *
+FROM Took;
+
+SELECT grade
+FROM Took;
+
+SELECT AVG(grade)
+FROM Took;
+
+SELECT AVG(grade) AS myAVG /* It is recommend to always rename */
+FROM Took;
+
+/* One can combine multiple aggregations */
+SELECT MAX(grade), AVG(grade), COUNT(*), MIN(sID)
+FROM Took;
+```
+## `GROUP BY`
+- If we follow a `SELECT-FROM-WHERE` expression with `GROUP BY <attributes>`
+	- The rows are grouped together according to the values of those attributes, and
+	- any aggregations is applied only within each group 
+```sql
+SELECT oID, AVG(grade) AS offAvg
+FROM Took
+GROUP BY oID;
+```
+- *Note: `SELECT` cannot include un-aggregated columns*
+```sql
+/* The following will produce an error */
+SELECT oID, AVG(grade) AS offAvg, sID
+FROM Took
+GROUP BY oID;
+```
+- Restrictions on Aggregation:
+	- If any aggregation is used, then each element of the `SELECT` list must be either
+		- aggregated, or
+		- an attribute on the `GROUP BY` list.
+## `HAVING`
+- Sometimes, we want to keep some groups and eliminate others from our result set. 
+- `WHERE` let us decide which tuples to keep - performed before the grouping
+- `HAVING` decides which groups to keep - performed after the grouping
+```sql
+...
+GROUP BY <attributes>
+HAVING <condition>
+```
+- Only groups satisfying the condition are kept.
+- Requirements on `HAVING` clauses:
+	- Outside subqueries, `HAVING` may refer to attributes only if they are either:
+		- aggregated, or 
+		- an attribute on the `GROUP BY` list
+	- This requirement is the same as `SELECT` clause.
+```sql
+SELECT oID, AVG(grade) as offAvg
+FROM Took
+GROUP BY oID
+HAVING AVG(grade) > 80; 
+/* Cannot use offAvg here. HAVING is executed before SELECT*/
+
+/* The following two queries are WRONG / produce undesired results */
+SELECT oID, AVG(grade) as offAvg
+FROM Took
+GROUP BY oID
+WHERE AVG(grade) > 80; /* Incorrect! */
+
+SELECT oID, AVG(grade) as offAvg
+FROM Took
+WHERE AVG(grade) > 80 /* Incorrect! */
+GROUP BY oID;
+
+/* Another HAVING example */
+SELECT oID, avg(grade) as offAvg
+GROUP BY oID
+HAVING oID <= 5
+ORDER BY oID; 
+```
+
+## Order of Execution of a SQL Query
+| Query Order | Execution Order |
+| :---------: | :-------------: |
+|  `SELECT`   |     `FROM`      |
+|   `FROM`    |     `WHERE`     |
+|   `WHERE`   |   `GROUP BY`    |
+| `GROUP BY`  |    `HAVING`     |
+|  `HAVING`   |    `SELECT`     |
+| `ORDER BY`  |   `ORDER BY`    |
+- However, note that we can order by a column even if it is not selected.
+```sql
+/* The following query is legal. */
+SELECT sID
+FROM Took
+GROUP BY sID
+HAVING AVG(grade) > 80
+ORDER BY AVG(grade)
+```
+

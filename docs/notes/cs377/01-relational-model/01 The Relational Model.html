@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Jiuru Lyu - Class Notes</title>
+<title>Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,25 +23,25 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href=".//media/favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -73,8 +73,37 @@ ul.task-list li input[type="checkbox"] {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -84,7 +113,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Jiuru Lyu</span>
     </a>
   </div>
@@ -95,23 +124,23 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./cv/cv.pdf"> 
+    <a class="nav-link" href="../../../cv/cv.pdf"> 
 <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./notes.html" aria-current="page"> 
+    <a class="nav-link" href="../../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./photo.html"> 
+    <a class="nav-link" href="../../../photo.html"> 
 <span class="menu-text">Photograph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blogs.html"> 
+    <a class="nav-link" href="../../../blogs.html"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
@@ -136,83 +165,94 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#high-school-level-math" id="toc-high-school-level-math" class="nav-link active" data-scroll-target="#high-school-level-math">High School Level Math</a></li>
-  <li><a href="#college-level-math" id="toc-college-level-math" class="nav-link" data-scroll-target="#college-level-math">College Level Math</a></li>
-  <li><a href="#computer-science" id="toc-computer-science" class="nav-link" data-scroll-target="#computer-science">Computer Science</a></li>
-  <li><a href="#other-fields" id="toc-other-fields" class="nav-link" data-scroll-target="#other-fields">Other Fields</a></li>
+  <li><a href="#db-systems-to-rescue" id="toc-db-systems-to-rescue" class="nav-link active" data-scroll-target="#db-systems-to-rescue">DB Systems to Rescue</a></li>
+  <li><a href="#data-model" id="toc-data-model" class="nav-link" data-scroll-target="#data-model">Data Model</a></li>
+  <li><a href="#relations-schema-instance-and-keys" id="toc-relations-schema-instance-and-keys" class="nav-link" data-scroll-target="#relations-schema-instance-and-keys">Relations: Schema, Instance, and Keys</a></li>
+  <li><a href="#reference-and-keys" id="toc-reference-and-keys" class="nav-link" data-scroll-target="#reference-and-keys">Reference and Keys</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/01-relational-model/01 The Relational Model.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/01-relational-model/01 The Relational Model.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Class Notes</h1>
-</div>
 
 
 
-<div class="quarto-title-meta column-page-left">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<section id="high-school-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="high-school-level-math">High School Level Math</h3>
+<section id="db-systems-to-rescue" class="level2">
+<h2 class="anchored" data-anchor-id="db-systems-to-rescue">DB Systems to Rescue</h2>
 <ul>
-<li><a href="./notes/IBMath.html">IB Math AA HL Notes</a></li>
+<li>DB are designed to solve the problem <strong>Physical Data Dependence</strong>: so, they are physical data independence</li>
+<li>“The three-schema architecture” separates user programs from the physical DB</li>
 </ul>
 </section>
-<section id="college-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="college-level-math">College Level Math</h3>
-<section id="math-fundamentals" class="level4">
-<h4 class="anchored" data-anchor-id="math-fundamentals">Math Fundamentals</h4>
-<ul>
-<li><a href="./notes/Calc2.html">Calculus II</a></li>
-<li><a href="./notes/Calc3.html">Multivariable Calculus/Advanced Calculus/Calculus III</a></li>
-<li><a href="./notes/LA.html">Linear Algebra</a></li>
-<li><a href="./notes/Proofs.html">Mathematical Proofs</a></li>
-</ul>
+<section id="data-model" class="level2">
+<h2 class="anchored" data-anchor-id="data-model">Data Model</h2>
+<blockquote class="blockquote">
+<p>[!definition] Every DBMS is based on some <strong>data model</strong>, a notation for describing data, including - The structure of the data - Constraints on the content of the data - Operations on the data - Examples: - Network &amp; hierarchical data model – of historical interest - Relational data model - Semistructured data model</p>
+</blockquote>
 </section>
-<section id="applied-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="applied-mathematics">Applied Mathematics</h4>
+<section id="relations-schema-instance-and-keys" class="level2">
+<h2 class="anchored" data-anchor-id="relations-schema-instance-and-keys">Relations: Schema, Instance, and Keys</h2>
+<blockquote class="blockquote">
+<p>[!definition] A <strong>domain</strong> is a set of values. - Suppose <span class="math inline">\(D_1,D_2,\dots,D_n\)</span> are domains. - The <strong>Cartesian (cross) product</strong> <span class="math inline">\(D_1\times D_2\times\cdots\times D_n\)</span> is the set of all tuples <span class="math inline">\(\langle d_1,d_2,\dots,d_n\rangle\)</span> such that <span class="math inline">\(d_1\in D_1, d_2\in D_2,\dots,d_n\in D_n\)</span>. - Mathematical relation on <span class="math inline">\(D_1,\dots,D_n\)</span> is a subset of the Cartesian product. - Our database <strong>tables</strong> are relations, too.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[!definition] <strong>Schema</strong>: definition of the structure of the relation. - Notation: <span class="math display">\[\text{Teams}(\text{Name},\text{HomeField},\text{Coach})\]</span></p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[!definition] <strong>Instance</strong>: particular data in the relation. - Instance change constantly; schemas rarely. - <font color="green"><i>Example: Adding a column (attribute) changes the schema as well as the instance</i></font> - When designing the DB, we should avoid changing schema very frequently because changing schema is expensive.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[!definition] In a DB table: - <strong>relation</strong> = table itself - <strong>attribute</strong> = column (optionally, we can specify that attributes have domains) - <strong>tuple</strong> = row - <strong>arity</strong> = number of attributes (columns) - <strong>cardinality</strong> = umber of tuples (rows)</p>
+</blockquote>
 <ul>
-<li><a href="./notes/ODE.html">Ordinary Differential Equations</a></li>
-<li><a href="./notes/nonlinearOpt.html">Nonlinear Optimization</a></li>
-<li><a href="./notes/NumericalAnalysis1.html">Undergraduate-Level Numerical Analysis</a></li>
-</ul>
-</section>
-<section id="data-science-statistics-and-causal-inference" class="level4">
-<h4 class="anchored" data-anchor-id="data-science-statistics-and-causal-inference">Data Science, Statistics, and Causal Inference</h4>
+<li>A relation is a <strong>set</strong> of tuples, which means:
 <ul>
-<li><a href="https://jrlyu.github.io/qtm110.io/">Introduction to Causal Inference</a></li>
-<li><a href="./notes/MathStats.html">Mathematical Statistics</a></li>
-<li><a href="https://jrlyu.github.io/google_analytics.io/">Google Data Analytics Learning Notes</a></li>
-</ul>
-</section>
-</section>
-<section id="computer-science" class="level3">
-<h3 class="anchored" data-anchor-id="computer-science">Computer Science</h3>
-<ul>
-<li><a href="./notes/cs171.html">Object-Oriented Programming &amp; Introduction to Data Structures</a></li>
-<li>Introduction to Data Structure and Algorithms</li>
-<li><ul>
-<li><a href="./notes/cs377.html">Database Systems</a></li>
+<li>there can be <em>no duplicate</em> tuples</li>
+<li><em>order</em> of the tuples <em>does not</em> matter</li>
 </ul></li>
 </ul>
+<blockquote class="blockquote">
+<p>[!definition] <strong>Database schema</strong>: a set of relation schemas –&gt; <em>no actual data</em> <strong>Database instance</strong>: a set of relation instances</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[!definition] <strong>Superkeys</strong>: a set of one or more attributes whose <em>combined</em> values are unique. That is, no two tuples can have the same values on all of these attributes. - By default, tuples cannot be duplicated. So, the entire tuple is viewed as a superkey. But, we can declare other superkeys. So, every relation have a superkey. - There can be multiple superkeys for a relation.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[!definition] <strong>Key</strong>: a minimal superkey. - That is, you <em>may not</em> remove an attribute from a key, and still have a set of attributes whose combined values are <em>unique.</em></p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[!example] Example A relation called <code>Course</code>, which attributes: department codes, course number, and course name. One tuple might be <span class="math display">\[\text{Course}\langle\text{``cs''},\text{``377''},\text{``Introduction to Databases''}\rangle\]</span> The superkey for this relation would be the combinations of <code>cs</code> and <code>377</code>. The entire tuple can also be viewed as a superkey. However, <span class="math inline">\(\langle\text{``cs''},\text{``377''}\rangle\)</span> is the key.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[!example] Example Consider the following relation: <span class="math display">\[\text{Studnet}\langle\text{student\#},\text{netID},\text{surname},\text{firstname},\text{gpa}\rangle.\]</span> This relation has multiple key: <code>student#</code> or <code>netID</code> can either serve as a key. - We underline attributes in the schema to indicate that they form a key. - For example, <span class="math display">\[\text{Team}\langle\underline{\text{Name},\text{HomeField}},\text{Coach}\rangle\]</span> - Aside: Called “superkey” because it is a superset of some key. (Not necessarily a proper superset.) - If a set of attributes is a key for a relation - It does not mean merely that “there are no duplicates” in particular instance of the relation - It means that in principle there <strong><em>cannot</em></strong> be any - Often we have to invent an artificial new attribute to ensure all tuples will be unique. - A key is a kind of <strong>integrity constraint</strong>.</p>
+</blockquote>
 </section>
-<section id="other-fields" class="level3">
-<h3 class="anchored" data-anchor-id="other-fields">Other Fields</h3>
+<section id="reference-and-keys" class="level2">
+<h2 class="anchored" data-anchor-id="reference-and-keys">Reference and Keys</h2>
 <ul>
-<li><a href="https://jrlyu.github.io/intro_to_socio.io/">Introduction to Sociology</a></li>
+<li>Relations often <strong><em>refer</em></strong> to each other. &gt;[!definition] &gt;If the referring attribute refers to a <em>key</em> attribute in another table, it is called a <strong>foreign key</strong>. &gt;- For example, in table <code>Roles</code>, the attribute <code>aID</code> refers to the key <code>aID</code> in the <code>Artists</code> table, we write <span class="math inline">\(\text{Roles}[\text{aID}]\subseteq\text{Artists}[\text{aID}]\)</span>. &gt;- More generally, we use the following notation: <span class="math inline">\(R_1[X]\subseteq R_2[Y]\)</span>.</li>
+<li>This gives us a way to refer to a single tuple in <em>that</em> relation.</li>
+<li>A foreign key may need to have several attributes.</li>
+<li>The <span class="math inline">\(R[A]\)</span> notation:
+<ul>
+<li><span class="math inline">\(R\)</span> is the relation, and <span class="math inline">\(A\)</span> is a list of attributes in <span class="math inline">\(R\)</span>.</li>
+<li><span class="math inline">\(R[A]\)</span> is the set of all tuples from <span class="math inline">\(R\)</span>, but with only the attributes in list <span class="math inline">\(A\)</span>.</li>
+</ul></li>
+</ul>
+<blockquote class="blockquote">
+<p>[!definition] These <span class="math inline">\(R_1[X]\subseteq R_2[Y]\)</span> relationships are called <strong>referential integrity constraints</strong> or inclusion dependencies. - Not all referential integrity constraints are foreign key constraints. - <span class="math inline">\(R_1[X]\subseteq R_2[Y]\)</span> is a <strong>foreign key constraint</strong> <span class="math inline">\(\iff\)</span> <span class="math inline">\(Y\)</span> is a key for relation <span class="math inline">\(R_2\)</span>.</p>
+</blockquote>
+<ul>
+<li>Integrity constraints is part of the process: designing a schema
+<ul>
+<li>Mapping from the real world to a relational schema is surprisingly challenging and interesting.</li>
+<li>Two important goals:
+<ul>
+<li>Represent the data well.</li>
+<li>Avoid redundancy.</li>
+</ul></li>
+</ul></li>
 </ul>
 
 
@@ -758,7 +798,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/01-relational-model/01 The Relational Model.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/01-relational-model/01 The Relational Model.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
