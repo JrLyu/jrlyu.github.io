@@ -1,3 +1,14 @@
+---
+title: "9 SQL DDL"
+description: "This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 10-28-2024
+categories: [Coding, SQL, Database, DDL]
+draft: true
+---
+
 ## DB Systems to Rescue
 - DB are designed to solve the problem **Physical Data Dependence**: so, they are physical data independence
 - "The three-schema architecture" separates user programs from the physical DB

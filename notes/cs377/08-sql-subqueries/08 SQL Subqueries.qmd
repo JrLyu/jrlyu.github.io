@@ -1,3 +1,14 @@
+---
+title: "9 SQL DDL"
+description: "This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 10-28-2024
+categories: [Coding, SQL, Database, DDL]
+draft: true
+---
+
 ## Subqueries in a `FROM` clause
 - Instead of a relation name in the `FROM` clause, we can use a subquery.
 - The subquery must be parenthesized.

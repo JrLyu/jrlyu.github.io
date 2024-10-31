@@ -1,0 +1,11 @@
+---
+title: "10 JDBC"
+description: "This lecture discusses how to embed SQL in Java using JDBC. It covers the JDBC API, SQL Injection, and Prepared Statements."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 10-30-2024
+categories: [Coding, SQL, Database, Java, JDBC]
+draft: true
+---
+

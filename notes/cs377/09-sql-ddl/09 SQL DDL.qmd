@@ -47,6 +47,7 @@ INSERT INTO Invite VALUES
 	('Al','StG','a@a.com',20),
 	('Link','StG','li@li.com',18);
 ```
+
 ### Delete Tuples
 - Deletion
 	- Delete tuples satisfying a condition: `DELETE FROM <relation> WHERE <condition>;`
@@ -60,9 +61,10 @@ DELETE FROM Course
        WHERE  
            grade > 60 AND  
            Offering.dept = Course.dept AND  
-           Offering.cnum = Course.cnum  
+           Offering.cnum = Course.cnum
 );
 ```
+
 ### Update
 - To change the value of certain attributes in certain tuples to given values:
 ```sql
@@ -83,6 +85,27 @@ SET grade = 50
 WHERE grade >= 47 and grade < 50;
 ```
 :::
+
+:::{#wrn-update .callout-warning}
+## Inside the `SET` Clause, Aliases are Not Allowed
+```sql
+UPDATE StrugglingLabel S
+SET S.label_country = ( -- Illegal!
+        SELECT R.country
+        FROM RecordLabel R
+        WHERE R.label_id = S.label_id
+);
+
+-- The following is legal: 
+UPDATE StrugglingLabel S
+SET label_country = ( -- no alias allowed here
+        SELECT R.country
+        FROM RecordLabel R
+        WHERE R.label_id = S.label_id
+);
+```
+:::
+
 ### Create
 ```sql
 CREATE TABLE <table name> (

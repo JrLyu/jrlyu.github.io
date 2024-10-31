@@ -31,7 +31,7 @@ title: "Class Notes"
 
 - [Object-Oriented Programming & Introduction to Data Structures](notes/cs171.qmd)
 - Introduction to Data Structure and Algorithms
-- - [Database Systems](notes/cs377.qmd)
+- [Database Systems](notes/cs377.qmd)
 
 
 ### Other Fields

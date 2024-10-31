@@ -1,3 +1,20 @@
+<!--
+ * @Author: Jiuru Lyu
+ * @fileName: ${TM_FILENAME_BASE}
+ * @Date: 2024-10-02 12:07:03
+ * @Description: 
+-->
+---
+title: "9 SQL DDL"
+description: "This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 10-28-2024
+categories: [Coding, SQL, Database, DDL]
+draft: true
+---
+
 ## The joins we know from RA
 |          Expression within SQL          | Meaning in RA                     |
 | :-------------------------------------: | --------------------------------- |
