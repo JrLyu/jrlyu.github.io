@@ -1,12 +1,12 @@
 ---
-title: "9 SQL DDL"
-description: "This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys."
+title: "3 SQL Introduction"
+description: "This note introduces SQL, the Structured Query Language, which is used to interact with databases. We will cover basic queries, the use of `*`, `AS`, conditions, and `ORDER BY` in SQL."
 author:
   - name: Jiuru Lyu
     url: https://jrlyu.github.io/
-date: 10-28-2024
-categories: [Coding, SQL, Database, DDL]
-draft: true
+date: 09-10-2024
+categories: [Coding, SQL, Database]
+draft: false
 ---
 
 ## RA Review
@@ -25,6 +25,7 @@ draft: true
 - Two sub-parts:
 	- **DDL (Data Definition Language)**: defining schemas.
 	- **DML (Data Manipulation Language)**: writing queries and modifying the database.
+
 ### Basic Queries
 ```sql
 SELECT attributes
@@ -32,93 +33,118 @@ FROM Table
 WHERE <condition>;
 ```
 
->[!example] Example: Link SQL and RA
->```sql
->SELECT name
->FROM Course
->WHERE dept = 'CSC';
->```
-> Equiv. to ${\Large\pi}_{\text{name}}\left({\Large\sigma}_{\text{dept}=\text{``csc''}}(\text{Course})\right)$
+:::{#tip-basic-queries .callout-tip collapse="true"}
+## Example: Link SQL and RA
+```sql
+SELECT name
+FROM Course
+WHERE dept = 'CSC';
+```
 
->[!example] Example: `,` is the Cartesian Product
->```sql
->SELECT name
->FROM Course, Offering, Took
->WHERE dept = 'CSC';
->```
->Equiv. to ${\Large\pi}_{\text{name}}\left({\Large\sigma}_{\text{dept}=\text{``csc''}}(\text{Course}\times\text{Offering}\times\text{Took})\right)$
+Equiv. to ${\Large\pi}_{\text{name}}\left({\Large\sigma}_{\text{dept}=\text{``csc''}}(\text{Course})\right)$
+:::
 
->[!example] Example: Renaming
->```sql
->SELECT e.name, d.name
->FROM employee e, department d
->WHERE d.name = 'marketing'
->	and e.name = 'Horton';
->```
->This is link $\rho$ in relational algebra.
->Can be convenient vs. the longer full names
->```sql
->SELECT employee.name, department.name
->FROM employee, department
->WHERE department.name = 'marketing'
->	and employee.name = 'Horton';
->```
+:::{#tip-cartesian-product .callout-tip collapse="true"}
+## Example: `,` is the Cartesian Product
+```sql
+SELECT name
+FROM Course, Offering, Took
+WHERE dept = 'CSC';
+```
 
->[!example] Example: Self-Joins
->- Renaming is required fro self joins
->```sql
->SELECT e1.name, e2.name
->FROM employee e1, employee e2
->WHERE e1.salary < e2.salary
->```
+Equiv. to ${\Large\pi}_{\text{name}}\left({\Large\sigma}_{\text{dept}=\text{``csc''}}(\text{Course}\times\text{Offering}\times\text{Took})\right)$
+:::
+
+:::{#tip-renaming .callout-tip collapse="true"}
+## Example: Renaming
+```sql
+SELECT e.name, d.name
+FROM employee e, department d
+WHERE d.name = 'marketing' AND
+	  e.name = 'Horton';
+```
+This is link $\rho$ in relational algebra.
+
+**Why do we need to rename?** Can be convenient vs. the longer full names
+```sql
+SELECT employee.name, department.name
+FROM employee, department
+WHERE department.name = 'marketing' AND
+	  employee.name = 'Horton';
+```
+:::
+
+:::{#tip-self-join .callout-tip collapse="true"}
+##  Example: Self-Joins
+*Note*: Renaming is required fro self joins
+```sql
+SELECT e1.name, e2.name
+FROM employee e1, employee e2
+WHERE e1.salary < e2.salary
+```
+:::
 
 ### Use of `*`, `AS`, Conditions, and `ORDER BY`
 - Using `*` in `SELECT` clauses
 	- A `*` in the `SELECT` clause means "all attributes of this relation"
->[!example] Example: Using `*`
->```sql
->SELECT *
->FROM Course
->WHERE dept = 'CSC';
->```
+
+:::{#tip-select-all .callout-tip collapse="true"}
+## Example: Using `*`
+```sql
+SELECT *
+FROM Course
+WHERE dept = 'CSC';
+```
+:::
 
 - Renaming attributes
 	- Use `As <new name>` to rename an attribute in the result
->[!example]
->```sql
->SELECT name AS title, dept
->FROM Course
->WHERE breadth;
->```
+
+:::{#tip-rename-attribute .callout-tip collapse="true"}
+## Example: Renaming Attributes
+```sql
+SELECT name AS title, dept
+FROM Course
+WHERE breadth;
+```
+:::
 
 - Complex Conditions in a `WHERE`
 	- Operators:
 		- Comparison operators: `=`, `<>` (aka `!=`), `>`, `<`, `>=`, `<=`
 	- Combine boolean expressions: `AND`, `OR`, `NOT`
->[!example] Example: Conditions
->```sql
->SELECT *
->FROM Offering
->WHERE dept = ‘CSC’ AND cnum >= 300;
->```
+
+:::{#tip-conditions .callout-tip collapse="true"}
+## Example: Conditions
+```sql
+SELECT *
+FROM Offering
+WHERE dept = ‘CSC’ AND cnum >= 300;
+```
+:::
 
 - Order by
 	- To put the tuples in order, `ORDER BY <attritbue list> [DESC]`
 	- The default is ascending order; `DESC` overrides it to force descending order
 	- You can order some attributes in `ASC` order, others in `DESC`: 
 	- The attribute list can include expressions, such as `ORDER BY sales+rentals`
->[!example] Multiple ordering
->```sql
->SELECT * FROM Course
->ORDER BY cnum ASC, dept DESC;
->```
+
+:::{#tip-order-by .callout-tip collapse="true"}
+## Example: Multiple ordering
+```sql
+SELECT * FROM Course
+ORDER BY cnum ASC, dept DESC;
+```
+:::
 
 - Case-sensitivity and whitespace
+
 ```sql
 select surName
 from Student
 where campus = 'StG';
 ```
+
 - Keywords, like `select`, are not case-sensitive.
 	- One convention is to use UPPERCASE for keywords
 - Identifiers, like `Student` are not case-sensitive.
@@ -131,39 +157,49 @@ where campus = 'StG';
 	- Instead of a simple attribute name, you can use an expression in a `SELECT` clause.
 	- Operands: attributes, constants
 	- Operators: arithmetic ops, string ops
->[!example]
->- `||` means string concatenation
->```sql
->SELECT sid, grade-10 as adjusted
->FROM Took;
->SELECT dept| |cnum as fullCourseName
->FROM course;
->```
+
+:::{#tip-expression-select .callout-tip collapse="true"}
+## Example: Expressions in `SELECT` Clauses
+*Note*: `||` means string concatenation
+```sql
+SELECT sid, grade-10 as adjusted
+FROM Took;
+SELECT dept| |cnum as fullCourseName
+FROM course;
+```
+:::
 
 - Expressions that are a constant
 	- Sometimes it makes sense for the whole expression to be a constant (something that doesn’t involve any attributes!).
->[!example]
->```sql
->SELECT name, 
->	‘satisfies’ AS breadthRequirement
->FROM Course
->WHERE breadth;
->```
+
+:::{#tip-constant-expression .callout-tip collapse="true"}
+## Example: Constant Expressions
+```sql
+SELECT name, 
+	   ‘satisfies’ AS breadthRequirement
+FROM Course
+WHERE breadth;
+```
+:::
 
 ### Pattern Operations
 - Two ways to compare a string to a pattern by
+
 ```sql
 <attribute> LIKE <pattern>
 <attribute> NOT LIKE <pattern>
 ```
+
 - Pattern is a quoted string
 	- `%` means: any string (0 or more)
 	- `_` means: any single character
+
 ```sql
 SELECT *
 FROM Course
 WHERE name LIKE = '%Comp%';
 ```
+
 - More examples:
 	- `... WHERE phone LIKE '268_ _ _ _ _ _'`
 		- phone numbers with area code 268

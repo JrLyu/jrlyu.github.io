@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jiuru Lyu">
-<meta name="dcterms.date" content="2024-10-08">
-<meta name="description" content="This lecture discusses the concept of NULL values in SQL, including how to represent missing information and inapplicable attributes. It also covers how to check for NULL values and the impact of NULL values on arithmetic expressions, comparison operators, and aggregation.">
+<meta name="dcterms.date" content="2024-10-30">
+<meta name="description" content="This lecture discusses how to embed SQL in Java using JDBC. It covers the JDBC API, SQL Injection, and Prepared Statements.">
 
-<title>Jiuru Lyu - 7 SQL NULL</title>
+<title>Jiuru Lyu - 10 JDBC</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,40 +22,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -110,35 +76,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../../../styles.css">
 </head>
@@ -197,43 +134,32 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#null-values-in-sql" id="toc-null-values-in-sql" class="nav-link active" data-scroll-target="#null-values-in-sql">Null values in SQL</a>
-  <ul class="collapse">
-  <li><a href="#impact-of-null-values" id="toc-impact-of-null-values" class="nav-link" data-scroll-target="#impact-of-null-values">Impact of Null Values</a></li>
-  <li><a href="#impact-of-null-values-on-aggregation" id="toc-impact-of-null-values-on-aggregation" class="nav-link" data-scroll-target="#impact-of-null-values-on-aggregation">Impact of Null Values on Aggregation</a></li>
-  <li><a href="#null-in-set-operations" id="toc-null-in-set-operations" class="nav-link" data-scroll-target="#null-in-set-operations">NULL in Set Operations</a></li>
-  </ul></li>
-  </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/07-sql-null/07 SQL NULL.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/07-sql-null/07 SQL NULL.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">7 SQL NULL</h1>
+<h1 class="title">10 JDBC</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Coding</div>
     <div class="quarto-category">SQL</div>
     <div class="quarto-category">Database</div>
-    <div class="quarto-category">Join</div>
-    <div class="quarto-category"></div>
+    <div class="quarto-category">Java</div>
+    <div class="quarto-category">JDBC</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    This lecture discusses the concept of NULL values in SQL, including how to represent missing information and inapplicable attributes. It also covers how to check for NULL values and the impact of NULL values on arithmetic expressions, comparison operators, and aggregation.
+    This lecture discusses how to embed SQL in Java using JDBC. It covers the JDBC API, SQL Injection, and Prepared Statements.
   </div>
 </div>
 
 
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta column-page">
 
     <div>
     <div class="quarto-title-meta-heading">Author</div>
@@ -245,7 +171,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 8, 2024</p>
+      <p class="date">October 30, 2024</p>
     </div>
   </div>
   
@@ -257,178 +183,8 @@ window.Quarto = {
 </header>
 
 
-<section id="null-values-in-sql" class="level2">
-<h2 class="anchored" data-anchor-id="null-values-in-sql">Null values in SQL</h2>
-<ul>
-<li>Missing Information:
-<ul>
-<li>Missing value.
-<ul>
-<li>E.g., we know a student has some email address, but we don’t know what it is.</li>
-</ul></li>
-<li>Inapplicable attribute.
-<ul>
-<li>E.g., the value of attribute spouse for a person who is single.</li>
-</ul></li>
-</ul></li>
-<li>Representing missing information:
-<ul>
-<li>One possibility: use a special value as a placeholder. E.g.,
-<ul>
-<li>If age unknown, use -1.</li>
-<li>If StNum unknown, use 999999999.</li>
-</ul></li>
-<li>Pros and cons?
-<ul>
-<li>Better solution: use a value not in any domain. We call this a null value.</li>
-<li>Tuples in SQL relations can have NULL as a value for one or more components.</li>
-</ul></li>
-</ul></li>
-<li>Check for <code>NULL</code> values
-<ul>
-<li>You can compare an attribute value to <code>NULL</code> with
-<ul>
-<li><code>IS NULL</code></li>
-<li><code>IS NOT NULL</code></li>
-</ul></li>
-</ul></li>
-</ul>
-<div id="tip-checl-null" class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip&nbsp;1: Example: Check for NULL values
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Course</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> breadth <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-<ul>
-<li><em>Note</em>: do not use WHERE breadth = NULL;</li>
-</ul>
-<section id="impact-of-null-values" class="level3">
-<h3 class="anchored" data-anchor-id="impact-of-null-values">Impact of Null Values</h3>
-<ul>
-<li>Assume <span class="math inline">\(x\)</span> is <code>NULL</code></li>
-<li>Arithmetic expression: Result is always <code>NULL</code></li>
-</ul>
-<div id="tip-arithmetic-null" class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip&nbsp;2: Example: Arithmetic with NULL
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p><span class="math display">\[x+\texttt{grade}=\texttt{NULL}\]</span> <span class="math display">\[x*0=\texttt{NULL}\]</span> <span class="math display">\[x-x=\texttt{NULL}\]</span></p>
-</div>
-</div>
-</div>
-<ul>
-<li>Comparison operators (<span class="math inline">\(&gt;\)</span>, <span class="math inline">\(&lt;\)</span>, <span class="math inline">\(=\)</span>, <span class="math inline">\(\dots\)</span>): Result is <code>UNKNOWN</code> (neither <code>TRUE</code> nor <code>FALSE</code>)</li>
-</ul>
-<div id="tip-comparison-null" class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip&nbsp;3: Example: Comparison with NULL
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p><span class="math display">\[x&lt;32 \quad\texttt{ --&gt; UNKNOWN}\]</span></p>
-</div>
-</div>
-</div>
-<ul>
-<li>This <code>UNKNOWN</code> is a truth-value</li>
-<li>Truth-values in SQL are: <code>TRUE</code>, <code>FALSE</code>, <code>UNKNOWN</code> (a 3-value truth value system!)
-<ul>
-<li>Logic with <code>UNKNOWN</code>: <span class="math display">\[\begin{aligned}
-\texttt{UNKNOWN} \lor\texttt{FALSE}&amp;\equiv\texttt{UNKNOWN}\\
-\texttt{UNKNOWN} \lor\texttt{TRUE}&amp;\equiv\texttt{TRUE}\\
-\texttt{UNKNOWN} \land\texttt{FALSE}&amp;\equiv\texttt{FALSE}\\
-\texttt{UNKNOWN} \land\texttt{TRUE}&amp;\equiv\texttt{UNKNOWN}\\
-\neg\texttt{UNKNOWN}&amp;\equiv\texttt{UNKONWN}
-\end{aligned}\]</span></li>
-<li>A tuple is in a query result <span class="math inline">\(\iff\)</span> the result of the <code>WHERE</code> clause is <code>TRUE</code>.</li>
-</ul></li>
-</ul>
-</section>
-<section id="impact-of-null-values-on-aggregation" class="level3">
-<h3 class="anchored" data-anchor-id="impact-of-null-values-on-aggregation">Impact of Null Values on Aggregation</h3>
-<ul>
-<li>“Aggregation ignores <code>NULL</code>.”
-<ul>
-<li>NULL never contributes to a sum, average, or count, and can never be the minimum or maximum of a column (unless <em>every</em> value is <code>NULL</code>).</li>
-</ul></li>
-<li>If ALL values are <code>NULL</code> in a column, then the result of the aggregation is NULL.</li>
-<li>Exception: <code>COUNT</code> of an empty set is 0. (think of <code>COUNT</code>(columnName) as a function that counts the non-null values in that column.)</li>
-</ul>
-<div id="tip-aggregation-null" class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip&nbsp;4: Example: Aggregation with NULL
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ul>
-<li>R&amp;S&amp;T are defined as:</li>
-</ul>
-<pre><code> R             |      S             |       T
-   x           |          x         |            x
- -----         |        -----       |          -----
- NULL          |        NULL        |
- 1             |                    |</code></pre>
-<ul>
-<li><code>COUNT()</code>
-<ul>
-<li><code>COUNT(R.*)=2</code> and <code>COUNT(R.x)=1</code></li>
-<li><code>COUNT(S.*)=1</code> and <code>COUNT(S.x)=0</code></li>
-<li><code>COUNT(T.*)=0</code> and <code>COUNT(T.x)=0</code></li>
-</ul></li>
-<li>Other aggregates:
-<ul>
-<li><code>MIN(R.x)=1</code> and <code>MAX(R.x)=1</code></li>
-<li><code>MIN(S.x)=NULL</code> and <code>MAX(S.x)=NULL</code></li>
-<li><code>MIN(T.x)=NULL</code> and <code>MAX(T.x)=NULL</code></li>
-</ul></li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section id="null-in-set-operations" class="level3">
-<h3 class="anchored" data-anchor-id="null-in-set-operations">NULL in Set Operations</h3>
-<ul>
-<li><code>NULL</code> is treated differently by the set operators <code>UNION</code>, <code>EXCEPT</code>, and <code>INTERSECT</code> than it is in search conditions.</li>
-<li>When comparing rows, set operators treat <code>NULL</code> values as equal to each other.</li>
-<li>In contrast, when <code>NULL</code> is compared to <code>NULL</code> in a search condition the result is <code>UNKNOWN</code> (not true).</li>
-</ul>
 
 
-</section>
-</section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -970,7 +726,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/07-sql-null/07 SQL NULL.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/07-sql-null/07 SQL NULL.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/10-JDBC/10 JDBC.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/10-JDBC/10 JDBC.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

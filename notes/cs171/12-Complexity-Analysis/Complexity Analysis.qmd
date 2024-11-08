@@ -6,10 +6,8 @@ author:
     url: https://jrlyu.github.io/
 date: 11-11-2023
 categories: [Coding, Java, Algorithms, Complexity Analysis]
-draft: true
+draft: false
 ---
-
-
 
 ## Intro to Algorithm Analysis
 - We want to know how can we measure the "goodness" of a program/algorithm?
@@ -166,104 +164,122 @@ $$1+\dfrac{1}{2}+\dfrac{1}{4}+\cdots+\dfrac{1}{N}(=\dfrac{1}{2^n})=2-\dfrac{1}{N
 - Sterling's Approximation: $$\log(1)+\log(2)+\log(3)+\cdots+\log(N)=\log(N!)\approx N\log(N)$$
 
 ## Loop Analysis
-\begin{lstlisting}
-    for (int i = 0; i < 10; i++) {
-        doPrimitive();
-    }
-\end{lstlisting}
-\begin{itemize}
-    \item The loop is executed $10$ times for any input size.
-    \item Running time $=10$ \texttt{doPrimitive()} operations.
-    \item Run time complexity $=\mathcal{O}(1)\implies$ constant time.
-\end{itemize}
-\begin{lstlisting}
-    n = input size;  // (e.g.: # elements in an array)
-    for (int i = 0; i < n; i++) {
-        doPrimitive();
-    }
-\end{lstlisting}
-\begin{itemize}
-    \item The loop is executed $n$ times for an input size of $n$.
-    \item Running time $=n$ \texttt{doPrimitive()} operations.
-    \item Run time complexity $=\mathcal{O}(n)\implies$ linear
-\end{itemize}
-\begin{rmk} $n$ or $N$ will always denote the input size in algorithm analysis. \end{rmk}
-\begin{lstlisting}
-    int sum = 0;
-    for (int i = 0; i < 5*n; i = i + 4) {
-        sum = sum + 1;
-    }
-\end{lstlisting}
-\begin{itemize}
-    \item The loop is executed $\frac{5}{4}n$ times for an input size of $n$.
-    \item Running time $=\frac{5}{4}n$ \texttt{doPrimitive()} operations.
-    \item Run time complexity $=\mathcal{O}(n)\implies$ linear
-\end{itemize}
-\begin{lstlisting}
-    int sum = 0;
-    for (int i = n; i > 0; i = i - 4) {
-        sum = sum + 1;
-    }
-\end{lstlisting}
-\begin{itemize}
-    \item The loop is executed $\frac{1}{4}n$ times for an input size of $n$.
-    \item Running time $=\frac{1}{4}n$ \texttt{doPrimitive()} operations.
-    \item Run time complexity $=\mathcal{O}(n)\implies$ linear
-\end{itemize}
-\begin{lstlisting}
-    int sum = 0;
-    for (int i = 1; i <= n; i = 2*i) {
+:::{#tip-example-4 .callout-tip collapse="true"}
+## Example: Loop Analysis 1
+```java
+for (int i = 0; i < 10; i++) {
+    doPrimitive();
+}
+```
+- The loop is executed $10$ times for any input size.
+- Running time $=10$ \texttt{doPrimitive()} operations.
+- Run time complexity $=\mathcal{O}(1)\implies$ constant time.
+:::
+
+:::{#tip-example-5 .callout-tip collapse="true"}
+## Example: Loop Analysis 2
+```java
+n = input size;  // (e.g.: # elements in an array)
+for (int i = 0; i < n; i++) {
+    doPrimitive();
+}
+```
+- The loop is executed $n$ times for an input size of $n$.
+- Running time $=n$ \texttt{doPrimitive()} operations.
+- Run time complexity $=\mathcal{O}(n)\implies$ linear
+:::
+
+:::{#wrn .callout-warning}
+## Notation Remark
+$n$ or $N$ will always denote the input size in algorithm analysis.
+:::
+
+:::{#tip-example-6 .callout-tip collapse="true"}
+## Example: Loop Analysis 3
+```java
+int sum = 0;
+for (int i = 0; i < 5*n; i = i + 4) {
+    sum = sum + 1;
+}
+```
+- The loop is executed $\frac{5}{4}n$ times for an input size of $n$.
+- Running time $=\frac{5}{4}n$ \texttt{doPrimitive()} operations.
+- Run time complexity $=\mathcal{O}(n)\implies$ linear
+:::
+
+:::{#tip-example-7 .callout-tip collapse="true"}
+## Example: Loop Analysis 4
+```java
+int sum = 0;
+for (int i = n; i > 0; i = i - 4) {
+    sum = sum + 1;
+}
+```
+- The loop is executed $\frac{1}{4}n$ times for an input size of $n$.
+- Running time $=\frac{1}{4}n$ \texttt{doPrimitive()} operations.
+- Run time complexity $=\mathcal{O}(n)\implies$ linear
+:::
+
+:::{#tip-example-8 .callout-tip collapse="true"}
+## Example: Loop Analysis 5
+```java
+int sum = 0;
+for (int i = 1; i <= n; i = 2*i) {
+    sum++;
+}
+```
+- $i$ will take the following numbers in the loop $$1\quad2\quad4\quad8\quad16\quad32\quad\cdots$$
+- Loop will exists when $i>n$: $$1\quad2\quad4\quad8\quad16\quad32\quad\cdots\quad n$$
+- Suppose $2^{k-1}\leq n\leq 2^k$ $$1\quad2\quad4\quad8\quad16\quad32\quad\cdots\quad2^{k-1}\quad n\quad2^{k}$$
+- Iterations: $k\approx\log{n}$. So, $\mathcal{O}(\log{n})$. ($n\approx2^{k}\Longleftrightarrow k\approx\log(n)$)
+:::
+
+:::{#tip-example-9 .callout-tip collapse="true"}
+## Example: Loop Analysis 6
+```java
+int sum = 0;
+for (int i = n; i >= 1; i = i/2) {
+    sum++;
+}
+```
+- $i$ will take the following numbers in the loop $$n\quad n/2\quad n/4\quad\cdots\quad1$$
+- Loop will exists when $i<1$.
+- Suppose $n/2^{k}<1<n/2^{k-1}$. $$n\quad n/2\quad n/4\quad\cdots\quad n/2^{k-1}\quad1\quad n/2^{k}$$
+- Iterations $k\approx\log{n}$. So, $\mathcal{O}(\log{n})$ ($n/2^k\approx1\implies n\approx2^k\implies k\approx\log{n}$)
+:::
+
+:::{#tip-example-10 .callout-tip collapse="true"}
+## Example: Loop Analysis 7
+```java
+int sum = 0;
+for (int i = 0; i < n; i++) {
+    for (int j = 0; j <= i; j++) {
         sum++;
     }
-\end{lstlisting}
-\begin{itemize}
-        \item $i$ will take the following numbers in the loop \[1\quad2\quad4\quad8\quad16\quad32\quad\cdots\]
-        \item Loop will exists when $i>n$: \[1\quad2\quad4\quad8\quad16\quad32\quad\cdots\quad n\]
-        \item Suppose $2^{k-1}\leq n\leq 2^k$ \[1\quad2\quad4\quad8\quad16\quad32\quad\cdots\quad2^{k-1}\quad n\quad2^{k}\]
-        \item Iterations: $k\approx\log{n}$. So, $\mathcal{O}(\log{n})$. ($n\approx2^{k}\Longleftrightarrow k\approx\log(n)$)
-\end{itemize}
-\begin{lstlisting}
-    int sum = 0;
-    for (int i = n; i >= 1; i = i/2) {
+}
+```
+
+| $i$ |  0  |  2  |  3  |  4  | $\cdots$ | $n-1$ |
+|:---:|:---:|:---:|:---:|:---:|:--------:|:-----:|
+| $j$ |  *  |  *  |  *  |  *  | $\cdots$ |   *   |
+|     |     |  *  |  *  |  *  | $\cdots$ |   *   |
+|     |     |     |  *  |  *  | $\cdots$ |   *   |
+|     |     |     |     |  *  | $\cdots$ |   *   |
+|     |     |     |     |     | $\vdots$ |   *   |
+|     |     |     |     |     |          |   *   |
+
+- We sum up those starts. That is adding from $1$ to $n$.
+- Iterations $=\dfrac{n(n+1)}{2}$. So, $\mathcal{O}(n^2)$.
+:::
+
+```
+int sum = 0;
+for (int i = n; i > 0; i = i/2) {
+    for (int j = 0; j < i; j++) {
         sum++;
     }
-\end{lstlisting}
-\begin{itemize}
-    \item $i$ will take the following numbers in the loop
-    \[n\quad n/2\quad n/4\quad\cdots\quad1\]
-    \item Loop will exists when $i<1$.
-    \item Suppose $n/2^{k}<1<n/2^{k-1}$. \[n\quad n/2\quad n/4\quad\cdots\quad n/2^{k-1}\quad1\quad n/2^{k}\]
-    \item Iterations $k\approx\log{n}$. So, $\mathcal{O}(\log{n})$ ($n/2^k\approx1\implies n\approx2^k\implies k\approx\log{n}$)
-\end{itemize}
-\begin{lstlisting}
-    int sum = 0;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j <= i; j++) {
-            sum++;
-        }
-    }
-\end{lstlisting}
-\begin{center}\begin{tabular}{c|c|c|c|c|c|c}
-    $i$&0&2&3&4&$\cdots$&$n-1$\\\hline
-    $j$&*&*&*&*&$\cdots$&*\\
-    &&*&*&*&$\cdots$&*\\
-    &&&*&*&$\cdots$&*\\
-    &&&&*&$\cdots$&*\\
-    &&&&&$\vdots$&*\\
-    &&&&&&*
-\end{tabular}\end{center}
-\begin{itemize}
-    \item We sum up those starts. That is adding from $1$ to $n$.
-    \item Iterations $=\dfrac{n(n+1)}{2}$. So, $\mathcal{O}(n^2)$.
-\end{itemize}
-\begin{lstlisting}
-    int sum = 0;
-    for (int i = n; i > 0; i = i/2) {
-        for (int j = 0; j < i; j++) {
-            sum++;
-        }
-    }
-\end{lstlisting}
+}
+```
 \begin{center}\begin{tabular}{c|c|c|c|c|c|c}
     $i$&n&n/2&n/4&n/8&$\cdots$&1\\\hline
     $j$&*&*&*&*&$\cdots$&*\\

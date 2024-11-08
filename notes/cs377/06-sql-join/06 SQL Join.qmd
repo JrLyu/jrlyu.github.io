@@ -1,21 +1,16 @@
-<!--
- * @Author: Jiuru Lyu
- * @fileName: ${TM_FILENAME_BASE}
- * @Date: 2024-10-02 12:07:03
- * @Description: 
--->
 ---
-title: "9 SQL DDL"
-description: "This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys."
+title: "6 SQL Join"
+description: "This lecture discusses the different types of joins in SQL, including inner, outer, and cross joins. It also covers the dangers of using NATURAL JOIN and the best practices for using joins in SQL."
 author:
   - name: Jiuru Lyu
     url: https://jrlyu.github.io/
-date: 10-28-2024
-categories: [Coding, SQL, Database, DDL]
-draft: true
+date: 09-28-2024
+categories: [Coding, SQL, Database, Join]
+draft: false
 ---
 
 ## The joins we know from RA
+
 |          Expression within SQL          | Meaning in RA                     |
 | :-------------------------------------: | --------------------------------- |
 |                 `R, S`                  | $$R\times S$$                     |
@@ -28,6 +23,7 @@ draft: true
 | `R LEFT [OUTER] JOIN S ON <condition>`  | $$R⟕_\texttt{condition}S$$        |
 | `R RIGHT [OUTER] JOIN S ON <condition>` | $$R⟖_\texttt{condition}S$$        |
 | `R FULL [OUTER] JOIN S ON <condition>`  | $$R⟗_\texttt{condition}S$$        |
+
 - If your query includes left/right/full, adding `OUTER` is optional
 - If your outer join is not natural, then adding on `<condition> `becomes necessary
 

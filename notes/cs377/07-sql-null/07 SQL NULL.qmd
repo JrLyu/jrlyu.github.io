@@ -1,26 +1,20 @@
-<!--
- * @Author: Jiuru Lyu
- * @fileName: ${TM_FILENAME_BASE}
- * @Date: 2024-10-07 12:04:36
- * @Description: 
--->
 ---
-title: "9 SQL DDL"
-description: "This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys."
+title: "7 SQL NULL"
+description: "This lecture discusses the concept of NULL values in SQL, including how to represent missing information and inapplicable attributes. It also covers how to check for NULL values and the impact of NULL values on arithmetic expressions, comparison operators, and aggregation."
 author:
   - name: Jiuru Lyu
     url: https://jrlyu.github.io/
-date: 10-28-2024
-categories: [Coding, SQL, Database, DDL]
+date: 10-08-2024
+categories: [Coding, SQL, Database, Join, Null]
 draft: true
 ---
 
 ## Null values in SQL
 - Missing Information: 
 	- Missing value. 
-		- E.g., we know a student has some _email_ address, but we don’t know what it is.
+		- E.g., we know a student has some email address, but we don’t know what it is.
 	- Inapplicable attribute.
-		- E.g., the value of attribute _spouse_ for a person who is _single_.
+		- E.g., the value of attribute spouse for a person who is single.
 - Representing missing information:
 	- One possibility: use a special value as a placeholder. E.g., 
 		- If age unknown, use -1.
@@ -32,24 +26,35 @@ draft: true
 	- You can compare an attribute value to `NULL` with
 		- `IS NULL`
 		- `IS NOT NULL`
->[!Example]
->```sql
->SELECT *
->FROM Course
->WHERE breadth IS NULL;
->```
-- Note: do not use WHERE breadth = NULL;
+
+:::{#tip-checl-null .callout-tip collapse="true"}
+## Example: Check for NULL values
+```sql
+SELECT *
+FROM Course
+WHERE breadth IS NULL;
+```
+:::
+
+- *Note*: do not use WHERE breadth = NULL;
 
 ### Impact of Null Values
 - Assume $x$ is `NULL`
 - Arithmetic expression: Result is always `NULL`
->[!example]
->$$x+\texttt{grade}=\texttt{NULL}$$
->$$x*0=\texttt{NULL}$$
->$$x-x=\texttt{NULL}$$
+
+:::{#tip-arithmetic-null .callout-tip collapse="true"}
+## Example: Arithmetic with NULL
+$$x+\texttt{grade}=\texttt{NULL}$$
+$$x*0=\texttt{NULL}$$
+$$x-x=\texttt{NULL}$$
+:::
+
 - Comparison operators ($>$, $<$, $=$, $\dots$): Result is `UNKNOWN` (neither `TRUE` nor `FALSE`)
->[!example]
->$$x<32 \quad\texttt{ --> UNKNOWN}$$
+
+:::{#tip-comparison-null .callout-tip collapse="true"}
+## Example: Comparison with NULL
+$$x<32 \quad\texttt{ --> UNKNOWN}$$
+:::
 
 - This `UNKNOWN` is a truth-value
 - Truth-values in SQL are: `TRUE`, `FALSE`, `UNKNOWN` (a 3-value truth value system!)
@@ -61,28 +66,32 @@ draft: true
 \neg\texttt{UNKNOWN}&\equiv\texttt{UNKONWN}
 \end{aligned}$$
 	- A tuple is in a query result $\iff$ the result of the `WHERE` clause is `TRUE`.
+
 ### Impact of Null Values on Aggregation
 - “Aggregation ignores `NULL`.”
-	- NULL never contributes to a sum, average, or count, and can never be the minimum or maximum of a column (unless _every_ value is `NULL`).
+	- NULL never contributes to a sum, average, or count, and can never be the minimum or maximum of a column (unless *every* value is `NULL`).
 - If ALL values are `NULL` in a column, then the result of the aggregation is NULL.
 - Exception: `COUNT` of an empty set is 0. (think of `COUNT`(columnName) as a function that counts the non-null values in that column.)
->[!example]
->R&S&T are defined as: 
->```
->   x                   x                    x
-> ----                 ----                 ----
->NULL                 NULL
->   1
->```
-> - `COUNT()`
-> 	- `COUNT(R.*)=2` and `COUNT(R.x)=1`
-> 	- `COUNT(S.*)=1` and `COUNT(S.x)=0`
-> 	- `COUNT(T.*)=0` and `COUNT(T.x)=0`
-> - Other aggregates:
-> 	- `MIN(R.x)=1` and `MAX(R.x)=1`
-> 	- `MIN(S.x)=NULL` and `MAX(S.x)=NULL`
-> 	- `MIN(T.x)=NULL` and `MAX(T.x)=NULL`
 
+:::{#tip-aggregation-null .callout-tip collapse="true"}
+## Example: Aggregation with NULL
+- R&S&T are defined as: 
+```
+ R             |      S             |       T
+   x           |          x         |            x
+ -----         |        -----       |          -----
+ NULL          |        NULL		|
+ 1			   |					|
+```
+- `COUNT()`
+ 	- `COUNT(R.*)=2` and `COUNT(R.x)=1`
+ 	- `COUNT(S.*)=1` and `COUNT(S.x)=0`
+ 	- `COUNT(T.*)=0` and `COUNT(T.x)=0`
+ - Other aggregates:
+ 	- `MIN(R.x)=1` and `MAX(R.x)=1`
+ 	- `MIN(S.x)=NULL` and `MAX(S.x)=NULL`
+ 	- `MIN(T.x)=NULL` and `MAX(T.x)=NULL`
+:::
 
 ### NULL in Set Operations
 - `NULL` is treated differently by the set operators `UNION`, `EXCEPT`, and `INTERSECT` than it is in search conditions.

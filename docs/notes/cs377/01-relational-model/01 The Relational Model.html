@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jiuru Lyu">
-<meta name="dcterms.date" content="2024-10-28">
-<meta name="description" content="This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys.">
+<meta name="dcterms.date" content="2024-08-28">
+<meta name="description" content="This lecture discusses the relational model, which is the foundation of modern database systems.">
 
-<title>Jiuru Lyu - 9 SQL DDL</title>
+<title>Jiuru Lyu - 1 The Relational Model</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -173,25 +173,24 @@ window.Quarto = {
   <li><a href="#relations-schema-instance-and-keys" id="toc-relations-schema-instance-and-keys" class="nav-link" data-scroll-target="#relations-schema-instance-and-keys">Relations: Schema, Instance, and Keys</a></li>
   <li><a href="#reference-and-keys" id="toc-reference-and-keys" class="nav-link" data-scroll-target="#reference-and-keys">Reference and Keys</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/01-relational-model/01 The Relational Model.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/01-relational-model/01 The Relational Model.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/01-relational-model/01 The Relational Model.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/01-relational-model/01 The Relational Model.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">9 SQL DDL</h1>
+<h1 class="title">1 The Relational Model</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Coding</div>
-    <div class="quarto-category">SQL</div>
     <div class="quarto-category">Database</div>
-    <div class="quarto-category">DDL</div>
+    <div class="quarto-category">Relational Model</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys.
+    This lecture discusses the relational model, which is the foundation of modern database systems.
   </div>
 </div>
 
@@ -208,7 +207,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 28, 2024</p>
+      <p class="date">August 28, 2024</p>
     </div>
   </div>
   
@@ -229,24 +228,122 @@ window.Quarto = {
 </section>
 <section id="data-model" class="level2">
 <h2 class="anchored" data-anchor-id="data-model">Data Model</h2>
-<blockquote class="blockquote">
-<p>[!definition] Every DBMS is based on some <strong>data model</strong>, a notation for describing data, including - The structure of the data - Constraints on the content of the data - Operations on the data - Examples: - Network &amp; hierarchical data model – of historical interest - Relational data model - Semistructured data model</p>
-</blockquote>
+<div id="note-data-model" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Data Model
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Every DBMS is based on some <strong>data model</strong>, a notation for describing data, including</p>
+<ul>
+<li>The structure of the data</li>
+<li>Constraints on the content of the data</li>
+<li>Operations on the data</li>
+</ul>
+</div>
+</div>
+<div id="tip-data-model" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;1: Examples of Data Model
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Network &amp; hierarchical data model – of historical interest</li>
+<li>Relational data model</li>
+<li>Semistructured data model</li>
+</ul>
+</div>
+</div>
+</div>
 </section>
 <section id="relations-schema-instance-and-keys" class="level2">
 <h2 class="anchored" data-anchor-id="relations-schema-instance-and-keys">Relations: Schema, Instance, and Keys</h2>
-<blockquote class="blockquote">
-<p>[!definition] A <strong>domain</strong> is a set of values. - Suppose <span class="math inline">\(D_1,D_2,\dots,D_n\)</span> are domains. - The <strong>Cartesian (cross) product</strong> <span class="math inline">\(D_1\times D_2\times\cdots\times D_n\)</span> is the set of all tuples <span class="math inline">\(\langle d_1,d_2,\dots,d_n\rangle\)</span> such that <span class="math inline">\(d_1\in D_1, d_2\in D_2,\dots,d_n\in D_n\)</span>. - Mathematical relation on <span class="math inline">\(D_1,\dots,D_n\)</span> is a subset of the Cartesian product. - Our database <strong>tables</strong> are relations, too.</p>
-</blockquote>
-<blockquote class="blockquote">
-<p>[!definition] <strong>Schema</strong>: definition of the structure of the relation. - Notation: <span class="math display">\[\text{Teams}(\text{Name},\text{HomeField},\text{Coach})\]</span></p>
-</blockquote>
-<blockquote class="blockquote">
-<p>[!definition] <strong>Instance</strong>: particular data in the relation. - Instance change constantly; schemas rarely. - <font color="green"><i>Example: Adding a column (attribute) changes the schema as well as the instance</i></font> - When designing the DB, we should avoid changing schema very frequently because changing schema is expensive.</p>
-</blockquote>
-<blockquote class="blockquote">
-<p>[!definition] In a DB table: - <strong>relation</strong> = table itself - <strong>attribute</strong> = column (optionally, we can specify that attributes have domains) - <strong>tuple</strong> = row - <strong>arity</strong> = number of attributes (columns) - <strong>cardinality</strong> = umber of tuples (rows)</p>
-</blockquote>
+<div id="note-relations" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Domain, Cartesian Product, and Relation (Tables)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A <strong>domain</strong> is a set of values.</p>
+<ul>
+<li>Suppose <span class="math inline">\(D_1,D_2,\dots,D_n\)</span> are domains.
+<ul>
+<li>The <strong>Cartesian (cross) product</strong> <span class="math inline">\(D_1\times D_2\times\cdots\times D_n\)</span> is the set of all tuples <span class="math inline">\(\langle d_1,d_2,\dots,d_n\rangle\)</span> such that <span class="math inline">\(d_1\in D_1, d_2\in D_2,\dots,d_n\in D_n\)</span>.</li>
+<li>Mathematical relation on <span class="math inline">\(D_1,\dots,D_n\)</span> is a subset of the Cartesian product.</li>
+</ul></li>
+<li>Our database <strong>tables</strong> are relations, too.</li>
+</ul>
+</div>
+</div>
+<div id="note-schema" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Schema
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Schema</strong>: definition of the structure of the relation.</p>
+<ul>
+<li>Notation: <span class="math display">\[\text{Teams}(\text{Name},\text{HomeField},\text{Coach})\]</span></li>
+</ul>
+</div>
+</div>
+<div id="note-instance" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Instance
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Instance</strong>: particular data in the relation.</p>
+<ul>
+<li>Instance change constantly; schemas rarely.</li>
+<li><font color="green"><i>Example: Adding a column (attribute) changes the schema as well as the instance</i></font></li>
+<li>When designing the DB, we should avoid changing schema very frequently because changing schema is expensive.</li>
+</ul>
+</div>
+</div>
+<div id="note-keys" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+More Definitions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In a DB table:</p>
+<ul>
+<li><strong>relation</strong> = table itself</li>
+<li><strong>attribute</strong> = column (optionally, we can specify that attributes have domains)</li>
+<li><strong>tuple</strong> = row</li>
+<li><strong>arity</strong> = number of attributes (columns)</li>
+<li><strong>cardinality</strong> = umber of tuples (rows)</li>
+</ul>
+</div>
+</div>
 <ul>
 <li>A relation is a <strong>set</strong> of tuples, which means:
 <ul>
@@ -254,26 +351,123 @@ window.Quarto = {
 <li><em>order</em> of the tuples <em>does not</em> matter</li>
 </ul></li>
 </ul>
-<blockquote class="blockquote">
-<p>[!definition] <strong>Database schema</strong>: a set of relation schemas –&gt; <em>no actual data</em> <strong>Database instance</strong>: a set of relation instances</p>
-</blockquote>
-<blockquote class="blockquote">
-<p>[!definition] <strong>Superkeys</strong>: a set of one or more attributes whose <em>combined</em> values are unique. That is, no two tuples can have the same values on all of these attributes. - By default, tuples cannot be duplicated. So, the entire tuple is viewed as a superkey. But, we can declare other superkeys. So, every relation have a superkey. - There can be multiple superkeys for a relation.</p>
-</blockquote>
-<blockquote class="blockquote">
-<p>[!definition] <strong>Key</strong>: a minimal superkey. - That is, you <em>may not</em> remove an attribute from a key, and still have a set of attributes whose combined values are <em>unique.</em></p>
-</blockquote>
-<blockquote class="blockquote">
-<p>[!example] Example A relation called <code>Course</code>, which attributes: department codes, course number, and course name. One tuple might be <span class="math display">\[\text{Course}\langle\text{``cs''},\text{``377''},\text{``Introduction to Databases''}\rangle\]</span> The superkey for this relation would be the combinations of <code>cs</code> and <code>377</code>. The entire tuple can also be viewed as a superkey. However, <span class="math inline">\(\langle\text{``cs''},\text{``377''}\rangle\)</span> is the key.</p>
-</blockquote>
-<blockquote class="blockquote">
-<p>[!example] Example Consider the following relation: <span class="math display">\[\text{Studnet}\langle\text{student\#},\text{netID},\text{surname},\text{firstname},\text{gpa}\rangle.\]</span> This relation has multiple key: <code>student#</code> or <code>netID</code> can either serve as a key. - We underline attributes in the schema to indicate that they form a key. - For example, <span class="math display">\[\text{Team}\langle\underline{\text{Name},\text{HomeField}},\text{Coach}\rangle\]</span> - Aside: Called “superkey” because it is a superset of some key. (Not necessarily a proper superset.) - If a set of attributes is a key for a relation - It does not mean merely that “there are no duplicates” in particular instance of the relation - It means that in principle there <strong><em>cannot</em></strong> be any - Often we have to invent an artificial new attribute to ensure all tuples will be unique. - A key is a kind of <strong>integrity constraint</strong>.</p>
-</blockquote>
+<div id="note-database" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Database
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Database schema</strong>: a set of relation schemas –&gt; <em>no actual data</em></p>
+<p><strong>Database instance</strong>: a set of relation instances</p>
+</div>
+</div>
+<div id="note-superkeys" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Superkeys
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Superkeys</strong>: a set of one or more attributes whose <em>combined</em> values are unique. That is, no two tuples can have the same values on all of these attributes.</p>
+<ul>
+<li>By default, tuples cannot be duplicated. So, the entire tuple is viewed as a superkey. But, we can declare other superkeys. So, every relation have a superkey.</li>
+<li>There can be multiple superkeys for a relation.</li>
+</ul>
+</div>
+</div>
+<div id="note-keys" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Keys
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Key</strong>: a minimal superkey.</p>
+<ul>
+<li>That is, you <em>may not</em> remove an attribute from a key, and still have a set of attributes whose combined values are <em>unique.</em></li>
+</ul>
+</div>
+</div>
+<div id="tip-eg1" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;2: Example
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A relation called <code>Course</code>, which attributes: department codes, course number, and course name. One tuple might be <span class="math display">\[\text{Course}\langle\text{``cs''},\text{``377''},\text{``Introduction to Databases''}\rangle\]</span> The superkey for this relation would be the combinations of <code>cs</code> and <code>377</code>. The entire tuple can also be viewed as a superkey. However, <span class="math inline">\(\langle\text{``cs''},\text{``377''}\rangle\)</span> is the key.</p>
+</div>
+</div>
+</div>
+<div id="tip-eg2" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;3: Example
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Consider the following relation: <span class="math display">\[\text{Studnet}\langle\text{student\#},\text{netID},\text{surname},\text{firstname},\text{gpa}\rangle.\]</span> This relation has multiple key: <code>student#</code> or <code>netID</code> can either serve as a key.</p>
+</div>
+</div>
+</div>
+<ul>
+<li>We underline attributes in the schema to indicate that they form a key.
+<ul>
+<li>For example, <span class="math display">\[\text{Team}\langle\underline{\text{Name},\text{HomeField}},\text{Coach}\rangle\]</span></li>
+</ul></li>
+<li>Aside: Called “superkey” because it is a superset of some key. (Not necessarily a proper superset.)</li>
+<li>If a set of attributes is a key for a relation
+<ul>
+<li>It does not mean merely that “there are no duplicates” in particular instance of the relation</li>
+<li>It means that in principle there <strong><em>cannot</em></strong> be any</li>
+</ul></li>
+<li>Often we have to invent an artificial new attribute to ensure all tuples will be unique.</li>
+<li>A key is a kind of <strong>integrity constraint</strong>.</li>
+</ul>
 </section>
 <section id="reference-and-keys" class="level2">
 <h2 class="anchored" data-anchor-id="reference-and-keys">Reference and Keys</h2>
 <ul>
-<li>Relations often <strong><em>refer</em></strong> to each other. &gt;[!definition] &gt;If the referring attribute refers to a <em>key</em> attribute in another table, it is called a <strong>foreign key</strong>. &gt;- For example, in table <code>Roles</code>, the attribute <code>aID</code> refers to the key <code>aID</code> in the <code>Artists</code> table, we write <span class="math inline">\(\text{Roles}[\text{aID}]\subseteq\text{Artists}[\text{aID}]\)</span>. &gt;- More generally, we use the following notation: <span class="math inline">\(R_1[X]\subseteq R_2[Y]\)</span>.</li>
+<li>Relations often <strong><em>refer</em></strong> to each other.</li>
+</ul>
+<div id="note-foreign-key" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Foreign Key
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If the referring attribute refers to a <em>key</em> attribute in another table, it is called a <strong>foreign key</strong>.</p>
+<ul>
+<li>For example, in table <code>Roles</code>, the attribute <code>aID</code> refers to the key <code>aID</code> in the <code>Artists</code> table, we write <span class="math inline">\(\text{Roles}[\text{aID}]\subseteq\text{Artists}[\text{aID}]\)</span>.</li>
+<li>More generally, we use the following notation: <span class="math inline">\(R_1[X]\subseteq R_2[Y]\)</span>.</li>
+</ul>
+</div>
+</div>
+<ul>
 <li>This gives us a way to refer to a single tuple in <em>that</em> relation.</li>
 <li>A foreign key may need to have several attributes.</li>
 <li>The <span class="math inline">\(R[A]\)</span> notation:
@@ -282,9 +476,23 @@ window.Quarto = {
 <li><span class="math inline">\(R[A]\)</span> is the set of all tuples from <span class="math inline">\(R\)</span>, but with only the attributes in list <span class="math inline">\(A\)</span>.</li>
 </ul></li>
 </ul>
-<blockquote class="blockquote">
-<p>[!definition] These <span class="math inline">\(R_1[X]\subseteq R_2[Y]\)</span> relationships are called <strong>referential integrity constraints</strong> or inclusion dependencies. - Not all referential integrity constraints are foreign key constraints. - <span class="math inline">\(R_1[X]\subseteq R_2[Y]\)</span> is a <strong>foreign key constraint</strong> <span class="math inline">\(\iff\)</span> <span class="math inline">\(Y\)</span> is a key for relation <span class="math inline">\(R_2\)</span>.</p>
-</blockquote>
+<div id="note-referential-integrity-constraints" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Referential Integrity Constraints
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>These <span class="math inline">\(R_1[X]\subseteq R_2[Y]\)</span> relationships are called <strong>referential integrity constraints</strong> or inclusion dependencies.</p>
+<ul>
+<li>Not all referential integrity constraints are foreign key constraints.</li>
+<li><span class="math inline">\(R_1[X]\subseteq R_2[Y]\)</span> is a <strong>foreign key constraint</strong> <span class="math inline">\(\iff\)</span> <span class="math inline">\(Y\)</span> is a key for relation <span class="math inline">\(R_2\)</span>.</li>
+</ul>
+</div>
+</div>
 <ul>
 <li>Integrity constraints is part of the process: designing a schema
 <ul>
@@ -840,7 +1048,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/01-relational-model/01 The Relational Model.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/01-relational-model/01 The Relational Model.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/01-relational-model/01 The Relational Model.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/01-relational-model/01 The Relational Model.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

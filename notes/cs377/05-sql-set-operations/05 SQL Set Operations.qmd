@@ -1,12 +1,12 @@
 ---
-title: "9 SQL DDL"
-description: "This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys."
+title: "5 SQL Set Operations"
+description: "This lecture discusses SQL set operations, including UNION, INTERSECT, and EXCEPT. It also covers the difference between bag and set semantics in SQL."
 author:
   - name: Jiuru Lyu
     url: https://jrlyu.github.io/
-date: 10-28-2024
-categories: [Coding, SQL, Database, DDL]
-draft: true
+date: 09-18-2024
+categories: [Coding, SQL, Database, Set Operations]
+draft: false
 ---
 
 ## Duplicates in SQL
@@ -19,9 +19,12 @@ draft: true
 ### Bags in SQL
 - SQL treats tables as “bags” (or “multisets”) rather than sets.
 - Bags are just like sets, but duplicates are allowed.
->[!example]
->- $\{6, 2, 7, 1, 9\}$ is a set and a bag
->- $\{6, 2, 7, 1, 9, 1\}$ is not a set but a bag
+
+:::{#tip-bag .callout-tip collapse="true"}
+## Example: Bag Semantics
+- $\{6, 2, 7, 1, 9\}$ is a set and a bag
+- $\{6, 2, 7, 1, 9, 1\}$ is not a set but a bag
+:::
 
 - Let sets, order doesn't matter: $\{6, 2, 7, 1, 9, 1\}=\{1, 1, 2, 6, 7, 9\}$
 - Operations $\cap$, $\cup$, and $-$ with bags: 
@@ -36,23 +39,29 @@ draft: true
 | $R\cup S$ |                 $m+n$                  |
 |   $R-S$   |             $\max(m-n,0)$              |
 - $\cap$, $\cup$, and $-$ in SQL: 
+
 ```sql
 (<subquery>) UNION (<subquery>)
 (<subquery>) INTERSECT (<subquery>)
 (<subquery>) EXCEPT (<subquery>)
 ```
+
 - The parentheses `()` are mandatory
 - The operands must be queries; you can’t simply use a relation name.
->[!example]
->```sql
->(SELECT sid
-> FROM Took
-> WHERE grade > 95)
->	UNION
->(SELECT sid
-> FROM Took
-> WHERE grade < 50);
->```
+
+:::{#tip-set-operator .callout-tip collapse="true"}
+## Example: Set Operations in SQL
+```sql
+(SELECT sid
+ FROM Took
+ WHERE grade > 95)
+	UNION
+(SELECT sid
+ FROM Took
+ WHERE grade < 50);
+```
+:::
+
 - Bag vs. Set Semantics: which is used and when
 	- A `SELECT-FROM-WHERE` statement uses *bag* semantics by default.
 		- Duplicates are *kept* in the result
@@ -66,27 +75,31 @@ draft: true
 - However, we can control which semantic is used.
 	- We can force the result of a `SFW` query to be a set by using `SELECT DISTINCT`
 	- We can force the result of a set operation to be a bag by using `ALL`. 
->[!example]
->```sql
->(SELECT sid
-> FROM Took
-> WHERE grade > 95)
->	UNION ALL
->(SELECT sid
-> FROM Took
-> WHERE grade < 50);
->```
 
->[!example]
->```sql
->(SELECT x FROM A) EXCEPT (SELECT x FROM B)
->```
->- A single occurrence of a value for x in **B** wipes out all occurrences of it from **A**
->```sql
->(SELECT x FROM A) EXCEPT (SELECT x FROM B)
->```
->- with `EXCEPT ALL`, we match up the value one by one
+:::{#tip-set-semantics .callout-tip collapse="true"}
+## Example: Force to Use Set Operations in SQL
+```sql
+(SELECT sid
+ FROM Took
+ WHERE grade > 95)
+	UNION ALL
+(SELECT sid
+ FROM Took
+ WHERE grade < 50);
+```
+:::
 
+:::{#tip-comparison .callout-tip collapse="true"}
+## Example: Comparison of Set and Bag Semantics
+- A single occurrence of a value for x in **B** wipes out all occurrences of it from **A**:
+```sql
+(SELECT x FROM A) EXCEPT (SELECT x FROM B)
+```
+- With `EXCEPT ALL`, we match up the value one by one:
+```sql
+(SELECT x FROM A) EXCEPT (SELECT x FROM B)
+```
+:::
 
 ## Views
 ### The idea
@@ -96,19 +109,27 @@ draft: true
 	- **Virtual**: no tuples are stored; view is just a *query* for constructing the relation when needed. 
 	- **Materialized**: actually constructed and stored. Expensive to maintain. 
 - Views are particularly important when you want to give different access rights (i.e. permissions) to different users viewing data in your tables!
->[!example]
->Canvas student page vs. instructor page
 
->[!example] A view for students who earned an 80 or higher in a CSC course:
->```sql
->CREATE VIEW topresults AS
->SELECT firstname, surname, cnum
->FROM Student, Took, Offering
->WHERE
->	Student.sid = Took.sid AND
->	Took.oid = Offering.oid AND
->	grade >= 80 AND dept = 'CSC';
->```
+:::{#tip-application-of-view .callout-tip collapse="true"}
+## Example: Application of Views
+Canvas student page vs. instructor page
+:::
+
+:::{#tip-creat-view .callout-tip collapse="true"}
+## Example: Creating a View
+
+- A view for students who earned an 80 or higher in a CSC course:
+```sql
+CREATE VIEW topresults AS
+	SELECT firstname, surname, cnum
+	FROM Student, Took, Offering
+	WHERE
+		Student.sid = Took.sid AND
+		Took.oid = Offering.oid AND
+		grade >= 80 AND dept = 'CSC';
+```
+:::
+
 ### Uses of Views
 - Break down a large query
 - Provide another way of looking at the same data, e.g. for one category of user

@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jiuru Lyu">
-<meta name="dcterms.date" content="2024-10-28">
-<meta name="description" content="This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys.">
+<meta name="dcterms.date" content="2024-10-18">
+<meta name="description" content="This lecture discusses subqueries in SQL, including subqueries in a FROM clause, subqueries in a WHERE clause, and the scope of subqueries. It also covers special cases of subqueries, such as when the subquery returns NULL or multiple values.">
 
-<title>Jiuru Lyu - 9 SQL DDL</title>
+<title>Jiuru Lyu - 8 SQL Subqueries</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -208,30 +208,31 @@ window.Quarto = {
   <li><a href="#scope" id="toc-scope" class="nav-link" data-scroll-target="#scope">Scope</a></li>
   <li><a href="#special-case" id="toc-special-case" class="nav-link" data-scroll-target="#special-case">Special Case</a>
   <ul class="collapse">
+  <li><a href="#the-operator-all" id="toc-the-operator-all" class="nav-link" data-scroll-target="#the-operator-all">The Operator <code>ALL</code></a></li>
   <li><a href="#the-operator-any" id="toc-the-operator-any" class="nav-link" data-scroll-target="#the-operator-any">The Operator <code>ANY</code></a></li>
   <li><a href="#the-operator-in" id="toc-the-operator-in" class="nav-link" data-scroll-target="#the-operator-in">The Operator <code>IN</code></a></li>
   <li><a href="#the-operator-exists" id="toc-the-operator-exists" class="nav-link" data-scroll-target="#the-operator-exists">The Operator <code>EXISTS</code></a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/08-sql-subqueries/08 SQL Subqueries.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/08-sql-subqueries/08 SQL Subqueries.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/08-sql-subqueries/08 SQL Subqueries.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/08-sql-subqueries/08 SQL Subqueries.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">9 SQL DDL</h1>
+<h1 class="title">8 SQL Subqueries</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Coding</div>
     <div class="quarto-category">SQL</div>
     <div class="quarto-category">Database</div>
-    <div class="quarto-category">DDL</div>
+    <div class="quarto-category">Subqueries</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys.
+    This lecture discusses subqueries in SQL, including subqueries in a FROM clause, subqueries in a WHERE clause, and the scope of subqueries. It also covers special cases of subqueries, such as when the subquery returns NULL or multiple values.
   </div>
 </div>
 
@@ -248,7 +249,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 28, 2024</p>
+      <p class="date">October 18, 2024</p>
     </div>
   </div>
   
@@ -265,37 +266,69 @@ window.Quarto = {
 <ul>
 <li>Instead of a relation name in the <code>FROM</code> clause, we can use a subquery.</li>
 <li>The subquery must be parenthesized.</li>
-<li>Must <em>name</em> the result, so you can refer to it in the outer query. &gt;[!example] &gt;<code>sql &gt;SELECT sid, dept||cnum as course, grade &gt;FROM Took, &gt;(SELECT * &gt;FROM Offering &gt;WHERE instructor=‘Horton’) Hoffering &gt;WHERE Took.oid = Hoffering.oid; &gt;</code> &gt;- This is equiv. to <span class="math inline">\(\texttt{Took}\times\rho_\texttt{Hoffering} (&lt;\texttt{subquery}&gt;)\)</span></li>
+<li>Must <em>name</em> the result, so you can refer to it in the outer query.</li>
 </ul>
+<div id="tip-subquery-from" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;1: Example: Subquery in a <code>FROM</code> clause
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> sid, dept<span class="op">||</span>cnum <span class="kw">as</span> course, grade</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Took,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>     (<span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> Offering</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>      <span class="kw">WHERE</span> instructor<span class="op">=</span>‘Horton’) Hoffering</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> Took.<span class="kw">oid</span> <span class="op">=</span> Hoffering.<span class="kw">oid</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>This is equiv. to <span class="math inline">\(\texttt{Took}\times\rho_\texttt{Hoffering} (&lt;\texttt{subquery}&gt;)\)</span></li>
+</ul>
+</div>
+</div>
+</div>
 </section>
 <section id="subqueries-in-a-where-clause-or-having-clause" class="level2">
 <h2 class="anchored" data-anchor-id="subqueries-in-a-where-clause-or-having-clause">Subqueries in a <code>WHERE</code> Clause (Or <code>HAVING</code> Clause)</h2>
 <ul>
-<li>If a subquery is guaranteed to produce exactly one tuple, then the subquery can be used as a value. • Simplest situation: that one tuple has only one attribute. &gt;[!example] &gt;<code>sql &gt;SELECT sid, surname &gt;FROM Student &gt;WHERE cgpa &gt; &gt;(SELECT cgpa &gt;FROM Student &gt;WHERE sid = 99999); &gt;</code></li>
+<li>If a subquery is guaranteed to produce exactly one tuple, then the subquery can be used as a value.
+<ul>
+<li>Simplest situation: that one tuple has only one attribute.</li>
+</ul></li>
 </ul>
+<p>:::{#tip-subquery-where .callout-tip collapse=“true”} ## Example: Subquery in a <code>WHERE</code> clause</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> sid, surname</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> cgpa <span class="op">&gt;</span> (<span class="kw">SELECT</span> cgpa</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>              <span class="kw">FROM</span> Student</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>              <span class="kw">WHERE</span> sid <span class="op">=</span> <span class="dv">99999</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="more-examples" class="level2">
 <h2 class="anchored" data-anchor-id="more-examples">More Examples</h2>
 <ul>
 <li>Student(s) whose cgpa is equal to max cgpa?</li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Incorrect:  </span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>  </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student  </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> cgpa <span class="op">=</span> <span class="fu">MAX</span>(cgpa);  </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- Correct:  </span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>  </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student  </span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> cgpa <span class="op">=</span> (<span class="kw">SELECT</span> <span class="fu">MAX</span>(cgpa) <span class="kw">FROM</span> Student);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Incorrect:  </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>  </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student  </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> cgpa <span class="op">=</span> <span class="fu">MAX</span>(cgpa);  </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- Correct:  </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>  </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student  </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> cgpa <span class="op">=</span> (<span class="kw">SELECT</span> <span class="fu">MAX</span>(cgpa) <span class="kw">FROM</span> Student);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>If needed: we can add an ORDER BY clause at the end of the main (outer) query.</li>
+<li>If needed: we can add an <code>ORDER BY</code> clause at the end of the main (outer) query.</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>  </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student  </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> cgpa <span class="op">&gt;=</span> </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">SELECT</span> <span class="fu">MAX</span>(cgpa) <span class="kw">FROM</span> Student);</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> cgpa <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>  </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student  </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> cgpa <span class="op">&gt;=</span> (<span class="kw">SELECT</span> <span class="fu">MAX</span>(cgpa) <span class="kw">FROM</span> Student);</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> cgpa <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="scope" class="level2">
 <h2 class="anchored" data-anchor-id="scope">Scope</h2>
@@ -317,22 +350,25 @@ window.Quarto = {
 <li>When a subquery can return multiple values, we can make comparisons using a quantifier:
 <ul>
 <li><code>cgpa &gt; at least one of them (ANY)</code></li>
-<li><code>cgpa &gt; all of them (ALL)</code> ### The Operator <code>ALL</code></li>
+<li><code>cgpa &gt; all of them (ALL)</code></li>
 </ul></li>
+</ul>
+<section id="the-operator-all" class="level3">
+<h3 class="anchored" data-anchor-id="the-operator-all">The Operator <code>ALL</code></h3>
+<ul>
 <li>Syntax: <code>x &lt;comparison&gt; ALL (&lt;subquery&gt;)</code></li>
 <li>Semantics: Its value is true <span class="math inline">\(\iff\)</span> the comparison holds for every tuple in the subquery result, i.e., <span class="math display">\[\forall\ y ∈ \texttt{&lt;subquery results&gt;},\text{ we have } x \texttt{&lt;comparison&gt;} y\]</span></li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Incorrect: </span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> cgpa <span class="op">=</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">SELECT</span> cgpa <span class="kw">FROM</span> Student);</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- Correct: </span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> cgpa <span class="op">&gt;=</span> <span class="kw">ALL</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">SELECT</span> cgpa <span class="kw">FROM</span> Student);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Incorrect: </span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> cgpa <span class="op">=</span> (<span class="kw">SELECT</span> cgpa <span class="kw">FROM</span> Student);</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- Correct: </span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> cgpa <span class="op">&gt;=</span> <span class="kw">ALL</span> (<span class="kw">SELECT</span> cgpa <span class="kw">FROM</span> Student);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 <section id="the-operator-any" class="level3">
 <h3 class="anchored" data-anchor-id="the-operator-any">The Operator <code>ANY</code></h3>
 <ul>
@@ -343,13 +379,12 @@ window.Quarto = {
 </ul></li>
 <li>Semantics: Its value is true <span class="math inline">\(\iff\)</span> the comparison holds for at least one tuple in the subquery result, i.e., <span class="math display">\[\exists\ y\in \texttt{&lt;subquery results&gt;}\text{ such that } x \texttt{&lt;comaprison&gt;} y\]</span></li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>  </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student  </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> campus <span class="op">=</span> <span class="st">'StG'</span>  </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> cgpa <span class="op">&gt;</span> <span class="kw">ANY</span>  </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      (<span class="kw">SELECT</span> cgpa  </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>       <span class="kw">FROM</span> Student  </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>       <span class="kw">WHERE</span> campus <span class="op">=</span> <span class="st">'UTSC'</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>  </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student  </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> campus <span class="op">=</span> <span class="st">'StG'</span> <span class="kw">AND</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      cgpa <span class="op">&gt;</span> <span class="kw">ANY</span>  (<span class="kw">SELECT</span> cgpa  </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                   <span class="kw">FROM</span> Student  </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                   <span class="kw">WHERE</span> campus <span class="op">=</span> <span class="st">'UTSC'</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="the-operator-in" class="level3">
 <h3 class="anchored" data-anchor-id="the-operator-in">The Operator <code>IN</code></h3>
@@ -358,18 +393,19 @@ window.Quarto = {
 <li>Semantics: Ifs value is true <span class="math inline">\(\iff x\)</span> equals at least one of the tuples in the subquery result.
 <ul>
 <li><span class="math inline">\(x\)</span> can be a list of attributes, and psql does support this feature.</li>
+</ul></li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>  </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student  </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> campus <span class="kw">IN</span>  </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">SELECT</span> campus  </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>     <span class="kw">FROM</span> Student  </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>     <span class="kw">WHERE</span> cgpa <span class="op">&gt;</span> <span class="fl">3.7</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>  </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student  </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> campus <span class="kw">IN</span> (<span class="kw">SELECT</span> campus  </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                 <span class="kw">FROM</span> Student  </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                 <span class="kw">WHERE</span> cgpa <span class="op">&gt;</span> <span class="fl">3.7</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
 <li>We can hard-code the list</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>  </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Course  </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> dept <span class="kw">IN</span> (<span class="st">'CSC'</span>, <span class="st">'HIS'</span>, <span class="st">'ENV'</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>  </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Course  </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> dept <span class="kw">IN</span> (<span class="st">'CSC'</span>, <span class="st">'HIS'</span>, <span class="st">'ENV'</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="the-operator-exists" class="level3">
 <h3 class="anchored" data-anchor-id="the-operator-exists">The Operator <code>EXISTS</code></h3>
@@ -377,26 +413,25 @@ window.Quarto = {
 <li>Syntax: <code>EXISTS (&lt;subquery&gt;)</code></li>
 <li>Semantics: Its value is true <span class="math inline">\(\iff\)</span> the subquery has at least one tuple.</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- This is also an example of correlated query:  </span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- Subquery must be evaluated once for each tuple in outer query!</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> instructor</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Offering Off1</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> (</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> <span class="op">*</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> Offering</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> <span class="kw">oid</span> <span class="op">&lt;&gt;</span> Off1.<span class="kw">oid</span> <span class="kw">AND</span> <span class="co">-- &lt;&gt; is equiv. to !=</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>          instructor <span class="op">=</span> Off1.instructor);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- This is also an example of correlated query:  </span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- Subquery must be evaluated once for each tuple in outer query!</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> instructor</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Offering Off1</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> (<span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                  <span class="kw">FROM</span> Offering</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                  <span class="kw">WHERE</span> <span class="kw">oid</span> <span class="op">&lt;&gt;</span> Off1.<span class="kw">oid</span> <span class="kw">AND</span> <span class="co">-- &lt;&gt; is equiv. to !=</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                        instructor <span class="op">=</span> Off1.instructor);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><code>NOT EXISTS (&lt;subquery&gt;)</code>: <code>WHERE</code> clause yields true <span class="math inline">\(\iff\)</span> the subquery returns an <em>empty</em> result set!</li>
 <li>Renaming makes the scope more explicit:</li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> instructor</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Offering Off1</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> (</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> <span class="op">*</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> Offering Off2</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> Off2.<span class="kw">oid</span> <span class="op">&lt;&gt;</span> Off1.<span class="kw">oid</span> <span class="kw">AND</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>          Off2.instructor <span class="op">=</span> Off1.instructor);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> instructor</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Offering Off1</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> (</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> Offering Off2</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> Off2.<span class="kw">oid</span> <span class="op">&lt;&gt;</span> Off1.<span class="kw">oid</span> <span class="kw">AND</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>          Off2.instructor <span class="op">=</span> Off1.instructor);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
@@ -942,7 +977,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/08-sql-subqueries/08 SQL Subqueries.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/08-sql-subqueries/08 SQL Subqueries.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/08-sql-subqueries/08 SQL Subqueries.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/08-sql-subqueries/08 SQL Subqueries.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jiuru Lyu">
-<meta name="dcterms.date" content="2024-10-28">
-<meta name="description" content="This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys.">
+<meta name="dcterms.date" content="2024-09-18">
+<meta name="description" content="This lecture discusses SQL set operations, including UNION, INTERSECT, and EXCEPT. It also covers the difference between bag and set semantics in SQL.">
 
-<title>Jiuru Lyu - 9 SQL DDL</title>
+<title>Jiuru Lyu - 5 SQL Set Operations</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -209,27 +209,28 @@ window.Quarto = {
   <li><a href="#views" id="toc-views" class="nav-link" data-scroll-target="#views">Views</a>
   <ul class="collapse">
   <li><a href="#the-idea" id="toc-the-idea" class="nav-link" data-scroll-target="#the-idea">The idea</a></li>
+  <li><a href="#uses-of-views" id="toc-uses-of-views" class="nav-link" data-scroll-target="#uses-of-views">Uses of Views</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/05-sql-set-operations/05 SQL Set Operations.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/05-sql-set-operations/05 SQL Set Operations.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/05-sql-set-operations/05 SQL Set Operations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/05-sql-set-operations/05 SQL Set Operations.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">9 SQL DDL</h1>
+<h1 class="title">5 SQL Set Operations</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Coding</div>
     <div class="quarto-category">SQL</div>
     <div class="quarto-category">Database</div>
-    <div class="quarto-category">DDL</div>
+    <div class="quarto-category">Set Operations</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys.
+    This lecture discusses SQL set operations, including UNION, INTERSECT, and EXCEPT. It also covers the difference between bag and set semantics in SQL.
   </div>
 </div>
 
@@ -246,7 +247,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 28, 2024</p>
+      <p class="date">September 18, 2024</p>
     </div>
   </div>
   
@@ -272,10 +273,31 @@ window.Quarto = {
 <section id="bags-in-sql" class="level3">
 <h3 class="anchored" data-anchor-id="bags-in-sql">Bags in SQL</h3>
 <ul>
-<li><p>SQL treats tables as “bags” (or “multisets”) rather than sets.</p></li>
-<li><p>Bags are just like sets, but duplicates are allowed. &gt;[!example] &gt;- <span class="math inline">\(\{6, 2, 7, 1, 9\}\)</span> is a set and a bag &gt;- <span class="math inline">\(\{6, 2, 7, 1, 9, 1\}\)</span> is not a set but a bag</p></li>
-<li><p>Let sets, order doesn’t matter: <span class="math inline">\(\{6, 2, 7, 1, 9, 1\}=\{1, 1, 2, 6, 7, 9\}\)</span></p></li>
-<li><p>Operations <span class="math inline">\(\cap\)</span>, <span class="math inline">\(\cup\)</span>, and <span class="math inline">\(-\)</span> with bags:</p>
+<li>SQL treats tables as “bags” (or “multisets”) rather than sets.</li>
+<li>Bags are just like sets, but duplicates are allowed.</li>
+</ul>
+<div id="tip-bag" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;1: Example: Bag Semantics
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(\{6, 2, 7, 1, 9\}\)</span> is a set and a bag</li>
+<li><span class="math inline">\(\{6, 2, 7, 1, 9, 1\}\)</span> is not a set but a bag</li>
+</ul>
+</div>
+</div>
+</div>
+<ul>
+<li>Let sets, order doesn’t matter: <span class="math inline">\(\{6, 2, 7, 1, 9, 1\}=\{1, 1, 2, 6, 7, 9\}\)</span></li>
+<li>Operations <span class="math inline">\(\cap\)</span>, <span class="math inline">\(\cup\)</span>, and <span class="math inline">\(-\)</span> with bags:
 <ul>
 <li>For <span class="math inline">\(\cap\)</span>, <span class="math inline">\(\cup\)</span>, and <span class="math inline">\(-\)</span> the number of occurrences of a tuple in the result requires some thought.</li>
 <li>Suppose tuple <span class="math inline">\(t\)</span> occurs:
@@ -315,7 +337,31 @@ window.Quarto = {
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>(<span class="op">&lt;</span>subquery<span class="op">&gt;</span>) <span class="kw">EXCEPT</span> (<span class="op">&lt;</span>subquery<span class="op">&gt;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>The parentheses <code>()</code> are mandatory</li>
-<li>The operands must be queries; you can’t simply use a relation name. &gt;[!example] &gt;<code>sql &gt;(SELECT sid &gt; FROM Took &gt; WHERE grade &gt; 95) &gt;   UNION &gt;(SELECT sid &gt; FROM Took &gt; WHERE grade &lt; 50); &gt;</code></li>
+<li>The operands must be queries; you can’t simply use a relation name.</li>
+</ul>
+<div id="tip-set-operator" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;2: Example: Set Operations in SQL
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> sid</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a> <span class="kw">FROM</span> Took</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a> <span class="kw">WHERE</span> grade <span class="op">&gt;</span> <span class="dv">95</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">UNION</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> sid</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a> <span class="kw">FROM</span> Took</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a> <span class="kw">WHERE</span> grade <span class="op">&lt;</span> <span class="dv">50</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<ul>
 <li>Bag vs.&nbsp;Set Semantics: which is used and when
 <ul>
 <li>A <code>SELECT-FROM-WHERE</code> statement uses <em>bag</em> semantics by default.
@@ -341,20 +387,54 @@ window.Quarto = {
 <li>However, we can control which semantic is used.
 <ul>
 <li>We can force the result of a <code>SFW</code> query to be a set by using <code>SELECT DISTINCT</code></li>
-<li>We can force the result of a set operation to be a bag by using <code>ALL</code>. &gt;[!example] &gt;<code>sql &gt;(SELECT sid &gt; FROM Took &gt; WHERE grade &gt; 95) &gt;   UNION ALL &gt;(SELECT sid &gt; FROM Took &gt; WHERE grade &lt; 50); &gt;</code></li>
+<li>We can force the result of a set operation to be a bag by using <code>ALL</code>.</li>
 </ul></li>
 </ul>
-<blockquote class="blockquote">
-<p>[!example]</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> x <span class="kw">FROM</span> A) <span class="kw">EXCEPT</span> (<span class="kw">SELECT</span> x <span class="kw">FROM</span> B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tip-set-semantics" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;3: Example: Force to Use Set Operations in SQL
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> sid</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> <span class="kw">FROM</span> Took</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a> <span class="kw">WHERE</span> grade <span class="op">&gt;</span> <span class="dv">95</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">UNION</span> <span class="kw">ALL</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> sid</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a> <span class="kw">FROM</span> Took</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a> <span class="kw">WHERE</span> grade <span class="op">&lt;</span> <span class="dv">50</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<div id="tip-comparison" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;4: Example: Comparison of Set and Bag Semantics
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <ul>
-<li>A single occurrence of a value for x in <strong>B</strong> wipes out all occurrences of it from <strong>A</strong></li>
+<li>A single occurrence of a value for x in <strong>B</strong> wipes out all occurrences of it from <strong>A</strong>:</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> x <span class="kw">FROM</span> A) <span class="kw">EXCEPT</span> (<span class="kw">SELECT</span> x <span class="kw">FROM</span> B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> x <span class="kw">FROM</span> A) <span class="kw">EXCEPT</span> (<span class="kw">SELECT</span> x <span class="kw">FROM</span> B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>with <code>EXCEPT ALL</code>, we match up the value one by one</li>
+<li>With <code>EXCEPT ALL</code>, we match up the value one by one:</li>
 </ul>
-</blockquote>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> x <span class="kw">FROM</span> A) <span class="kw">EXCEPT</span> (<span class="kw">SELECT</span> x <span class="kw">FROM</span> B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="views" class="level2">
@@ -369,24 +449,57 @@ window.Quarto = {
 <li><strong>Virtual</strong>: no tuples are stored; view is just a <em>query</em> for constructing the relation when needed.</li>
 <li><strong>Materialized</strong>: actually constructed and stored. Expensive to maintain.</li>
 </ul></li>
-<li>Views are particularly important when you want to give different access rights (i.e.&nbsp;permissions) to different users viewing data in your tables! &gt;[!example] &gt;Canvas student page vs.&nbsp;instructor page</li>
+<li>Views are particularly important when you want to give different access rights (i.e.&nbsp;permissions) to different users viewing data in your tables!</li>
 </ul>
-<blockquote class="blockquote">
-<p>[!example] A view for students who earned an 80 or higher in a CSC course:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">VIEW</span> topresults <span class="kw">AS</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> firstname, surname, cnum</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Student, Took, Offering</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  Student.sid <span class="op">=</span> Took.sid <span class="kw">AND</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  Took.<span class="kw">oid</span> <span class="op">=</span> Offering.<span class="kw">oid</span> <span class="kw">AND</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  grade <span class="op">&gt;=</span> <span class="dv">80</span> <span class="kw">AND</span> dept <span class="op">=</span> <span class="st">'CSC'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<h3 id="uses-of-views" class="anchored">Uses of Views</h3>
+<div id="tip-application-of-view" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;5: Example: Application of Views
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Canvas student page vs.&nbsp;instructor page</p>
+</div>
+</div>
+</div>
+<div id="tip-creat-view" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;6: Example: Creating a View
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>A view for students who earned an 80 or higher in a CSC course:</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">VIEW</span> topresults <span class="kw">AS</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> firstname, surname, cnum</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> Student, Took, Offering</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        Student.sid <span class="op">=</span> Took.sid <span class="kw">AND</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        Took.<span class="kw">oid</span> <span class="op">=</span> Offering.<span class="kw">oid</span> <span class="kw">AND</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        grade <span class="op">&gt;=</span> <span class="dv">80</span> <span class="kw">AND</span> dept <span class="op">=</span> <span class="st">'CSC'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="uses-of-views" class="level3">
+<h3 class="anchored" data-anchor-id="uses-of-views">Uses of Views</h3>
 <ul>
 <li>Break down a large query</li>
 <li>Provide another way of looking at the same data, e.g.&nbsp;for one category of user</li>
 <li>Wrap commonly used complex queries</li>
 </ul>
-</blockquote>
 
 
 </section>
@@ -932,7 +1045,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/05-sql-set-operations/05 SQL Set Operations.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/05-sql-set-operations/05 SQL Set Operations.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/05-sql-set-operations/05 SQL Set Operations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/05-sql-set-operations/05 SQL Set Operations.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

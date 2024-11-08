@@ -17,14 +17,20 @@
       "/notes/cs171/08-Array-Data-Structure/Array Data Structure.html",
       "/notes/cs171/09-Stack-Data-Structure/Stack Data Structure.html",
       "/notes/cs171/10-Queue-Data-Structure/Queue Data Structure.html",
-      "/notes/cs171/11-Linked-List/Linked List.html"
+      "/notes/cs171/11-Linked-List/Linked List.html",
+      "/notes/cs171/12-Complexity-Analysis/Complexity Analysis.html"
     ]
   },
   {
     "listing": "/notes/cs377.html",
     "items": [
+      "/notes/cs377/01-relational-model/01 The Relational Model.html",
+      "/notes/cs377/02-relational-algebra/02 Relational Algebra.html",
+      "/notes/cs377/03-sql-introduction/03 SQL Introduction.html",
+      "/notes/cs377/04-sql-aggregation/04 SQL Aggregation.html",
+      "/notes/cs377/05-sql-set-operations/05 SQL Set Operations.html",
       "/notes/cs377/06-sql-join/06 SQL Join.html",
-      "/notes/cs377/07-sql-null/07 SQL NULL.html"
+      "/notes/cs377/09-sql-ddl/09 SQL DDL.html"
     ]
   }
 ]

@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jiuru Lyu">
-<meta name="dcterms.date" content="2024-10-28">
-<meta name="description" content="This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys.">
+<meta name="dcterms.date" content="2024-09-14">
+<meta name="description" content="This lecture discusses SQL Aggregation, including computing on a column, GROUP BY, and HAVING clauses.">
 
-<title>Jiuru Lyu - 9 SQL DDL</title>
+<title>Jiuru Lyu - 4 SQL Aggregation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -174,26 +174,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#aggregation" id="toc-aggregation" class="nav-link active" data-scroll-target="#aggregation">Aggregation</a></li>
+  <li><a href="#group-by" id="toc-group-by" class="nav-link" data-scroll-target="#group-by"><code>GROUP BY</code></a></li>
+  <li><a href="#having" id="toc-having" class="nav-link" data-scroll-target="#having"><code>HAVING</code></a></li>
+  <li><a href="#order-of-execution-of-a-sql-query" id="toc-order-of-execution-of-a-sql-query" class="nav-link" data-scroll-target="#order-of-execution-of-a-sql-query">Order of Execution of a SQL Query</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/04-sql-aggregation/04 SQL Aggregation.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/04-sql-aggregation/04 SQL Aggregation.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/04-sql-aggregation/04 SQL Aggregation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/04-sql-aggregation/04 SQL Aggregation.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">9 SQL DDL</h1>
+<h1 class="title">4 SQL Aggregation</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Coding</div>
     <div class="quarto-category">SQL</div>
     <div class="quarto-category">Database</div>
-    <div class="quarto-category">DDL</div>
+    <div class="quarto-category">Aggregation</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    This lecture discusses Database Modification Language in SQL, including Insert, Delete, Update, and Create operations. It also covers SQL Schemas, Types, Keys, and Foreign Keys.
+    This lecture discusses SQL Aggregation, including computing on a column, <code>GROUP BY</code>, and <code>HAVING</code> clauses.
   </div>
 </div>
 
@@ -210,7 +213,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 28, 2024</p>
+      <p class="date">September 14, 2024</p>
     </div>
   </div>
   
@@ -229,44 +232,65 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>We often want to compute something across the values in a column</li>
 <li><code>SUM</code>, <code>AVG</code>, <code>MIN</code>, and <code>MAX</code></li>
-<li>We can also count the number of tuples (rows) by using <code>COUNT(*)</code> ```sql SELECT * FROM Took;</li>
+<li>We can also count the number of tuples (rows) by using <code>COUNT(*)</code></li>
 </ul></li>
 </ul>
-<p>SELECT grade FROM Took;</p>
-<p>SELECT AVG(grade) FROM Took;</p>
-<p>SELECT AVG(grade) AS myAVG /* It is recommend to always rename */ FROM Took;</p>
-<p>/* One can combine multiple aggregations <em>/ SELECT MAX(grade), AVG(grade), COUNT(</em>), MIN(sID) FROM Took;</p>
-<pre><code>## `GROUP BY`
-- If we follow a `SELECT-FROM-WHERE` expression with `GROUP BY &lt;attributes&gt;`
-    - The rows are grouped together according to the values of those attributes, and
-    - any aggregations is applied only within each group 
-```sql
-SELECT oID, AVG(grade) AS offAvg
-FROM Took
-GROUP BY oID;</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Took;</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> grade</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Took;</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(grade)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Took;</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(grade) <span class="kw">AS</span> myAVG <span class="co">/* It is recommend to always rename */</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Took;</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">/* One can combine multiple aggregations */</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MAX</span>(grade), <span class="fu">AVG</span>(grade), <span class="fu">COUNT</span>(<span class="op">*</span>), <span class="fu">MIN</span>(sID)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Took;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="group-by" class="level2">
+<h2 class="anchored" data-anchor-id="group-by"><code>GROUP BY</code></h2>
+<ul>
+<li>If we follow a <code>SELECT-FROM-WHERE</code> expression with <code>GROUP BY &lt;attributes&gt;</code>
+<ul>
+<li>The rows are grouped together according to the values of those attributes, and</li>
+<li>any aggregations is applied only within each group</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">oID</span>, <span class="fu">AVG</span>(grade) <span class="kw">AS</span> offAvg</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Took</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">oID</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><em>Note: <code>SELECT</code> cannot include un-aggregated columns</em></li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* The following will produce an error */</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">oID</span>, <span class="fu">AVG</span>(grade) <span class="kw">AS</span> offAvg, sID</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Took</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">oID</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* The following will produce an error */</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">oID</span>, <span class="fu">AVG</span>(grade) <span class="kw">AS</span> offAvg, sID</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Took</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">oID</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Restrictions on Aggregation:
 <ul>
 <li>If any aggregation is used, then each element of the <code>SELECT</code> list must be either
 <ul>
 <li>aggregated, or</li>
-<li>an attribute on the <code>GROUP BY</code> list. ## <code>HAVING</code></li>
+<li>an attribute on the <code>GROUP BY</code> list.</li>
 </ul></li>
 </ul></li>
+</ul>
+</section>
+<section id="having" class="level2">
+<h2 class="anchored" data-anchor-id="having"><code>HAVING</code></h2>
+<ul>
 <li>Sometimes, we want to keep some groups and eliminate others from our result set.</li>
 <li><code>WHERE</code> let us decide which tuples to keep - performed before the grouping</li>
 <li><code>HAVING</code> decides which groups to keep - performed after the grouping</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">..</span>.</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="op">&lt;</span><span class="kw">attributes</span><span class="op">&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="op">&lt;</span>condition<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">..</span>.</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="op">&lt;</span><span class="kw">attributes</span><span class="op">&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="op">&lt;</span>condition<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Only groups satisfying the condition are kept.</li>
 <li>Requirements on <code>HAVING</code> clauses:
@@ -276,30 +300,77 @@ GROUP BY oID;</code></pre>
 <li>aggregated, or</li>
 <li>an attribute on the <code>GROUP BY</code> list</li>
 </ul></li>
-<li>This requirement is the same as <code>SELECT</code> clause. ```sql SELECT oID, AVG(grade) as offAvg FROM Took GROUP BY oID HAVING AVG(grade) &gt; 80; /* Cannot use offAvg here. HAVING is executed before SELECT*/</li>
+<li>This requirement is the same as <code>SELECT</code> clause.</li>
 </ul></li>
 </ul>
-<p>/* The following two queries are WRONG / produce undesired results <em>/ SELECT oID, AVG(grade) as offAvg FROM Took GROUP BY oID WHERE AVG(grade) &gt; 80; /</em> Incorrect! */</p>
-<p>SELECT oID, AVG(grade) as offAvg FROM Took WHERE AVG(grade) &gt; 80 /* Incorrect! */ GROUP BY oID;</p>
-<p>/* Another HAVING example */ SELECT oID, avg(grade) as offAvg GROUP BY oID HAVING oID &lt;= 5 ORDER BY oID;</p>
-<pre><code>
-## Order of Execution of a SQL Query
-| Query Order | Execution Order |
-| :---------: | :-------------: |
-|  `SELECT`   |     `FROM`      |
-|   `FROM`    |     `WHERE`     |
-|   `WHERE`   |   `GROUP BY`    |
-| `GROUP BY`  |    `HAVING`     |
-|  `HAVING`   |    `SELECT`     |
-| `ORDER BY`  |   `ORDER BY`    |
-- However, note that we can order by a column even if it is not selected.
-```sql
-/* The following query is legal. */
-SELECT sID
-FROM Took
-GROUP BY sID
-HAVING AVG(grade) &gt; 80
-ORDER BY AVG(grade)</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">oID</span>, <span class="fu">AVG</span>(grade) <span class="kw">as</span> offAvg</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Took</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">oID</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">AVG</span>(grade) <span class="op">&gt;</span> <span class="dv">80</span>; </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">/* Cannot use offAvg here. HAVING is executed before SELECT*/</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">/* The following two queries are WRONG / produce undesired results */</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">oID</span>, <span class="fu">AVG</span>(grade) <span class="kw">as</span> offAvg</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Took</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">oID</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="fu">AVG</span>(grade) <span class="op">&gt;</span> <span class="dv">80</span>; <span class="co">/* Incorrect! */</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">oID</span>, <span class="fu">AVG</span>(grade) <span class="kw">as</span> offAvg</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Took</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="fu">AVG</span>(grade) <span class="op">&gt;</span> <span class="dv">80</span> <span class="co">/* Incorrect! */</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">oID</span>;</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">/* Another HAVING example */</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">oID</span>, <span class="fu">avg</span>(grade) <span class="kw">as</span> offAvg</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">oID</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="kw">oID</span> <span class="op">&lt;=</span> <span class="dv">5</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="kw">oID</span>; </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="order-of-execution-of-a-sql-query" class="level2">
+<h2 class="anchored" data-anchor-id="order-of-execution-of-a-sql-query">Order of Execution of a SQL Query</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Query Order</th>
+<th style="text-align: center;">Execution Order</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>SELECT</code></td>
+<td style="text-align: center;"><code>FROM</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>FROM</code></td>
+<td style="text-align: center;"><code>WHERE</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>WHERE</code></td>
+<td style="text-align: center;"><code>GROUP BY</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>GROUP BY</code></td>
+<td style="text-align: center;"><code>HAVING</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>HAVING</code></td>
+<td style="text-align: center;"><code>SELECT</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>ORDER BY</code></td>
+<td style="text-align: center;"><code>ORDER BY</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>However, note that we can order by a column even if it is not selected.</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* The following query is legal. */</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> sID</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Took</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> sID</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">AVG</span>(grade) <span class="op">&gt;</span> <span class="dv">80</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">AVG</span>(grade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
@@ -844,7 +915,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/04-sql-aggregation/04 SQL Aggregation.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/04-sql-aggregation/04 SQL Aggregation.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/04-sql-aggregation/04 SQL Aggregation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/04-sql-aggregation/04 SQL Aggregation.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
