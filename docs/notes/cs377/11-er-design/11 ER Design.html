@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jiuru Lyu">
-<meta name="dcterms.date" content="2024-10-30">
-<meta name="description" content="This lecture discusses how to embed SQL in Java using JDBC. It covers the JDBC API, SQL Injection, and Prepared Statements.">
+<meta name="dcterms.date" content="2024-11-10">
+<meta name="description" content="This lecture discusses Entity-Relationship (ER) design, which is a technique for designing databases. It covers the ER model, ER diagrams, and the process of converting ER diagrams to relational schemas.">
 
-<title>Jiuru Lyu - 10 JDBC</title>
+<title>Jiuru Lyu - 11 ER Design</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,40 +22,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -106,10 +72,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="../../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../../styles.css">
 </head>
@@ -173,29 +171,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#jdbc-steps" id="toc-jdbc-steps" class="nav-link active" data-scroll-target="#jdbc-steps">JDBC Steps</a></li>
-  <li><a href="#prepared-statements" id="toc-prepared-statements" class="nav-link" data-scroll-target="#prepared-statements">Prepared Statements</a></li>
+  <li><a href="#introduction-to-database-design" id="toc-introduction-to-database-design" class="nav-link active" data-scroll-target="#introduction-to-database-design">Introduction to Database Design</a></li>
+  <li><a href="#the-entityrelationship-er-model" id="toc-the-entityrelationship-er-model" class="nav-link" data-scroll-target="#the-entityrelationship-er-model">The Entity/Relationship (E/R) Model</a></li>
+  <li><a href="#challenges-in-er-design-modeling-the-real-world" id="toc-challenges-in-er-design-modeling-the-real-world" class="nav-link" data-scroll-target="#challenges-in-er-design-modeling-the-real-world">Challenges in E/R Design: Modeling the “Real World”</a></li>
+  <li><a href="#from-er-model-to-relationship-database-schema" id="toc-from-er-model-to-relationship-database-schema" class="nav-link" data-scroll-target="#from-er-model-to-relationship-database-schema">From E/R Model to Relationship Database Schema</a>
+  <ul class="collapse">
+  <li><a href="#restructuring-an-er-model" id="toc-restructuring-an-er-model" class="nav-link" data-scroll-target="#restructuring-an-er-model">Restructuring An E/R Model</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/10-JDBC/10 JDBC.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/10-JDBC/10 JDBC.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/11-er-design/11 ER Design.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/11-er-design/11 ER Design.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">10 JDBC</h1>
+<h1 class="title">11 ER Design</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Coding</div>
-    <div class="quarto-category">SQL</div>
     <div class="quarto-category">Database</div>
-    <div class="quarto-category">Java</div>
-    <div class="quarto-category">JDBC</div>
+    <div class="quarto-category">Database Design</div>
+    <div class="quarto-category">ER Design</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    This lecture discusses how to embed SQL in Java using JDBC. It covers the JDBC API, SQL Injection, and Prepared Statements.
+    This lecture discusses Entity-Relationship (ER) design, which is a technique for designing databases. It covers the ER model, ER diagrams, and the process of converting ER diagrams to relational schemas.
   </div>
 </div>
 
@@ -212,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 30, 2024</p>
+      <p class="date">November 10, 2024</p>
     </div>
   </div>
   
@@ -224,231 +226,611 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="jdbc-steps" class="level2">
-<h2 class="anchored" data-anchor-id="jdbc-steps">JDBC Steps</h2>
+<section id="introduction-to-database-design" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-database-design">Introduction to Database Design</h2>
 <ul>
-<li>Load the driver and register it with the driver manager (download the driver <code>.jar</code> file)</li>
-<li>Connect toe database</li>
-<li>Create a statement object</li>
-<li>Execute a query and retrieve the results, or make changes to the database</li>
-<li>Disconnect from the database</li>
-</ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">sql</span><span class="op">.*;</span> <span class="co">// API for accessing and processing DB datqa</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> JDBCTest <span class="op">{</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span> args<span class="op">[])</span> <span class="op">{</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span> <span class="op">{</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Load the driver</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="bu">Class</span><span class="op">.</span><span class="fu">forName</span><span class="op">(</span><span class="st">"org.postgresql.Driver"</span><span class="op">);</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Connect to the database</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>      <span class="bu">Connection</span> conn <span class="op">=</span> <span class="bu">DriverManager</span><span class="op">.</span><span class="fu">getConnection</span><span class="op">(</span><span class="st">"jdbc:postgresql://localhost:5433/"</span><span class="op">,</span> <span class="st">"postgres"</span><span class="op">,</span> <span class="st">"postgres"</span><span class="op">)</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Create a statement object</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      <span class="bu">Statement</span> stmt <span class="op">=</span> conn<span class="op">.</span><span class="fu">createStatement</span><span class="op">();</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Execute a query and retrieve the results</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>      <span class="bu">ResultSet</span> rs <span class="op">=</span> stmt<span class="op">.</span><span class="fu">executeQuery</span><span class="op">(</span><span class="st">"SELECT * FROM mytable"</span><span class="op">);</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Process the results</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>      <span class="cf">while</span> <span class="op">(</span> rs<span class="op">.</span><span class="fu">next</span><span class="op">()</span> <span class="op">)</span> <span class="op">{</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span>rs<span class="op">.</span><span class="fu">getString</span><span class="op">(</span><span class="st">"name"</span><span class="op">));</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>      rs<span class="op">.</span><span class="fu">close</span><span class="op">();</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Disconnect from the database</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>      stmt<span class="op">.</span><span class="fu">close</span><span class="op">();</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>      conn<span class="op">.</span><span class="fu">close</span><span class="op">();</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Handle exceptions</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">catch</span> <span class="op">(</span><span class="bu">Exception</span> e<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>      <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span>e<span class="op">);</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<li>Conceptualizing the real-world
 <ul>
-<li>Arguments to <code>getConnection</code>:
+<li>DB design begins with a boss or client who wants a database :)</li>
+<li>We must map the <em>entities</em> and <em>relationships</em> in the real world to the concepts of a database. This is called <strong>modeling</strong>.</li>
+<li>Sketching the key components is an efficient way to develop a design.
 <ul>
-<li><code>jdbc:postgresql</code>: indicates the driver to use PostgreSQL</li>
-<li><code>localhost:5433/</code>:
-<ul>
-<li>Host address: port number</li>
-<li>Use <code>localhost</code> to indicate that we are running the Java application on same server as the database</li>
+<li>Sketch out (and debug) <strong>schema</strong> designs;</li>
+<li>Express as many <strong>constraints</strong> as possible;</li>
+<li>Convert to <strong>relational DB</strong> once the client is happy.<br>
+</li>
 </ul></li>
-<li><code>username</code></li>
-<li><code>password</code></li>
-<li>We can also specify the schema we want to connect:
-<ul>
-<li><code>url = jdbc:postgresql://localhost:5433/postgres?currentSchema=mySchema</code></li>
-<li>Alternatively, we can use <code>conn.setSchema("mySchema")</code>.</li>
-</ul></li>
-</ul></li>
-<li><code>ResultSet</code>:
-<ul>
-<li><code>rs.next()</code>: moves the cursor to the next row</li>
-<li><code>rs.getString("name")</code>: retrieves the value of the column <code>name</code> in the current row
-<ul>
-<li>If the tuple also contains other data types, we can use <code>rs.getInt("age")</code>, <code>rs.getDouble("salary")</code>, etc.</li>
-</ul></li>
-<li><code>rs.close()</code>: closes the result set</li>
-</ul></li>
-<li>Exceptions can occur when:
-<ul>
-<li>The driver is not found</li>
-<li>The connection fails</li>
-<li>The query fails</li>
-<li>The result set is not closed</li>
 </ul></li>
 </ul>
 </section>
-<section id="prepared-statements" class="level2">
-<h2 class="anchored" data-anchor-id="prepared-statements">Prepared Statements</h2>
+<section id="the-entityrelationship-er-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-entityrelationship-er-model">The Entity/Relationship (E/R) Model</h2>
 <ul>
-<li>Preparing a statement includes parsing the SQL, compiling and optimizing it.</li>
-<li>The resulting <code>PreparedStatement</code> object can be executed any number of times wihtout having to repeat these steps.
+<li>Overview:
 <ul>
-<li><a href="https://docs.oracle.com/javase/7/docs/api/java/sql/PreparedStatement.html">Java Documentation</a></li>
+<li>Using the E/R model to model the real world.</li>
+<li>From there, designing a database schema:
+<ul>
+<li>Reconstructuring of an E/R model</li>
+<li>Translating an E/R model into a logical model (DB schema)</li>
 </ul></li>
-<li>If the query isn’t know until run time:
+<li>E/R model is a Visual data model (diagram-based):
 <ul>
-<li>You may need input and computation to determine the query.</li>
-<li>You can hard-code the parts you know, and use <code>?</code> as a placeholder for the values you don’t know.</li>
-<li>This is enough to allow a <code>PreparedStatement</code> to be constructed.</li>
-<li>Onece you know values fro the placeholders, methods <code>setInt</code>, <code>setString</code>, etc. can be used to set the values.</li>
+<li>Quickly “chart out” a databse design</li>
+<li>Easier to “see” big picture</li>
+<li>Comparable to class diagrams in UML</li>
+</ul></li>
+<li>Basic concept: <strong>entities</strong> and their <strong>relationships</strong> along with <strong>attributes</strong> describing them.</li>
 </ul></li>
 </ul>
-<div id="tip-placeholder" class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip&nbsp;1: Example of Using Placeholders
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb2"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>  <span class="bu">PreparedStatement</span> studioStat <span class="op">=</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    conn<span class="op">.</span><span class="fu">preparedStatement</span><span class="op">(</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>      <span class="st">"INSERT INTO STUDIO(name, address)</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">VALUES</span><span class="op">(?,</span> <span class="op">?)</span><span class="st">"</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">);</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">/* OMITTED: Get values for studioName and StudioAddr*/</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  studioStat<span class="op">.</span><span class="fu">setString</span><span class="op">(</span><span class="dv">1</span><span class="op">,</span> studioName<span class="op">);</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  studioStat<span class="op">.</span><span class="fu">setString</span><span class="op">(</span><span class="dv">2</span><span class="op">,</span> studioAddr<span class="op">);</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  studioStat<span class="op">.</span><span class="fu">executeUpdate</span><span class="op">();</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-<div id="wrn-not-building-string" class="callout callout-style-default callout-warning callout-titled">
+<div id="nte-entity-set" class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Warning&nbsp;1: Why not just build the query in a string?
+Note&nbsp;1: Entity Set: (Represented by a rectangle <span class="math inline">\(\Huge{\boxed{\ \ }}\)</span>)
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>We constructed an incomplete <code>preparedStatement</code> and filled in the missing values using method calls.</li>
-<li>Instead, we could just build up the query in an ordinary string at run time, and ask to execute that.</li>
-<li>There are classes and methods that will do this in JDBC.</li>
-<li>But never use that approach because it is vulnerable to <strong>injections</strong>: insertion of strings into a query with malicious intent.</li>
-<li>Always use a <code>preparedStatement</code> instead!</li>
-</ul>
-</div>
-</div>
+<li>An <strong><em>entity set</em></strong> represents a category of objects that have properties in common and an autonomous existence.
 <ul>
-<li>Advantages of a prepared statement
+<li>E.g., City, Department, Employee, Sale</li>
+</ul></li>
+<li>An <strong><em>entity</em></strong> is an instance of an entity set.
 <ul>
-<li>Preformance: it is pre-complied. DB server prepares an execution plane once and caches it (before execution).</li>
-<li>Security: it is a good way to protect against SQL injection.</li>
+<li>E.g., “San Francisco” is an entity in the City entity set.</li>
 </ul></li>
 </ul>
-<div id="tip-create-statement" class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+</div>
+</div>
+<div id="nte-relationship-set" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Tip&nbsp;2: Example with <code>createStatement</code>
+Note&nbsp;2: Relationship Sets: (Represented by a diamond <span class="math inline">\(\Huge{\diamond}\)</span>)
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb3"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Statement</span> stat <span class="op">=</span> conn<span class="op">.</span><span class="fu">createStatement</span><span class="op">();</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">String</span> query <span class="op">=</span> </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SELECT networth</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    FROM MovieExec</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    WHERE execName LIKE <span class="er">'</span><span class="op">%</span>Spielberg<span class="op">%</span><span class="er">'</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">";</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="bu">ResultSet</span> worth <span class="op">=</span> stat<span class="op">.</span><span class="fu">executeQuery</span><span class="op">(</span>query<span class="op">);</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>A <strong><em>relationship set</em></strong> is an association between two or more entity sets.
+<ul>
+<li>E.g., Residence is an relationship set between entity sets City and Employee.</li>
+</ul></li>
+<li>A <strong><em>relationship</em></strong> is an instance of a n-ary relationship set.
+<ul>
+<li>E.g., the pairt (“San Francisco”, “John”) is an instance of relationship Residence.</li>
+</ul></li>
+</ul>
 </div>
 </div>
-</div>
-<div id="tip-injection" class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<ul>
+<li>Recursive Relationships
+<ul>
+<li><strong><em>Recursive relationsihps</em></strong> relate an entity to itself.</li>
+<li>Note, sometimes, relationship is not symmetric.
+<ul>
+<li>In this case, we need to indicate the two <strong>roles</strong> that the entity plas in the relationship.</li>
+<li>E.g., “Sovereign” is a recurvie relationship of “Succession.” However, the two rols are “Predecessor” and “Successor”.</li>
+</ul></li>
+</ul></li>
+<li>Ternary Relationships
+<ul>
+<li><strong><em>Ternary relationships</em></strong> relate three entity sets.</li>
+<li>E.g., “Supply” is a ternary relationship between “Supplier”, “Product”, and “Department.”</li>
+</ul></li>
+</ul>
+<div id="nte-attribute" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Tip&nbsp;3: Example of SQL Injection
+Note&nbsp;3: Attributes: (Represented by an oval <span class="math inline">\(\Huge{\circ}\)</span>)
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
-<li>Suppose we want the user to provide the string to compare to.</li>
-<li>We did this by allowing user input to be concatenated into the query string.</li>
-</ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Statement</span> stat <span class="op">=</span> conn<span class="op">.</span><span class="fu">createStatement</span><span class="op">();</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">String</span> who <span class="op">=</span> <span class="co">/* User input */</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">String</span> query <span class="op">=</span> </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SELECT networth</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    FROM MovieExec</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    WHERE execName LIKE <span class="er">'</span><span class="op">%</span><span class="st">" + who + "</span><span class="op">%</span><span class="er">'</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">";</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="bu">ResultSet</span> worths <span class="op">=</span> stat<span class="op">.</span><span class="fu">executeQuery</span><span class="op">(</span>query<span class="op">);</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<li>An <strong><em>attribute</em></strong> describes elementary properties of entities or relationships.
 <ul>
-<li>A gentle user does not harm might enter <code>Cameron</code>, making the query:</li>
-</ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> networth</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> MovieExec</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> execName <span class="kw">LIKE</span> <span class="st">'%Cameron%'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<li>E.g., “Name” is an attribute of the entity set “City.”</li>
+</ul></li>
+<li>Attributes may be single-valued or multi-valued.</li>
+<li><strong><em>Composite attributes</em></strong> are grouped attributes of the same entity or relationship that have closed connected meaning or uses.
 <ul>
-<li><p>Nothing bad happens.</p></li>
-<li><p>However, an injection can exploit the vulnerability: if the user enters <code>Milch%'; DROP TABLE Contracts; --</code>, the query becomes:</p></li>
+<li>E.g., “Address” is a composite attribute of the entity set “City.” “Address” can be further decomposed into “Street,” “City,” “State,” and “Zip.”</li>
+</ul></li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> networth</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> MovieExec</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> execName <span class="kw">LIKE</span> <span class="st">'%Milch%'</span>; <span class="kw">DROP</span> <span class="kw">TABLE</span> Contracts; <span class="co">--%'</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- Equivalent to:</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> networth</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> MovieExec</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> execName <span class="kw">LIKE</span> <span class="st">'%Milch%'</span>;</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> Contracts; <span class="co">--%';</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="nte-cardinality" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4: Cardinalities
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
-<li>All the contracts table will be dropped.</li>
-<li>This is a <strong>SQL Injection</strong>.</li>
+<li>Each entity set participates in a relationship set with a minimum (<code>min</code>) and a maximum (<code>max</code>) cardinality.</li>
+<li>Cardinalities <em>constrain</em> how entity instances participate in relationship instances.</li>
+<li>Graphically, cardinalities are represented by lines connecting entities to relationships.</li>
 </ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A[Employee]---|"(1,5)"|B{Assignment}---|"(0, 50)"|C[Task]
+</pre>
+</div>
+<p></p></figure><p></p>
 </div>
 </div>
 </div>
 <ul>
-<li>Queries vs.&nbsp;updates in JDBC</li>
-<li><code>executeQuery</code> is used for queries that return a result set.The previous examples used <code>executeQuery</code>.</li>
-<li>This method is only for pure queries.</li>
-<li>For SQL statements that change the database (insert, delete, or modify tuples, or change the schema), use the analogous <code>executeUpdate</code> method.</li>
+<li><em>Note</em>: an entity might not participate in any relationship.</li>
+<li>In principle, cardinalities are pairs of non-negative integers <span class="math inline">\((n,N)\)</span> such that <span class="math inline">\(n\leq N\)</span>, where <span class="math inline">\(N\)</span> means any number.</li>
+<li>Minimum cardinality <span class="math inline">\(n\)</span>:
+<ul>
+<li>If <span class="math inline">\(0\)</span>, entity participation in a relationship is <strong>optional</strong>.</li>
+<li>If <span class="math inline">\(1\)</span>, entity participation in a relationship is <strong>rmandatory</strong>.</li>
+</ul></li>
+<li>Maximum cardinality <span class="math inline">\(N\)</span>:
+<ul>
+<li>If <span class="math inline">\(1\)</span>, each instance of the entity is associated with <em>at most one instance</em> of the relationship.</li>
+<li>If <span class="math inline">\(N\)</span>, each instance of the entity is associated with <em>many instances</em> of the relationship.</li>
+</ul></li>
 </ul>
+</div>
+</div>
+<ul>
+<li>Examples of Cardinalities</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A[Tourist]---|"(1,N)"|B{Reservation}---|"(0, N)"|C[Voyage]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A[Order]---|"(0,1)"|B{Sale}---|"(1, 1)"|V[Invoice]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A[Person]---|"(1,1)"|B{Residence}---|"(0, N)"|C[City]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li>Multiplicity of Relationships
+<ul>
+<li>If entities <span class="math inline">\(E_1\)</span> and <span class="math inline">\(E_2\)</span> participate in relationship <span class="math inline">\(R\)</span> with cardinalities <span class="math inline">\((n_1,N_1)\)</span> and <span class="math inline">\((n_2,N_2)\)</span>, then the multiplicity of <span class="math inline">\(R\)</span> is <span class="math inline">\(N_1\)</span>-to-<span class="math inline">\(N_2\)</span> (which is the same as <span class="math inline">\(N_2\)</span>-to-<span class="math inline">\(N_1\)</span>).</li>
+<li>Examples:
+<ul>
+<li><span class="math inline">\(1\)</span>-to-<span class="math inline">\(1\)</span></li>
+<li><span class="math inline">\(1\)</span>-to-<span class="math inline">\(N\)</span> or <span class="math inline">\(N\)</span>-to-<span class="math inline">\(1\)</span></li>
+<li><span class="math inline">\(N\)</span>-to-<span class="math inline">\(N\)</span></li>
+</ul></li>
+</ul></li>
+<li>Cardinalities of Attributes
+<ul>
+<li>Describe min/max number of <strong>values</strong> an attribute can have.</li>
+<li>When the cardinality of an attribute is <span class="math inline">\((1,1)\)</span>, it can be omitted (single-valued attributes).</li>
+<li>The value of an attribute, nmay also be <strong>null</strong> or have <strong>several</strong> values (multi-valued attributes).</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A((Surname)) --- B[Person]
+    C((License Number)) --- |"(0,1)"| B
+    B --- |"(0, N)"| D((CarRegistration#))
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li>Multi-valued attributes foten represent situations that can be modeled with <em>additional entities</em>.
+<ul>
+<li>E.g., the above model can be transformed into the following model:</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A((Surname)) --- B[Person]
+    C((License Number)) --- |"(0,1)"| B
+    B --- |"(0,N)"| E{Owns}
+    E --- |"(1,1)"| D((CarRegistration#))
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div id="nte-key" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;5: Keys: (Represented by an underline <span class="math inline">\(\Huge{\underline{\ \ }}\)</span> or <span class="math inline">\(\Huge{\bullet}\)</span>)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong><em>Keys</em></strong> consist of minimal sets of attributes which uniquely identify instances of an entity set.
+<ul>
+<li>SSN may be a key of Person</li>
+<li>firstName, middleName, lastName, address may be a key of Person</li>
+</ul></li>
+<li>In most cases, a key is formed by one or more attributes of the entity itself (<strong><em>internal key</em></strong>).</li>
+<li>Sometimes, an entity doesn’t have a key among its attributes. This is called a <strong><em>weak entity</em></strong>.
+<ul>
+<li>Solution: the keys of related entities brought into help with identification (becoming <strong><em>foreign keys</em></strong>).</li>
+</ul></li>
+<li>A key for a relationship consists of the keys of the entities it relates.</li>
+</ul>
+</div>
+</div>
+<ul>
+<li>Example of Keys
+<ul>
+<li>Internal, single-attribute</li>
+<li>internal, multi-attribute</li>
+<li>weak entity with foreign key <img src="./figs/keys.png" class="img-fluid" alt="Keys"></li>
+</ul></li>
+<li>Example of Schema with Keys <img src="./figs/schemaKeys.png" class="img-fluid" alt="Schema with Keys"></li>
+</ul>
+</section>
+<section id="challenges-in-er-design-modeling-the-real-world" class="level2">
+<h2 class="anchored" data-anchor-id="challenges-in-er-design-modeling-the-real-world">Challenges in E/R Design: Modeling the “Real World”</h2>
+<ul>
+<li>Life is arbitrarily complex</li>
+<li><strong>Design choices</strong>: should a concept be modeled as an entity, an attribute, or a relationship?</li>
+<li><strong>Limitations of the E/R Model</strong>: A lot of data semantics can be captured but some cannot.</li>
+<li>Key to successfull model: <strong>parsimony</strong>:
+<ul>
+<li>As complex as necessary, but no more.</li>
+<li>Choose to present only <strong><em>relevant</em></strong> things.</li>
+</ul></li>
+</ul>
+</section>
+<section id="from-er-model-to-relationship-database-schema" class="level2">
+<h2 class="anchored" data-anchor-id="from-er-model-to-relationship-database-schema">From E/R Model to Relationship Database Schema</h2>
+<ul>
+<li>Relational Database Design
+<ul>
+<li>Given a conceptual schema (ER, but could also be other models), generate a logical (relational) schema.</li>
+<li>It is helpful to divide the design into two steps:
+<ul>
+<li><strong>Restructuring (refining) of the E/R schema</strong>, based on criteria for the optimization of the schema</li>
+</ul></li>
+<li><strong>Tranlation into the logical model</strong>, based on the features of the logical model (relational model)</li>
+</ul></li>
+</ul>
+<section id="restructuring-an-er-model" class="level3">
+<h3 class="anchored" data-anchor-id="restructuring-an-er-model">Restructuring An E/R Model</h3>
+<ul>
+<li>Restructuring Overview
+<ul>
+<li>Input: E/R Schema</li>
+<li>OUtput: Resturctured (Refined) E/R Schema</li>
+</ul></li>
+<li>Restructuring includes:
+<ul>
+<li>Analysis of <strong>redundancies</strong></li>
+<li>Chossing <strong>entity</strong> set vs.&nbsp;<strong>attribute</strong></li>
+<li>Limiting the use of <strong>weak entity</strong> sets</li>
+<li>Selection of <strong>keys</strong></li>
+<li>Creating entity sets to replace <strong>attributes</strong> with cardinality <strong>greater than one</strong>.</li>
+</ul></li>
+<li>Example: Redundancies
+<ul>
+<li>In the followign E/R schema, the attribute <code>Manf. Address</code> is redundant.</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    B(("&lt;u&gt;Part Number&lt;/u&gt;")) --- A[Part]
+    C((Name)) --- A
+    D((Manf. Name)) --- A
+    E((Manf. Address)) --- A
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li>The schema can be restructured as follows:</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    B(("&lt;u&gt;Part Number&lt;/u&gt;")) --- A[Part]
+    C((Name)) --- A
+    D((Manf. Name)) --- A
+    F[Manufacturer] --- H(("&lt;u&gt;Name&lt;/u&gt;"))
+    A --- |"(1, 1)"| E{"Made By"}
+    E --- |"(1, N)"| F
+    F --- G((Address))
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li>However, here’s still a redundancy in the schema: we don’t need the <code>Manf. Name</code> attribute.</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    B(("&lt;u&gt;Part Number&lt;/u&gt;")) --- A[Part]
+    C((Name)) --- A
+    F[Manufacturer] --- H(("&lt;u&gt;Name&lt;/u&gt;"))
+    A --- |"(1, 1)"| E{"Made By"}
+    E --- |"(1, N)"| F
+    F --- G((Address))
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li>Entity Sets vs.&nbsp;Attributes
+<ul>
+<li>An entity set should satisfy at least one of the following conditions:
+<ul>
+<li>It is mor than the name of something; it has at least one <strong>non-key attribute</strong>, or</li>
+<li>It is the <strong>many</strong> in a many-one or many-many relationship.</li>
+</ul></li>
+<li>Rules of thumb:
+<ul>
+<li>A thing in tis own right: entity set</li>
+<li>A detail about some other thing: attribute</li>
+<li>A detial correlated among many things: entity set</li>
+</ul></li>
+<li>It is to avoid redundancy.</li>
+</ul></li>
+<li>Example: domain fact change: A <code>Part</code> can have more than one <code>Manufacturer</code>.</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    B(("&lt;u&gt;Part Number&lt;/u&gt;")) --- A[Part]
+    C((Name)) --- A
+    F[Manufacturer] --- H(("&lt;u&gt;Name&lt;/u&gt;"))
+    A --- |"(1, N)"| E{"Made By"}
+    E --- |"(1, N)"| F
+    F --- G((Address))
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li>However, if we add another domain fact change: No manufacturer address:</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    B(("&lt;u&gt;Part Number&lt;/u&gt;")) --- A[Part]
+    C((Name)) --- A
+    F[Manufacturer] --- H(("&lt;u&gt;Name&lt;/u&gt;"))
+    A --- |"(1, N)"| E{"Made By"}
+    E --- |"(1, N)"| F
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li><code>Manufacturer</code> does not have a <strong>nonkey</strong> attribute anymore…
+<ul>
+<li>However, it is an “many” in a many-to-many relaionship.</li>
+<li>So, we cannot convert it to an attribute.</li>
+</ul></li>
+<li>Example: What if we start from the following schema?</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    B(("&lt;u&gt;Part Number&lt;/u&gt;")) --- A[Part]
+    C((Name)) --- A
+    D((Manf. Name)) --- A
+    E((Manf. Address)) --- A
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li>We still apply the same domain fact changes:
+<ul>
+<li>A <code>Part</code> can have more than one <code>Manufacturer</code>, and</li>
+<li>No manufacturer address.</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    B(("&lt;u&gt;Part Number&lt;/u&gt;")) --- A[Part]
+    C((Name)) --- A
+    D((Manf. Name)) ---|"(1,N)"| A
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li>It looks good, but we want to avoid multi-value attributes as it is not compatible with relational DBs.</li>
+<li>So, we convert the multi-value attribute <code>Manf. Name</code> to an entity set.</li>
+<li>Another example: if we apply the domain fact change: A <code>Manufactuere</code> can have 0 <code>Part</code>. Then,</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    B(("&lt;u&gt;Part Number&lt;/u&gt;")) --- A[Part]
+    C((Name)) --- A
+    F[Manufacturer] --- H(("&lt;u&gt;Name&lt;/u&gt;"))
+    A --- |"(1, N)"| E{"Made By"}
+    E --- |"(0, N)"| F
+    F --- G((Address))
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li>If no parts are associated with a manufacturer, then we lose all information on the manufacturer in this system.</li>
+<li>When to use <strong>weak entity sets</strong>?
+<ul>
+<li>The usual reason is that there is no global authority capble of creating unique IDs.</li>
+</ul></li>
+<li>Don’t oversue weak entity sets:
+<ul>
+<li>Beginner database designers often doubt that anything could be a key by itself:
+<ul>
+<li>The make all entity sets weak, supported by all other entity sets to which they are linked.</li>
+</ul></li>
+<li>It is usually better to create unique IDs</li>
+</ul></li>
+<li>Selecting a Primary Key
+<ul>
+<li>Every entity must have a <strong>primary key</strong>.</li>
+<li>The crteria for this decision are as follows:
+<ul>
+<li>Attributes with null values cannot form primary keys.</li>
+<li>One/few attributes is preferable to many attributes.</li>
+<li>Internal keys preferable to external ones (week entities depend for their existence on other entities).</li>
+</ul></li>
+</ul></li>
+<li>Keep Keys Simple: Multi-attribute and/or string keys
+<ul>
+<li>Waste space (are redundant)</li>
+<li>Break encapsulation</li>
+<li>Are brittle (nasty interaction of above two points)</li>
+<li>Also: computers are good at numbers, not strings.</li>
+</ul></li>
+<li>Attributes with Cardinality Greater than One
+<ul>
+<li>The relational model doesn’t allow multi-valued attributes. We must convert these to entity sets.</li>
+</ul></li>
+<li>Example: Multi-valued Attributes
+<ul>
+<li>Consider the following schema:</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    B(("&lt;u&gt;Part Number&lt;/u&gt;")) --- A[Part]
+    C((Name)) --- A
+    D((Manf. Name)) ---|"(1,N)"| A
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li>We have to convert it to the following schema (making <code>Manf. Name</code> an entity set):</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    B(("&lt;u&gt;Part Number&lt;/u&gt;")) --- A[Part]
+    C((Name)) --- A
+    F[Manufacturer] --- H(("&lt;u&gt;Name&lt;/u&gt;"))
+    A --- |"(1, N)"| E{"Made By"}
+    E --- |"(1, N)"| F
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 
 
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
@@ -991,7 +1373,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/10-JDBC/10 JDBC.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/10-JDBC/10 JDBC.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/11-er-design/11 ER Design.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/11-er-design/11 ER Design.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

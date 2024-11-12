@@ -6,6 +6,169 @@ author:
     url: https://jrlyu.github.io/
 date: 10-30-2024
 categories: [Coding, SQL, Database, Java, JDBC]
-draft: true
+draft: false
 ---
 
+## JDBC Steps
+- Load the driver and register it with the driver manager (download the driver `.jar` file)
+- Connect toe database
+- Create a statement object
+- Execute a query and retrieve the results, or make changes to the database
+- Disconnect from the database
+
+```java
+import java.sql.*; // API for accessing and processing DB datqa
+
+public class JDBCTest {
+  public static void main(String args[]) {
+    try {
+      // Load the driver
+      Class.forName("org.postgresql.Driver");
+      // Connect to the database
+      Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/", "postgres", "postgres")
+      
+      // Create a statement object
+      Statement stmt = conn.createStatement();
+
+      // Execute a query and retrieve the results
+      ResultSet rs = stmt.executeQuery("SELECT * FROM mytable");
+
+      // Process the results
+      while ( rs.next() ) {
+        System.out.println(rs.getString("name"));
+      }
+      rs.close();
+
+      // Disconnect from the database
+      stmt.close();
+      conn.close();
+    }
+    // Handle exceptions
+    catch (Exception e) {
+      System.out.println(e);
+    }
+  }
+}
+```
+
+- Arguments to `getConnection`:
+  - `jdbc:postgresql`: indicates the driver to use PostgreSQL
+  - `localhost:5433/`: 
+    - Host address: port number
+    - Use `localhost` to indicate that we are running the Java application on same server as the database
+  - `username`
+  - `password`
+  - We can also specify the schema we want to connect: 
+    - `url = jdbc:postgresql://localhost:5433/postgres?currentSchema=mySchema`
+    - Alternatively, we can use `conn.setSchema("mySchema")`.
+
+- `ResultSet`:
+  - `rs.next()`: moves the cursor to the next row
+  - `rs.getString("name")`: retrieves the value of the column `name` in the current row
+    - If the tuple also contains other data types, we can use `rs.getInt("age")`, `rs.getDouble("salary")`, etc.
+  - `rs.close()`: closes the result set
+- Exceptions can occur when:
+  - The driver is not found
+  - The connection fails
+  - The query fails
+  - The result set is not closed
+
+## Prepared Statements
+- Preparing a statement includes parsing the SQL, compiling and optimizing it. 
+- The resulting `PreparedStatement` object can be executed any number of times wihtout having to repeat these steps.
+  - [Java Documentation](https://docs.oracle.com/javase/7/docs/api/java/sql/PreparedStatement.html)
+- If the query isn't know until run time:
+  - You may need input and computation to determine the query.
+  - You can hard-code the parts you know, and use `?` as a placeholder for the values you don't know.
+  - This is enough to allow a `PreparedStatement` to be constructed.
+  - Onece you know values fro the placeholders, methods `setInt`, `setString`, etc. can be used to set the values.
+
+:::{#tip-placeholder .callout-tip collapse="true"}
+## Example of Using Placeholders
+```java
+  PreparedStatement studioStat = 
+    conn.preparedStatement(
+      "INSERT INTO STUDIO(name, address)
+      VALUES(?, ?)"
+    );
+  
+  /* OMITTED: Get values for studioName and StudioAddr*/
+  studioStat.setString(1, studioName);
+  studioStat.setString(2, studioAddr);
+  studioStat.executeUpdate();
+```
+:::
+
+:::{#wrn-not-building-string .callout-warning}
+## Why not just build the query in a string?
+- We constructed an incomplete `preparedStatement` and filled in the missing values using method calls.
+- Instead, we could just build up the query in an ordinary string at run time, and ask to execute that.
+- There are classes and methods that will do this in JDBC.
+- But never use that approach because it is vulnerable to **injections**: insertion of strings into a query with malicious intent.
+- Always use a `preparedStatement` instead!
+:::
+
+- Advantages of a prepared statement
+  - Preformance: it is pre-complied. DB server prepares an execution plane once and caches it (before execution).
+  - Security: it is a good way to protect against SQL injection.
+
+:::{#tip-create-statement .callout-tip collapse="true"}
+## Example with `createStatement`
+```java
+  Statement stat = conn.createStatement();
+  String query = 
+    "SELECT networth
+    FROM MovieExec
+    WHERE execName LIKE '%Spielberg%'
+    ";
+  ResultSet worth = stat.executeQuery(query);
+```
+:::
+
+:::{#tip-injection .callout-tip collapse="true"}
+## Example of SQL Injection
+- Suppose we want the user to provide the string to compare to.
+- We did this by allowing user input to be concatenated into the query string.
+
+```java
+  Statement stat = conn.createStatement();
+  String who = /* User input */
+  String query = 
+    "SELECT networth
+    FROM MovieExec
+    WHERE execName LIKE '%" + who + "%'
+    ";
+
+  ResultSet worths = stat.executeQuery(query);
+```
+
+- A gentle user does not harm might enter `Cameron`, making the query:
+```sql
+SELECT networth
+FROM MovieExec
+WHERE execName LIKE '%Cameron%'
+```
+  - Nothing bad happens. 
+
+- However, an injection can exploit the vulnerability: if the user enters `Milch%'; DROP TABLE Contracts; --`, the query becomes: 
+```sql
+SELECT networth
+FROM MovieExec
+WHERE execName LIKE '%Milch%'; DROP TABLE Contracts; --%'
+
+-- Equivalent to:
+SELECT networth
+FROM MovieExec
+WHERE execName LIKE '%Milch%';
+
+DROP TABLE Contracts; --%';
+
+```
+- All the contracts table will be dropped.
+- This is a **SQL Injection**.
+:::
+
+- Queries vs. updates in JDBC
+- `executeQuery` is used for queries that return a result set.The previous examples used `executeQuery`.
+- This method is only for pure queries.
+- For SQL statements that change the database (insert, delete, or modify tuples, or change the schema), use the analogous `executeUpdate` method.
