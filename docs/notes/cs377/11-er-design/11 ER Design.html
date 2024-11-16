@@ -178,6 +178,11 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#restructuring-an-er-model" id="toc-restructuring-an-er-model" class="nav-link" data-scroll-target="#restructuring-an-er-model">Restructuring An E/R Model</a></li>
   </ul></li>
+  <li><a href="#translation-into-the-logical-model" id="toc-translation-into-the-logical-model" class="nav-link" data-scroll-target="#translation-into-the-logical-model">Translation into the Logical Model</a>
+  <ul class="collapse">
+  <li><a href="#many-to-many-relationships" id="toc-many-to-many-relationships" class="nav-link" data-scroll-target="#many-to-many-relationships">Many-to-Many Relationships</a></li>
+  <li><a href="#one-to-one-relationships" id="toc-one-to-one-relationships" class="nav-link" data-scroll-target="#one-to-one-relationships">One-to-One Relationships</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/11-er-design/11 ER Design.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/11-er-design/11 ER Design.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -828,6 +833,363 @@ Note&nbsp;5: Keys: (Represented by an underline <span class="math inline">\(\Hug
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="translation-into-the-logical-model" class="level2">
+<h2 class="anchored" data-anchor-id="translation-into-the-logical-model">Translation into the Logical Model</h2>
+<ul>
+<li>Overview
+<ul>
+<li>Input: E/R Schema</li>
+<li>Output: Relational Schema</li>
+<li>Starting from an E/R schema, an equivalent relationap schema is constructed.
+<ul>
+<li>“<strong><em>equivalent</em></strong>:” a schema capble of representing the same information.</li>
+<li>A good translation should also:
+<ul>
+<li>not allow <strong>redundancy</strong></li>
+<li>not invite unnecessary <strong>null</strong> values</li>
+</ul></li>
+</ul></li>
+<li>Each entity set becomes a relation whose attributes are
+<ul>
+<li>the attributes of the entity set, and</li>
+</ul></li>
+<li>Each relationship becomes a relation whose attributes are
+<ul>
+<li>the keys of the entity sets that it connects, plus</li>
+<li>the attributes of the relationship itslef.</li>
+</ul></li>
+<li><strong>There are some exceptional cases here that will come up later.</strong></li>
+</ul></li>
+</ul>
+<section id="many-to-many-relationships" class="level3">
+<h3 class="anchored" data-anchor-id="many-to-many-relationships">Many-to-Many Relationships</h3>
+<ul>
+<li>Example 1</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A[Employee] --- |"(0, N)"| B{Participation} --- |"(0, N)"| C[Project]
+    D((Surname)) --- A
+    E((Salary)) --- A
+    F(("&lt;u&gt;Name&lt;/u&gt;")) --- A
+    G((StartDate)) --- B
+    C --- H((Name))
+    C --- I((Budget))
+    C --- J(("&lt;u&gt;Code&lt;/u&gt;"))
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div id="tip-many-to-many-1" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;1: Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Employee(<u>Number</u>, Surname, Salary)</li>
+<li>Project(<u>Code</u>, Name, Budget)</li>
+<li>Participation(<u>EmployeeNumber</u>, <u>ProjectCode</u>, StartDate)</li>
+</ul>
+</div>
+</div>
+</div>
+<ul>
+<li>Example 2</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TB
+  A{Composition} --- |"(0, N) Part"| B[Product]
+  B --- |"(0, N) Subpart"| A
+  C((Quantity)) --- A
+  B --- D((Cost))
+  B --- E((Name))
+  B --- F(("&lt;u&gt;Code&lt;/u&gt;"))
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div id="tip-many-to-many-2" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;2: Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Product(<u>Code</u>, Name, Cost)</li>
+<li>Composition(<u>PartCode</u>, <u>SubpartCode</u>, Quantity)</li>
+</ul>
+</div>
+</div>
+</div>
+<ul>
+<li>Example 3</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+  A[Supplier] --- |"(0, N)"| B{Supply} --- |"(1, N)"| C[Product]
+  B --- |"(1,N)"| D[Department]
+  D --- E(("&lt;u&gt;Name&lt;/u&gt;"))
+  D --- F((Telephone))
+  G(("&lt;u&gt;SupplierID&lt;/u&gt;")) --- A
+  H(("SupplierName")) --- A
+  I((Quantity)) --- B
+  C --- J(("&lt;u&gt;Code&lt;/u&gt;"))
+  C --- K(Type)
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li>This schema can be translated into the following relational schema:</li>
+</ul>
+<div id="tip-many-to-many-3" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;3: Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Supplier(<u>SupplierID</u>, SupplierName)</li>
+<li>Product(<u>Code</u>, Type)</li>
+<li>Department(<u>Name</u>, Telephone)</li>
+<li>Supply(<u>SupplierID</u>, <u>ProductCode</u>, <u>DeptName</u>, Quantity)</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="one-to-one-relationships" class="level3">
+<h3 class="anchored" data-anchor-id="one-to-one-relationships">One-to-One Relationships</h3>
+<ul>
+<li>Example 1: with mandatory participation for one</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+  A[Player] --- |"(1,1)"| B{Contract} --- |"(1,1)"| C[Team]
+  D(("&lt;u&gt;DateOfBirth&lt;/u&gt;")) --- A
+  E(("&lt;u&gt;SurName&lt;/u&gt;")) --- A
+  F((Position)) --- A
+  G((Salary)) --- B
+  C --- H(("&lt;u&gt;Name&lt;/u&gt;"))
+  C --- I((Town))
+  C --- J(TeamColor)
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div id="tip-one-to-many-1" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;4: Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Player(<u>DateOfBirth</u>, <u>SurName</u>, Position)</li>
+<li>Team(<u>Name</u>, Town, TeamColor)</li>
+<li><del>Contract(<u>PlayerDateOfBirth</u>, <u>PlayerSurName</u>, <u>Team</u> Salary)</del>
+<ul>
+<li>This line is incorrect because one player can only have one contract with one team. Having a contract with a team is not a unique identifier for a player.</li>
+<li>For example, this schema allows Messi to sign contracts with Barcelona and Real Madrid at the same time. This is not possible in real life.</li>
+</ul></li>
+<li>Contract(<u>PlayerDateOfBirth</u>, <u>PlayerSurName</u>, Team, Salary)</li>
+</ul>
+<section id="another-correct-solution" class="level3">
+<h3 class="anchored" data-anchor-id="another-correct-solution">Another correct solution:</h3>
+<ul>
+<li>Player(<u>DateOfBirth</u>, <u>SurName</u>, Position, TeamName, Salary)</li>
+<li>Team(<u>Name</u>, Town, TeamColor)</li>
+</ul>
+</section>
+</div>
+</div>
+</div>
+<ul>
+<li>Example 2: with mandatory participation for both</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+  A[Head] --- |"(1,1)"| B{Management} --- |"(1,1)"| C[Department]
+  D((Salary)) --- A
+  E((Name)) --- A
+  F(("&lt;u&gt;Number&lt;/u&gt;")) --- A
+  G((StartDate)) --- B
+  C --- H(("&lt;u&gt;Name&lt;/u&gt;"))
+  C --- I((Telephone))
+  C --- J((Branch))
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div id="tip-one-to-many-2" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;5: Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Head(<u>Number</u>, Name, Salary, DeptName, StartDate)</li>
+<li>Department(<u>Name</u>, Telephone, Branch)</li>
+</ul>
+<section id="another-correct-solution-1" class="level3">
+<h3 class="anchored" data-anchor-id="another-correct-solution-1">Another correct solution:</h3>
+<ul>
+<li>Head(<u>Number</u>, Name, Salary, StartDate)</li>
+<li>Department(<u>Name</u>, Telephone, Branch, HeadNumber)</li>
+<li><em>Remark</em>: We included <code>StartDate</code> in table <code>Head</code> instead of table <code>Department</code> because it is more meaningful to associate the date as a dept was managed with the manager (i.e., the head) rather than with the department.</li>
+</ul>
+</section>
+</div>
+</div>
+</div>
+<ul>
+<li>Example 3: with optional participation for one</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+  A[Employee] --- |"(1,1)"| B{Management} --- |"(1,1)"| C[Department]
+  D((Salary)) --- A
+  E((Name)) --- A
+  F(("&lt;u&gt;Number&lt;/u&gt;")) --- A
+  G((StartDate)) --- B
+  C --- H(("&lt;u&gt;Name&lt;/u&gt;"))
+  C --- I((Telephone))
+  C --- J((Branch))
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div id="tip-one-to-many-2" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;6: Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Employee(<u>Number</u>, Name, Salary)</li>
+<li>Department(<u>Name</u>, Telephone, Branch, ManagerNumber, StartDate)</li>
+</ul>
+<section id="what-if-both-entities-had-optional-participation-i.e.-01" class="level3">
+<h3 class="anchored" data-anchor-id="what-if-both-entities-had-optional-participation-i.e.-01">What if both entities had optional participation, i.e., <span class="math inline">\((0,1)\)</span>?</h3>
+<ul>
+<li>Employee(<u>Number</u>, Name, Salary)</li>
+<li>Department(<u>Name</u>, Telephone, Branch)</li>
+<li>Management(<u>ManagerNumber</u>, DeptName, StartDate)</li>
+</ul>
+</section>
+<section id="how-can-we-guarantee-that-a-department-cannot-have-more-than-one-manager" class="level3">
+<h3 class="anchored" data-anchor-id="how-can-we-guarantee-that-a-department-cannot-have-more-than-one-manager">How can we guarantee that a department cannot have more than one manager?</h3>
+<ul>
+<li>Declare a <code>UNIQUE</code> constraint for attribute <code>DeptName</code> in table <code>Management</code>.</li>
+</ul>
+</section>
+<section id="can-deptname-be-a-key-instead-of-managernumber" class="level3">
+<h3 class="anchored" data-anchor-id="can-deptname-be-a-key-instead-of-managernumber">Can <code>DeptName</code> be a key instead of <code>ManagerNumber</code>?</h3>
+<ul>
+<li>Yes, for this schema, choosing either of them to be a key is correct.</li>
+</ul>
+</section>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Summary of Types of Relationship</p>
+<ul>
+<li>Many-to-many: create a new relation with the keys of the entities and the attributes of the relationship.</li>
+<li>One-to-many:
+<ul>
+<li>Manditory participation for one: add the key of the entity with mandatory participation to the relation of the entity with optional participation.</li>
+<li>Manditory participation for both: add the keys of both entities to the relation.</li>
+</ul></li>
+<li>One-to-one:
+<ul>
+<li>Manditory participation for one: add the key of the entity with mandatory participation to the relation of the entity with optional participation.</li>
+<li>Manditory participation for both: add the keys of both entities to the relation.</li>
+<li>Optional participation for both: add the keys of both entities to the relation.</li>
+</ul></li>
+</ul></li>
+<li><p>See summaries in slides <code>20-er-design-part3.pdf</code></p></li>
+<li><p>Will the schema be “good”?</p>
+<ul>
+<li>The process ensure that there is no redundancy.</li>
+<li>But only with respect to what the E/R diagram represents.</li>
+<li>The next topic (DB normalization) will help us better analyze the goodness of a schema design.</li>
+</ul></li>
+</ul>
 
 
 </section>

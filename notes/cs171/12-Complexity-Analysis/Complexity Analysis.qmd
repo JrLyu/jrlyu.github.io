@@ -272,7 +272,9 @@ for (int i = 0; i < n; i++) {
 - Iterations $=\dfrac{n(n+1)}{2}$. So, $\mathcal{O}(n^2)$.
 :::
 
-```
+:::{#tip-example-11 .callout-tip collapse="true"}
+## Example: Loop Analysis 8
+```java
 int sum = 0;
 for (int i = n; i > 0; i = i/2) {
     for (int j = 0; j < i; j++) {
@@ -280,123 +282,138 @@ for (int i = n; i > 0; i = i/2) {
     }
 }
 ```
-\begin{center}\begin{tabular}{c|c|c|c|c|c|c}
-    $i$&n&n/2&n/4&n/8&$\cdots$&1\\\hline
-    $j$&*&*&*&*&$\cdots$&*\\
-    &*&*&*&*&$\cdots$&\\
-    &*&*&*&*&&\\
-    &*&*&*&&&\\
-    &*&*&&&&\\
-    &*&&&&
-\end{tabular}\end{center}
-\begin{itemize}
-    \item In total, we have $\log{n}$ $i$'s. We add up those starts. That is, $n+n/2+n/4+n/8+\cdots+1$.
-    \item By Geometric sum, we have Iteration = $n(1+1/2+1/4+\cdots+1/n)\approx n(2)=2n$. 
-    \item So, $\mathcal{O}(n)$.
-\end{itemize}
-\begin{lstlisting}
-    int sum = 0;
-    for (int i = 1; i <= n; i++) {
-        for (int j = 0; j < n; j = j + i) {
-            sum++;
-        }
-    }
-\end{lstlisting}
-\begin{center}\begin{tabular}{c|c|c|c|c|c|c}
-    $i$&1&2&3&4&$\cdots$&n\\\hline
-    $j$&0&0&0&0&$\cdots$&0\\
-    &1&2&3&4&$\cdots$&\\
-    &2&4&6&8&&\\
-    &3&$\vdots$&$\vdots$&$\vdots$&&\\
-    &4&$n-1$&$n-1$&$n-1$&&\\
-    &$\vdots$&&&&\\
-    &$n-1$&&&&
-\end{tabular}\end{center}
-\begin{itemize}
-    \item When $i=1$, we iterate $j$ for $n$ times. When $i=2$, we iterate $j$ for $n/2$ times. For an arbitrary $i$, we iterate $j$ for $n/i$ times.
-    \item So, iteration = $n+n/2+n/3+\cdots+n/n=n(1+1/2+1/3+\cdots+1/n)\approx n\log(n)$ by the harmonic series. So, $\mathcal{O}(n\log{n})$.
-\end{itemize}
+|$i$ | n | n/2 | n/4 | n/8 | $\cdots$ | 1 |
+|:--:|:-:|:---:|:---:|:---:|:--------:|:-:|
+|$j$ | * | *   | *   |  *  | $\cdots$ | * |
+|    | * | *   | *   | *   |$\cdots$  |   |
+|    | * | *   | *   | *   |          |   |
+|    | * | *   | *   |     |          |   |
+|    | * | *   |     |     |          |   |
+|    | * |     |     |     |          |   |
 
-\subsection*{Analysis of Recursive Algorithms}
-\begin{lstlisting}
-    public static void recurse(int n) {
-        if (n == 0) {
-            doPrimitive();
-        } else {
-            doPrimitive();
-            recurse(n-1);
-        }
-    }
-\end{lstlisting}
-\begin{itemize}
-    \item Let $C(n)=$ \# of times that \texttt{doPrimitive()} is executed when input $=n$.
-    \item $C(0)=1$ because when $n=0$, we only execute \texttt{doPrimitive()} one time and terminate. This is the base case. 
-    \item $C(n)=1+C(n-1)$ for $n>0$. This is because \texttt{recurse(n)} will invoke \texttt{recurse(n-1)}, and by definition, the \# times that \texttt{doPrimitive()} is executed when input $=n-1$ is: $C(n-1)$
-    \item To solve the recursive relation, we will use the technique \textbf{telescoping}.
-    \begin{align*}
-        C(n)&=1+C(n-1)\\
-        &=1+1+C(n-2)\\
-        &=1+1+1+C(n-3)\\
-        &=\underbrace{1+1+1+\cdots+1}_{n\text {times}}+C(0)\\
-        &=n+1
-    \end{align*}
-    \item So, $\mathcal{O}(n)$
+- In total, we have $\log{n}$ $i$'s. We add up those starts. That is, $n+n/2+n/4+n/8+\cdots+1$.
+- By Geometric sum, we have Iteration = $n(1+1/2+1/4+\cdots+1/n)\approx n(2)=2n$. 
+- So, $\mathcal{O}(n)$.
+:::
 
-\end{itemize}
-\begin{lstlisting}
-    public static void recurse(int n) {
-        if (n == 0) {
-            doPrimitive();
-        } else {
-            for (int i = 0; i < n; i++) {
-                doPrimitive();
-            }
-            recurse(n-1);
-        }
+:::{#tip-example-12 .callout-tip collapse="true"}
+## Example: Loop Analysis 9
+```java
+int sum = 0;
+for (int i = 1; i <= n; i++) {
+    for (int j = 0; j < n; j = j + i) {
+        sum++;
     }
-\end{lstlisting}
-\begin{itemize}
-    \item Let $C(n)=$ \# of times that \texttt{doPrimitive()} is executed when input $=n$.
-    \item $C(0)=1$ as the base case; $C(n)=n+C(n-1)$ for $n>0$ because \texttt{recurse(n)} will invoke \texttt{recurse(n-1)}, and by definition, the \# times that \texttt{doPrimitive()} is executed when input = $n-1$ is: $C(n-1)$.
-    \item Telescoping: \begin{align*}
-        C(n)&=n+C(n-1)\\
-        &=n+(n-1)+C(n-2)\\
-        &=n+(n-1)+(n-2)+C(n-3)\\
-        &=n+(n-1)+(n-2)+\cdots+1+C(0)\\
-        &=\dfrac{n(n+1)}{2}+1
-    \end{align*}
-    \item So, $\mathcal{O}(n^2)$.
-\end{itemize}
-\begin{lstlisting}
-    public static void recurse(int[] A, int a, int b) {
-        if (b-a <= 1) {
-            doPrimitive();
-        } else {
-            doPrimitive();
-            recurse(A, a, (a+b)/2); // First half of array
-            recurse(A, (a+b)/2, b); // 2nd half of array
-        }
-    }
-\end{lstlisting}
-\begin{itemize}
-    \item Let $C(n)=$ \# of times that \texttt{doPrimitive()} is executed when input $=n$.
-    \item $C(1)=1$ because if $b-a\leq1$, it executes $1$ \texttt{doPrimitive()}.
-    \item  $C(n) = 1 + C(n/2) + C(n/2)=1+2C(n/2)$ for $n > 0$ because: \texttt{recurse(n)} will invoke \texttt{recurse( )} twice with input size $n/2$, and by definition, the \# times that \texttt{doPrimitive()} is executed when input = $n/2$ is: $C(n/2)$.
-    \item Telescoping: \begin{align*}
-        C(n)&=1+2C(n/2)\\
-        &=1+2+4C(n/4)\\
-        &=1+2^1+2^2+\cdots+2^k*C(n/2^k)
-    \end{align*}
-     We want $C(n/2^k)$ to eventually be $C(1)$. So, we have $1=n/2^k\implies n=2^k\implies k=\log{n}$.
-     So, \begin{align*}
-        C(n)&=1+2^1+2^2+\cdots+2^kC(1)\\
-        &=1+2^1+2^2+\cdots+2^k\\
-        2C(n)&=2^1+2^2+2^3+\cdots+2^{k+1}\\
-        C(n)=2C(n)-C(n)&=2^{k+1}-1\\
-        &=2^{\log{n}+1}-1\\&=2\cdot2^{\log{n}}-1\\
-        &=2n-1
-    \end{align*}
-    \item So, $\mathcal{O}(n)$.
-\end{itemize}
+}
+```
+| $i$ | 1 | 2 | 3 | 4 | $\cdots$ | n |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| $j$ | 0 | 0 | 0 | 0 | $\cdots$ | 0 |
+|     | 1 | 2 | 3 | 4 | $\cdots$ |   |
+|     | 2 | 4 | 6 | 8 |           |   |
+|     | 3 | $\vdots$ | $\vdots$ | $\vdots$ |   |   |
+|     | 4 | $n-1$ | $n-1$ | $n-1$ |   |   |
+|     | $\vdots$ |   |   |   |   |   |
+|     | $n-1$ |   |   |   |   |   |
+- When $i=1$, we iterate $j$ for $n$ times. When $i=2$, we iterate $j$ for $n/2$ times. For an arbitrary $i$, we iterate $j$ for $n/i$ times.
+- So, iteration = $n+n/2+n/3+\cdots+n/n=n(1+1/2+1/3+\cdots+1/n)\approx n\log(n)$ by the harmonic series. So, $\mathcal{O}(n\log{n})$.
+:::
 
-\end{document}
+## Analysis of Recursive Algorithms
+
+:::{#tip-example-13 .callout-tip collapse="true"}
+## Example: Recursion Analysis 1
+```java
+public static void recurse(int n) {
+    if (n == 0) {
+        doPrimitive();
+    } else {
+        doPrimitive();
+        recurse(n-1);
+    }
+}
+```
+- Let $C(n)=$ \# of times that `doPrimitive()` is executed when input $=n$.
+- $C(0)=1$ because when $n=0$, we only execute `doPrimitive()` one time and terminate. This is the base case. 
+- $C(n)=1+C(n-1)$ for $n>0$. This is because `recurse(n)` will invoke `recurse(n-1)`, and by definition, the \# times that `doPrimitive()` is executed when input $=n-1$ is: $C(n-1)$
+- To solve the recursive relation, we will use the technique \textbf{telescoping}.
+$$
+\begin{aligned}
+    C(n)&=1+C(n-1)\\
+    &=1+1+C(n-2)\\
+    &=1+1+1+C(n-3)\\
+    &=\underbrace{1+1+1+\cdots+1}_{n\text {times}}+C(0)\\
+    &=n+1
+\end{aligned}
+$$
+- So, $\mathcal{O}(n)$
+:::
+
+:::{#tip-example-14 .callout-tip collapse="true"}
+## Example: Recursion Analysis 2
+```
+public static void recurse(int n) {
+    if (n == 0) {
+        doPrimitive();
+    } else {
+        for (int i = 0; i < n; i++) {
+            doPrimitive();
+        }
+        recurse(n-1);
+    }
+}
+```
+- Let $C(n)=$ \# of times that `doPrimitive()` is executed when input $=n$.
+- $C(0)=1$ as the base case; $C(n)=n+C(n-1)$ for $n>0$ because `recurse(n)` will invoke `recurse(n-1)`, and by definition, the \# times that `doPrimitive()` is executed when input = $n-1$ is: $C(n-1)$.
+- Telescoping: 
+$$
+\begin{aligned}
+    C(n)&=n+C(n-1)\\
+    &=n+(n-1)+C(n-2)\\
+    &=n+(n-1)+(n-2)+C(n-3)\\
+    &=n+(n-1)+(n-2)+\cdots+1+C(0)\\
+    &=\dfrac{n(n+1)}{2}+1
+\end{aligned}
+$$
+- So, $\mathcal{O}(n^2)$.
+:::
+
+:::{#tip-example-15 .callout-tip collapse="true"}
+## Example: Recursion Analysis 3
+```java
+public static void recurse(int[] A, int a, int b) {
+    if (b-a <= 1) {
+        doPrimitive();
+    } else {
+        doPrimitive();
+        recurse(A, a, (a+b)/2); // First half of array
+        recurse(A, (a+b)/2, b); // 2nd half of array
+    }
+}
+```
+
+- Let $C(n)=$ \# of times that `doPrimitive()` is executed when input $=n$.
+- $C(1)=1$ because if $b-a\leq1$, it executes $1$ `doPrimitive()`.
+- $C(n) = 1 + C(n/2) + C(n/2)=1+2C(n/2)$ for $n > 0$ because: `recurse(n)` will invoke `recurse()` twice with input size $n/2$, and by definition, the \# times that `doPrimitive()` is executed when input = $n/2$ is: $C(n/2)$.
+- Telescoping: 
+$$
+\begin{aligned}
+    C(n)&=1+2C(n/2)\\
+    &=1+2+4C(n/4)\\
+    &=1+2^1+2^2+\cdots+2^k*C(n/2^k)
+\end{aligned}
+$$
+    We want $C(n/2^k)$ to eventually be $C(1)$. So, we have $1=n/2^k\implies n=2^k\implies k=\log{n}$.
+    So, 
+$$
+\begin{aligned}
+    C(n)&=1+2^1+2^2+\cdots+2^kC(1)\\
+    &=1+2^1+2^2+\cdots+2^k\\
+    2C(n)&=2^1+2^2+2^3+\cdots+2^{k+1}\\
+    C(n)=2C(n)-C(n)&=2^{k+1}-1\\
+    &=2^{\log{n}+1}-1\\&=2\cdot2^{\log{n}}-1\\
+    &=2n-1
+\end{aligned}
+$$
+- So, $\mathcal{O}(n)$.
+:::

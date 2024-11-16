@@ -6,7 +6,7 @@ author:
     url: https://jrlyu.github.io/
 date: 12-04-2023
 categories: [Coding, Java, Algorithms, Sorting]
-draft: true
+draft: false
 ---
 
 ## Introduction to Sorting
@@ -40,10 +40,18 @@ draft: true
         -   `a.compareTo(b)` returns zero if `a` is equal to `b`.
         -   `a.compareTo(b)` returns a positive value if `a` is greater than `b`.
 
--   Exchanging two items (objects) in an array: `java     public static void exch(DataType[] a, int i, int j) {         DataType help;         help = a[i];         a[i] = a[j];         a[j] = help;     }`
-
-    -   The `exch()` method will only work on objects of the type `DataType`.
-    -   We can define a generic (parameterized) `exch()` so that it will only work on subclasses of `Comparable<T>`:
+-  Exchanging two items (objects) in an array:
+ 
+    ```java     
+    public static void exch(DataType[] a, int i, int j) {         
+        DataType help;         
+        help = a[i];         
+        a[i] = a[j];         
+        a[j] = help;     
+    }
+    ```
+   - The `exch()` method will only work on objects of the type `DataType`.
+   - We can define a generic (parameterized) `exch()` so that it will only work on subclasses of `Comparable<T>`:
 
     ``` java
     public static <T extends Comparable<T>> void exch(T[] a, int i, int j) {
@@ -79,31 +87,36 @@ public static <T extends Comparable<T>> void selectionSort(T[] list) {
 }
 ```
 
--   Runtime analysis:
-    -   The algorithm can be simplified as follows:
+:::{#tip-run-time-selection-sort .callout-tip collapse="true"}
+## Runtime Analysis of Selection Sort
+-   The algorithm can be simplified as follows:
 
-        ``` java
-        for (int i = 0; i < n-1; i++) {
-            for (int k = i + 1; k < n; k++) {
-                doPrimitive();
-            }
-        }
-        ```
+   ``` java
+   for (int i = 0; i < n-1; i++) {
+       for (int k = i + 1; k < n; k++) {
+           doPrimitive();
+       }
+   }
+   ```
 
-        | i=  |  0  |  1  |  2  | ... | n-3 | n-2 |
-        |:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-        | k=  |  1  |  2  |  3  | ... | n-2 | n-1 |
-        | k=  |  2  |  3  |  4  | ... | n-1 |     |
-        | ... | ... | ... | ... |     |     |     |
-        | k=  | n-2 | n-1 |     |     |     |     |
-        | k=  | n-1 |     |     |     |     |     |
+   | i=  |  0  |  1  |  2  | ... | n-3 | n-2 |
+   |:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+   | k=  |  1  |  2  |  3  | ... | n-2 | n-1 |
+   | k=  |  2  |  3  |  4  | ... | n-1 |     |
+   | ... | ... | ... | ... |     |     |     |
+   | k=  | n-2 | n-1 |     |     |     |     |
+   | k=  | n-1 |     |     |     |     |     |
 
-        -   So, number of iterations is $(n-1)+(n-2)+(n-3)+\cdots+2+1$, which is the triangular sum.
-        -   Then, we know number of iterations=$\dfrac{n(n-1)}{2}$.
-        -   This indicates that the runtime is $\mathcal{O}(n^2)$.
--   Additional properties of sorting algorithms:
-    -   **In-place**: a sorting algorithm is in-place if it does not require another array to execute the algorithm.
-    -   **Stable**: a sorting algorithm is stable if it preserves the relative order of equal keys in the array.
+   -   So, number of iterations is $(n-1)+(n-2)+(n-3)+\cdots+2+1$, which is the triangular sum.
+   -   Then, we know number of iterations=$\dfrac{n(n-1)}{2}$.
+   -   This indicates that the runtime is $\mathcal{O}(n^2)$.
+:::
+
+:::{#nte-property-of-sorting .callout-note}
+## Additional Properties of Sorting Algorithms: In-place and Stability
+-   **In-place**: a sorting algorithm is in-place if it does not require another array to execute the algorithm.
+-   **Stable**: a sorting algorithm is stable if it preserves the relative order of equal keys in the array.
+:::
 -   ***Selection sort is in-place but not stable.***
 
 ## Bubble Sort
@@ -139,29 +152,32 @@ public static <T extends Comparable<T>> void bubbleSort(T[] arr) {
 }
 ```
 
--   Runtime analysis:
-    -   The loop structure of bubble sort can be simplified as
+:::{#tip-run-time-bubble-sort .callout-tip collapse="true"}
+## Runtime Analysis of Bubble Sort
+-   The loop structure of bubble sort can be simplified as
 
-        ``` java
-        for (int i = 0; i < n-1; i++) {
-            for (int j = 0; j < n-1-i; j++) {
-                doPrimitive();
-            }
-        }
-        ```
+``` java
+for (int i = 0; i < n-1; i++) {
+    for (int j = 0; j < n-1-i; j++) {
+        doPrimitive();
+    }
+}
+```
 
-        | i=  |  0  |  1  |  2  | ... | n-3 | n-2 |
-        |:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-        | j=  |  0  |  0  |  0  | ... |  0  |  0  |
-        | j=  |  1  |  1  |  1  | ... |  1  |     |
-        | ... | ... | ... | ... |     |     |     |
-        | j=  | n-4 | n-4 | n-4 |     |     |     |
-        | j=  | n-3 | n-3 |     |     |     |     |
-        | j=  | n-2 |     |     |     |     |     |
+| i=  |  0  |  1  |  2  | ... | n-3 | n-2 |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| j=  |  0  |  0  |  0  | ... |  0  |  0  |
+| j=  |  1  |  1  |  1  | ... |  1  |     |
+| ... | ... | ... | ... |     |     |     |
+| j=  | n-4 | n-4 | n-4 |     |     |     |
+| j=  | n-3 | n-3 |     |     |     |     |
+| j=  | n-2 |     |     |     |     |     |
 
-        -   So, number of iterations is $(n-1)+(n-2)+(n-3)+\cdots+2+1$, which is the triangular sum.
-        -   Then, we know number of iterations=$\dfrac{n(n-1)}{2}$.
-        -   This indicates that the runtime is $\mathcal{O}(n^2)$.
+-   So, number of iterations is $(n-1)+(n-2)+(n-3)+\cdots+2+1$, which is the triangular sum.
+-   Then, we know number of iterations=$\dfrac{n(n-1)}{2}$.
+-   This indicates that the runtime is $\mathcal{O}(n^2)$.
+:::
+
 -   In fact, we can improve the basic bubble sort algorithms.
 -   The idea is that if we find that the array is already sorted, we can stop the algorithm.
     -   Facts:
@@ -227,27 +243,29 @@ public static <T extends Comparable<T>> void insertionSort(T[] arr) {
 }
 ```
 
--   Runtime analysis:
-    -   The loop structure of the insertion sort algorithm can be simplified as:
+:::{#tip-run-time-insertion-sort .callout-tip collapse="true"}
+## Runtime Analysis of Insertion Sort
+-   The loop structure of the insertion sort algorithm can be simplified as:
 
-        ``` java
-        for (int i = 1; i < n; i++) {
-            for (int j = i; j > 0; j--) {
-                doPrimitive();
-            }
+    ``` java
+    for (int i = 1; i < n; i++) {
+        for (int j = i; j > 0; j--) {
+            doPrimitive();
         }
-        ```
+    }
+    ```
 
-        | i=  |  1  |  2  |  3  | ... | n-2 | n-1 |
-        |:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-        | j=  |  1  |  2  |  3  | ... | n-2 | n-1 |
-        | j=  |     |  1  |  2  | ... | n-3 | n-2 |
-        | ... | ... | ... | ... |     |     |     |
-        | j=  |     |     |     |     |     |  1  |
+    | i=  |  1  |  2  |  3  | ... | n-2 | n-1 |
+    |:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+    | j=  |  1  |  2  |  3  | ... | n-2 | n-1 |
+    | j=  |     |  1  |  2  | ... | n-3 | n-2 |
+    | ... | ... | ... | ... |     |     |     |
+    | j=  |     |     |     |     |     |  1  |
 
-        -   So, number of iterations is $1+2+3+\cdots+(n-2)+(n-1)$, which is the triangular sum.
-        -   Then, we know number of iterations=$\dfrac{n(n-1)}{2}$.
-        -   This indicates that the runtime is $\mathcal{O}(n^2)$.
+    -   So, number of iterations is $1+2+3+\cdots+(n-2)+(n-1)$, which is the triangular sum.
+    -   Then, we know number of iterations=$\dfrac{n(n-1)}{2}$.
+    -   This indicates that the runtime is $\mathcal{O}(n^2)$.
+:::
 -   ***The selection sort algorithm is an in-place and stable sorting algorithm.***
 
 ## Merge Sort
@@ -265,7 +283,7 @@ A[]:    ...... A[s] ... A[m-1] A[m] ... A[e-1] ...
 
 -   We will design an efficient algorithm to merge the 2 sorted array portions. The result will then occupy the same portion in the array.
 -   Parameters of the merge algorithm:
-    -   They merge algorithm has 3(index) parameters: `s`, `m`, and `e`.
+    -   They merge algorithm has 3 (index) parameters: `s`, `m`, and `e`.
     -   `s`: the starting index of the first sorted array portion.
     -   `m`: the ending index of the first sorted array portion.
     -   `e`: the ending index of the second sorted array portion.
@@ -274,12 +292,9 @@ A[]:    ...... A[s] ... A[m-1] A[m] ... A[e-1] ...
     -   not affect the array elements outside the range.
 -   Variables used in the merge algorithm:
     -   We use 2 indices `i` and `j` to point to the current elements in each sorted array portion:
-
         -   The element `A[i]` is always the smallest value in the left (sorted) portion.
         -   The element `A[j]` is always the smallest value in the right (sorted) portion.
-
     -   We also use a helper array variable `H[]` array to perform the merge operation.
-
         -   We will repeatedly copy the smallest value from both arrays to `H[]`.
         -   If `A[j] < A[i]`, we will copy `A[j]` to `H[]` and increment `j`.
         -   If `A[i] < A[j]`, we will copy `A[i]` to `H[]` and increment `i`.
@@ -287,59 +302,64 @@ A[]:    ...... A[s] ... A[m-1] A[m] ... A[e-1] ...
         -   When `i == m` and `j == e`, both portions are exhausted, and `H[]` now contains the merged result. We will then copy `H[]` back to `A[]`.
 
         ``` java
-        public static <T extends Comparable<T>> void merge(T[] A, int s, int m, int e, T[] H) {
-        // The merge() method will be invoked repeatedly. 
-        // If we create a helper array inside merge(), we would repeatedly allocated and de-allocate memory.
-        // That is inefficient.
-        // So, we create a helper array outside merge() and pass it as a parameter.
-        int i = s, j = m; // current elements in left and right portions
-        int k = 0; // current element in helper array
+        public static <T extends Comparable<T>> void 
+                                            merge(T[] A, int s, int m, int e, T[] H) {
+            // The merge() method will be invoked repeatedly. 
+            // If we create a helper array inside merge(), 
+            // we would repeatedly allocated and de-allocate memory.
+            // That is inefficient.
+            // So, we create a helper array outside merge() and pass it as a parameter.
+            int i = s, j = m; // current elements in left and right portions
+            int k = 0; // current element in helper array
 
-        while (i < m || j < e) { // loop as long as there are unprocessed items
-            if (i < m && j < e) {
-                // Case 1: both portions have unprocessed elements
-                if (A[i].compareTo(A[j]) < 0) {
+            while (i < m || j < e) { // loop as long as there are unprocessed items
+                if (i < m && j < e) {
+                    // Case 1: both portions have unprocessed elements
+                    if (A[i].compareTo(A[j]) < 0) {
+                        H[k++] = A[i++];
+                    } else {
+                        H[k++] = A[j++];
+                    }
+                } else if (i == m) {
+                    // Case 2: the left portion is exhausted
+                    H[k++] == A[j++];
+                } else if (j == e) {
+                    // Case e: the right portion is exhausted
                     H[k++] = A[i++];
-                } else {
-                    H[k++] = A[j++];
                 }
-            } else if (i == m) {
-                // Case 2: the left portion is exhausted
-                H[k++] == A[j++];
-            } else if (j == e) {
-                // Case e: the right portion is exhausted
-                H[k++] = A[i++];
+            }
+
+            // Copy H[] back to A[]
+            for (i = s, k = 0; i < e; i++, k++) {
+                A[i] = H[k];
             }
         }
-
-        // Copy H[] back to A[]
-        for (i = s, k = 0; i < e; i++, k++) {
-            A[i] = H[k];
-        }
-        }
-        ```
--   Run time analysis:
-    -   We can simplify the while-loop into:
-
-        ``` java
-        while (i < m || j < e) {
-            doPrimitive();
-            // Then do either: 
-            i++; // --> i = s; i < m; i++ = m-s times
-            // Or do: 
-            j++; // --> j = m; j < e; j++ = e-m times
-        }
-        // Copy
-        for (int i = s, k = 0; i < e; i++, k++) {
-            // i = s; i < e; i++ = e-s times
-            doPrimitive();
-        }
         ```
 
-        -   The while loop will be executed $(m-s)+(e-m) = e-m=n$ times.
-        -   The for loop will be executed $e-s=n$ times.
-        -   In total, we have $2n$ primitive operations.
-        -   The running time of the `merge()` algorithm is $2n$, which is $\mathcal{O}(n)$.
+:::{#tip-run-time-merge .callout-tip collapse="true"}
+## Runtime Analysis of Merge Algorithm
+-   We can simplify the while-loop into:
+
+``` java
+while (i < m || j < e) {
+    doPrimitive();
+    // Then do either: 
+    i++; // --> i = s; i < m; i++ = m-s times
+    // Or do: 
+    j++; // --> j = m; j < e; j++ = e-m times
+}
+// Copy
+for (int i = s, k = 0; i < e; i++, k++) {
+    // i = s; i < e; i++ = e-s times
+    doPrimitive();
+}
+```
+
+-   The while loop will be executed $(m-s)+(e-m) = e-m=n$ times.
+-   The for loop will be executed $e-s=n$ times.
+-   In total, we have $2n$ primitive operations.
+-   The running time of the `merge()` algorithm is $2n$, which is $\mathcal{O}(n)$.
+:::
 
 ### Merge Sort Algorithm
 
@@ -394,39 +414,43 @@ public static <T extends Comparable<T>> void mergeSort(T[] a, int s, int e, T[] 
 ```
 
 -   ***The merge sort algorithm is not an in-place sorting algorithm, but it is a stable sorting algorithm.***
--   Runtime analysis:
-    -   If we want to sort $n$ elements, we can rewrite the algorithm into
 
-        ``` java
-        public static <T extends Comparable<T>> void mergeSort(T[] a, int n, T[] H) {
-            if (n <= 1) {
-                return;
-            }
-            mergeSort(a, n/2, H); // running time = T(n/2)
-            mergeSort(a, n/2, H); // running time = T(n/2)
-            // Final merge
-            merge(a, 0, n/2, n, H); // running time = 2n
-        }
-        ```
+:::{#tip-run-time-merge-sort .callout-tip collapse="true"}
+## Runtime Analysis of Merge Sort
+-   If we want to sort $n$ elements, we can rewrite the algorithm into
 
-        -   So, $T(n)=0$ for $n\leq 1$ and $T(n)=2T\left(\dfrac{n}{2}\right)+2n$ for $n\geq2$.
-        -   Now, let's solving the following relationship: $$
-            \begin{aligned}
-            T(1)&=0\\
-            T(n) &= 2T\left(\dfrac{n}{2}\right)+2n \\
-            &= 2\left[2T\left(\dfrac{n}{4}\right)+2\left(\dfrac{n}{2}\right)\right]+2n \\
-            &=2^2T\left(\dfrac{n}{2^2}\right)+2(2n) \\
-            &=2^2\left[2T\left(\dfrac{n}{2^3}\right)+2\left(\dfrac{n}{2^2}\right)\right]+2(2n) \\
-            &=2^3T\left(\dfrac{n}{2^3}\right)+3(2n) \\
-            &\vdots \\
-            &=2^kT\left(\dfrac{n}{2^k}\right)+k(2n) \\
-            \text{Set }\dfrac{n}{2^k}=1&\implies 2^k=n\implies k=\log(n)\\
-            T(n)&=2^kT\left(\dfrac{n}{2^k}\right)+k(2n) \\
-            &=2^kT(1)+2kn \\
-            &=0+2kn=2n\log(n) \\
-            \end{aligned}
-            $$
-        -   So, the running time is $T(n)=2n\log(n)$, which is $\mathcal{O}(n\log(n))$.
+``` java
+public static <T extends Comparable<T>> void mergeSort(T[] a, int n, T[] H) {
+    if (n <= 1) {
+        return;
+    }
+    mergeSort(a, n/2, H); // running time = T(n/2)
+    mergeSort(a, n/2, H); // running time = T(n/2)
+    // Final merge
+    merge(a, 0, n/2, n, H); // running time = 2n
+}
+```
+
+-   So, $T(n)=0$ for $n\leq 1$ and $T(n)=2T\left(\dfrac{n}{2}\right)+2n$ for $n\geq2$.
+-   Now, let's solving the following relationship: $$
+    \begin{aligned}
+    T(1)&=0\\
+    T(n) &= 2T\left(\dfrac{n}{2}\right)+2n \\
+    &= 2\left[2T\left(\dfrac{n}{4}\right)+2\left(\dfrac{n}{2}\right)\right]+2n \\
+    &=2^2T\left(\dfrac{n}{2^2}\right)+2(2n) \\
+    &=2^2\left[2T\left(\dfrac{n}{2^3}\right)+2\left(\dfrac{n}{2^2}\right)\right]+2(2n) \\
+    &=2^3T\left(\dfrac{n}{2^3}\right)+3(2n) \\
+    &\vdots \\
+    &=2^kT\left(\dfrac{n}{2^k}\right)+k(2n) \\
+    \text{Set }\dfrac{n}{2^k}=1&\implies 2^k=n\implies k=\log(n)\\
+    T(n)&=2^kT\left(\dfrac{n}{2^k}\right)+k(2n) \\
+    &=2^kT(1)+2kn \\
+    &=0+2kn=2n\log(n) \\
+    \end{aligned}
+    $$
+-   So, the running time is $T(n)=2n\log(n)$, which is $\mathcal{O}(n\log(n))$.
+:::
+
 -   Merge sort is one of few algorithms that has a runtime of $\mathcal{O}(n\log(n))$.
     -   $\mathcal{O}(n\log(n))$ is the theoretical lower bound on running time of sorting algorithms.
 -   Some problems with pure merge sort algorithm:
@@ -631,10 +655,25 @@ public static int partition(int[] list, int first, int last) {
 
 -   ***The quick sort algorithm is an in-place algorithm, but it is not stable.***
 
-### Runtime Analysis
+### Runtime Analysis of Quick Sort
 
--   Synopsis of the `partition()` algorithm `java     public statbic <T extends Comparable<T>> int partition(T[] A, int s, int e) {         T pivot = A[s];         int low = s+1; high = e-1;         while (low <= high) {             doPrimitive(); // either high--; or low++             // --> loop will run (e-1) - (s+1) times = e-1-s-1=e-s-2 times         }         doPrimitive(); // exchange pivot and A[high]         return hight;     }`
-    -   In this case, the running time will be $n-1\approx n$. Or, $\mathcal{O}(n)$.
+- Synopsis of the `partition()` algorithm 
+
+    ```java
+    public statbic <T extends Comparable<T>> int partition(T[] A, int s, int e) {         
+        T pivot = A[s];         
+        int low = s+1; high = e-1;         
+        while (low <= high) {             
+            doPrimitive(); 
+            // either high--; or low++             
+            // --> loop will run (e-1) - (s+1) times = e-1-s-1=e-s-2 times         
+        }         
+        doPrimitive(); // exchange pivot and A[high]         
+        return hight;     
+    }
+    ```
+
+  - In this case, the running time will be $n-1\approx n$. Or, $\mathcal{O}(n)$.
 -   The running time of the quick sort algorithm depends on how `partition()` splits the input array.
     -   IMPORTANT: the running time of quick sort depends on how large the 2 array halves are.
 
@@ -656,8 +695,9 @@ public static int partition(int[] list, int first, int last) {
         &=T(n/2) + T(n/2-1) + n\\
         &\approx 2T(n/2) + n,
         \end{aligned}
-        $$ which is similar recurrence relation as the one in merge sort.
-        -   So, we can solve it with telescoping and the result is $T(n)=n\log(n)$.
+        $$ 
+        which is similar recurrence relation as the one in merge sort.
+    - So, we can solve it with telescoping and the result is $T(n)=n\log(n)$.
 -   The worst case running time of quick sort:
     -   The worst case running time of the quick sort algorithm happens when the `partition()` always divides the input array into (1) array containing the pivot and (2) an array with $n-1$ elements.
     -   In this case, we have $$
@@ -685,17 +725,19 @@ public static int partition(int[] list, int first, int last) {
         -   Then, the quick sort will achieve the **average** running time performance with a randomized input array.
 -   The average running time of quick sort:
     -   Recall the recurrence relation for the running time of quick sort is $T(n)=T(k)+T(n-k-1)+n$, where $k$ is the final position of the pivot.
-    -   Depending on the value of $k$, the recurrence relation for $T(n)$ are different: $$
+    -   Depending on the value of $k$, the recurrence relation for $T(n)$ are different: 
+$$\begin{aligned}
         T(n)=T(0)+T(n-1)+n\quad\text{ if }k=0\\
         T(n)=T(1)+T(n-2)+n\quad\text{ if }k=1\\
         \cdots\\
         T(n)=T(n-1)+T(0)+n\quad\text{ if }k=n-1
-        $$
-    -   Since each value of $k$ is equally likely to occur, we can take the average by summing them and dividing the sum by $n$. $$
+\end{aligned}$$
+    -   Since each value of $k$ is equally likely to occur, we can take the average by summing them and dividing the sum by $n$. 
+$$\begin{aligned}
         nT(n)=(T(0)+\cdots+T(n-1))+(T(n-1)+\cdots+T(0))+n^2\\
         nT(n)=2T(0)+2T(1)+\cdots+2T(n-1)+n^2\\
         T(n)=\dfrac{2}{n}T(0)+\dfrac{2}{n}T(1)+\cdots+\dfrac{2}{n}T(n-1)+n
-        $$
+        \end{aligned}$$
     -   Now, we want to solve the following recurrence relation: $$
         \begin{aligned}
         T(1)&=1\\
@@ -723,30 +765,28 @@ public static int partition(int[] list, int first, int last) {
 
 ### Improvements to Quick Sort
 
--   As mentioned above, one way to improve the quick sort algorithm is to shuffle the input array randomly. \`\`\`java public static void main(String\[\] args) { Integer\[\] A = ...; // Array to be sorted with quick sort
+-   As mentioned above, one way to improve the quick sort algorithm is to shuffle the input array randomly. 
 
-    ```         
-      // shuffle array A
-      for (int k = 0; k < N; k++) {
-          int i = Math.random() * A.length;
-          int j = Math.random() * A.length;
-          exch(A, i, j);
-      }
-      quickSort(A, 0, A.length);
+    ```java 
+    public static void main(String[] args) { 
+        Integer[] A = ...; // Array to be sorted with quick sort      
+        // shuffle array A
+        for (int k = 0; k < N; k++) {
+            int i = Math.random() * A.length;
+            int j = Math.random() * A.length;
+            exch(A, i, j);
+        }
+        quickSort(A, 0, A.length);
+    }
     ```
-
-    } \`\`\`
 
     -   Why shuffle?
         -   Make quick sort avoid picking the smallest pivot all the time.
         -   Help quick sort achieve the average running time performance with a randomized array.
 
 -   Another way to improve the quick sort algorithm is the increase the likelihood to partition the array into 2 equal halves.
-
     -   The best pivot value is the median of the input array.
-
     -   We can improve the likelihood of picking the median by considering 3 (random value) selected from the input array. (Instead of always using the first element as pivot).
-
     -   The median of 3 partition method:
 
         ```         

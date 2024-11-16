@@ -308,3 +308,180 @@ flowchart LR
     A --- |"(1, N)"| E{"Made By"}
     E --- |"(1, N)"| F
 ```
+
+## Translation into the Logical Model
+- Overview
+  - Input: E/R Schema
+  - Output: Relational Schema
+  - Starting from an E/R schema, an equivalent relationap schema is constructed. 
+    - "***equivalent***:" a schema capble of representing the same information.
+    - A good translation should also:
+      - not allow **redundancy**
+      - not invite unnecessary **null** values
+  - Each entity set becomes a relation whose attributes are
+    - the attributes of the entity set, and
+  - Each relationship becomes a relation whose attributes are
+    - the keys of the entity sets that it connects, plus
+    - the attributes of the relationship itslef.
+  - **There are some exceptional cases here that will come up later.**
+
+### Many-to-Many Relationships
+- Example 1
+```{mermaid}
+flowchart LR
+    A[Employee] --- |"(0, N)"| B{Participation} --- |"(0, N)"| C[Project]
+    D((Surname)) --- A
+    E((Salary)) --- A
+    F(("<u>Name</u>")) --- A
+    G((StartDate)) --- B
+    C --- H((Name))
+    C --- I((Budget))
+    C --- J(("<u>Code</u>"))
+```
+
+:::{#tip-many-to-many-1 .callout-tip collapse="true"}
+## Answer
+- Employee(<u>Number</u>, Surname, Salary)
+- Project(<u>Code</u>, Name, Budget)
+- Participation(<u>EmployeeNumber</u>, <u>ProjectCode</u>, StartDate)
+:::
+
+- Example 2
+```{mermaid}
+flowchart TB
+  A{Composition} --- |"(0, N) Part"| B[Product]
+  B --- |"(0, N) Subpart"| A
+  C((Quantity)) --- A
+  B --- D((Cost))
+  B --- E((Name))
+  B --- F(("<u>Code</u>"))
+```
+
+:::{#tip-many-to-many-2 .callout-tip collapse="true"}
+## Answer
+- Product(<u>Code</u>, Name, Cost)
+- Composition(<u>PartCode</u>, <u>SubpartCode</u>, Quantity)
+:::
+
+- Example 3
+```{mermaid}
+flowchart LR
+  A[Supplier] --- |"(0, N)"| B{Supply} --- |"(1, N)"| C[Product]
+  B --- |"(1,N)"| D[Department]
+  D --- E(("<u>Name</u>"))
+  D --- F((Telephone))
+  G(("<u>SupplierID</u>")) --- A
+  H(("SupplierName")) --- A
+  I((Quantity)) --- B
+  C --- J(("<u>Code</u>"))
+  C --- K(Type)
+```
+
+  - This schema can be translated into the following relational schema:
+
+:::{#tip-many-to-many-3 .callout-tip collapse="true"}
+## Answer
+- Supplier(<u>SupplierID</u>, SupplierName)
+- Product(<u>Code</u>, Type)
+- Department(<u>Name</u>, Telephone)
+- Supply(<u>SupplierID</u>, <u>ProductCode</u>, <u>DeptName</u>, Quantity)
+:::
+
+### One-to-One Relationships
+- Example 1: with mandatory participation for one
+
+```{mermaid}
+flowchart LR
+  A[Player] --- |"(1,1)"| B{Contract} --- |"(1,1)"| C[Team]
+  D(("<u>DateOfBirth</u>")) --- A
+  E(("<u>SurName</u>")) --- A
+  F((Position)) --- A
+  G((Salary)) --- B
+  C --- H(("<u>Name</u>"))
+  C --- I((Town))
+  C --- J(TeamColor)
+```
+
+:::{#tip-one-to-many-1 .callout-tip collapse="true"}
+## Answer
+- Player(<u>DateOfBirth</u>, <u>SurName</u>, Position)
+- Team(<u>Name</u>, Town, TeamColor)
+- ~~Contract(<u>PlayerDateOfBirth</u>, <u>PlayerSurName</u>, <u>Team</u> Salary)~~
+  - This line is incorrect because one player can only have one contract with one team. Having a contract with a team is not a unique identifier for a player.
+  - For example, this schema allows Messi to sign contracts with Barcelona and Real Madrid at the same time. This is not possible in real life.
+- Contract(<u>PlayerDateOfBirth</u>, <u>PlayerSurName</u>, Team, Salary)
+
+### Another correct solution:
+- Player(<u>DateOfBirth</u>, <u>SurName</u>, Position, TeamName, Salary)
+- Team(<u>Name</u>, Town, TeamColor)
+:::
+
+- Example 2: with mandatory participation for both
+```{mermaid}
+flowchart LR
+  A[Head] --- |"(1,1)"| B{Management} --- |"(1,1)"| C[Department]
+  D((Salary)) --- A
+  E((Name)) --- A
+  F(("<u>Number</u>")) --- A
+  G((StartDate)) --- B
+  C --- H(("<u>Name</u>"))
+  C --- I((Telephone))
+  C --- J((Branch))
+```
+
+:::{#tip-one-to-many-2 .callout-tip collapse="true"}
+## Answer
+- Head(<u>Number</u>, Name, Salary, DeptName, StartDate)
+- Department(<u>Name</u>, Telephone, Branch)
+
+### Another correct solution:
+- Head(<u>Number</u>, Name, Salary, StartDate)
+- Department(<u>Name</u>, Telephone, Branch, HeadNumber)
+- *Remark*: We included `StartDate` in table `Head` instead of table `Department` because it is more meaningful to associate the date as a dept was managed with the manager (i.e., the head) rather than with the department.
+:::
+
+- Example 3: with optional participation for one
+```{mermaid}
+flowchart LR
+  A[Employee] --- |"(1,1)"| B{Management} --- |"(1,1)"| C[Department]
+  D((Salary)) --- A
+  E((Name)) --- A
+  F(("<u>Number</u>")) --- A
+  G((StartDate)) --- B
+  C --- H(("<u>Name</u>"))
+  C --- I((Telephone))
+  C --- J((Branch))
+```
+
+:::{#tip-one-to-many-2 .callout-tip collapse="true"}
+## Answer
+- Employee(<u>Number</u>, Name, Salary)
+- Department(<u>Name</u>, Telephone, Branch, ManagerNumber, StartDate)
+
+### What if both entities had optional participation, i.e., $(0,1)$?
+- Employee(<u>Number</u>, Name, Salary)
+- Department(<u>Name</u>, Telephone, Branch)
+- Management(<u>ManagerNumber</u>, DeptName, StartDate)
+
+### How can we guarantee that a department cannot have more than one manager?
+- Declare a `UNIQUE` constraint for attribute `DeptName` in table `Management`.
+
+### Can `DeptName` be a key instead of `ManagerNumber`? 
+- Yes, for this schema, choosing either of them to be a key is correct.
+:::
+
+- Summary of Types of Relationship
+  - Many-to-many: create a new relation with the keys of the entities and the attributes of the relationship.
+  - One-to-many:
+    - Manditory participation for one: add the key of the entity with mandatory participation to the relation of the entity with optional participation.
+    - Manditory participation for both: add the keys of both entities to the relation.
+  - One-to-one:
+    - Manditory participation for one: add the key of the entity with mandatory participation to the relation of the entity with optional participation.
+    - Manditory participation for both: add the keys of both entities to the relation.
+    - Optional participation for both: add the keys of both entities to the relation.
+- See summaries in slides `20-er-design-part3.pdf`
+
+- Will the schema be "good"?
+  - The process ensure that there is no redundancy.
+  - But only with respect to what the E/R diagram represents.
+  - The next topic (DB normalization) will help us better analyze the goodness of a schema design. 

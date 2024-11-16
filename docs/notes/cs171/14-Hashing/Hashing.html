@@ -263,9 +263,24 @@ window.Quarto = {
 
 <section id="the-dictionary-data-structure" class="level2">
 <h2 class="anchored" data-anchor-id="the-dictionary-data-structure">The Dictionary Data Structure</h2>
+<div id="nte-dictionary" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;1: Dictionary/Map as a Data Structure.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Dictionary/map</strong> (aka. <strong>associative array</strong>) is a data structure that consists of a collection of <code>(key, value)</code> pairs called an entry of a dictionary.</p>
 <ul>
-<li><p>Dictionary or map is a data structure. &gt; <strong>Dictionary/map</strong>: aka. <strong>associative array</strong> is a data structure that consists of a collection of <code>(key, value)</code> pairs called an entry of a dictionary. &gt; - Note: the key and the value can be composite.</p></li>
-<li><p>Usage of a dictionary:</p>
+<li><em>Note</em>: the key and the value can be composite.</li>
+</ul>
+</div>
+</div>
+<ul>
+<li>Usage of a dictionary:
 <ul>
 <li>The dictionary data structure is used to store <code>(key, value)</code> pairs where the user can loop up (=search) a value using the key.</li>
 <li>To support its usage, a dictionary must provide the following operations:
@@ -277,7 +292,7 @@ window.Quarto = {
 </ul></li>
 <li>The most frequently used operation is <code>get(key)</code>, so fast lookup is required!</li>
 </ul></li>
-<li><p>The <code>Dictionary</code> interface:</p></li>
+<li>The <code>Dictionary</code> interface:</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> <span class="bu">Dictionary</span><span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="op">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">int</span> <span class="fu">size</span><span class="op">();</span> <span class="co">// return number of entires in the dictionary</span></span>
@@ -515,7 +530,7 @@ window.Quarto = {
 <section id="closed-addressing-separate-chaining" class="level3">
 <h3 class="anchored" data-anchor-id="closed-addressing-separate-chaining">Closed Addressing (Separate Chaining)</h3>
 <ul>
-<li><p>Previously, we used the <code>Entry&lt;K,V&gt;</code> class in the <code>ArrayMapo&lt;K,V&gt;</code> implementation to store the dictionary entries.</p>
+<li>Previously, we used the <code>Entry&lt;K,V&gt;</code> class in the <code>ArrayMapo&lt;K,V&gt;</code> implementation to store the dictionary entries.
 <ul>
 <li>In order to support separate chaining, the <code>Entry&lt;K,V&gt;</code> class must be modified to support a linked list.</li>
 </ul>
@@ -643,7 +658,19 @@ window.Quarto = {
 <span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span> <span class="co">// not found</span></span>
 <span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>Runtime analysis:</p>
+</ul>
+<div id="tip-run-time-closed-addressing" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;1: Runtime Analysis of Closed Addressing
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <ul>
 <li>Consider a hash table using separate chaining. Due to randomization of the hash value,
 <ul>
@@ -670,8 +697,10 @@ window.Quarto = {
 <li>Suppose there are a total of <code>n</code> items/entries hashed and stored in the hash table. According to the theory of probability, the number of items/entries in any bucket has a binomial probability distribution of <span class="math inline">\(\mathbf{BIN}\left(n,p=\dfrac{1}{M}\right)\)</span>.</li>
 <li>Then, the average number of entries in 1 bucket is <span class="math inline">\(\dfrac{n}{M}\)</span>. So, the average running time for hash operations is <span class="math inline">\(\dfrac{n}{M}\sim\mathcal{O}(n)\)</span>.</li>
 </ul></li>
-</ul></li>
 </ul>
+</div>
+</div>
+</div>
 </section>
 <section id="open-addressing" class="level3">
 <h3 class="anchored" data-anchor-id="open-addressing">Open Addressing</h3>
@@ -797,151 +826,152 @@ window.Quarto = {
 <span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>Now, let’s consider the <code>remove()</code> method. If we remove the entry stored in <code>bucket[i]</code>, then we will not be able to find the entry stored in <code>bucket[i+1]</code>.
+<li><p>Now, let’s consider the <code>remove()</code> method. If we remove the entry stored in <code>bucket[i]</code>, then we will not be able to find the entry stored in <code>bucket[i+1]</code>.</p>
 <ul>
 <li>Therefore, we need to move the entry stored in <code>bucket[i+1]</code> to <code>bucket[i]</code>.</li>
 <li>However, if we move the entry stored in <code>bucket[i+1]</code> to <code>bucket[i]</code>, then we will not be able to find the entry stored in <code>bucket[i+2]</code>.</li>
 <li>That means, instead of simply moving the entry stored in <code>bucket[i+1]</code> to <code>bucket[i]</code>, we need alternative method to solve this problem.</li>
 </ul></li>
-<li>To solve the deletion problem, a hash table using open addressing uses a special entry called <code>AVAILABLE</code>: <code>java     public Entry&lt;K,V&gt; AVAILABLE = new Entry&lt;&gt;(null, null);</code>
+<li><p>To solve the deletion problem, a hash table using open addressing uses a special entry called <code>AVAILABLE</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> AVAILABLE <span class="op">=</span> <span class="kw">new</span> Entry<span class="op">&lt;&gt;(</span><span class="kw">null</span><span class="op">,</span> <span class="kw">null</span><span class="op">);</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li><p>When an existing entry in the hash table is removed, the entry is replaced by the <code>AVAILABLE</code> entry.</p></li>
-<li><p>When we are searching for key <code>k</code>, then</p>
+<li>When an existing entry in the hash table is removed, the entry is replaced by the <code>AVAILABLE</code> entry.</li>
+<li>When we are searching for key <code>k</code>, then
 <ul>
 <li><code>AVAILABLE</code> must be treated as an empty bucket (i.e., it does not contain any key).</li>
 <li>The rehash algorithm must continue with the next search location.</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> HashTableLP<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="kw">implements</span> <span class="bu">Dictionary</span><span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">/* ---------------- Nested Entry class ---------------- */</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">class</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> K key<span class="op">;</span>   <span class="co">// The key (to loop up)</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> V value<span class="op">;</span> <span class="co">// The value (corresponding to the key)</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">Entry</span><span class="op">(</span>K k<span class="op">,</span> V v<span class="op">)</span> <span class="op">{</span> <span class="co">// Constructor</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> k<span class="op">;</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        value <span class="op">=</span> v<span class="op">;</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> K <span class="fu">getKey</span><span class="op">()</span> <span class="op">{</span> <span class="co">// Accessor method for the key</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> key<span class="op">;</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> V <span class="fu">getValue</span><span class="op">()</span> <span class="op">{</span>  <span class="co">// Accessor method for the value</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> value<span class="op">;</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">setValue</span><span class="op">(</span>V value<span class="op">)</span> <span class="op">{</span>         <span class="co">// Mutator method for the value</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">value</span> <span class="op">=</span> value<span class="op">;</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> <span class="fu">toString</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"("</span> <span class="op">+</span> key <span class="op">+</span> <span class="st">","</span> <span class="op">+</span> value <span class="op">+</span> <span class="st">")"</span><span class="op">;</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">/* ---------------- End of nested Entry class ---------------- */</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;[]</span> bucket<span class="op">;</span> <span class="co">// The Hash table</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">int</span> capacity<span class="op">;</span>        <span class="co">// capacity == bucket.length</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span>    NItems<span class="op">;</span>              <span class="co">// # items in hash table</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">// MAD formula: ( Math.abs(a * HashCode + b) % p ) % M</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">int</span> MAD_p<span class="op">;</span>           <span class="co">// Prime number in the Multiply Add Divide alg</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">int</span> MAD_a<span class="op">;</span>           <span class="co">// Multiplier   in the Multiply Add Divide alg</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">int</span> MAD_b<span class="op">;</span>           <span class="co">// Offset       in the Multiply Add Divide alg</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> AVAILABLE <span class="op">=</span> <span class="kw">new</span> Entry<span class="op">&lt;&gt;(</span><span class="kw">null</span><span class="op">,</span> <span class="kw">null</span><span class="op">);</span> <span class="co">// special entry for remove()</span></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co">// Constructor</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="fu">HashTableLP</span><span class="op">(</span><span class="dt">int</span> M<span class="op">)</span> <span class="op">{</span>  <span class="co">// Create a hash table of size M</span></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    bucket <span class="op">=</span> <span class="op">(</span>Entry<span class="op">[])</span> <span class="kw">new</span> Entry<span class="op">[</span>M<span class="op">];</span> <span class="co">// Create a hash table of size M</span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    capacity <span class="op">=</span> bucket<span class="op">.</span><span class="fu">length</span><span class="op">;</span>        <span class="co">// Capacity of this hash table</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    NItems <span class="op">=</span> <span class="dv">0</span><span class="op">;</span>                      <span class="co">// # items in hash table</span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>    MAD_p <span class="op">=</span> <span class="dv">109345121</span><span class="op">;</span>               <span class="co">// We pick this prime number...</span></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    MAD_a <span class="op">=</span> <span class="dv">123</span><span class="op">;</span>                     <span class="co">// a = non-zero random number</span></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    MAD_b <span class="op">=</span> <span class="dv">456</span><span class="op">;</span>                     <span class="co">// b = random number</span></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co">// The hash function for the hash table</span></span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">int</span> <span class="fu">hashValue</span><span class="op">(</span>K key<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> x <span class="op">=</span> key<span class="op">.</span><span class="fu">hashCode</span><span class="op">();</span> <span class="co">// Uses Object.hashCode()</span></span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">((</span><span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span><span class="op">(</span>x<span class="op">*</span>MAD_a <span class="op">+</span> MAD_b<span class="op">)</span> <span class="op">%</span> MAD_p<span class="op">)</span> <span class="op">%</span> capacity<span class="op">);</span></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="at">@Override</span></span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">int</span> <span class="fu">size</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> NItems<span class="op">;</span></span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a><span class="at">@Override</span></span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">put</span><span class="op">(</span>K k<span class="op">,</span> V v<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> hashIdx <span class="op">=</span> <span class="fu">hashValue</span><span class="op">(</span>k<span class="op">);</span> <span class="co">// find the hash index for key k</span></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> i <span class="op">=</span> hashIdx<span class="op">;</span></span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> firstAvail <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span> <span class="co">// -1 means: no AVAILABLE entry found</span></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">do</span> <span class="op">{</span> <span class="co">// search for key k</span></span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span> <span class="co">// is entry empty?</span></span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>firstAvail <span class="op">=</span> <span class="op">-</span><span class="dv">1</span> <span class="op">)</span> <span class="op">{</span> <span class="co">// No AVAILABLE entry found</span></span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>                bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="kw">new</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;(</span>k<span class="op">,</span> v<span class="op">);</span></span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>                <span class="co">// insert (k,v) in this empty bucket</span></span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span> <span class="co">// AVAILABLE entry found</span></span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>                bucket<span class="op">[</span>firstAvail<span class="op">]</span> <span class="op">=</span> <span class="kw">new</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;(</span>k<span class="op">,</span> v<span class="op">);</span></span>
-<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>                <span class="co">// insert (k,v) in the first AVAILABLE bucket</span></span>
-<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span><span class="op">;</span></span>
-<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> AVAILABLE<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>firstAvail <span class="op">==</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>                firstAvail <span class="op">=</span> i<span class="op">;</span> <span class="co">// remember the first AVAILABLE entry</span></span>
-<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>entry<span class="op">[</span>i<span class="op">].</span><span class="fu">getKey</span><span class="op">().</span><span class="fu">equals</span><span class="op">(</span>k<span class="op">))</span> <span class="op">{</span> <span class="co">// is entry k?</span></span>
-<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>            entry<span class="op">[</span>i<span class="op">].</span><span class="fu">setValue</span><span class="op">(</span>v<span class="op">);</span> <span class="co">// update value</span></span>
-<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span><span class="op">;</span></span>
-<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> </span>
-<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="op">(</span>i <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">%</span> capacity<span class="op">;</span> <span class="co">// rehash</span></span>
-<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">while</span> <span class="op">(</span>i <span class="op">!=</span> hashIdx<span class="op">);</span> <span class="co">// all entires searched!</span></span>
-<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>firstAvail <span class="op">==</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Full"</span><span class="op">);</span></span>
-<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a>        bucket<span class="op">[</span>firatAvail<span class="op">]</span> <span class="op">=</span> <span class="kw">new</span> Entry<span class="op">&lt;&gt;(</span>k<span class="op">,</span>v<span class="op">);</span></span>
-<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a><span class="at">@Override</span></span>
-<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> V <span class="fu">get</span><span class="op">(</span>K k<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> hashIdx <span class="op">=</span> <span class="fu">hashValue</span><span class="op">(</span>k<span class="op">);</span> <span class="co">// find the hash index for key k</span></span>
-<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> i <span class="op">=</span> hashIdx<span class="op">;</span></span>
-<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a>    <span class="cf">do</span> <span class="op">{</span></span>
-<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span> <span class="co">// is entry empty?</span></span>
-<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span></span>
-<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> AVAILABLE<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Do NOT Test bucket[i]</span></span>
-<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>            <span class="co">// continue</span></span>
-<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>entry<span class="op">[</span>i<span class="op">].</span><span class="fu">getKey</span><span class="op">().</span><span class="fu">equals</span><span class="op">(</span>k<span class="op">))</span> <span class="op">{</span> <span class="co">// is entry k?</span></span>
-<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> entry<span class="op">[</span>i<span class="op">].</span><span class="fu">getValue</span><span class="op">();</span> <span class="co">// return value</span></span>
-<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> </span>
-<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="op">(</span>i <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">%</span> capacity<span class="op">;</span> <span class="co">// rehash</span></span>
-<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">while</span> <span class="op">(</span>i <span class="op">!=</span> hashIdx<span class="op">);</span> <span class="co">// all entires searched!</span></span>
-<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span> <span class="co">// not found</span></span>
-<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a><span class="at">@Override</span></span>
-<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> V <span class="fu">remove</span><span class="op">(</span>K k<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> hashIdx <span class="op">=</span> <span class="fu">hashValue</span><span class="op">(</span>k<span class="op">);</span></span>
-<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> i <span class="op">=</span> hashIdx<span class="op">;</span></span>
-<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a>    <span class="cf">do</span> <span class="op">{</span></span>
-<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span> <span class="co">// Is bucket empty?</span></span>
-<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span> <span class="co">// Not found</span></span>
-<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> AVAILABLE<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Do NOT Test bucket[i]</span></span>
-<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a>            <span class="co">// continue</span></span>
-<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span>  <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>bucket<span class="op">[</span>i<span class="op">].</span><span class="fu">getKey</span><span class="op">().</span><span class="fu">equals</span><span class="op">(</span>k<span class="op">))</span> <span class="op">{</span> <span class="co">// does bucket contain k?</span></span>
-<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a>            V retVal <span class="op">=</span> bucekt<span class="op">[</span>i<span class="op">].</span><span class="fu">getValue</span><span class="op">();</span></span>
-<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a>            bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> AVAILABLE<span class="op">;</span> <span class="co">// mark as deleted</span></span>
-<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> retVal<span class="op">;</span></span>
-<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="op">(</span>i <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">%</span> capacity<span class="op">;</span> <span class="co">// rehash</span></span>
-<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">while</span> <span class="op">(</span>i <span class="op">!=</span> hashIdx<span class="op">);</span> <span class="co">// all entires searched!</span></span>
-<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span> <span class="co">// not found</span></span>
-<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb8"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> HashTableLP<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="kw">implements</span> <span class="bu">Dictionary</span><span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">/* ---------------- Nested Entry class ---------------- */</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">class</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> K key<span class="op">;</span>   <span class="co">// The key (to loop up)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> V value<span class="op">;</span> <span class="co">// The value (corresponding to the key)</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">Entry</span><span class="op">(</span>K k<span class="op">,</span> V v<span class="op">)</span> <span class="op">{</span> <span class="co">// Constructor</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> k<span class="op">;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        value <span class="op">=</span> v<span class="op">;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> K <span class="fu">getKey</span><span class="op">()</span> <span class="op">{</span> <span class="co">// Accessor method for the key</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> key<span class="op">;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> V <span class="fu">getValue</span><span class="op">()</span> <span class="op">{</span>  <span class="co">// Accessor method for the value</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> value<span class="op">;</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">setValue</span><span class="op">(</span>V value<span class="op">)</span> <span class="op">{</span>         <span class="co">// Mutator method for the value</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">value</span> <span class="op">=</span> value<span class="op">;</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> <span class="fu">toString</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"("</span> <span class="op">+</span> key <span class="op">+</span> <span class="st">","</span> <span class="op">+</span> value <span class="op">+</span> <span class="st">")"</span><span class="op">;</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">/* ---------------- End of nested Entry class ---------------- */</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;[]</span> bucket<span class="op">;</span> <span class="co">// The Hash table</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">int</span> capacity<span class="op">;</span>        <span class="co">// capacity == bucket.length</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span>    NItems<span class="op">;</span>              <span class="co">// # items in hash table</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co">// MAD formula: ( Math.abs(a * HashCode + b) % p ) % M</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">int</span> MAD_p<span class="op">;</span>           <span class="co">// Prime number in the Multiply Add Divide alg</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">int</span> MAD_a<span class="op">;</span>           <span class="co">// Multiplier   in the Multiply Add Divide alg</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">int</span> MAD_b<span class="op">;</span>           <span class="co">// Offset       in the Multiply Add Divide alg</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> AVAILABLE <span class="op">=</span> <span class="kw">new</span> Entry<span class="op">&lt;&gt;(</span><span class="kw">null</span><span class="op">,</span> <span class="kw">null</span><span class="op">);</span> <span class="co">// special entry for remove()</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="co">// Constructor</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="fu">HashTableLP</span><span class="op">(</span><span class="dt">int</span> M<span class="op">)</span> <span class="op">{</span>  <span class="co">// Create a hash table of size M</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    bucket <span class="op">=</span> <span class="op">(</span>Entry<span class="op">[])</span> <span class="kw">new</span> Entry<span class="op">[</span>M<span class="op">];</span> <span class="co">// Create a hash table of size M</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    capacity <span class="op">=</span> bucket<span class="op">.</span><span class="fu">length</span><span class="op">;</span>        <span class="co">// Capacity of this hash table</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    NItems <span class="op">=</span> <span class="dv">0</span><span class="op">;</span>                      <span class="co">// # items in hash table</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>    MAD_p <span class="op">=</span> <span class="dv">109345121</span><span class="op">;</span>               <span class="co">// We pick this prime number...</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    MAD_a <span class="op">=</span> <span class="dv">123</span><span class="op">;</span>                     <span class="co">// a = non-zero random number</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    MAD_b <span class="op">=</span> <span class="dv">456</span><span class="op">;</span>                     <span class="co">// b = random number</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="co">// The hash function for the hash table</span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">int</span> <span class="fu">hashValue</span><span class="op">(</span>K key<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> x <span class="op">=</span> key<span class="op">.</span><span class="fu">hashCode</span><span class="op">();</span> <span class="co">// Uses Object.hashCode()</span></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">((</span><span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span><span class="op">(</span>x<span class="op">*</span>MAD_a <span class="op">+</span> MAD_b<span class="op">)</span> <span class="op">%</span> MAD_p<span class="op">)</span> <span class="op">%</span> capacity<span class="op">);</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="at">@Override</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">int</span> <span class="fu">size</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> NItems<span class="op">;</span></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a><span class="at">@Override</span></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">put</span><span class="op">(</span>K k<span class="op">,</span> V v<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> hashIdx <span class="op">=</span> <span class="fu">hashValue</span><span class="op">(</span>k<span class="op">);</span> <span class="co">// find the hash index for key k</span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> i <span class="op">=</span> hashIdx<span class="op">;</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> firstAvail <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span> <span class="co">// -1 means: no AVAILABLE entry found</span></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">do</span> <span class="op">{</span> <span class="co">// search for key k</span></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span> <span class="co">// is entry empty?</span></span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>firstAvail <span class="op">=</span> <span class="op">-</span><span class="dv">1</span> <span class="op">)</span> <span class="op">{</span> <span class="co">// No AVAILABLE entry found</span></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>                bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="kw">new</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;(</span>k<span class="op">,</span> v<span class="op">);</span></span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a>                <span class="co">// insert (k,v) in this empty bucket</span></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span> <span class="co">// AVAILABLE entry found</span></span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>                bucket<span class="op">[</span>firstAvail<span class="op">]</span> <span class="op">=</span> <span class="kw">new</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;(</span>k<span class="op">,</span> v<span class="op">);</span></span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>                <span class="co">// insert (k,v) in the first AVAILABLE bucket</span></span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> AVAILABLE<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>firstAvail <span class="op">==</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>                firstAvail <span class="op">=</span> i<span class="op">;</span> <span class="co">// remember the first AVAILABLE entry</span></span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>entry<span class="op">[</span>i<span class="op">].</span><span class="fu">getKey</span><span class="op">().</span><span class="fu">equals</span><span class="op">(</span>k<span class="op">))</span> <span class="op">{</span> <span class="co">// is entry k?</span></span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a>            entry<span class="op">[</span>i<span class="op">].</span><span class="fu">setValue</span><span class="op">(</span>v<span class="op">);</span> <span class="co">// update value</span></span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> </span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="op">(</span>i <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">%</span> capacity<span class="op">;</span> <span class="co">// rehash</span></span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">while</span> <span class="op">(</span>i <span class="op">!=</span> hashIdx<span class="op">);</span> <span class="co">// all entires searched!</span></span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>firstAvail <span class="op">==</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Full"</span><span class="op">);</span></span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a>        bucket<span class="op">[</span>firatAvail<span class="op">]</span> <span class="op">=</span> <span class="kw">new</span> Entry<span class="op">&lt;&gt;(</span>k<span class="op">,</span>v<span class="op">);</span></span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a><span class="at">@Override</span></span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> V <span class="fu">get</span><span class="op">(</span>K k<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> hashIdx <span class="op">=</span> <span class="fu">hashValue</span><span class="op">(</span>k<span class="op">);</span> <span class="co">// find the hash index for key k</span></span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> i <span class="op">=</span> hashIdx<span class="op">;</span></span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a>    <span class="cf">do</span> <span class="op">{</span></span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span> <span class="co">// is entry empty?</span></span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> AVAILABLE<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Do NOT Test bucket[i]</span></span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a>            <span class="co">// continue</span></span>
+<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>entry<span class="op">[</span>i<span class="op">].</span><span class="fu">getKey</span><span class="op">().</span><span class="fu">equals</span><span class="op">(</span>k<span class="op">))</span> <span class="op">{</span> <span class="co">// is entry k?</span></span>
+<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> entry<span class="op">[</span>i<span class="op">].</span><span class="fu">getValue</span><span class="op">();</span> <span class="co">// return value</span></span>
+<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> </span>
+<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="op">(</span>i <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">%</span> capacity<span class="op">;</span> <span class="co">// rehash</span></span>
+<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">while</span> <span class="op">(</span>i <span class="op">!=</span> hashIdx<span class="op">);</span> <span class="co">// all entires searched!</span></span>
+<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span> <span class="co">// not found</span></span>
+<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a><span class="at">@Override</span></span>
+<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> V <span class="fu">remove</span><span class="op">(</span>K k<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> hashIdx <span class="op">=</span> <span class="fu">hashValue</span><span class="op">(</span>k<span class="op">);</span></span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> i <span class="op">=</span> hashIdx<span class="op">;</span></span>
+<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a>    <span class="cf">do</span> <span class="op">{</span></span>
+<span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span> <span class="co">// Is bucket empty?</span></span>
+<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span> <span class="co">// Not found</span></span>
+<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> AVAILABLE<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Do NOT Test bucket[i]</span></span>
+<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a>            <span class="co">// continue</span></span>
+<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span>  <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>bucket<span class="op">[</span>i<span class="op">].</span><span class="fu">getKey</span><span class="op">().</span><span class="fu">equals</span><span class="op">(</span>k<span class="op">))</span> <span class="op">{</span> <span class="co">// does bucket contain k?</span></span>
+<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a>            V retVal <span class="op">=</span> bucekt<span class="op">[</span>i<span class="op">].</span><span class="fu">getValue</span><span class="op">();</span></span>
+<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a>            bucket<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> AVAILABLE<span class="op">;</span> <span class="co">// mark as deleted</span></span>
+<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> retVal<span class="op">;</span></span>
+<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="op">(</span>i <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">%</span> capacity<span class="op">;</span> <span class="co">// rehash</span></span>
+<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">while</span> <span class="op">(</span>i <span class="op">!=</span> hashIdx<span class="op">);</span> <span class="co">// all entires searched!</span></span>
+<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span> <span class="co">// not found</span></span>
+<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul></li>
-<li>Clustering in Learning Hashing:
+<li><p>Clustering in Learning Hashing:</p>
 <ul>
 <li><p>Suppose the hash table currently stores the entries as follows:</p>
 <pre><code>            0   1   2   3   4   5   6   7   8   9  
@@ -964,7 +994,7 @@ entry[] = |   | A | B | C | D | E | F | G | H |   | </code></pre>
 <li>Strength and Weakness of a Hash Table
 <ul>
 <li>A hash table is fast when entries are not clustered.</li>
-<li>In this case, the running time of operations such as <code>get()</code>, <code>pu()</code> and <code>remove()</code> is <span class="math inline">\(\mathcal{O}(1)\)</span>.
+<li>In this case, the running time of operations such as <code>get()</code>, <code>put()</code> and <code>remove()</code> is <span class="math inline">\(\mathcal{O}(1)\)</span>.
 <ul>
 <li>The search will find the key immediately in the hash bucket.</li>
 <li>Or else, the search will terminate in the next step because it finds an empty (<code>null</code>) bucket.</li>
@@ -973,7 +1003,7 @@ entry[] = |   | A | B | C | D | E | F | G | H |   | </code></pre>
 </ul></li>
 <li>Worse case running time of hashing with linear probing: when the hash table is full.
 <ul>
-<li>Then, <code>get()</code>, <code>pu()</code>, and <code>remove()</code> may need to scan the entire hash table to find the entry.</li>
+<li>Then, <code>get()</code>, <code>put()</code>, and <code>remove()</code> may need to scan the entire hash table to find the entry.</li>
 <li>Therefore, worse case running time of linear probing is <code>n/2</code>: The scan will examine approximately half of all the entries.</li>
 </ul></li>
 <li>Average case running time analysis of linear probing:
@@ -1001,11 +1031,31 @@ entry[] = |   | A | B | C | D | E | F | G | H |   | </code></pre>
 <li>Therefore, average running time of <code>get()</code>, <code>put()</code>, and <code>remove()</code> = average number of compare operations to find an empty bucket.</li>
 </ul></li>
 </ul></li>
-<li>Load factor and the probability of finding an empty bucket. &gt; <strong>Load factor</strong>: a.k.a. <strong>occupancy level</strong> is defined as <span class="math display">\[\alpha=\dfrac{\text{number of entries in hash table}}{\text{size of the hash table}}=\dfrac{n}{M}.\]</span> &gt; - The load factor <span class="math inline">\(\alpha\)</span> is a measure of how full the hash table is.
+<li>Load factor and the probability of finding an empty bucket.</li>
+</ul>
+<div id="nte-load-factor" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;2: Load Factor
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Load factor</strong> (a.k.a. <strong>occupancy level</strong>) is defined as <span class="math display">\[
+\alpha=\dfrac{\text{number of entries in hash table}}{\text{size of the hash table}}=\dfrac{n}{M}.
+\]</span></p>
+<ul>
+<li>The load factor <span class="math inline">\(\alpha\)</span> is a measure of how full the hash table is.
 <ul>
 <li>Then, the probability (=likelihood) that a hash bucket is occuped is <span class="math display">\[\begin{aligned}\mathbf{P}(\text{bucket }i\text{ is occupied})&amp;=\dfrac{\text{number of entries in the hash table}}{\text{total number of buckets in the hash table}}\\&amp;=\alpha.\end{aligned}\]</span></li>
 <li>So, the probability (=likelihood) that a hash bucket is empty is <span class="math inline">\(\mathbf{P}(\text{buket }i\text{ is empty})=1-\alpha\)</span>.</li>
 </ul></li>
+</ul>
+</div>
+</div>
+<ul>
 <li>The average running time of <code>get()</code>, <code>put()</code>, and <code>remove()</code> is found by computing:
 <ul>
 <li>How often (frequent) do we need to check 1 entry to find an empty slot (=<span class="math inline">\(f_1\)</span>)? How many operations did we perform in this case? (=<span class="math inline">\(c_1\)</span>)</li>
@@ -1017,12 +1067,12 @@ entry[] = |   | A | B | C | D | E | F | G | H |   | </code></pre>
 <ul>
 <li>The probability of finding a bucket to be empty = <span class="math inline">\(1-\alpha\)</span>.</li>
 <li>We check 1 entry (=the hash bucekt) and fids an empty bucket. <span class="math display">\[
-\mathbf{P}(\text{check 1 bucket to find an empty bucket})=1-\alpha=f_1\\
+\mathbf{P}(\text{check 1 bucket to find an empty bucket})=1-\alpha=f_1\]</span> <span class="math display">\[
 \text{number of check operations performed} = 1=c_1
 \]</span></li>
 </ul></li>
 <li>Similarly, in the case of checking 2 entries to find an empty bucket, we have: <span class="math display">\[
-\mathbf{P}(\text{check 2 bucket to find an empty bucket})=\alpha(1-\alpha=)f_2\\
+\mathbf{P}(\text{check 2 bucket to find an empty bucket})=\alpha(1-\alpha=)f_2\]</span> <span class="math display">\[
 \text{number of check operations performed} = 2=c_2
 \]</span></li>
 <li>So, we know the average running time of <code>get()</code>, <code>put()</code>, and <code>remove()</code> is equal to <span class="math display">\[
@@ -1032,15 +1082,14 @@ entry[] = |   | A | B | C | D | E | F | G | H |   | </code></pre>
 \end{aligned}
 \]</span>
 <ul>
-<li><p>Suppose <span class="math display">\[S=1+2\alpha^1+3\alpha^2+4\alpha^3+\cdots.\]</span> To compute the sum, we used MATLAB ```matlab syms a k assume(a &gt; 0 &amp; a &lt; 1) symsum((k+1)*(a^k), k, 0, inf)</p>
-<blockquote class="blockquote">
-<blockquote class="blockquote">
-<blockquote class="blockquote">
-<p>ans = 1/(a - 1)^2 ```</p>
-</blockquote>
-</blockquote>
-</blockquote></li>
-<li><p>So, the average running time of <code>get()</code>, <code>put()</code>, and <code>remove()</code> is equal to <span class="math display">\[(1-\alpha)\cdot\dfrac{1}{(1-\alpha)^2}=\dfrac{1}{1-\alpha}.\]</span></p></li>
+<li>Suppose <span class="math display">\[S=1+2\alpha^1+3\alpha^2+4\alpha^3+\cdots.\]</span> To compute the sum, we used MATLAB</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">syms</span> <span class="va">a</span> <span class="va">k</span> <span class="va">assume</span>(<span class="va">a</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">a</span> <span class="op">&lt;</span> <span class="fl">1</span>) </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="va">symsum</span>((<span class="va">k</span><span class="op">+</span><span class="fl">1</span>)<span class="op">*</span>(<span class="va">a</span><span class="op">^</span><span class="va">k</span>)<span class="op">,</span> <span class="va">k</span><span class="op">,</span> <span class="fl">0</span><span class="op">,</span> <span class="va">inf</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> <span class="op">&gt;</span> <span class="op">&gt;</span> <span class="va">ans</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span>(<span class="va">a</span> <span class="op">-</span> <span class="fl">1</span>)<span class="op">\^</span><span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>So, the average running time of <code>get()</code>, <code>put()</code>, and <code>remove()</code> is equal to <span class="math display">\[(1-\alpha)\cdot\dfrac{1}{(1-\alpha)^2}=\dfrac{1}{1-\alpha}.\]</span></li>
 </ul></li>
 <li>Summary:
 <ul>
@@ -1066,20 +1115,20 @@ entry[] = |   | A | B | C | D | E | F | G | H |   | </code></pre>
 <li>Because the hash function changes with the hash table size, we must rehash all the keys and insert them into the new hash table.</li>
 <li>A naïve way to do this is to create a new hash table with the new size, and then insert all the keys into the new hash table.</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">doubleHashTable</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  Entry<span class="op">[]</span> oldBucket <span class="op">=</span> bucket<span class="op">;</span> <span class="co">// save the old hash table</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Double the size of the bucket</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  bucket <span class="op">=</span> <span class="op">(</span>Entry<span class="op">[])</span> <span class="kw">new</span> Entry<span class="op">[</span><span class="dv">2</span> <span class="op">*</span> oldBucket<span class="op">.</span><span class="fu">length</span><span class="op">];</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  capacity <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> oldBucket<span class="op">.</span><span class="fu">length</span><span class="op">;</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Rehash all the entries in the old hash table</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> oldBucket<span class="op">.</span><span class="fu">length</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>oldBucket<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> <span class="kw">null</span> <span class="op">&amp;&amp;</span> oldBucket<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> AVAILABLE<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>          <span class="kw">this</span><span class="op">.</span><span class="fu">put</span><span class="op">(</span>oldBucket<span class="op">[</span>i<span class="op">].</span><span class="fu">getKey</span><span class="op">(),</span> oldBucket<span class="op">[</span>i<span class="op">].</span><span class="fu">getValue</span><span class="op">());</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb11"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">doubleHashTable</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  Entry<span class="op">[]</span> oldBucket <span class="op">=</span> bucket<span class="op">;</span> <span class="co">// save the old hash table</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Double the size of the bucket</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  bucket <span class="op">=</span> <span class="op">(</span>Entry<span class="op">[])</span> <span class="kw">new</span> Entry<span class="op">[</span><span class="dv">2</span> <span class="op">*</span> oldBucket<span class="op">.</span><span class="fu">length</span><span class="op">];</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  capacity <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> oldBucket<span class="op">.</span><span class="fu">length</span><span class="op">;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Rehash all the entries in the old hash table</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> oldBucket<span class="op">.</span><span class="fu">length</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>oldBucket<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> <span class="kw">null</span> <span class="op">&amp;&amp;</span> oldBucket<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> AVAILABLE<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>          <span class="kw">this</span><span class="op">.</span><span class="fu">put</span><span class="op">(</span>oldBucket<span class="op">[</span>i<span class="op">].</span><span class="fu">getKey</span><span class="op">(),</span> oldBucket<span class="op">[</span>i<span class="op">].</span><span class="fu">getValue</span><span class="op">());</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul>
 
 
