@@ -183,6 +183,7 @@ window.Quarto = {
   <li><a href="#many-to-many-relationships" id="toc-many-to-many-relationships" class="nav-link" data-scroll-target="#many-to-many-relationships">Many-to-Many Relationships</a></li>
   <li><a href="#one-to-one-relationships" id="toc-one-to-one-relationships" class="nav-link" data-scroll-target="#one-to-one-relationships">One-to-One Relationships</a></li>
   </ul></li>
+  <li><a href="#redundancy" id="toc-redundancy" class="nav-link" data-scroll-target="#redundancy">Redundancy</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/11-er-design/11 ER Design.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/11-er-design/11 ER Design.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1167,7 +1168,7 @@ Tip&nbsp;6: Answer
 </div>
 </div>
 <ul>
-<li><p>Summary of Types of Relationship</p>
+<li>Summary of Types of Relationship
 <ul>
 <li>Many-to-many: create a new relation with the keys of the entities and the attributes of the relationship.</li>
 <li>One-to-many:
@@ -1182,17 +1183,36 @@ Tip&nbsp;6: Answer
 <li>Optional participation for both: add the keys of both entities to the relation.</li>
 </ul></li>
 </ul></li>
-<li><p>See summaries in slides <code>20-er-design-part3.pdf</code></p></li>
-<li><p>Will the schema be “good”?</p>
+<li>See summaries in slides <code>20-er-design-part3.pdf</code></li>
+</ul>
+</section>
+</section>
+<section id="redundancy" class="level2">
+<h2 class="anchored" data-anchor-id="redundancy">Redundancy</h2>
+<ul>
+<li>Will the schema be “good”?
 <ul>
 <li>The process ensure that there is no redundancy.</li>
 <li>But only with respect to what the E/R diagram represents.</li>
 <li>The next topic (DB normalization) will help us better analyze the goodness of a schema design.</li>
 </ul></li>
+<li>Redundancy is a disadvantage:
+<ul>
+<li>larger storage requirements (although usually at negligible cost)</li>
+<li>more work to maintain consistency (updating data with redundant occurences ⭢ all derived data must be updated)</li>
+</ul></li>
+<li>But it can also introduce an advantage:
+<ul>
+<li>reduction in the number of accesses necessary to obtain delivered information.</li>
+</ul></li>
+<li>The decision to maintain or eliminate a redundancy is partly made by comparing the <strong>cose of operations</strong> that involve the redundant info, and the <strong>storage</strong> needed.
+<ul>
+<li>Performance analysis</li>
+<li>other issues to consider: data consistency. x</li>
+</ul></li>
 </ul>
 
 
-</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->

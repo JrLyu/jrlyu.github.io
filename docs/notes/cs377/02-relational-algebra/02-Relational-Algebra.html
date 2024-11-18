@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2024-09-08">
+<meta name="description" content="This lecture discusses the relational algebra, which is the foundation of modern database systems. Topics include select, project, and join operators.">
+
+<title>Jiuru Lyu - 2 Relational Algebra</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Jiuru Lyu</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../cv/cv.pdf"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../photo.html"> 
+<span class="menu-text">Photograph</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blogs.html"> 
+<span class="menu-text">Blogs</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#select-choose-rows" id="toc-select-choose-rows" class="nav-link" data-scroll-target="#select-choose-rows">Select: choose rows</a></li>
+  <li><a href="#project-choose-columns" id="toc-project-choose-columns" class="nav-link" data-scroll-target="#project-choose-columns">Project: choose columns</a></li>
+  <li><a href="#combining-tables" id="toc-combining-tables" class="nav-link" data-scroll-target="#combining-tables">Combining Tables</a>
+  <ul class="collapse">
+  <li><a href="#cartesian-product-combine-tables" id="toc-cartesian-product-combine-tables" class="nav-link" data-scroll-target="#cartesian-product-combine-tables">Cartesian Product: Combine Tables</a></li>
+  <li><a href="#natural-join" id="toc-natural-join" class="nav-link" data-scroll-target="#natural-join">Natural Join</a></li>
+  <li><a href="#theta-join" id="toc-theta-join" class="nav-link" data-scroll-target="#theta-join">Theta Join</a></li>
+  <li><a href="#outer-join" id="toc-outer-join" class="nav-link" data-scroll-target="#outer-join">Outer Join</a></li>
+  <li><a href="#cardinality-of-some-operators" id="toc-cardinality-of-some-operators" class="nav-link" data-scroll-target="#cardinality-of-some-operators">Cardinality of Some Operators</a></li>
+  </ul></li>
+  <li><a href="#composing-larger-expressions" id="toc-composing-larger-expressions" class="nav-link" data-scroll-target="#composing-larger-expressions">Composing Larger Expressions</a>
+  <ul class="collapse">
+  <li><a href="#assignment-and-rename-operator" id="toc-assignment-and-rename-operator" class="nav-link" data-scroll-target="#assignment-and-rename-operator">Assignment and Rename Operator</a></li>
+  <li><a href="#set-operations" id="toc-set-operations" class="nav-link" data-scroll-target="#set-operations">Set Operations</a></li>
+  </ul></li>
+  <li><a href="#precedence-of-operators" id="toc-precedence-of-operators" class="nav-link" data-scroll-target="#precedence-of-operators">Precedence of Operators</a></li>
+  <li><a href="#specific-types-of-query" id="toc-specific-types-of-query" class="nav-link" data-scroll-target="#specific-types-of-query">Specific Types of Query</a>
+  <ul class="collapse">
+  <li><a href="#max" id="toc-max" class="nav-link" data-scroll-target="#max">Max</a></li>
+  <li><a href="#k-or-more" id="toc-k-or-more" class="nav-link" data-scroll-target="#k-or-more"><span class="math inline">\(k\)</span> or more</a></li>
+  <li><a href="#exactly-k" id="toc-exactly-k" class="nav-link" data-scroll-target="#exactly-k">Exactly <span class="math inline">\(k\)</span></a></li>
+  </ul></li>
+  <li><a href="#integrity-constraints-via-ra" id="toc-integrity-constraints-via-ra" class="nav-link" data-scroll-target="#integrity-constraints-via-ra">Integrity Constraints via RA</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/02-relational-algebra/02-Relational-Algebra.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/02-relational-algebra/02-Relational-Algebra.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">2 Relational Algebra</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Coding</div>
+    <div class="quarto-category">Database</div>
+    <div class="quarto-category">Relational Model</div>
+    <div class="quarto-category">Relational Algebra</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    This lecture discusses the relational algebra, which is the foundation of modern database systems. Topics include select, project, and join operators.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 8, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<ul>
+<li>Operands: Table</li>
+<li>Operators:
+<ul>
+<li>choose only the rows (tuples) you want<br>
+</li>
+<li>choose only the columns (attributes) you want</li>
+<li>combine tables<br>
+</li>
+<li>and a few other things..</li>
+</ul></li>
+</ul>
+</section>
+<section id="select-choose-rows" class="level2">
+<h2 class="anchored" data-anchor-id="select-choose-rows">Select: choose rows</h2>
+<div id="note-select" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Notation: Select
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\({\Large\sigma}_C(R)\)</span>, where</p>
+<ul>
+<li><span class="math inline">\(R\)</span> is the relation/table,</li>
+<li>Condition <span class="math inline">\(c\)</span> is a boolean expression.</li>
+</ul>
+</div>
+</div>
+<ul>
+<li>It can use comparison operators and boolean operators</li>
+<li>The operands are either constants or attributes of R.</li>
+<li>The result is a relation:
+<ul>
+<li>with the same schema as the operand<br>
+</li>
+<li>but with only the tuples that satisfy the condition.</li>
+</ul></li>
+</ul>
+<div id="tip-select" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;1: Example: Select
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>To select all British actors, we can use <span class="math inline">\({\Large\sigma}_{\text{nationality}=\text{``British''}}(\texttt{Artists})\)</span>. To select all movies from the 1970s, we can use <span class="math inline">\({\Large\sigma}_{\text{year}&gt;1969\text{ and }\text{year}&lt;1980}(\texttt{Movies})\)</span>. Instead of using the word “<span class="math inline">\(\text{and}\)</span>,” we can also use the and operator in logic: <span class="math inline">\(\land\)</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="project-choose-columns" class="level2">
+<h2 class="anchored" data-anchor-id="project-choose-columns">Project: choose columns</h2>
+<div id="note-project" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Notation: Project
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\({\Large\pi}_L(R)\)</span>, where</p>
+<ul>
+<li><span class="math inline">\(R\)</span> is a relation/table,</li>
+<li><span class="math inline">\(L\)</span> is a subset of the attributes of <span class="math inline">\(R\)</span>.</li>
+</ul>
+</div>
+</div>
+<ul>
+<li>The result is a relation
+<ul>
+<li>with all the tuples from <span class="math inline">\(R\)</span><br>
+</li>
+<li>but with only the attributes in <span class="math inline">\(L\)</span>, and in that order.</li>
+</ul></li>
+<li>The project operator removes duplicates:
+<ul>
+<li>This is due to that we are using the set notation, and so we cannot have duplicate tuples in a table.</li>
+</ul></li>
+</ul>
+<div id="tip-project" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;2: Example: Project
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\({\Large\pi}_{\text{director}}(\texttt{Movies})\)</span> will result <span class="math inline">\(\{\text{Kubrick}, \text{Altman}, \text{Polanski}, \text{Lucas}\}\)</span> although the original table has <span class="math inline">\(7\)</span> director names.</p>
+</div>
+</div>
+</div>
+<div id="tip-project-select" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;3: Example: Combine select and project
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong><em>Q: Write an RA expression to find the names of all directors of movies from the 1970s.</em></strong> A: <span class="math inline">\({\Large\pi}_{\text{director}}{\Large\sigma}_{\text{year}&gt;1969\land\text{year}&lt;1980}(\texttt{Movies})\)</span></p>
+<ul>
+<li>Note that, as we want to find the names of directors, so we will to the project operator as the last step.</li>
+<li>Hence, we will do select first, and then project.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="combining-tables" class="level2">
+<h2 class="anchored" data-anchor-id="combining-tables">Combining Tables</h2>
+<section id="cartesian-product-combine-tables" class="level3">
+<h3 class="anchored" data-anchor-id="cartesian-product-combine-tables">Cartesian Product: Combine Tables</h3>
+<div id="note-cartesian-product" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Notation: Cartesian Production
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(R_1\times R_2\)</span>, where</p>
+<ul>
+<li><span class="math inline">\(R_1\)</span> and <span class="math inline">\(R_2\)</span> are tables.</li>
+</ul>
+</div>
+</div>
+<ul>
+<li>The result is a relation with
+<ul>
+<li>every combination of a tuple from <span class="math inline">\(R1\)</span> concatenated to a tuple from <span class="math inline">\(R_2\)</span></li>
+<li>Its schema is every attribute from <span class="math inline">\(R_1\)</span> followed by every attribute of <span class="math inline">\(R_2\)</span>, in order.</li>
+</ul></li>
+<li>The number of tuples in <span class="math inline">\(R_1\times R_2\)</span> is given by <span class="math inline">\(|R_1|\times|R_2|\)</span>, where <span class="math inline">\(|R|\)</span> is the cardinality of <span class="math inline">\(R\)</span>.</li>
+<li>If an attribute occurs in both relations, it occurs twice in the result, prefixed by relation name.</li>
+</ul>
+<div id="tip-cartesian-product" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;4
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>In the result of <span class="math inline">\(\texttt{Movie}\times\texttt{Roles}\)</span>, we will see <span class="math inline">\(\text{Movies.mID}\)</span> and <span class="math inline">\(\text{Roles.mID}\)</span>.</p>
+</div>
+</div>
+</div>
+<ul>
+<li>However, Cartesian product can be inconvenient
+<ul>
+<li>It can introduce <strong>nonsense</strong> tuples.</li>
+<li>However, we can get rid of them with select operators.</li>
+</ul></li>
+<li>Due to this inconvenience, we need <strong><em>join</em></strong> operators.</li>
+</ul>
+</section>
+<section id="natural-join" class="level3">
+<h3 class="anchored" data-anchor-id="natural-join">Natural Join</h3>
+<div id="note-natural-join" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Notation: Natural Join
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(R\bowtie S\)</span>, where</p>
+<ul>
+<li><span class="math inline">\(R\)</span> and <span class="math inline">\(S\)</span> are tables</li>
+<li><span class="math inline">\(\bowtie\)</span> is the natural join operator.</li>
+</ul>
+</div>
+</div>
+<ul>
+<li>The result is formed by
+<ul>
+<li>taking the Cartesian product,</li>
+<li>select to ensure equality on attributes that are in both relations (determine by name),</li>
+<li>projecting to remove duplicate attributes.</li>
+</ul></li>
+</ul>
+<div id="wrn-natural-join" class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning&nbsp;1: Properties of Natural Join
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Commutativity (although attribute orders may vary): <span class="math display">\[R\bowtie S=S\bowtie R\]</span></li>
+<li>Associativity: <span class="math display">\[R\bowtie(S\bowtie T)=(R\bowtie S)\bowtie T\]</span></li>
+<li>When writing <span class="math inline">\(n\)</span>-ary joins, brackets are irrelevant. We can just write: <span class="math display">\[R_1\bowtie R_2\bowtie\cdots\bowtie R_n.\]</span></li>
+</ul>
+</div>
+</div>
+<ul>
+<li>Special cases of Natural Join
+<ul>
+<li>If there is not tuple match, natural join will result in the empty set <span class="math inline">\(\emptyset\)</span>.</li>
+<li>Natural join is looking for <strong>exact match</strong>.</li>
+<li>If there is no attributes in common, the result will be the <strong>Cartesian product</strong> of the two relations.</li>
+</ul></li>
+<li>Natural join can <strong>over-match</strong>
+<ul>
+<li>Natural join bases the matching on attribute names.</li>
+<li>What if two attributes have the same name, but we don’t want them to have to match?</li>
+</ul></li>
+<li>Natural join can <strong>under-match</strong>
+<ul>
+<li><ul>
+<li>What if two attributes don’t have the same name and we do want them to match?</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="theta-join" class="level3">
+<h3 class="anchored" data-anchor-id="theta-join">Theta Join</h3>
+<div id="note-theta-join" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition: Theta Join <span class="math inline">\({\Large\bowtie}_{\text{condition}}\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Rationale: it is easier to check conditions after making the Cartesian production: <span class="math inline">\({\Large\sigma}_{\text{condition}}(R\times S)\)</span></li>
+<li>Syntax: <span class="math inline">\(R\ {\Large\bowtie}_{\text{condition}}\ S\)</span></li>
+<li>The result is the same as Cartesian product (not natural join!) followed by select: <span class="math display">\[R\ {\Large\bowtie}_{\text{condition}}\ S={\Large\sigma}_{\text{condition}}(R\times S)\]</span></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="outer-join" class="level3">
+<h3 class="anchored" data-anchor-id="outer-join">Outer Join</h3>
+<ul>
+<li>Outer Join keeps all the tuples and adds <code>null</code> values whenever no value exists</li>
+<li>Three variants:
+<ul>
+<li><strong>Left Outer Join</strong>: only do this “null padding” for left operand: ⟕</li>
+<li><strong>Right Outer Join</strong>: only do this “null padding” for right operand: ⟖</li>
+<li><strong>Full Outer Join</strong>: pad other operands: ⟗</li>
+</ul></li>
+</ul>
+</section>
+<section id="cardinality-of-some-operators" class="level3">
+<h3 class="anchored" data-anchor-id="cardinality-of-some-operators">Cardinality of Some Operators</h3>
+<ul>
+<li>Given <span class="math inline">\(R_1(X_1)\)</span> and <span class="math inline">\(R_2(X_2)\)</span>, the cardinality (number of tuples) of
+<ul>
+<li>Cartesian product: <span class="math inline">\(|R_1\times R_2|=|R_1|\times|R_2|\)</span></li>
+<li>Natural join: <span class="math inline">\(0\leq|R_1\Join R_2|\leq|R_1|\times|R_2|\)</span>
+<ul>
+<li>Notice that if the attributes used in a natural join (i.e., the attributes in <span class="math inline">\(X_1\cap X_2\)</span>) contain a key of <span class="math inline">\(R_2\)</span>, then <span class="math display">\[0\leq|R_1\Join R_2|\leq|R_1|\]</span></li>
+</ul></li>
+<li>Same applies for left/right outer joins, if and only if the “outer” part is pointint to the table with the non-key attribute.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="composing-larger-expressions" class="level2">
+<h2 class="anchored" data-anchor-id="composing-larger-expressions">Composing Larger Expressions</h2>
+<section id="assignment-and-rename-operator" class="level3">
+<h3 class="anchored" data-anchor-id="assignment-and-rename-operator">Assignment and Rename Operator</h3>
+<div id="note-assignment" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Notation: Assignment
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(R\coloneqq\text{Expression}\)</span> or <span class="math inline">\(R(A_1,\dots,A_n)\coloneqq\text{Expression}\)</span></p>
+<ul>
+<li>The later notation lets us name all the attributes of the new relation</li>
+<li>Sometimes, we don’t want the name they would get from Expression</li>
+<li><span class="math inline">\(R\)</span> must be a temporary variable, <strong>not one of the relations in the schema</strong>. That is, we are not updating the content of a relation.</li>
+</ul>
+</div>
+</div>
+<div id="tip-assignment" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;5: Example: Using Assignment
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[\begin{aligned}\text{Temp }1&amp;\coloneqq Q\times R\\\text{Temp }2&amp;\coloneqq{\Large\sigma}_{a=99}(\text{Temp }1)\times S\\\text{Answer}(\text{part},\text{price})&amp;\coloneqq{\Large\pi}_{b,c}(\text{Temp }2)\end{aligned}\]</span></p>
+<ul>
+<li>This is all for <strong>readability</strong>.</li>
+<li>Assignment helps us break a problem down.</li>
+<li>It also allows us to change the names of relations (and attributes).</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="note-rename" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Notation: Rename
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\({\Large\rho}_{R_1}R_2\)</span> or <span class="math inline">\({\Large\rho}_{R_1(A_1,\dots,A_n)}(R_2)\)</span></p>
+<ul>
+<li>The later notation lets us rename all the attributes as well as the relation.</li>
+</ul>
+</div>
+</div>
+<ul>
+<li>Equivalent Notations: <span class="math display">\[R_1(A_1,\dots,A_n)\coloneqq R_2\equiv R_1\coloneqq{\Large\rho}_{R_1(A_1,\dots,A_n)}(R_2)\]</span></li>
+<li><span class="math inline">\(\rho\)</span> is useful if we want to rename within an expression.</li>
+</ul>
+</section>
+<section id="set-operations" class="level3">
+<h3 class="anchored" data-anchor-id="set-operations">Set Operations</h3>
+<ul>
+<li>Because relations are sets, we can use set <strong>intersection</strong> (<span class="math inline">\(\cap\)</span>), <strong>union</strong> (<span class="math inline">\(\cup\)</span>), and <strong>difference</strong> (<span class="math inline">\(-\)</span>). But only if the operands are relations over the <em>same</em> attributes (in number, name, and order). <strong><em>Schema needs to be identical</em></strong>.</li>
+</ul>
+</section>
+</section>
+<section id="precedence-of-operators" class="level2">
+<h2 class="anchored" data-anchor-id="precedence-of-operators">Precedence of Operators</h2>
+<ul>
+<li>Expressions can be composed recursively</li>
+<li>Parentheses <span class="math inline">\(()\)</span> and precedence rules define the order of evaluation</li>
+<li>Precedence, from highest to lowest, is:
+<ul>
+<li><span class="math inline">\(\Large{\sigma,\ \pi, \rho}\)</span></li>
+<li><span class="math inline">\(\Large{\times,\ \Join}\)</span></li>
+<li><span class="math inline">\(\Large{\cap}\)</span></li>
+<li><span class="math inline">\(\Large{\cup,\ -}\)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="specific-types-of-query" class="level2">
+<h2 class="anchored" data-anchor-id="specific-types-of-query">Specific Types of Query</h2>
+<section id="max" class="level3">
+<h3 class="anchored" data-anchor-id="max">Max</h3>
+<ul>
+<li>The function <code>Max</code> is not directly supported in relational algebra.</li>
+<li>Idea:
+<ul>
+<li>Pair tuples and find those that are <em>not</em> the max</li>
+<li>Then, subtract from all to find the maxes.</li>
+</ul></li>
+<li>Procedure: <span class="math inline">\(S\)</span> to be the table and we want to find <span class="math inline">\(\max(\text{GPA})\)</span>
+<ul>
+<li>Create the pair of tuples: <span class="math inline">\({\Large\rho}_{S_1}(S)\times{\Large\rho}_{S_2}(S)\)</span></li>
+<li>Filter those GPA that is smaller than the other one in each pair: we will left will everything “smaller;” that is, <span class="math inline">\(\max{\text{GPA}}\)</span> will not be present. <span class="math display">\[S_3(\text{GPA})\coloneqq{\Large\pi}_{S_1.\text{GPA}}{\Large\sigma}_{(S_1.\text{GPA}&lt;S_2.\text{GPA})}({\Large\rho}_{S_1}(S)\times{\Large\rho}_{S_2}(S))\]</span></li>
+<li>Then, doing the subtraction, we will get the maximum: <span class="math display">\[\max(\text{GPA})={\Large\pi}_\text{GPA}(S)-{\Large\pi}_\text{GPA}(S_3)\]</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="k-or-more" class="level3">
+<h3 class="anchored" data-anchor-id="k-or-more"><span class="math inline">\(k\)</span> or more</h3>
+<ul>
+<li>To write a query about something like “students with two or more classes with grade &gt; 80” we:
+<ul>
+<li>Make all combos of <span class="math inline">\(k\)</span> different tuples that satisfy the condition.</li>
+</ul></li>
+</ul>
+<div id="tip-k-or-more" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;6: Example: <span class="math inline">\(k\)</span> or more
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[S\coloneqq{\Large\rho_{R_1}}(R)\times{\Large\rho_{R_2}}(R)\]</span> <span class="math display">\[R_3={\Large\sigma}_{(R_1.\text{sID}=R_2.\text{sID}\land R_1.\text{Class}\neq R_2.\text{Class})}(S)\]</span> <span class="math display">\[{\Large\pi}_{\text{sID}}{\Large\sigma}_{(R_1.\text{Grade}&gt;80\land R_2.\text{Grade}&gt;80)}(R_3)\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="exactly-k" class="level3">
+<h3 class="anchored" data-anchor-id="exactly-k">Exactly <span class="math inline">\(k\)</span></h3>
+<ul>
+<li>“<span class="math inline">\(k\)</span> or more” – “<span class="math inline">\((k+1)\)</span> or more”</li>
+</ul>
+</section>
+</section>
+<section id="integrity-constraints-via-ra" class="level2">
+<h2 class="anchored" data-anchor-id="integrity-constraints-via-ra">Integrity Constraints via RA</h2>
+<ul>
+<li>In a schema description, we can express integrity constraints using a relational algebra expression</li>
+<li>We use the notation
+<ul>
+<li><span class="math inline">\(R=\emptyset\)</span>, or</li>
+<li><span class="math inline">\(R\subseteq S\)</span></li>
+</ul></li>
+</ul>
+<div id="tip-integrity-constraints" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;7: Example: Integrity Constraints
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Courses at the 400-level cannot count for breadth. <span class="math display">\[{\Large\sigma}_(400\leq\text{cNum}\leq500)\land\text{breadth}(\text{Course})=\emptyset\]</span></li>
+<li>In terms when CS 490 is offered, CS 454 must be offered. <span class="math display">\[\text{CS490Terms}(\text{term})\coloneqq{\Large\pi}_\text{term}({\Large\sigma}_{(\text{dept}=\text{'CS'}\land\text{cNum}=490)}(\text{Offering}))\]</span><span class="math display">\[\text{CS454Terms}(\text{term})\coloneqq{\Large\pi}_\text{term}({\Large\sigma}_{(\text{dept}=\text{'CS'}\land\text{cNum}=454)}(\text{Offering}))\]</span> <span class="math display">\[\text{CS490Terms}-\text{CS454Terms}=\emptyset\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2024, Jiuru Lyu</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/02-relational-algebra/02-Relational-Algebra.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/02-relational-algebra/02-Relational-Algebra.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jiuru-lyu/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JrLyu">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="mailto:jiuru.lyu@emory.edu">
+      <i class="bi bi-envelope" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

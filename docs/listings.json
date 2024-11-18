@@ -26,15 +26,16 @@
   {
     "listing": "/notes/cs377.html",
     "items": [
-      "/notes/cs377/01-relational-model/01 The Relational Model.html",
-      "/notes/cs377/02-relational-algebra/02 Relational Algebra.html",
-      "/notes/cs377/03-sql-introduction/03 SQL Introduction.html",
-      "/notes/cs377/04-sql-aggregation/04 SQL Aggregation.html",
-      "/notes/cs377/05-sql-set-operations/05 SQL Set Operations.html",
-      "/notes/cs377/06-sql-join/06 SQL Join.html",
-      "/notes/cs377/09-sql-ddl/09 SQL DDL.html",
-      "/notes/cs377/10-JDBC/10 JDBC.html",
-      "/notes/cs377/11-er-design/11 ER Design.html"
+      "/notes/cs377/01-relational-model/01-The-Relational-Model.html",
+      "/notes/cs377/02-relational-algebra/02-Relational-Algebra.html",
+      "/notes/cs377/03-sql-introduction/03-SQL-Introduction.html",
+      "/notes/cs377/04-sql-aggregation/04-SQL-Aggregation.html",
+      "/notes/cs377/05-sql-set-operations/05-SQL-Set-Operations.html",
+      "/notes/cs377/06-sql-join/06-SQL-Join.html",
+      "/notes/cs377/09-sql-ddl/09-SQL-DDL.html",
+      "/notes/cs377/10-JDBC/10-JDBC.html",
+      "/notes/cs377/11-er-design/11 ER Design.html",
+      "/notes/cs377/12-design-theory/12-design-theory.html"
     ]
   }
 ]

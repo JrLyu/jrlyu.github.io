@@ -1,0 +1,89 @@
+---
+title: "12 Database Design Theory"
+description: ""
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 11-18-2024
+categories: [Coding, Database, Database Design, DB Design Theory]
+draft: false
+---
+
+## Introduction
+- It allows us to improve a schema **systematically**.
+- General idea:
+  - Express constraints on the relationship between attributes.
+  - Use thse to decompose the relations.
+- Ultimately, get a schema that is in a "normal form" that guarantees good properties, such as no anomalies.
+- "Normal" in the sense of conforming to a standard. 
+
+:::{#nte-normalization .callout-note}
+## Normalization
+The process of converting a schema to a normal form is called **normalization**.
+:::
+
+- End goal: Design a "good" normalized schema that reduces redundancy (thus reducing storage waste, anomalies) and ensures data integrity (BCNF Normalization).
+
+## Functional Dependencies (FD)
+- Poorly designed schemas can lead to **anomalies**.
+  - In any domain, there are relationships between attribute values.
+  - For example: 
+    - Every part has 1 manufacturer
+    - Every manufacturer has 1 address
+    - Every seller has 1 address 
+  - If so, this table will have redundant data.
+
+| part | manufacturer | manAddress | seller | sellerAddress | price |
+|:----:|:------------:|:----------:|:------:|:-------------:|:-----:|
+| P1   | M1           | A1         | S1     | A2            | 100   |
+
+- **Update anomaly**: If one manufacturer moves to a new address, we need to update all the rows with the same manufacturer. If we only update one row, the data will be inconsistent.
+- **Deletion anomaly**: If one manufacturer stops selling a part, we delete the row. But we also lose the address information.
+
+:::{#nte-fd .callout-note}
+## Functional Dependencies
+Suppose $R$ is a relation, and $X$ and $Y$ are subsets of the attributes of $R$. 
+- Then, $X\to Y$, read as "$X$ funtionally determines $Y$", is called a **functional dependency**. 
+- $X\to Y$ holds in $R$ $\iff$ two tuples agree on all the attributes in set $X$, they must also agree on all the attributes in set $Y$.
+
+- Functional dependencies are constraints on the relation.
+- Symbolically, $A\to B$ means
+  - $\forall$ tuples $t_1, t_2$, $(t_1[A]=t_2[A])\implies(t_1[B]=t_2[B])$, or
+  - $\neg\exists$ tuples $t_1, t_2$ such that $(t_1[A]=t_2[a])\land(t_1[B]\neq t_2[B])$.
+- Functional dependencies can be extended to multiple attributes.
+:::
+
+- Why "functional dependency"?
+  - "dependency" because the value of $Y$ depends on the value of $X$.
+  - "functional" because there is a function that takes a value for $X$ and gives a unique value for $Y$.
+  - *(It’s not a typical function; just a lookup.)*
+
+:::{#wrn-fd .callout-warning}
+## Equivalent sets of FDs
+- When we write a set of FDs, we mean that all of them hold.
+- We can very often rewrite sets of FDs in equivalent ways.
+- When we say $S1$ is equivalent to $S2$ we mean:
+  - $S1$ holds in a relation $\iff$ $S2$ does.
+:::
+
+:::{#tip-fd-example .callout-tip collapse="true"}
+## Example of FD
+- Create an instance of $R$ that violates $BC\to D$:
+
+| A | B | C | D |
+|:-:|:-:|:-:|:-:|
+| 1 | 2 | 3 | 4 |
+| 1 | 2 | 3 | 5 |
+
+- Is the FD $A\to BC$ equivalent to the two FDs $A\to B$ and $Aà\to C$?
+  - Yes, because if $A\to BC$ holds, then $A\to B$ and $A\to C$ must hold.
+- Is the FD $AB\to C$ equivalent to the two FDs $A\to B$, $A\to C$ ?
+  - No.
+
+| A | B | C | D |
+|:-:|:-:|:-:|:-:|
+| 1 | 2 | 3 | 4 |
+| 1 | 3 | 5 | 5 |
+:::
+
+- Splitting rules of FD: 

@@ -481,7 +481,16 @@ flowchart LR
     - Optional participation for both: add the keys of both entities to the relation.
 - See summaries in slides `20-er-design-part3.pdf`
 
+## Redundancy
 - Will the schema be "good"?
   - The process ensure that there is no redundancy.
   - But only with respect to what the E/R diagram represents.
   - The next topic (DB normalization) will help us better analyze the goodness of a schema design. 
+- Redundancy is a disadvantage:
+  - larger storage requirements (although usually at negligible cost)
+  - more work to maintain consistency (updating data with redundant occurences ⭢ all derived data must be updated)
+- But it can also introduce an advantage:
+  - reduction in the number of accesses necessary to obtain delivered information.
+- The decision to maintain or eliminate a redundancy is partly made by comparing the **cose of operations** that involve the redundant info, and the **storage** needed.
+  - Performance analysis
+  - other issues to consider: data consistency. x
