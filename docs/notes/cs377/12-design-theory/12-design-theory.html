@@ -8,8 +8,9 @@
 
 <meta name="author" content="Jiuru Lyu">
 <meta name="dcterms.date" content="2024-11-18">
+<meta name="description" content="This lecture discusses the concept of normalization in database design theory. The lecture covers functional dependencies, closure test, and FD projection.">
 
-<title>Jiuru Lyu - 12 Database Design Theory</title>
+<title>Jiuru Lyu - 12 Database Design Theory: Normalization</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -169,6 +170,9 @@ window.Quarto = {
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#functional-dependencies-fd" id="toc-functional-dependencies-fd" class="nav-link" data-scroll-target="#functional-dependencies-fd">Functional Dependencies (FD)</a></li>
+  <li><a href="#closure-test" id="toc-closure-test" class="nav-link" data-scroll-target="#closure-test">Closure Test</a></li>
+  <li><a href="#fd-projection" id="toc-fd-projection" class="nav-link" data-scroll-target="#fd-projection">FD Projection</a></li>
+  <li><a href="#database-normalization-bcnf" id="toc-database-normalization-bcnf" class="nav-link" data-scroll-target="#database-normalization-bcnf">Database Normalization (BCNF)</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/12-design-theory/12-design-theory.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/12-design-theory/12-design-theory.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -177,15 +181,24 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">12 Database Design Theory</h1>
+<h1 class="title">12 Database Design Theory: Normalization</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Coding</div>
     <div class="quarto-category">Database</div>
     <div class="quarto-category">Database Design</div>
     <div class="quarto-category">DB Design Theory</div>
+    <div class="quarto-category">Normalization</div>
+    <div class="quarto-category">Functional Dependencies</div>
+    <div class="quarto-category">Closure Test</div>
+    <div class="quarto-category">FD Projection</div>
   </div>
   </div>
 
+<div>
+  <div class="description">
+    This lecture discusses the concept of normalization in database design theory. The lecture covers functional dependencies, closure test, and FD projection.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta column-page-left">
@@ -387,7 +400,6 @@ Tip&nbsp;1: Example of FD
 <th style="text-align: center;">A</th>
 <th style="text-align: center;">B</th>
 <th style="text-align: center;">C</th>
-<th style="text-align: center;">D</th>
 </tr>
 </thead>
 <tbody>
@@ -395,12 +407,10 @@ Tip&nbsp;1: Example of FD
 <td style="text-align: center;">1</td>
 <td style="text-align: center;">2</td>
 <td style="text-align: center;">3</td>
-<td style="text-align: center;">4</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">1</td>
 <td style="text-align: center;">3</td>
-<td style="text-align: center;">5</td>
 <td style="text-align: center;">5</td>
 </tr>
 </tbody>
@@ -409,8 +419,335 @@ Tip&nbsp;1: Example of FD
 </div>
 </div>
 <ul>
-<li>Splitting rules of FD:</li>
+<li>Splitting rules of FD:
+<ul>
+<li>Can we split (explode) the RHS of an FD and get multiple, equivalent FDs?
+<ul>
+<li>Yes.</li>
+</ul></li>
+<li>Can we split (explode) the LHS of an FD and get multiple, equivalent FDs?
+<ul>
+<li>No.</li>
+</ul></li>
+</ul></li>
+<li>Coincidence or FD
+<ul>
+<li>An FD is an assertion about every instance of the relation.</li>
+<li>You can’t know it holds just by looking at one instance.</li>
+<li>You must use knowledge of the domain to determine wheter an FD holds.</li>
+</ul></li>
 </ul>
+<div id="tip-fd-coincidence" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;2: Coincidence or FD
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Consider the following table</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Teacher</th>
+<th style="text-align: center;">Course</th>
+<th style="text-align: center;">Text</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Smith</td>
+<td style="text-align: center;">CS170</td>
+<td style="text-align: center;">Martin</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Hall</td>
+<td style="text-align: center;">CS171</td>
+<td style="text-align: center;">Hoffman</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Brown</td>
+<td style="text-align: center;">CS253</td>
+<td style="text-align: center;">Horowitz</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Does <span class="math inline">\(\text{Teacher}\to\text{Course}\)</span> hold in this instance?
+<ul>
+<li>Yes.</li>
+</ul></li>
+<li>Should <span class="math inline">\(\text{Teacher}\to\text{Course}\)</span> hold?
+<ul>
+<li>No, because one teacher can teach multiple courses.</li>
+</ul></li>
+<li>Does <span class="math inline">\(\text{Course}\to\text{Text}\)</span> hold in this instance?
+<ul>
+<li>Yes.</li>
+</ul></li>
+<li>Should <span class="math inline">\(\text{Course}\to\text{Text}\)</span> hold?
+<ul>
+<li>No, because one course can have multiple textbooks. For example, different professors may use different textbooks for the same course.</li>
+<li>It may hold in some cases, where the department has a policy that all sections of a course use the same textbook.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<ul>
+<li>FDs are closely related to <strong>keys</strong>
+<ul>
+<li>Recall: A <strong>superkey</strong> is a set of attributes for which no two rows can have the same values</li>
+<li>Suppose <span class="math inline">\(K\)</span> is a set of attributes for relation <span class="math inline">\(R\)</span>.</li>
+<li>A claim about FDs:
+<ul>
+<li><span class="math inline">\(K\)</span> is a superkey for <span class="math inline">\(R\iff K\)</span> functionally determines <em>all of <span class="math inline">\(R\)</span></em>.</li>
+</ul></li>
+</ul></li>
+</ul>
+<div id="nte-superkey" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;3: FDs are a Generalization of Keys
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong><em>Superkey</em></strong>: <span class="math inline">\(X\to R(\text{All Attributes})\)</span></li>
+<li><strong><em>Functional Dependency</em></strong>: <span class="math inline">\(X\to Y\)</span></li>
+<li>A superkey must include <em>all</em> the attributes of the relation on the RHS</li>
+<li>An FD can have just a <em>subset</em> of them.</li>
+</ul>
+</div>
+</div>
+<ul>
+<li>Inferring FDs:
+<ul>
+<li>Given a set of FDs, one can infer further FDs.</li>
+<li>Big task: given a set of FDs, infer every other FD that must also hold.</li>
+<li>Simpler task: given a set of FDs, infer whether a given FD must also hold.</li>
+</ul></li>
+</ul>
+<div id="tip-fd-inference" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;3: Inferring FDs
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>If <span class="math inline">\(A\to B\)</span> and <span class="math inline">\(B\to C\)</span>, can we infer <span class="math inline">\(A\to C\)</span>?
+<ul>
+<li>Yes.</li>
+<li><em>Another way of asking: Does the FD <span class="math inline">\(A\to C\)</span> <strong>follow from</strong> <span class="math inline">\(A\to B\)</span> and <span class="math inline">\(B\to C\)</span>?</em></li>
+</ul></li>
+<li>If <span class="math inline">\(A\to H\)</span>, <span class="math inline">\(C\to F\)</span>, and <span class="math inline">\(FG\to AD\)</span> hold.
+<ul>
+<li>Can we infer <span class="math inline">\(FA\to D\)</span>?</li>
+<li>Can we infer <span class="math inline">\(CG\to FH\)</span>?</li>
+<li>These two questions are hard to answer, so we need a systematic way to infer FDs.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<ul>
+<li>Prove an FD follows:
+<ul>
+<li>Method 1: First principles approach: You can prove it by referring back to
+<ul>
+<li>The FDs that you know hold, and</li>
+<li>Apply FD interence ruls (axioms)</li>
+</ul></li>
+<li>Method 2 (easier): Closure Test</li>
+</ul></li>
+</ul>
+</section>
+<section id="closure-test" class="level2">
+<h2 class="anchored" data-anchor-id="closure-test">Closure Test</h2>
+<div id="nte-closure-test" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4: Closure Test to Infer FDs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Assume you know the values of the LHS attributes, and figure out: everything else that can be determined.</li>
+<li>If the result includes the RHS attributes, then you know that the FD holds.</li>
+</ul>
+</div>
+</div>
+<div id="nte-closure" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;5: Closure of an Attribute
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For a given arribute <span class="math inline">\(Y\)</span>, the <strong><em>closure</em></strong> <span class="math inline">\(Y^+\)</span> is the set of all attributes such that <span class="math inline">\(Y\to A\)</span> can be inferred.</p>
+</div>
+</div>
+<div id="imp-closure-test" class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important&nbsp;1: Closure Algorithm
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(Y\)</span> is a set of attributes, <span class="math inline">\(S\)</span> is a set of FDs.</li>
+<li>Return: the closure of <span class="math inline">\(Y\)</span> under <span class="math inline">\(S\)</span>.</li>
+</ul>
+<pre><code>Attribute_closure(Y, S):
+  Initialize Y+ to Y
+  Repeat until no more changes occur:
+    If there is an FD LHS -&gt; RHS in S such that LHS is in Y+:
+      Add RHS to Y+
+
+  Return Y+</code></pre>
+<ul>
+<li>If LHS is in <span class="math inline">\(Y^+\)</span> and LHS <span class="math inline">\(\to\)</span> RHS holds, we can add RHS to <span class="math inline">\(Y^+\)</span>.</li>
+</ul>
+</div>
+</div>
+<div id="imp-closure-test" class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important&nbsp;2: Closure Test Algorithm
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(S\)</span> is a set of FDs, LHS <span class="math inline">\(\to\)</span> RHS is a single FD.</li>
+<li>Return: true <span class="math inline">\(\iff\)</span> LHS <span class="math inline">\(\to\)</span> RHS follows from <span class="math inline">\(S\)</span>.</li>
+</ul>
+<pre><code>FD_follows(S, LHS -&gt; RHS):
+  Y+ = Attribute_closure(LHS, S)
+  Return (RHS is in Y+)</code></pre>
+</div>
+</div>
+<div id="tip-closure-test" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;4: Closure Test Example
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Suppose we have a relation on attributes <span class="math inline">\(A, B, C, D, E, F\)</span>, with FDs:
+<ul>
+<li><span class="math inline">\(AC\to F\)</span></li>
+<li><span class="math inline">\(CEF\to B\)</span></li>
+<li><span class="math inline">\(C\to D\)</span></li>
+<li><span class="math inline">\(DC\to A\)</span></li>
+</ul></li>
+<li>Does <span class="math inline">\(C\to F\)</span>?
+<ul>
+<li>Compute <span class="math inline">\(C^+\)</span> under these FDs: <span class="math inline">\(C^+=CDAF\)</span></li>
+<li>Then, <span class="math inline">\(C\to F\)</span> follows.</li>
+</ul></li>
+<li>Does <span class="math inline">\(ACD\to B\)</span>?
+<ul>
+<li>Compute <span class="math inline">\((ACD)^+\)</span> under these FDs: <span class="math inline">\((ACD)^+=ACDF\)</span></li>
+<li>Then, <span class="math inline">\(ACD\to B\)</span> does not follow.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="fd-projection" class="level2">
+<h2 class="anchored" data-anchor-id="fd-projection">FD Projection</h2>
+<ul>
+<li>Motivation:
+<ul>
+<li>Later, we will learn how to <strong>normalize</strong> a schema by <strong>decomposing</strong> relations (this is the whole point of this theory).</li>
+<li>We will need to be aware of what FDs hold in the new, smaller, relations.</li>
+<li>In other words, we must <strong>project our FDs</strong> onto the attributes of our new (smaller) relations.</li>
+</ul></li>
+</ul>
+<div id="tip-fd-projection" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;5: FD Projection
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Suppose we have a relation on attributes <span class="math inline">\(ABCDE\)</span> with FDs: <span class="math inline">\(A\to C\)</span>, <span class="math inline">\(C\to E\)</span>, <span class="math inline">\(E\to BD\)</span></li>
+<li>We want to project FDs onto attributes <span class="math inline">\(ABC\)</span></li>
+<li>To project onto a set of attributes, we systematically consider every possible LHS of an FD that might hold on those attributes.</li>
+<li><span class="math inline">\(A^+={\color{red}AC}E{\color{red}B}D\)</span>. However, we only care about the smaller table we are projecting onto, so we only keep the attributes in the projection.
+<ul>
+<li><span class="math inline">\(A\to BC\)</span>.</li>
+</ul></li>
+<li><span class="math inline">\(B^+=B\)</span></li>
+<li><span class="math inline">\(C^+={\color{red}C}E{\color{red}B}D\)</span>
+<ul>
+<li><span class="math inline">\(C\to B\)</span></li>
+</ul></li>
+<li><span class="math inline">\(AB^+\)</span> and <span class="math inline">\(AC^+\)</span>
+<ul>
+<li>We don’t need to consider any supersets of <span class="math inline">\(A\)</span>. <span class="math inline">\(A\)</span> already determines all of the attributes in the projection <span class="math inline">\(ABC\)</span>. So, supersets of <span class="math inline">\(A\)</span> will only yield FDs that are already implied by <span class="math inline">\(A\to BC\)</span>.</li>
+<li>Strength/Power of FDs: <span class="math inline">\(X\to Y\)</span> is a stronger FD than <span class="math inline">\(XZ\to Y\)</span>.</li>
+</ul></li>
+<li><span class="math inline">\(BC^+=BCED\)</span></li>
+<li>The <strong>projection</strong> of the FDs onto <span class="math inline">\(ABC\)</span> is <span class="math inline">\(\{A\to BC,\ C\to B\}\)</span></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="database-normalization-bcnf" class="level2">
+<h2 class="anchored" data-anchor-id="database-normalization-bcnf">Database Normalization (BCNF)</h2>
+<div id="nte-decomposition" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;6: Decomposition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To improve a badly-designed schema <span class="math inline">\(R(A_1,A_2,\dots,A_n)\)</span>, we will decompose it into smaller relations <span class="math inline">\(A(B_1,B_2,\dots,B_m)\)</span> and <span class="math inline">\(T(C_1,C_2,\dots,C_k)\)</span> such that - <span class="math inline">\(S={\Large{\pi}}_{B_1,B_2,\dots, B_m}(R)\)</span>, - <span class="math inline">\(T={\Large{\pi}}_{C_1,C_2,\dots,C_k}(R)\)</span>, and - <span class="math inline">\(\{A_1,A_2,\dots,A_n\}=\{B_1,B_2,\dots,B_m\}\cup\{C_1,C_2,\dots,C_k\}\)</span></p>
+</div>
+</div>
 
 
 </section>

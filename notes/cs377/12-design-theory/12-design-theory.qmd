@@ -1,11 +1,11 @@
 ---
-title: "12 Database Design Theory"
-description: ""
+title: "12 Database Design Theory: Normalization"
+description: "This lecture discusses the concept of normalization in database design theory. The lecture covers functional dependencies, closure test, and FD projection. It finally introduces the concept of BCNF."
 author:
   - name: Jiuru Lyu
     url: https://jrlyu.github.io/
 date: 11-18-2024
-categories: [Coding, Database, Database Design, DB Design Theory]
+categories: [Coding, Database, Database Design, DB Design Theory, BCNF, Normalization, Functional Dependencies, Closure Test, FD Projection] 
 draft: false
 ---
 
@@ -80,10 +80,170 @@ Suppose $R$ is a relation, and $X$ and $Y$ are subsets of the attributes of $R$.
 - Is the FD $AB\to C$ equivalent to the two FDs $A\to B$, $A\to C$ ?
   - No.
 
-| A | B | C | D |
-|:-:|:-:|:-:|:-:|
-| 1 | 2 | 3 | 4 |
-| 1 | 3 | 5 | 5 |
+| A | B | C |
+|:-:|:-:|:-:|
+| 1 | 2 | 3 |
+| 1 | 3 | 5 |
 :::
 
 - Splitting rules of FD: 
+  - Can we split (explode) the RHS of an FD and get multiple, equivalent FDs? 
+    - Yes.
+  - Can we split (explode) the LHS of an FD and get multiple, equivalent FDs? 
+    - No.
+- Coincidence or FD
+  - An FD is an assertion about every instance of the relation.
+  - You can't know it holds just by looking at one instance.
+  - You must use knowledge of the domain to determine wheter an FD holds.
+
+:::{#tip-fd-coincidence .callout-tip collapse="true"}
+## Coincidence or FD
+Consider the following table
+
+| Teacher | Course | Text |
+|:-------:|:------:|:----:|
+|  Smith  | CS170  | Martin |
+|  Hall   | CS171  | Hoffman |
+|   Brown | CS253  | Horowitz|
+
+- Does $\text{Teacher}\to\text{Course}$ hold in this instance?
+  - Yes.
+- Should $\text{Teacher}\to\text{Course}$ hold?
+  - No, because one teacher can teach multiple courses.
+- Does $\text{Course}\to\text{Text}$ hold in this instance?
+  - Yes.
+- Should $\text{Course}\to\text{Text}$ hold?
+  - No, because one course can have multiple textbooks. For example, different professors may use different textbooks for the same course.
+  - It may hold in some cases, where the department has a policy that all sections of a course use the same textbook.
+:::
+
+- FDs are closely related to **keys**
+  - Recall: A **superkey** is a set of attributes for which no two rows can have the same values
+  - Suppose $K$ is a set of attributes for relation $R$.
+  - A claim about FDs:
+    - $K$ is a superkey for $R\iff K$ functionally determines *all of $R$*.
+
+:::{#nte-superkey .callout-note}
+## FDs are a Generalization of Keys
+
+- ***Superkey***: $X\to R(\text{All Attributes})$
+- ***Functional Dependency***: $X\to Y$
+- A superkey must include *all* the attributes of the relation on the RHS
+- An FD can have just a *subset* of them.
+:::
+
+- Inferring FDs:
+  - Given a set of FDs, one can infer further FDs.
+  - Big task: given a set of FDs, infer every other FD that must also hold.
+  - Simpler task: given a set of FDs, infer whether a given FD must also hold.
+
+:::{#tip-fd-inference .callout-tip collapse="true"}
+## Inferring FDs
+- If $A\to B$ and $B\to C$, can we infer $A\to C$?
+  - Yes.
+  - *Another way of asking: Does the FD $A\to C$ **follow from** $A\to B$ and $B\to C$?*
+- If $A\to H$, $C\to F$, and $FG\to AD$ hold. 
+  - Can we infer $FA\to D$?
+  - Can we infer $CG\to FH$?
+  - These two questions are hard to answer, so we need a systematic way to infer FDs.
+:::
+
+- Prove an FD follows:
+  - Method 1: First principles approach: You can prove it by referring back to
+    - The FDs that you know hold, and 
+    - Apply FD interence ruls (axioms)
+  - Method 2 (easier): Closure Test
+
+## Closure Test
+
+:::{#nte-closure-test .callout-note}
+## Closure Test to Infer FDs
+- Assume you know the values of the LHS attributes, and figure out: everything else that can be determined.
+- If the result includes the RHS attributes, then you know that the FD holds.
+:::
+
+:::{#nte-closure .callout-note}
+## Closure of an Attribute
+For a given arribute $Y$, the ***closure*** $Y^+$ is the set of all attributes such that $Y\to A$ can be inferred. 
+:::
+
+:::{#imp-closure-test .callout-important}
+## Closure Algorithm
+- $Y$ is a set of attributes, $S$ is a set of FDs.
+- Return: the closure of $Y$ under $S$.
+```
+Attribute_closure(Y, S):
+  Initialize Y+ to Y
+  Repeat until no more changes occur:
+    If there is an FD LHS -> RHS in S such that LHS is in Y+:
+      Add RHS to Y+
+
+  Return Y+
+```
+
+- If LHS is in $Y^+$ and LHS $\to$ RHS holds, we can add RHS to $Y^+$.
+:::
+
+:::{#imp-closure-test .callout-important}
+## Closure Test Algorithm
+- $S$ is a set of FDs, LHS $\to$ RHS is a single FD.
+- Return: true $\iff$ LHS $\to$ RHS follows from $S$.
+
+```
+FD_follows(S, LHS -> RHS):
+  Y+ = Attribute_closure(LHS, S)
+  Return (RHS is in Y+)
+```
+:::
+
+:::{#tip-closure-test .callout-tip collapse="true"}
+## Closure Test Example
+- Suppose we have a relation on attributes $A, B, C, D, E, F$, with FDs:
+  - $AC\to F$
+  - $CEF\to B$
+  - $C\to D$
+  - $DC\to A$
+- Does $C\to F$?
+  - Compute $C^+$ under these FDs: $C^+=CDAF$
+  - Then, $C\to F$ follows.
+- Does $ACD\to B$?
+  - Compute $(ACD)^+$ under these FDs: $(ACD)^+=ACDF$
+  - Then, $ACD\to B$ does not follow.
+:::
+
+## FD Projection
+- Motivation:
+  - Later, we will learn how to **normalize** a schema by **decomposing** relations (this is the whole point of this theory).
+  - We will need to be aware of what FDs hold in the new, smaller, relations.
+  - In other words, we must **project our FDs** onto the attributes of our new (smaller) relations. 
+
+:::{#tip-fd-projection .callout-tip collapse="true"}
+## FD Projection
+- Suppose we have a relation on attributes $ABCDE$ with FDs: $A\to C$, $C\to E$, $E\to BD$
+- We want to project FDs onto attributes $ABC$
+- To project onto a set of attributes, we systematically consider every possible LHS of an FD that might hold on those attributes. 
+- $A^+={\color{red}AC}E{\color{red}B}D$. However, we only care about the smaller table we are projecting onto, so we only keep the attributes in the projection.
+  - $A\to BC$.
+- $B^+=B$
+- $C^+={\color{red}C}E{\color{red}B}D$
+  - $C\to B$
+- $AB^+$ and $AC^+$
+  - We don't need to consider any supersets of $A$. $A$ already determines all of the attributes in the projection $ABC$. So, supersets of $A$ will only yield FDs that are already implied by $A\to BC$.
+  - Strength/Power of FDs: $X\to Y$ is a stronger FD than $XZ\to Y$.
+- $BC^+=BCED$
+- The **projection** of the FDs onto $ABC$ is $\{A\to BC,\ C\to B\}$
+:::
+
+## Database Normalization (BCNF)
+:::{#nte-decomposition .callout-note}
+## Decomposition
+To improve a badly-designed schema $R(A_1,A_2,\dots,A_n)$, we will decompose it into smaller relations $A(B_1,B_2,\dots,B_m)$ and $T(C_1,C_2,\dots,C_k)$ such that 
+- $S={\Large{\pi}}_{B_1,B_2,\dots, B_m}(R)$,
+- $T={\Large{\pi}}_{C_1,C_2,\dots,C_k}(R)$, and
+- $\{A_1,A_2,\dots,A_n\}=\{B_1,B_2,\dots,B_m\}\cup\{C_1,C_2,\dots,C_k\}$
+:::
+
+- But which decomposition to use?
+  - Decomposition can improve a schema, but which decomposition? *There are many possible decompositions.*
+  - A "normal form" helps us characterize a decomposition, in terms of satisfied properties.
+    - **Boyce-Codd Normal Form (BCNF)** guarantees no anomalies.
