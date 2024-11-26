@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jiuru Lyu">
 <meta name="dcterms.date" content="2024-11-18">
-<meta name="description" content="This lecture discusses the concept of normalization in database design theory. The lecture covers functional dependencies, closure test, and FD projection.">
+<meta name="description" content="This lecture discusses the concept of normalization in database design theory. The lecture covers functional dependencies, closure test, and FD projection. It finally introduces the concept of BCNF.">
 
 <title>Jiuru Lyu - 12 Database Design Theory: Normalization</title>
 <style>
@@ -72,9 +72,74 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
+window.MathJax = {
+  loader: {
+    load: ['[tex]/physics']
+  },
+  tex: {
+    packages: {'[+]': ['physics']},
+    macros: {
+      R: "\\mathbb{R}",
+      C: "\\mathbb{C}",
+      Q: "\\mathbb{Q}",
+      d: "\\mathrm{d}",
+      i: "\\mathrm{i}",
+      N: "\\mathbb{N}",
+      "1": "\\mathds{1}",
+      bigO: "\\mathcal{O}",
+      sp: "\\operatorname{span}",
+      epsilon: "\\varepsilon",
+      emptyset: "\\varnothing",
+      phi: "\\varphi",
+      dsst: "\\displaystyle",
+      st: "\\ \\text{s.t.}\\ ",
+      wrt: "\\ \\text{w.r.t.}\\ ",
+      bar: "\\overline",
+      tilde: "\\widetilde",
+      E: "\\vb{E}",
+      B: "\\vb{B}",
+      L: "\\vb{L}",
+      I: "\\vb{I}",
+      Var: "\\vb{Var}",
+      V: "\\vb{Var}",
+      Cov: "\\vb{Cov}",
+      MSE: "\\vb{MSE}",
+      P: "\\vb{P}",
+      M: "\\vb{M}",
+      iid: "\\text{i.i.d.}",
+      argmax: "\\mathop{\\arg\\max}",
+      argmin: "\\mathop{\\arg\\min}",
+      l: "\\ell",
+      hat: "\\widehat",
+      independ: "\\perp\\!\\!\\!\\perp",
+      depend: "\\leftrightsquigarrow",
+      residual: "\\varepsilon",
+      sd: "\\mathrm{sd}",
+      LI: "\\mathrm{L.I.}",
+      range: "\\operatorname{range}",
+      Null: "\\operatorname{null}",
+      nullity: "\\operatorname{nullity}",
+      A: "A^{-1}",
+      alg: "\\operatorname{alg}",
+      fl: "\\operatorname{fl}",
+      algmult: "\\operatorname{alg.\\ mult.}",
+      geomult: "\\operatorname{geo.\\ mult.}",
+      diag: "\\operatorname{diag}",
+      gap: "\\operatorname{gap}",
+      pqde: "\\quad\\square",
+      lub: "\\operatorname{lub}",
+      Int: "\\operatorname{int}",
+      ac: "\\operatorname{ac}",
+      cl: "\\operatorname{cl}",
+      bd: "\\operatorname{bd}"
+    }
+  }
+};
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet"> 
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -172,7 +237,13 @@ window.Quarto = {
   <li><a href="#functional-dependencies-fd" id="toc-functional-dependencies-fd" class="nav-link" data-scroll-target="#functional-dependencies-fd">Functional Dependencies (FD)</a></li>
   <li><a href="#closure-test" id="toc-closure-test" class="nav-link" data-scroll-target="#closure-test">Closure Test</a></li>
   <li><a href="#fd-projection" id="toc-fd-projection" class="nav-link" data-scroll-target="#fd-projection">FD Projection</a></li>
-  <li><a href="#database-normalization-bcnf" id="toc-database-normalization-bcnf" class="nav-link" data-scroll-target="#database-normalization-bcnf">Database Normalization (BCNF)</a></li>
+  <li><a href="#database-normalization-bcnf" id="toc-database-normalization-bcnf" class="nav-link" data-scroll-target="#database-normalization-bcnf">Database Normalization (BCNF)</a>
+  <ul class="collapse">
+  <li><a href="#bcnf-test" id="toc-bcnf-test" class="nav-link" data-scroll-target="#bcnf-test">BCNF Test</a></li>
+  <li><a href="#bcnf-decomposition" id="toc-bcnf-decomposition" class="nav-link" data-scroll-target="#bcnf-decomposition">BCNF Decomposition</a></li>
+  <li><a href="#properties-of-decomposition" id="toc-properties-of-decomposition" class="nav-link" data-scroll-target="#properties-of-decomposition">Properties of Decomposition</a></li>
+  <li><a href="#properties-of-bcnf-decomposition-specifically" id="toc-properties-of-bcnf-decomposition-specifically" class="nav-link" data-scroll-target="#properties-of-bcnf-decomposition-specifically">Properties of BCNF decomposition, specifically</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/12-design-theory/12-design-theory.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/12-design-theory/12-design-theory.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -187,6 +258,7 @@ window.Quarto = {
     <div class="quarto-category">Database</div>
     <div class="quarto-category">Database Design</div>
     <div class="quarto-category">DB Design Theory</div>
+    <div class="quarto-category">BCNF</div>
     <div class="quarto-category">Normalization</div>
     <div class="quarto-category">Functional Dependencies</div>
     <div class="quarto-category">Closure Test</div>
@@ -196,7 +268,7 @@ window.Quarto = {
 
 <div>
   <div class="description">
-    This lecture discusses the concept of normalization in database design theory. The lecture covers functional dependencies, closure test, and FD projection.
+    This lecture discusses the concept of normalization in database design theory. The lecture covers functional dependencies, closure test, and FD projection. It finally introduces the concept of BCNF.
   </div>
 </div>
 
@@ -745,11 +817,264 @@ Note&nbsp;6: Decomposition
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>To improve a badly-designed schema <span class="math inline">\(R(A_1,A_2,\dots,A_n)\)</span>, we will decompose it into smaller relations <span class="math inline">\(A(B_1,B_2,\dots,B_m)\)</span> and <span class="math inline">\(T(C_1,C_2,\dots,C_k)\)</span> such that - <span class="math inline">\(S={\Large{\pi}}_{B_1,B_2,\dots, B_m}(R)\)</span>, - <span class="math inline">\(T={\Large{\pi}}_{C_1,C_2,\dots,C_k}(R)\)</span>, and - <span class="math inline">\(\{A_1,A_2,\dots,A_n\}=\{B_1,B_2,\dots,B_m\}\cup\{C_1,C_2,\dots,C_k\}\)</span></p>
+<p>To improve a badly-designed schema <span class="math inline">\(R(A_1,A_2,\dots,A_n)\)</span>, we will decompose it into smaller relations <span class="math inline">\(A(B_1,B_2,\dots,B_m)\)</span> and <span class="math inline">\(T(C_1,C_2,\dots,C_k)\)</span> such that</p>
+<ul>
+<li><span class="math inline">\(S={\Large{\pi}}_{B_1,B_2,\dots, B_m}(R)\)</span>,</li>
+<li><span class="math inline">\(T={\Large{\pi}}_{C_1,C_2,\dots,C_k}(R)\)</span>, and</li>
+<li><span class="math inline">\(\{A_1,A_2,\dots,A_n\}=\{B_1,B_2,\dots,B_m\}\cup\{C_1,C_2,\dots,C_k\}\)</span></li>
+</ul>
+</div>
+</div>
+<ul>
+<li>But which decomposition to use?
+<ul>
+<li>Decomposition can improve a schema, but which decomposition? <em>There are many possible decompositions.</em></li>
+<li>A “normal form” helps us characterize a decomposition, in terms of satisfied properties.
+<ul>
+<li><strong>Boyce-Codd Normal Form (BCNF)</strong> guarantees no anomalies.</li>
+</ul></li>
+</ul></li>
+</ul>
+<section id="bcnf-test" class="level3">
+<h3 class="anchored" data-anchor-id="bcnf-test">BCNF Test</h3>
+<div id="nte-BCNF" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;7: Boyce-Codd Normal Form (BCNF)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We say a relation <span class="math inline">\(R\)</span> is in <strong><em>BCNF</em></strong> if: for every nontrivial FD <span class="math inline">\(X\to Y\)</span> that holds in <span class="math inline">\(R\)</span>, <span class="math inline">\(X\)</span> is a superkey.</p>
+<ul>
+<li>Recall: nontrivial means <span class="math inline">\(Y\)</span> is not contained in <span class="math inline">\(X\)</span></li>
+<li>Recall: a super key does not have to be minimal.</li>
+<li>In order words, BCNF requries that “<strong>Only things that FD everything, can FD anything.</strong>”</li>
+<li>FDs with LHS that is not a superkey make the relation prone to <em>redundacy, anomalies</em>.</li>
+</ul>
+</div>
+</div>
+<div id="tip-BCNF-test" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;6: Example of BCNF Test
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Suppose we have a relation <span class="math inline">\(\text{Students}(\text{SID}, \text{email}, \text{course}, \text{term}, \text{prof}, \text{grade})\)</span> and that these FDs hold:
+<ul>
+<li><span class="math inline">\(\{\text{SID}\to\text{email}; \text{course},\text{term}\to\text{prof};\text{SID},\text{course}\to\text{grade}\}\)</span></li>
+</ul></li>
+<li>Is this relation in BCNF?</li>
+<li><strong>Approach</strong>: Test if the LHS in each FD is a superkey.
+<ul>
+<li><span class="math inline">\(\text{SID}^+=\text{SID}, \text{email}\)</span></li>
+<li>LHS is not a superkey, then <span class="math inline">\(R\)</span> is not in BCNF. We don’t need to check other FDs.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="bcnf-decomposition" class="level3">
+<h3 class="anchored" data-anchor-id="bcnf-decomposition">BCNF Decomposition</h3>
+<div id="imp-BCNF-decomp" class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important&nbsp;3: BCNF Decomposition Algorithm
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(R\)</span> is a relation; <span class="math inline">\(F\)</span> is a set of FDs</li>
+<li>Return: a BCNF decomposition of <span class="math inline">\(R\)</span>, given these FDs.</li>
+</ul>
+<pre><code>BCNF_decomp(R, F):
+  If an FD X -&gt; Y in F violates BCNF
+    1. Compute X+
+    2. Replace R by two relations with shcemas:
+      R_1 = X+
+      R_2 = (R - X+) + X
+      // X is the common between R_1 and R_2
+    3. Project the FD's F onto R_1 and R_2
+    4. Recursively apply BCNF_decomp to R_1 and R_2</code></pre>
+</div>
+</div>
+<ul>
+<li>If more than one FD violates BCNF, you may decompose based on any one of them.
+<ul>
+<li>Because of this, there may be multiple possible results.</li>
+</ul></li>
+<li>The new relations we create in one step may not be in BCNF. We must recurse.
+<ul>
+<li>We only keep the relations at the “leaves.”</li>
+</ul></li>
+</ul>
+<div id="tip-BCNF-decomp" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;7: Example of BCNF Decomposition
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-18" class="callout-18-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Suppose we have the following FDs for <span class="math inline">\(R(A, B, C, D, E)\)</span>: <span class="math display">\[
+A\to B, CD\to E
+\]</span></p>
+<p>Apply BCNF Decomposition:</p>
+<ul>
+<li>Iteration 1: <span class="math inline">\(R\)</span>
+<ul>
+<li>Consider <span class="math inline">\(A\to B\)</span>: <span class="math inline">\(A^+=AB\)</span>, and <span class="math inline">\(A\)</span> is not a superkey (violates BCNF).</li>
+<li>Decompose: <span class="math inline">\(R_1=AB\)</span>, <span class="math inline">\(R_2=ACDE\)</span></li>
+<li>Project FDs: <span class="math inline">\(R_1(A,B)\)</span>:
+<ul>
+<li><span class="math inline">\(A\to B\)</span> (<span class="math inline">\(A\)</span> is a super key)</li>
+<li><span class="math inline">\(R_2(A, C, D, E): CD\to E\)</span> (<span class="math inline">\(CD\)</span> is not a superkey).</li>
+</ul></li>
+</ul></li>
+<li>Iteration 2: Decompose <span class="math inline">\(R_2\)</span>
+<ul>
+<li>Consider <span class="math inline">\(R_2(A, C, D, E)\)</span>: <span class="math inline">\(CD^+=CDE\)</span>, and <span class="math inline">\(CD\to E\)</span>, <span class="math inline">\(CD\)</span> is not a superkey</li>
+<li>Decompose: <span class="math inline">\(R_3=CDE\)</span>, <span class="math inline">\(R_4=ACD\)</span></li>
+<li>Project FDs:
+<ul>
+<li><span class="math inline">\(R_3(C, D, E)\)</span>: <span class="math inline">\(CD\to E\)</span> (<span class="math inline">\(CD\)</span> is a superkey)</li>
+<li><span class="math inline">\(R_4(A, C, D)\)</span>: No FDs. Key: <span class="math inline">\(ACD\)</span></li>
+</ul></li>
+</ul></li>
+<li>BCNF Decomposition Result: <span class="math inline">\(R_1(A, B)\)</span>, <span class="math inline">\(R_3(C, D, E)\)</span>, <span class="math inline">\(R_4\qty(A, C, D)\)</span></li>
+</ul>
+</div>
+</div>
+</div>
+<ul>
+<li>Speed-ups for BCNF decomposition
+<ul>
+<li>Don’t need to know all superkeys.
+<ul>
+<li>Only need to check whether the LHS of each FD is a superkey.</li>
+<li>Use the closure test (simple and fast)</li>
+</ul></li>
+<li>When projecting FDs onto a new relation, check each new FD:
+<ul>
+<li>Does the new relation violate BCNF because of this FD?</li>
+<li>If os, abort the projection. You are about the discard this relation anyway (and domcpose further).</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="properties-of-decomposition" class="level3">
+<h3 class="anchored" data-anchor-id="properties-of-decomposition">Properties of Decomposition</h3>
+<ul>
+<li>What we want from a decomposition (in general, not BCNF specifically)
+<ul>
+<li>No anomalies</li>
+<li>Lossless Join: it should be possible to
+<ul>
+<li>project the original relations onto the decomposed schema</li>
+<li>then reconstruct the original by joining. We should get back <strong>exactly the original tuples</strong>.</li>
+</ul></li>
+<li>Dependency Preservation:
+<ul>
+<li>All the original FD’s should be satisfied.</li>
+</ul></li>
+</ul></li>
+<li>What is lost in a “lossy” join?
+<ul>
+<li>For any decomposition, it is the case that:
+<ul>
+<li><span class="math inline">\(r\subseteq r_1\bowtie\cdots\bowtie r_n\)</span></li>
+<li>i.e., we will get back every tuple.</li>
+</ul></li>
+<li>But it may not be the case that:
+<ul>
+<li><span class="math inline">\(r\supseteq r_1\bowtie\cdots\bowtie r_n\)</span></li>
+<li>i.e., we can get spurious tuples.</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="properties-of-bcnf-decomposition-specifically" class="level3">
+<h3 class="anchored" data-anchor-id="properties-of-bcnf-decomposition-specifically">Properties of BCNF decomposition, specifically</h3>
+<ul>
+<li>BCNF ensures no anomalies.</li>
+<li>BCNF ensures lossless join.</li>
+<li>However, the BCNF property does not guarantee lossless join.
+<ul>
+<li>If you use the BCNF decomposition algorithm, then yes, a lossless join is guaranteed.</li>
+<li>If you generate a decomposition some other way
+<ul>
+<li>You have to check to make sure you have a lossless join.</li>
+<li>Even if your schema is in BCNF!</li>
+</ul></li>
+</ul></li>
+<li>BCNF does not ensure dependency preservation.</li>
+<li>BCNF does not ensure that the decomposition is a “good” one.
+<ul>
+<li>BCNF decomposition deos not guarantee preservation of dependencies.</li>
+<li>i.e., in the decomposed schema that results, it may be possible to create an instance that:
+<ul>
+<li>satisfies all the projected FDs in the final schema,</li>
+<li>but violates one of the original FDs.</li>
+</ul></li>
+<li>Why? Because the algorithm goes too far, and it breaks relations down too much.</li>
+</ul></li>
+</ul>
+<div id="tip-BCNF-decomp-properties" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;8: Example of BCNF not Preserving Original FDs
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-19" class="callout-19-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Consider <span class="math inline">\(\underline{C}SJDPQV\)</span>, <span class="math inline">\(C\)</span> is a key, <span class="math inline">\(JP\to C\)</span> and <span class="math inline">\(SD\to P\)</span>.</p>
+<ul>
+<li>BCNF decomposition: <span class="math inline">\(\underline{C}SJDQV\)</span> and <span class="math inline">\(\underline{SD}P\)</span>.</li>
+<li>Problem: Checking <span class="math inline">\(JP\to C\)</span> requires a joint (and there is no theoretical guarantee it will hold…)</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="wrn-trade-off" class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning&nbsp;2: Is there a decomposition that satisfies all <span class="math inline">\(3\)</span> properties?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>No! There is always a tradeoff.</li>
+<li>For example, another popular standard, “3NF” satisfies properties 2 and 3 only.</li>
+</ul>
 </div>
 </div>
 
 
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->

@@ -56,7 +56,7 @@ Suppose $R$ is a relation, and $X$ and $Y$ are subsets of the attributes of $R$.
 - Why "functional dependency"?
   - "dependency" because the value of $Y$ depends on the value of $X$.
   - "functional" because there is a function that takes a value for $X$ and gives a unique value for $Y$.
-  - *(It’s not a typical function; just a lookup.)*
+  - *(It's not a typical function; just a lookup.)*
 
 :::{#wrn-fd .callout-warning}
 ## Equivalent sets of FDs
@@ -237,7 +237,9 @@ FD_follows(S, LHS -> RHS):
 ## Database Normalization (BCNF)
 :::{#nte-decomposition .callout-note}
 ## Decomposition
+
 To improve a badly-designed schema $R(A_1,A_2,\dots,A_n)$, we will decompose it into smaller relations $A(B_1,B_2,\dots,B_m)$ and $T(C_1,C_2,\dots,C_k)$ such that 
+
 - $S={\Large{\pi}}_{B_1,B_2,\dots, B_m}(R)$,
 - $T={\Large{\pi}}_{C_1,C_2,\dots,C_k}(R)$, and
 - $\{A_1,A_2,\dots,A_n\}=\{B_1,B_2,\dots,B_m\}\cup\{C_1,C_2,\dots,C_k\}$
@@ -247,3 +249,129 @@ To improve a badly-designed schema $R(A_1,A_2,\dots,A_n)$, we will decompose it 
   - Decomposition can improve a schema, but which decomposition? *There are many possible decompositions.*
   - A "normal form" helps us characterize a decomposition, in terms of satisfied properties.
     - **Boyce-Codd Normal Form (BCNF)** guarantees no anomalies.
+
+### BCNF Test
+
+:::{#nte-BCNF .callout-note}
+## Boyce-Codd Normal Form (BCNF)
+
+We say a relation $R$ is in ***BCNF*** if: for every nontrivial FD $X\to Y$ that holds in $R$, $X$ is a superkey.
+
+- Recall: nontrivial means $Y$ is not contained in $X$
+- Recall: a super key does not have to be minimal.
+- In order words, BCNF requries that "**Only things that FD everything, can FD anything.**"
+- FDs with LHS that is not a superkey make the relation prone to *redundacy, anomalies*. 
+:::
+
+:::{#tip-BCNF-test .callout-tip collapse="true"}
+## Example of BCNF Test
+
+- Suppose we have a relation $\text{Students}(\text{SID}, \text{email}, \text{course}, \text{term}, \text{prof}, \text{grade})$ and that these FDs hold:
+  - $\{\text{SID}\to\text{email}; \text{course},\text{term}\to\text{prof};\text{SID},\text{course}\to\text{grade}\}$
+- Is this relation in BCNF?
+- **Approach**: Test if the LHS in each FD is a superkey.
+  - $\text{SID}^+=\text{SID}, \text{email}$
+  - LHS is not a superkey, then $R$ is not in BCNF. We don't need to check other FDs. 
+:::
+
+### BCNF Decomposition
+:::{#imp-BCNF-decomp .callout-important}
+## BCNF Decomposition Algorithm
+- $R$ is a relation; $F$ is a set of FDs
+- Return: a BCNF decomposition of $R$, given these FDs.
+```
+BCNF_decomp(R, F):
+  If an FD X -> Y in F violates BCNF
+    1. Compute X+
+    2. Replace R by two relations with shcemas:
+      R_1 = X+
+      R_2 = (R - X+) + X
+      // X is the common between R_1 and R_2
+    3. Project the FD's F onto R_1 and R_2
+    4. Recursively apply BCNF_decomp to R_1 and R_2
+```
+:::
+
+- If more than one FD violates BCNF, you may decompose based on any one of them.
+  - Because of this, there may be multiple possible results.
+- The new relations we create in one step may not be in BCNF. We must recurse.
+  - We only keep the relations at the "leaves."
+
+:::{#tip-BCNF-decomp .callout-tip collapse="true"}
+## Example of BCNF Decomposition
+Suppose we have the following FDs for $R(A, B, C, D, E)$:
+$$
+A\to B, CD\to E
+$$
+
+Apply BCNF Decomposition:
+
+- Iteration 1: $R$
+  - Consider $A\to B$: $A^+=AB$, and $A$ is not a superkey (violates BCNF).
+  - Decompose: $R_1=AB$, $R_2=ACDE$
+  - Project FDs: $R_1(A,B)$: 
+    - $A\to B$ ($A$ is a super key)
+    - $R_2(A, C, D, E): CD\to E$ ($CD$ is not a superkey).
+- Iteration 2: Decompose $R_2$
+  - Consider $R_2(A, C, D, E)$: $CD^+=CDE$, and $CD\to E$, $CD$ is not a superkey
+  - Decompose: $R_3=CDE$, $R_4=ACD$
+  - Project FDs:
+    - $R_3(C, D, E)$: $CD\to E$ ($CD$ is a superkey)
+    - $R_4(A, C, D)$: No FDs. Key: $ACD$
+- BCNF Decomposition Result: $R_1(A, B)$, $R_3(C, D, E)$, $R_4\qty(A, C, D)$
+:::
+
+- Speed-ups for BCNF decomposition
+  - Don't need to know all superkeys.
+    - Only need to check whether the LHS of each FD is a superkey.
+    - Use the closure test (simple and fast)
+  - When projecting FDs onto a new relation, check each new FD:
+    - Does the new relation violate BCNF because of this FD?
+    - If os, abort the projection. You are about the discard this relation anyway (and domcpose further).
+
+### Properties of Decomposition
+- What we want from a decomposition (in general, not BCNF specifically)
+  - No anomalies
+  - Lossless Join: it should be possible to
+    - project the original relations onto the decomposed schema
+    - then reconstruct the original by joining. We should get back **exactly the original tuples**.
+  - Dependency Preservation:
+    - All the original FD's should be satisfied. 
+- What is lost in a "lossy" join?
+  - For any decomposition, it is the case that:
+    - $r\subseteq r_1\bowtie\cdots\bowtie r_n$
+    - i.e., we will get back every tuple.
+  - But it may not be the case that:
+    - $r\supseteq r_1\bowtie\cdots\bowtie r_n$
+    - i.e., we can get spurious tuples. 
+
+### Properties of BCNF decomposition, specifically
+- BCNF ensures no anomalies.
+- BCNF ensures lossless join.
+- However, the BCNF property does not guarantee lossless join.
+  - If you use the BCNF decomposition algorithm, then yes, a lossless join is guaranteed.
+  - If you generate a decomposition some other way
+    - You have to check to make sure you have a lossless join.
+    - Even if your schema is in BCNF! 
+- BCNF does not ensure dependency preservation.
+- BCNF does not ensure that the decomposition is a "good" one.
+  - BCNF decomposition deos not guarantee preservation of dependencies.
+  - i.e., in the decomposed schema that results, it may be possible to create an instance that:
+    - satisfies all the projected FDs in the final schema,
+    - but violates one of the original FDs.
+  - Why? Because the algorithm goes too far, and it breaks relations down too much. 
+
+:::{#tip-BCNF-decomp-properties .callout-tip collapse="true"}
+## Example of BCNF not Preserving Original FDs
+
+Consider $\underline{C}SJDPQV$, $C$ is a key, $JP\to C$ and $SD\to P$.
+
+- BCNF decomposition: $\underline{C}SJDQV$ and $\underline{SD}P$.
+- Problem: Checking $JP\to C$ requires a joint (and there is no theoretical guarantee it will hold...)
+:::
+
+:::{#wrn-trade-off .callout-warning}
+## Is there a decomposition that satisfies all $3$ properties?
+- No! There is always a tradeoff.
+- For example, another popular standard, "3NF" satisfies properties 2 and 3 only. 
+:::
