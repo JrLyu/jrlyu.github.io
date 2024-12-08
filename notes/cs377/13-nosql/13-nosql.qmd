@@ -1,0 +1,190 @@
+---
+title: "13 NOSQL: Not Only SQL"
+description: "This lecture introduces the concept of NOSQL databases and their applications."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 12-04-2024
+categories: [Database, NOSQL] 
+---
+
+## NOSQL Overview
+
+- NOSQL Systems focus on storage of "big data" applications where relational SQL is not best fit.
+- Typical applications that use NOSQL nowadays:
+  - Social media
+  - Web links
+  - Marketing and sales
+  - Posts and tweets
+  - Road maps and spatial data
+  - etc. 
+
+### Distributed Computing System and Definitions
+:::{#nte-distributed-computing-system .callout-note}
+## Distributed Computing System
+
+- Consists of multiple processing sites or **nodes** interconnected by a computer network.
+- Nodes cooperate in performing certain tasks
+- Framework partitions large task into smaller tasks for efficient solving.
+:::
+
+- NOSQL/Big data technologies:
+  - Combine distributed and adatabase technologies
+  - Deal with mining vast amounts of data
+
+:::{#nte-scalability .callout-note}
+## Scalability
+
+- The extend to which the system can **expand its capacity** while continuing to operate without *interruption*.
+- Horizontal scalability (scaling out) 
+  - Expending number of nodes in a distributed system
+- Vertical scalability (scaling up)
+  - Expanding capacity of the individual nodes
+:::
+
+:::{#nte-availability .callout-note}
+## Availability
+
+- Probability that the system is continuously available during a time interval.
+- *E.g., the system guarantees 99.99% uptime during $xyz$ period.*
+:::
+
+:::{#nte-partition-tolerance .callout-note}
+## Partition Tolerance
+
+- As a system scales out (i.e., expands its number of nodes), the network which connects the nodes may have faults that cause nodes to be partitioned into groups of notes. 
+- A **partition-tolerant** system can sustain any amount of network failure that doesn't result in *failure of the entire* network.
+- Equivalently, the system should have the capacity to continue operating while the network is partitioned. 
+:::
+
+- Availability vs. Partition Tolerance (PT)
+  - **Availability**: the ability to access the cluster even if a node in the cluster goes down. *focus: node failures*
+  - **PT**: the cluster continues to function even if there is a "partition" (communication break) between two nodes (both nodes may be up, but they cannot communicate). *focus: network failures*
+
+:::{#nte-consistency .callout-note}
+## Consistency in DB systems
+
+- General definition of consistency in DB transactions:
+  - Any data written to the DB must be **valid** according to all defined rules, including constraints, cascades, triggers, and nay combination thereof.
+- Consistency definition in distributed datebases:
+  - Any data must be consistent among all replicated copies in the distributed system (i.e., among all nodes/partitions).
+:::
+
+### Design Tradeoffs in NOSQL Systems
+
+:::{#imp-cap-theorem .callout-important}
+## CAP Theorem
+- Consistency, Availability, and Partition Tolerance
+- Not possible to guarantee all three simultaneously (in a distributed system with ata replication).
+:::
+
+- As a result of CAP theorem, Designer must choose two of three to guarantee. 
+  - Weaker consistency level is often acceptable in NOSQL.
+  - Guaranteeing availability and partition tolerance is more important (but there are exceptions).
+- Categories of NOSQL systems:
+  - NOSQL **key-value** stores
+  - **Column**-based or wide column NOSQL systems
+  - **Document**-based NOSQL systems
+  - **Graph**-based NOSQL systems
+  - Hybrid NOSQL systems
+  - **Object** databases (less popular)
+  - **XML** databases (less popular)
+
+- Examples of Popular NOSQL Systems:
+  - DynamoDB (Amazon): Key-value data store
+  - BigTable (Google): 
+    - Google's proprietary NOSQL system
+    - Column-based or wide column data store
+  - Cassandra (Facebook): 
+    - Uses concept from both key-value store and column-based systems
+  - MongoDB:
+    - Document-based system
+    - Self-describing documents
+
+### Key-Value Stores: DynamoDB (Amazon)
+- DynamoBD is part of Amazon Web Services platforms (proprietary).
+- Uses concepts of tables, items, attributes
+- Table **does not have a schema**; holds a collection of **self-describing items**.
+- Item consists of attribute-value pairs:
+  - Attribute values can be single- or multi-valued.
+- Primary key used to locate items within a table:
+  - Can be single attribute or pair of attributes. 
+
+:::{#tip-dynamodb .callout-tip collapse="true"}
+## For Dynamo, Schema is Defined per Item
+
+- SQL (Relational): 
+
+Products Table
+
+| Product ID (Primary Key) | Index | Price | Desc. |
+|:---:|:---:|:---:|:---:|
+| 1 | Book | $11.5 | "A book about NOSQL" |
+| 2 | Album | $14.95 | "A music album" |
+| 3 | Movie | $19.99 | "A movie" |
+
+Books Table
+
+| Book ID | Author | Title | Date |
+|:---:|:---:|:---:|:---:|
+| 1 | Author1 | Title1 | 2024 |
+
+Albums Table
+
+| Album ID | Artist | Title | Date |
+|:---:|:---:|:---:|:---:|
+| 2 | Artist1 | Title2 | 1920 |
+
+Movies Table
+
+| Movie ID | Director | Title | Date |
+|:---:|:---:|:---:|:---:|
+| 3 | Director1 | Title3 | 2013 |
+
+- NOSQL (Non-relational):
+
+Product Table 
+
+| Product ID | Type | Attributes |
+|:---:|:---:|:---:|
+| 1 | Book | {Price: $11.5, Desc: "A book about NOSQL", Author: "Author1", Title: "Title1", Date: 2024} |
+| 2 | Album | {Price: $14.95, Desc: "A music album", Artist: "Artist1", Title: "Title2", Date: 1920} |
+| 3 | Movie | {Price: $19.99, Desc: "A movie", Director: "Director1", Title: "Title3", Date: 2013} |
+|4 | Book | {Price: $12.5, Desc: "A book about SQL", Author: "Author2", Title: "Title2"} |
+
+Primary Key: (Product ID, Type)
+:::
+
+### Column-Based Systems: BigTable (Google)
+- BigTable: Google's distributed storage system for big data
+  - Column-Based NOSQL System
+  - Used in GMail
+  - Uses Google File System for data storage.
+- Apache Hbase is a similar, open source system
+  - Uses Hadoop Distributed File System (HDFS) for data storage. 
+- Hbase Data Model:
+  - HBase stores multiple versions of data items
+    - Timestamp associated with each version
+  - Data is **self-describing**
+  - Data organization concepts:
+    - Namespace: collection of tables
+    - Tables: associated with one or more column families
+    - Column families: group together *related* columns
+    - Column qualifiers: can be dynamically specified as new table rows are created and inserted
+    - Columns: identified by a combination of (column family: column qualifier)
+    - Rows: has a unique row key
+    - Data cells: holds a basic data item
+      - Key of a cell is specified by a combination of (table, rowID, columnFamily, comlumnQualifier, timestamp)
+- Why column families?
+  - Columns accessed together because they belong to same column family are stored in the same files
+  - Each column family of a table is stored in its own files using Hadoop Distributed File System (HDFS)
+- Why we are interested in processing columns efficiently?
+  - Relational BD tables are row-oriented
+  - Big data stores are column-oriented
+  - *E.g., for baking or health applications, we have row-oriented data model*
+  - We dynamically create new column qualifiers as new data rows are created
+  - However, if there is a typo when adding new data, the system will not catch it.
+    - For example, we have already added `fname` as a column qualifier, but we add `first_name` accidentally. The system will accept `first_name` as a new column qualifier, but it will not be able to catch the typo. 
+    - On the other hand, if we have a relational model (schema), the system will catch the typo and report an error.
+- *Note: it is important that hte application developers know which column qualifiers belong to each columns family, even though they ahve the flexibility to create new column qualifiers on the fly when new data rows are created.*
+- Compare to relational BD (row-oriented)

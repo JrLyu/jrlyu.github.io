@@ -23,6 +23,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -254,7 +288,6 @@ window.Quarto = {
 <div class="quarto-title">
 <h1 class="title">12 Database Design Theory: Normalization</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Coding</div>
     <div class="quarto-category">Database</div>
     <div class="quarto-category">Database Design</div>
     <div class="quarto-category">DB Design Theory</div>
@@ -1070,6 +1103,82 @@ Warning&nbsp;2: Is there a decomposition that satisfies all <span class="math in
 <li>No! There is always a tradeoff.</li>
 <li>For example, another popular standard, “3NF” satisfies properties 2 and 3 only.</li>
 </ul>
+</div>
+</div>
+<div id="wrn-normal-forms" class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning&nbsp;3: Remakrs about Normal Forms
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Normalization:
+<ul>
+<li>The process of decomposing unsatisfactory “bad” relations by breaking up their attributes into smaller relations.</li>
+</ul></li>
+<li>Normal form:
+<ul>
+<li>Condition using keys and FDs of a relation to certify whether a relation schema is in a partiuclar normal form.</li>
+</ul></li>
+<li>In parctice:
+<ul>
+<li>Normalization is carried out in practice so that resulting designs are of high quality and meet the desirable properties. (not always though)</li>
+<li>The pratical unitily of thse NFs becomes questionable when the constraints on which they are absed are hard to undrstand or to detect.</li>
+<li>The databse designers need not nromalize to the highest possible normal form (usually up to 3NF and BCNF. Higher NFs are rare in practice).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<ul>
+<li>Candidate Key vs.&nbsp;Primary Key
+<ul>
+<li>A relation can have more than one key:
+<ul>
+<li>Eg. 1: Donors in a Donation schema can have a <code>driverLicenseNum</code> and <code>SSN</code>, eahc uniquely identifying a donor.</li>
+<li>Eg. 2: Each student has a <code>studentID</code> that uniquely indentifies them, as well as a <code>NetID</code> that does the same.</li>
+</ul></li>
+<li>In a DBMS, the DBA (DB Administrator) or the SE (Software Engineer) designing the schema typically chooses one to be the <strong>primary key</strong>. Other keys are called <strong>candidate keys</strong>.</li>
+<li>Characteristic of a primary key (PK) in SQL tables:
+<ul>
+<li><em>minimal</em> set of attributes (columns) that <strong>uniquely</strong> identifies a tuple (row)</li>
+<li>there can be at most one PK in a table</li>
+<li>all attributes in a PK can never be null</li>
+<li>PK attributes are automatically indexed. (<em>Indexes are special lookup tables that help in fast retrieval of tuples from a table. Think of them as “pointers” to data in a table. An index is mall, fast, and optimized for quick lookups. It is especially useful for searching large tables and joining tables. Indexes are typically stored in a structure that optimizes efficient searches (e.g.&nbsp;B-tree)</em>)</li>
+</ul></li>
+<li>What about candidate kesy (CK)?
+<ul>
+<li>also a <em>minimal</em> set of attributes that <strong>uniquely</strong> identifies a tuple (row)</li>
+<li>a table can have multiple CKs</li>
+<li>attribute in a CK may have null values</li>
+<li>not automatically indexed</li>
+<li>CKs signify which kesy can be used as PKs</li>
+</ul></li>
+</ul></li>
+</ul>
+<div id="tip-primary-candidate-keys-in-sql" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-22-contents" aria-controls="callout-22" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;9: Primary and Candidate Keys in SQL
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-22" class="callout-22-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> Student (</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  studentID <span class="dt">int</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>, <span class="co">-- primary key</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  netID <span class="dt">VARCHAR</span>(<span class="dv">15</span>) <span class="kw">UNIQUE</span>, <span class="co">-- candidate key</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  email <span class="dt">VARCHAR</span>(<span class="dv">100</span>) <span class="kw">UNIQUE</span>, <span class="co">-- candidate key</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">..</span>.</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">..</span>.</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 </div>
 

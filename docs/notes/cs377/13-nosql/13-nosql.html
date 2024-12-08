@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jiuru Lyu">
-<meta name="dcterms.date" content="2024-09-08">
-<meta name="description" content="This lecture discusses the relational algebra, which is the foundation of modern database systems. Topics include select, project, and join operators.">
+<meta name="dcterms.date" content="2024-12-04">
+<meta name="description" content="This lecture introduces the concept of NOSQL databases and their applications.">
 
-<title>Jiuru Lyu - 2 Relational Algebra</title>
+<title>Jiuru Lyu - 13 NOSQL: Not Only SQL</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -233,49 +233,31 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#select-choose-rows" id="toc-select-choose-rows" class="nav-link" data-scroll-target="#select-choose-rows">Select: choose rows</a></li>
-  <li><a href="#project-choose-columns" id="toc-project-choose-columns" class="nav-link" data-scroll-target="#project-choose-columns">Project: choose columns</a></li>
-  <li><a href="#combining-tables" id="toc-combining-tables" class="nav-link" data-scroll-target="#combining-tables">Combining Tables</a>
+  <li><a href="#nosql-overview" id="toc-nosql-overview" class="nav-link active" data-scroll-target="#nosql-overview">NOSQL Overview</a>
   <ul class="collapse">
-  <li><a href="#cartesian-product-combine-tables" id="toc-cartesian-product-combine-tables" class="nav-link" data-scroll-target="#cartesian-product-combine-tables">Cartesian Product: Combine Tables</a></li>
-  <li><a href="#natural-join" id="toc-natural-join" class="nav-link" data-scroll-target="#natural-join">Natural Join</a></li>
-  <li><a href="#theta-join" id="toc-theta-join" class="nav-link" data-scroll-target="#theta-join">Theta Join</a></li>
-  <li><a href="#outer-join" id="toc-outer-join" class="nav-link" data-scroll-target="#outer-join">Outer Join</a></li>
-  <li><a href="#cardinality-of-some-operators" id="toc-cardinality-of-some-operators" class="nav-link" data-scroll-target="#cardinality-of-some-operators">Cardinality of Some Operators</a></li>
+  <li><a href="#distributed-computing-system-and-definitions" id="toc-distributed-computing-system-and-definitions" class="nav-link" data-scroll-target="#distributed-computing-system-and-definitions">Distributed Computing System and Definitions</a></li>
+  <li><a href="#design-tradeoffs-in-nosql-systems" id="toc-design-tradeoffs-in-nosql-systems" class="nav-link" data-scroll-target="#design-tradeoffs-in-nosql-systems">Design Tradeoffs in NOSQL Systems</a></li>
+  <li><a href="#key-value-stores-dynamodb-amazon" id="toc-key-value-stores-dynamodb-amazon" class="nav-link" data-scroll-target="#key-value-stores-dynamodb-amazon">Key-Value Stores: DynamoDB (Amazon)</a></li>
+  <li><a href="#column-based-systems-bigtable-google" id="toc-column-based-systems-bigtable-google" class="nav-link" data-scroll-target="#column-based-systems-bigtable-google">Column-Based Systems: BigTable (Google)</a></li>
   </ul></li>
-  <li><a href="#composing-larger-expressions" id="toc-composing-larger-expressions" class="nav-link" data-scroll-target="#composing-larger-expressions">Composing Larger Expressions</a>
-  <ul class="collapse">
-  <li><a href="#assignment-and-rename-operator" id="toc-assignment-and-rename-operator" class="nav-link" data-scroll-target="#assignment-and-rename-operator">Assignment and Rename Operator</a></li>
-  <li><a href="#set-operations" id="toc-set-operations" class="nav-link" data-scroll-target="#set-operations">Set Operations</a></li>
-  </ul></li>
-  <li><a href="#precedence-of-operators" id="toc-precedence-of-operators" class="nav-link" data-scroll-target="#precedence-of-operators">Precedence of Operators</a></li>
-  <li><a href="#specific-types-of-query" id="toc-specific-types-of-query" class="nav-link" data-scroll-target="#specific-types-of-query">Specific Types of Query</a>
-  <ul class="collapse">
-  <li><a href="#max" id="toc-max" class="nav-link" data-scroll-target="#max">Max</a></li>
-  <li><a href="#k-or-more" id="toc-k-or-more" class="nav-link" data-scroll-target="#k-or-more"><span class="math inline">\(k\)</span> or more</a></li>
-  <li><a href="#exactly-k" id="toc-exactly-k" class="nav-link" data-scroll-target="#exactly-k">Exactly <span class="math inline">\(k\)</span></a></li>
-  </ul></li>
-  <li><a href="#integrity-constraints-via-ra" id="toc-integrity-constraints-via-ra" class="nav-link" data-scroll-target="#integrity-constraints-via-ra">Integrity Constraints via RA</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/02-relational-algebra/02-Relational-Algebra.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/02-relational-algebra/02-Relational-Algebra.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/13-nosql/13-nosql.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/13-nosql/13-nosql.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">2 Relational Algebra</h1>
+<h1 class="title">13 NOSQL: Not Only SQL</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Database</div>
-    <div class="quarto-category">Relational Model</div>
-    <div class="quarto-category">Relational Algebra</div>
+    <div class="quarto-category">NOSQL</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    This lecture discusses the relational algebra, which is the foundation of modern database systems. Topics include select, project, and join operators.
+    This lecture introduces the concept of NOSQL databases and their applications.
   </div>
 </div>
 
@@ -292,7 +274,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 8, 2024</p>
+      <p class="date">December 4, 2024</p>
     </div>
   </div>
   
@@ -304,467 +286,400 @@ window.Quarto = {
 </header>
 
 
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="nosql-overview" class="level2">
+<h2 class="anchored" data-anchor-id="nosql-overview">NOSQL Overview</h2>
 <ul>
-<li>Operands: Table</li>
-<li>Operators:
+<li>NOSQL Systems focus on storage of “big data” applications where relational SQL is not best fit.</li>
+<li>Typical applications that use NOSQL nowadays:
 <ul>
-<li>choose only the rows (tuples) you want<br>
-</li>
-<li>choose only the columns (attributes) you want</li>
-<li>combine tables<br>
-</li>
-<li>and a few other things..</li>
+<li>Social media</li>
+<li>Web links</li>
+<li>Marketing and sales</li>
+<li>Posts and tweets</li>
+<li>Road maps and spatial data</li>
+<li>etc.</li>
 </ul></li>
 </ul>
-</section>
-<section id="select-choose-rows" class="level2">
-<h2 class="anchored" data-anchor-id="select-choose-rows">Select: choose rows</h2>
-<div id="note-select" class="callout callout-style-default callout-note callout-titled">
+<section id="distributed-computing-system-and-definitions" class="level3">
+<h3 class="anchored" data-anchor-id="distributed-computing-system-and-definitions">Distributed Computing System and Definitions</h3>
+<div id="nte-distributed-computing-system" class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Notation: Select
+Note&nbsp;1: Distributed Computing System
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><span class="math inline">\({\Large\sigma}_C(R)\)</span>, where</p>
 <ul>
-<li><span class="math inline">\(R\)</span> is the relation/table,</li>
-<li>Condition <span class="math inline">\(c\)</span> is a boolean expression.</li>
+<li>Consists of multiple processing sites or <strong>nodes</strong> interconnected by a computer network.</li>
+<li>Nodes cooperate in performing certain tasks</li>
+<li>Framework partitions large task into smaller tasks for efficient solving.</li>
 </ul>
 </div>
 </div>
 <ul>
-<li>It can use comparison operators and boolean operators</li>
-<li>The operands are either constants or attributes of R.</li>
-<li>The result is a relation:
+<li>NOSQL/Big data technologies:
 <ul>
-<li>with the same schema as the operand<br>
-</li>
-<li>but with only the tuples that satisfy the condition.</li>
+<li>Combine distributed and adatabase technologies</li>
+<li>Deal with mining vast amounts of data</li>
 </ul></li>
 </ul>
-<div id="tip-select" class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip&nbsp;1: Example: Select
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>To select all British actors, we can use <span class="math inline">\({\Large\sigma}_{\text{nationality}=\text{``British''}}(\texttt{Artists})\)</span>. To select all movies from the 1970s, we can use <span class="math inline">\({\Large\sigma}_{\text{year}&gt;1969\text{ and }\text{year}&lt;1980}(\texttt{Movies})\)</span>. Instead of using the word “<span class="math inline">\(\text{and}\)</span>,” we can also use the and operator in logic: <span class="math inline">\(\land\)</span></p>
-</div>
-</div>
-</div>
-</section>
-<section id="project-choose-columns" class="level2">
-<h2 class="anchored" data-anchor-id="project-choose-columns">Project: choose columns</h2>
-<div id="note-project" class="callout callout-style-default callout-note callout-titled">
+<div id="nte-scalability" class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Notation: Project
+Note&nbsp;2: Scalability
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><span class="math inline">\({\Large\pi}_L(R)\)</span>, where</p>
 <ul>
-<li><span class="math inline">\(R\)</span> is a relation/table,</li>
-<li><span class="math inline">\(L\)</span> is a subset of the attributes of <span class="math inline">\(R\)</span>.</li>
-</ul>
-</div>
-</div>
+<li>The extend to which the system can <strong>expand its capacity</strong> while continuing to operate without <em>interruption</em>.</li>
+<li>Horizontal scalability (scaling out)
 <ul>
-<li>The result is a relation
-<ul>
-<li>with all the tuples from <span class="math inline">\(R\)</span><br>
-</li>
-<li>but with only the attributes in <span class="math inline">\(L\)</span>, and in that order.</li>
+<li>Expending number of nodes in a distributed system</li>
 </ul></li>
-<li>The project operator removes duplicates:
+<li>Vertical scalability (scaling up)
 <ul>
-<li>This is due to that we are using the set notation, and so we cannot have duplicate tuples in a table.</li>
+<li>Expanding capacity of the individual nodes</li>
 </ul></li>
 </ul>
-<div id="tip-project" class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip&nbsp;2: Example: Project
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p><span class="math inline">\({\Large\pi}_{\text{director}}(\texttt{Movies})\)</span> will result <span class="math inline">\(\{\text{Kubrick}, \text{Altman}, \text{Polanski}, \text{Lucas}\}\)</span> although the original table has <span class="math inline">\(7\)</span> director names.</p>
 </div>
 </div>
-</div>
-<div id="tip-project-select" class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip&nbsp;3: Example: Combine select and project
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p><strong><em>Q: Write an RA expression to find the names of all directors of movies from the 1970s.</em></strong> A: <span class="math inline">\({\Large\pi}_{\text{director}}{\Large\sigma}_{\text{year}&gt;1969\land\text{year}&lt;1980}(\texttt{Movies})\)</span></p>
-<ul>
-<li>Note that, as we want to find the names of directors, so we will to the project operator as the last step.</li>
-<li>Hence, we will do select first, and then project.</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section id="combining-tables" class="level2">
-<h2 class="anchored" data-anchor-id="combining-tables">Combining Tables</h2>
-<section id="cartesian-product-combine-tables" class="level3">
-<h3 class="anchored" data-anchor-id="cartesian-product-combine-tables">Cartesian Product: Combine Tables</h3>
-<div id="note-cartesian-product" class="callout callout-style-default callout-note callout-titled">
+<div id="nte-availability" class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Notation: Cartesian Production
+Note&nbsp;3: Availability
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><span class="math inline">\(R_1\times R_2\)</span>, where</p>
 <ul>
-<li><span class="math inline">\(R_1\)</span> and <span class="math inline">\(R_2\)</span> are tables.</li>
+<li>Probability that the system is continuously available during a time interval.</li>
+<li><em>E.g., the system guarantees 99.99% uptime during <span class="math inline">\(xyz\)</span> period.</em></li>
+</ul>
+</div>
+</div>
+<div id="nte-partition-tolerance" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4: Partition Tolerance
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>As a system scales out (i.e., expands its number of nodes), the network which connects the nodes may have faults that cause nodes to be partitioned into groups of notes.</li>
+<li>A <strong>partition-tolerant</strong> system can sustain any amount of network failure that doesn’t result in <em>failure of the entire</em> network.</li>
+<li>Equivalently, the system should have the capacity to continue operating while the network is partitioned.</li>
 </ul>
 </div>
 </div>
 <ul>
-<li>The result is a relation with
+<li>Availability vs.&nbsp;Partition Tolerance (PT)
 <ul>
-<li>every combination of a tuple from <span class="math inline">\(R1\)</span> concatenated to a tuple from <span class="math inline">\(R_2\)</span></li>
-<li>Its schema is every attribute from <span class="math inline">\(R_1\)</span> followed by every attribute of <span class="math inline">\(R_2\)</span>, in order.</li>
+<li><strong>Availability</strong>: the ability to access the cluster even if a node in the cluster goes down. <em>focus: node failures</em></li>
+<li><strong>PT</strong>: the cluster continues to function even if there is a “partition” (communication break) between two nodes (both nodes may be up, but they cannot communicate). <em>focus: network failures</em></li>
 </ul></li>
-<li>The number of tuples in <span class="math inline">\(R_1\times R_2\)</span> is given by <span class="math inline">\(|R_1|\times|R_2|\)</span>, where <span class="math inline">\(|R|\)</span> is the cardinality of <span class="math inline">\(R\)</span>.</li>
-<li>If an attribute occurs in both relations, it occurs twice in the result, prefixed by relation name.</li>
 </ul>
-<div id="tip-cartesian-product" class="callout callout-style-default callout-tip callout-titled">
+<div id="nte-consistency" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;5: Consistency in DB systems
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>General definition of consistency in DB transactions:
+<ul>
+<li>Any data written to the DB must be <strong>valid</strong> according to all defined rules, including constraints, cascades, triggers, and nay combination thereof.</li>
+</ul></li>
+<li>Consistency definition in distributed datebases:
+<ul>
+<li>Any data must be consistent among all replicated copies in the distributed system (i.e., among all nodes/partitions).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="design-tradeoffs-in-nosql-systems" class="level3">
+<h3 class="anchored" data-anchor-id="design-tradeoffs-in-nosql-systems">Design Tradeoffs in NOSQL Systems</h3>
+<div id="imp-cap-theorem" class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important&nbsp;1: CAP Theorem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Consistency, Availability, and Partition Tolerance</li>
+<li>Not possible to guarantee all three simultaneously (in a distributed system with ata replication).</li>
+</ul>
+</div>
+</div>
+<ul>
+<li>As a result of CAP theorem, Designer must choose two of three to guarantee.
+<ul>
+<li>Weaker consistency level is often acceptable in NOSQL.</li>
+<li>Guaranteeing availability and partition tolerance is more important (but there are exceptions).</li>
+</ul></li>
+<li>Categories of NOSQL systems:
+<ul>
+<li>NOSQL <strong>key-value</strong> stores</li>
+<li><strong>Column</strong>-based or wide column NOSQL systems</li>
+<li><strong>Document</strong>-based NOSQL systems</li>
+<li><strong>Graph</strong>-based NOSQL systems</li>
+<li>Hybrid NOSQL systems</li>
+<li><strong>Object</strong> databases (less popular)</li>
+<li><strong>XML</strong> databases (less popular)</li>
+</ul></li>
+<li>Examples of Popular NOSQL Systems:
+<ul>
+<li>DynamoDB (Amazon): Key-value data store</li>
+<li>BigTable (Google):
+<ul>
+<li>Google’s proprietary NOSQL system</li>
+<li>Column-based or wide column data store</li>
+</ul></li>
+<li>Cassandra (Facebook):
+<ul>
+<li>Uses concept from both key-value store and column-based systems</li>
+</ul></li>
+<li>MongoDB:
+<ul>
+<li>Document-based system</li>
+<li>Self-describing documents</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="key-value-stores-dynamodb-amazon" class="level3">
+<h3 class="anchored" data-anchor-id="key-value-stores-dynamodb-amazon">Key-Value Stores: DynamoDB (Amazon)</h3>
+<ul>
+<li>DynamoBD is part of Amazon Web Services platforms (proprietary).</li>
+<li>Uses concepts of tables, items, attributes</li>
+<li>Table <strong>does not have a schema</strong>; holds a collection of <strong>self-describing items</strong>.</li>
+<li>Item consists of attribute-value pairs:
+<ul>
+<li>Attribute values can be single- or multi-valued.</li>
+</ul></li>
+<li>Primary key used to locate items within a table:
+<ul>
+<li>Can be single attribute or pair of attributes.</li>
+</ul></li>
+</ul>
+<div id="tip-dynamodb" class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Tip&nbsp;4
+Tip&nbsp;1: For Dynamo, Schema is Defined per Item
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>In the result of <span class="math inline">\(\texttt{Movie}\times\texttt{Roles}\)</span>, we will see <span class="math inline">\(\text{Movies.mID}\)</span> and <span class="math inline">\(\text{Roles.mID}\)</span>.</p>
-</div>
-</div>
-</div>
 <ul>
-<li>However, Cartesian product can be inconvenient
-<ul>
-<li>It can introduce <strong>nonsense</strong> tuples.</li>
-<li>However, we can get rid of them with select operators.</li>
-</ul></li>
-<li>Due to this inconvenience, we need <strong><em>join</em></strong> operators.</li>
+<li>SQL (Relational):</li>
 </ul>
-</section>
-<section id="natural-join" class="level3">
-<h3 class="anchored" data-anchor-id="natural-join">Natural Join</h3>
-<div id="note-natural-join" class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Notation: Natural Join
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><span class="math inline">\(R\bowtie S\)</span>, where</p>
+<p>Products Table</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Product ID (Primary Key)</th>
+<th style="text-align: center;">Index</th>
+<th style="text-align: center;">Price</th>
+<th style="text-align: center;">Desc.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">Book</td>
+<td style="text-align: center;">$11.5</td>
+<td style="text-align: center;">“A book about NOSQL”</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">Album</td>
+<td style="text-align: center;">$14.95</td>
+<td style="text-align: center;">“A music album”</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">Movie</td>
+<td style="text-align: center;">$19.99</td>
+<td style="text-align: center;">“A movie”</td>
+</tr>
+</tbody>
+</table>
+<p>Books Table</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Book ID</th>
+<th style="text-align: center;">Author</th>
+<th style="text-align: center;">Title</th>
+<th style="text-align: center;">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">Author1</td>
+<td style="text-align: center;">Title1</td>
+<td style="text-align: center;">2024</td>
+</tr>
+</tbody>
+</table>
+<p>Albums Table</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Album ID</th>
+<th style="text-align: center;">Artist</th>
+<th style="text-align: center;">Title</th>
+<th style="text-align: center;">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">Artist1</td>
+<td style="text-align: center;">Title2</td>
+<td style="text-align: center;">1920</td>
+</tr>
+</tbody>
+</table>
+<p>Movies Table</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Movie ID</th>
+<th style="text-align: center;">Director</th>
+<th style="text-align: center;">Title</th>
+<th style="text-align: center;">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">Director1</td>
+<td style="text-align: center;">Title3</td>
+<td style="text-align: center;">2013</td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li><span class="math inline">\(R\)</span> and <span class="math inline">\(S\)</span> are tables</li>
-<li><span class="math inline">\(\bowtie\)</span> is the natural join operator.</li>
+<li>NOSQL (Non-relational):</li>
 </ul>
-</div>
-</div>
-<ul>
-<li>The result is formed by
-<ul>
-<li>taking the Cartesian product,</li>
-<li>select to ensure equality on attributes that are in both relations (determine by name),</li>
-<li>projecting to remove duplicate attributes.</li>
-</ul></li>
-</ul>
-<div id="wrn-natural-join" class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning&nbsp;1: Properties of Natural Join
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>Commutativity (although attribute orders may vary): <span class="math display">\[R\bowtie S=S\bowtie R\]</span></li>
-<li>Associativity: <span class="math display">\[R\bowtie(S\bowtie T)=(R\bowtie S)\bowtie T\]</span></li>
-<li>When writing <span class="math inline">\(n\)</span>-ary joins, brackets are irrelevant. We can just write: <span class="math display">\[R_1\bowtie R_2\bowtie\cdots\bowtie R_n.\]</span></li>
-</ul>
-</div>
-</div>
-<ul>
-<li>Special cases of Natural Join
-<ul>
-<li>If there is not tuple match, natural join will result in the empty set <span class="math inline">\(\emptyset\)</span>.</li>
-<li>Natural join is looking for <strong>exact match</strong>.</li>
-<li>If there is no attributes in common, the result will be the <strong>Cartesian product</strong> of the two relations.</li>
-</ul></li>
-<li>Natural join can <strong>over-match</strong>
-<ul>
-<li>Natural join bases the matching on attribute names.</li>
-<li>What if two attributes have the same name, but we don’t want them to have to match?</li>
-</ul></li>
-<li>Natural join can <strong>under-match</strong>
-<ul>
-<li><ul>
-<li>What if two attributes don’t have the same name and we do want them to match?</li>
-</ul></li>
-</ul></li>
-</ul>
-</section>
-<section id="theta-join" class="level3">
-<h3 class="anchored" data-anchor-id="theta-join">Theta Join</h3>
-<div id="note-theta-join" class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Definition: Theta Join <span class="math inline">\({\Large\bowtie}_{\text{condition}}\)</span>
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>Rationale: it is easier to check conditions after making the Cartesian production: <span class="math inline">\({\Large\sigma}_{\text{condition}}(R\times S)\)</span></li>
-<li>Syntax: <span class="math inline">\(R\ {\Large\bowtie}_{\text{condition}}\ S\)</span></li>
-<li>The result is the same as Cartesian product (not natural join!) followed by select: <span class="math display">\[R\ {\Large\bowtie}_{\text{condition}}\ S={\Large\sigma}_{\text{condition}}(R\times S)\]</span></li>
-</ul>
-</div>
-</div>
-</section>
-<section id="outer-join" class="level3">
-<h3 class="anchored" data-anchor-id="outer-join">Outer Join</h3>
-<ul>
-<li>Outer Join keeps all the tuples and adds <code>null</code> values whenever no value exists</li>
-<li>Three variants:
-<ul>
-<li><strong>Left Outer Join</strong>: only do this “null padding” for left operand: ⟕</li>
-<li><strong>Right Outer Join</strong>: only do this “null padding” for right operand: ⟖</li>
-<li><strong>Full Outer Join</strong>: pad other operands: ⟗</li>
-</ul></li>
-</ul>
-</section>
-<section id="cardinality-of-some-operators" class="level3">
-<h3 class="anchored" data-anchor-id="cardinality-of-some-operators">Cardinality of Some Operators</h3>
-<ul>
-<li>Given <span class="math inline">\(R_1(X_1)\)</span> and <span class="math inline">\(R_2(X_2)\)</span>, the cardinality (number of tuples) of
-<ul>
-<li>Cartesian product: <span class="math inline">\(|R_1\times R_2|=|R_1|\times|R_2|\)</span></li>
-<li>Natural join: <span class="math inline">\(0\leq|R_1\Join R_2|\leq|R_1|\times|R_2|\)</span>
-<ul>
-<li>Notice that if the attributes used in a natural join (i.e., the attributes in <span class="math inline">\(X_1\cap X_2\)</span>) contain a key of <span class="math inline">\(R_2\)</span>, then <span class="math display">\[0\leq|R_1\Join R_2|\leq|R_1|\]</span></li>
-</ul></li>
-<li>Same applies for left/right outer joins, if and only if the “outer” part is pointint to the table with the non-key attribute.</li>
-</ul></li>
-</ul>
-</section>
-</section>
-<section id="composing-larger-expressions" class="level2">
-<h2 class="anchored" data-anchor-id="composing-larger-expressions">Composing Larger Expressions</h2>
-<section id="assignment-and-rename-operator" class="level3">
-<h3 class="anchored" data-anchor-id="assignment-and-rename-operator">Assignment and Rename Operator</h3>
-<div id="note-assignment" class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Notation: Assignment
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><span class="math inline">\(R\coloneqq\text{Expression}\)</span> or <span class="math inline">\(R(A_1,\dots,A_n)\coloneqq\text{Expression}\)</span></p>
-<ul>
-<li>The later notation lets us name all the attributes of the new relation</li>
-<li>Sometimes, we don’t want the name they would get from Expression</li>
-<li><span class="math inline">\(R\)</span> must be a temporary variable, <strong>not one of the relations in the schema</strong>. That is, we are not updating the content of a relation.</li>
-</ul>
-</div>
-</div>
-<div id="tip-assignment" class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip&nbsp;5: Example: Using Assignment
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-12" class="callout-12-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p><span class="math display">\[\begin{aligned}\text{Temp }1&amp;\coloneqq Q\times R\\\text{Temp }2&amp;\coloneqq{\Large\sigma}_{a=99}(\text{Temp }1)\times S\\\text{Answer}(\text{part},\text{price})&amp;\coloneqq{\Large\pi}_{b,c}(\text{Temp }2)\end{aligned}\]</span></p>
-<ul>
-<li>This is all for <strong>readability</strong>.</li>
-<li>Assignment helps us break a problem down.</li>
-<li>It also allows us to change the names of relations (and attributes).</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="note-rename" class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Notation: Rename
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><span class="math inline">\({\Large\rho}_{R_1}R_2\)</span> or <span class="math inline">\({\Large\rho}_{R_1(A_1,\dots,A_n)}(R_2)\)</span></p>
-<ul>
-<li>The later notation lets us rename all the attributes as well as the relation.</li>
-</ul>
-</div>
-</div>
-<ul>
-<li>Equivalent Notations: <span class="math display">\[R_1(A_1,\dots,A_n)\coloneqq R_2\equiv R_1\coloneqq{\Large\rho}_{R_1(A_1,\dots,A_n)}(R_2)\]</span></li>
-<li><span class="math inline">\(\rho\)</span> is useful if we want to rename within an expression.</li>
-</ul>
-</section>
-<section id="set-operations" class="level3">
-<h3 class="anchored" data-anchor-id="set-operations">Set Operations</h3>
-<ul>
-<li>Because relations are sets, we can use set <strong>intersection</strong> (<span class="math inline">\(\cap\)</span>), <strong>union</strong> (<span class="math inline">\(\cup\)</span>), and <strong>difference</strong> (<span class="math inline">\(-\)</span>). But only if the operands are relations over the <em>same</em> attributes (in number, name, and order). <strong><em>Schema needs to be identical</em></strong>.</li>
-</ul>
-</section>
-</section>
-<section id="precedence-of-operators" class="level2">
-<h2 class="anchored" data-anchor-id="precedence-of-operators">Precedence of Operators</h2>
-<ul>
-<li>Expressions can be composed recursively</li>
-<li>Parentheses <span class="math inline">\(()\)</span> and precedence rules define the order of evaluation</li>
-<li>Precedence, from highest to lowest, is:
-<ul>
-<li><span class="math inline">\(\Large{\sigma,\ \pi, \rho}\)</span></li>
-<li><span class="math inline">\(\Large{\times,\ \Join}\)</span></li>
-<li><span class="math inline">\(\Large{\cap}\)</span></li>
-<li><span class="math inline">\(\Large{\cup,\ -}\)</span></li>
-</ul></li>
-</ul>
-</section>
-<section id="specific-types-of-query" class="level2">
-<h2 class="anchored" data-anchor-id="specific-types-of-query">Specific Types of Query</h2>
-<section id="max" class="level3">
-<h3 class="anchored" data-anchor-id="max">Max</h3>
-<ul>
-<li>The function <code>Max</code> is not directly supported in relational algebra.</li>
-<li>Idea:
-<ul>
-<li>Pair tuples and find those that are <em>not</em> the max</li>
-<li>Then, subtract from all to find the maxes.</li>
-</ul></li>
-<li>Procedure: <span class="math inline">\(S\)</span> to be the table and we want to find <span class="math inline">\(\max(\text{GPA})\)</span>
-<ul>
-<li>Create the pair of tuples: <span class="math inline">\({\Large\rho}_{S_1}(S)\times{\Large\rho}_{S_2}(S)\)</span></li>
-<li>Filter those GPA that is smaller than the other one in each pair: we will left will everything “smaller;” that is, <span class="math inline">\(\max{\text{GPA}}\)</span> will not be present. <span class="math display">\[S_3(\text{GPA})\coloneqq{\Large\pi}_{S_1.\text{GPA}}{\Large\sigma}_{(S_1.\text{GPA}&lt;S_2.\text{GPA})}({\Large\rho}_{S_1}(S)\times{\Large\rho}_{S_2}(S))\]</span></li>
-<li>Then, doing the subtraction, we will get the maximum: <span class="math display">\[\max(\text{GPA})={\Large\pi}_\text{GPA}(S)-{\Large\pi}_\text{GPA}(S_3)\]</span></li>
-</ul></li>
-</ul>
-</section>
-<section id="k-or-more" class="level3">
-<h3 class="anchored" data-anchor-id="k-or-more"><span class="math inline">\(k\)</span> or more</h3>
-<ul>
-<li>To write a query about something like “students with two or more classes with grade &gt; 80” we:
-<ul>
-<li>Make all combos of <span class="math inline">\(k\)</span> different tuples that satisfy the condition.</li>
-</ul></li>
-</ul>
-<div id="tip-k-or-more" class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip&nbsp;6: Example: <span class="math inline">\(k\)</span> or more
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-14" class="callout-14-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p><span class="math display">\[S\coloneqq{\Large\rho_{R_1}}(R)\times{\Large\rho_{R_2}}(R)\]</span> <span class="math display">\[R_3={\Large\sigma}_{(R_1.\text{sID}=R_2.\text{sID}\land R_1.\text{Class}\neq R_2.\text{Class})}(S)\]</span> <span class="math display">\[{\Large\pi}_{\text{sID}}{\Large\sigma}_{(R_1.\text{Grade}&gt;80\land R_2.\text{Grade}&gt;80)}(R_3)\]</span></p>
+<p>Product Table</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Product ID</th>
+<th style="text-align: center;">Type</th>
+<th style="text-align: center;">Attributes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">Book</td>
+<td style="text-align: center;">{Price: $11.5, Desc: “A book about NOSQL”, Author: “Author1”, Title: “Title1”, Date: 2024}</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">Album</td>
+<td style="text-align: center;">{Price: $14.95, Desc: “A music album”, Artist: “Artist1”, Title: “Title2”, Date: 1920}</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">Movie</td>
+<td style="text-align: center;">{Price: $19.99, Desc: “A movie”, Director: “Director1”, Title: “Title3”, Date: 2013}</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">Book</td>
+<td style="text-align: center;">{Price: $12.5, Desc: “A book about SQL”, Author: “Author2”, Title: “Title2”}</td>
+</tr>
+</tbody>
+</table>
+<p>Primary Key: (Product ID, Type)</p>
 </div>
 </div>
 </div>
 </section>
-<section id="exactly-k" class="level3">
-<h3 class="anchored" data-anchor-id="exactly-k">Exactly <span class="math inline">\(k\)</span></h3>
+<section id="column-based-systems-bigtable-google" class="level3">
+<h3 class="anchored" data-anchor-id="column-based-systems-bigtable-google">Column-Based Systems: BigTable (Google)</h3>
 <ul>
-<li>“<span class="math inline">\(k\)</span> or more” – “<span class="math inline">\((k+1)\)</span> or more”</li>
-</ul>
-</section>
-</section>
-<section id="integrity-constraints-via-ra" class="level2">
-<h2 class="anchored" data-anchor-id="integrity-constraints-via-ra">Integrity Constraints via RA</h2>
+<li>BigTable: Google’s distributed storage system for big data
 <ul>
-<li>In a schema description, we can express integrity constraints using a relational algebra expression</li>
-<li>We use the notation
-<ul>
-<li><span class="math inline">\(R=\emptyset\)</span>, or</li>
-<li><span class="math inline">\(R\subseteq S\)</span></li>
+<li>Column-Based NOSQL System</li>
+<li>Used in GMail</li>
+<li>Uses Google File System for data storage.</li>
 </ul></li>
-</ul>
-<div id="tip-integrity-constraints" class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip&nbsp;7: Example: Integrity Constraints
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-15" class="callout-15-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<li>Apache Hbase is a similar, open source system
 <ul>
-<li>Courses at the 400-level cannot count for breadth. <span class="math display">\[{\Large\sigma}_(400\leq\text{cNum}\leq500)\land\text{breadth}(\text{Course})=\emptyset\]</span></li>
-<li>In terms when CS 490 is offered, CS 454 must be offered. <span class="math display">\[\text{CS490Terms}(\text{term})\coloneqq{\Large\pi}_\text{term}({\Large\sigma}_{(\text{dept}=\text{'CS'}\land\text{cNum}=490)}(\text{Offering}))\]</span><span class="math display">\[\text{CS454Terms}(\text{term})\coloneqq{\Large\pi}_\text{term}({\Large\sigma}_{(\text{dept}=\text{'CS'}\land\text{cNum}=454)}(\text{Offering}))\]</span> <span class="math display">\[\text{CS490Terms}-\text{CS454Terms}=\emptyset\]</span></li>
+<li>Uses Hadoop Distributed File System (HDFS) for data storage.</li>
+</ul></li>
+<li>Hbase Data Model:
+<ul>
+<li>HBase stores multiple versions of data items
+<ul>
+<li>Timestamp associated with each version</li>
+</ul></li>
+<li>Data is <strong>self-describing</strong></li>
+<li>Data organization concepts:
+<ul>
+<li>Namespace: collection of tables</li>
+<li>Tables: associated with one or more column families</li>
+<li>Column families: group together <em>related</em> columns</li>
+<li>Column qualifiers: can be dynamically specified as new table rows are created and inserted</li>
+<li>Columns: identified by a combination of (column family: column qualifier)</li>
+<li>Rows: has a unique row key</li>
+<li>Data cells: holds a basic data item
+<ul>
+<li>Key of a cell is specified by a combination of (table, rowID, columnFamily, comlumnQualifier, timestamp)</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Why column families?
+<ul>
+<li>Columns accessed together because they belong to same column family are stored in the same files</li>
+<li>Each column family of a table is stored in its own files using Hadoop Distributed File System (HDFS)</li>
+</ul></li>
+<li>Why we are interested in processing columns efficiently?
+<ul>
+<li>Relational BD tables are row-oriented</li>
+<li>Big data stores are column-oriented</li>
+<li><em>E.g., for baking or health applications, we have row-oriented data model</em></li>
+</ul></li>
+<li><em>Note: it is important that hte application developers know which column qualifiers belong to each columns family, even though they ahve the flexibility to create new column qualifiers on the fly when new data rows are created.</em></li>
+<li>Compare to relational BD (row-oriented)</li>
 </ul>
-</div>
-</div>
-</div>
 
 
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
@@ -1307,7 +1222,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/02-relational-algebra/02-Relational-Algebra.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/02-relational-algebra/02-Relational-Algebra.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/13-nosql/13-nosql.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/13-nosql/13-nosql.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

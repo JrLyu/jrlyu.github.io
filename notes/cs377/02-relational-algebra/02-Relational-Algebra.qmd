@@ -5,7 +5,7 @@ author:
   - name: Jiuru Lyu
     url: https://jrlyu.github.io/
 date: 09-08-2024
-categories: [Coding, Database, Relational Model, Relational Algebra]
+categories: [Database, Relational Model, Relational Algebra]
 draft: false
 ---
 

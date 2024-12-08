@@ -5,7 +5,7 @@ author:
   - name: Jiuru Lyu
     url: https://jrlyu.github.io/
 date: 11-18-2024
-categories: [Coding, Database, Database Design, DB Design Theory, BCNF, Normalization, Functional Dependencies, Closure Test, FD Projection] 
+categories: [Database, Database Design, DB Design Theory, BCNF, Normalization, Functional Dependencies, Closure Test, FD Projection] 
 draft: false
 ---
 
@@ -374,4 +374,48 @@ Consider $\underline{C}SJDPQV$, $C$ is a key, $JP\to C$ and $SD\to P$.
 ## Is there a decomposition that satisfies all $3$ properties?
 - No! There is always a tradeoff.
 - For example, another popular standard, "3NF" satisfies properties 2 and 3 only. 
+:::
+
+:::{#wrn-normal-forms .callout-warning}
+## Remakrs about Normal Forms
+
+- Normalization:
+  - The process of decomposing unsatisfactory "bad" relations by breaking up their attributes into smaller relations.
+- Normal form:
+  - Condition using keys and FDs of a relation to certify whether a relation schema is in a partiuclar normal form.
+- In parctice:
+  - Normalization is carried out in practice so that resulting designs are of high quality and meet the desirable properties. (not always though)
+  - The pratical unitily of thse NFs becomes questionable when the constraints on which they are absed are hard to undrstand or to detect.
+  - The databse designers need not nromalize to the highest possible normal form (usually up to 3NF and BCNF. Higher NFs are rare in practice).
+:::
+
+- Candidate Key vs. Primary Key
+  - A relation can have more than one key:
+    - Eg. 1: Donors in a Donation schema can have a `driverLicenseNum` and `SSN`, eahc uniquely identifying a donor.
+    - Eg. 2: Each student has a `studentID` that uniquely indentifies them, as well as a `NetID` that does the same.
+  - In a DBMS, the DBA (DB Administrator) or the SE (Software Engineer) designing the schema typically chooses one to be the **primary key**. Other keys are called **candidate keys**. 
+  - Characteristic of a primary key (PK) in SQL tables: 
+    - *minimal* set of attributes (columns) that **uniquely** identifies a tuple (row)
+    - there can be at most one PK in a table
+    - all attributes in a PK can never be null
+    - PK attributes are automatically indexed. (*Indexes are special lookup tables that help in fast retrieval of tuples from a table. Think of them as "pointers" to data in a table. An index is mall, fast, and optimized for quick lookups. It is especially useful for searching large tables and joining tables. Indexes are typically stored in a structure that optimizes efficient searches (e.g. B-tree)*)
+  - What about candidate kesy (CK)?
+    - also a *minimal* set of attributes that **uniquely** identifies a tuple (row)
+    - a table can have multiple CKs
+    - attribute in a CK may have null values
+    - not automatically indexed
+    - CKs signify which kesy can be used as PKs
+
+:::{#tip-primary-candidate-keys-in-sql .callout-tip collapse="true"}
+## Primary and Candidate Keys in SQL
+
+```sql
+CREATE TABLE Student (
+  studentID int PRIMARY KEY, -- primary key
+  netID VARCHAR(15) UNIQUE, -- candidate key
+  email VARCHAR(100) UNIQUE, -- candidate key
+  ...
+  ...
+);
+```
 :::
