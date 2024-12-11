@@ -100,9 +100,74 @@ ul.task-list li input[type="checkbox"] {
     }
   })
   </script>
+<script>
+window.MathJax = {
+  loader: {
+    load: ['[tex]/physics']
+  },
+  tex: {
+    packages: {'[+]': ['physics']},
+    macros: {
+      R: "\\mathbb{R}",
+      C: "\\mathbb{C}",
+      Q: "\\mathbb{Q}",
+      d: "\\mathrm{d}",
+      i: "\\mathrm{i}",
+      N: "\\mathbb{N}",
+      "1": "\\mathds{1}",
+      bigO: "\\mathcal{O}",
+      sp: "\\operatorname{span}",
+      epsilon: "\\varepsilon",
+      emptyset: "\\varnothing",
+      phi: "\\varphi",
+      dsst: "\\displaystyle",
+      st: "\\ \\text{s.t.}\\ ",
+      wrt: "\\ \\text{w.r.t.}\\ ",
+      bar: "\\overline",
+      tilde: "\\widetilde",
+      E: "\\vb{E}",
+      B: "\\vb{B}",
+      L: "\\vb{L}",
+      I: "\\vb{I}",
+      Var: "\\vb{Var}",
+      V: "\\vb{Var}",
+      Cov: "\\vb{Cov}",
+      MSE: "\\vb{MSE}",
+      P: "\\vb{P}",
+      M: "\\vb{M}",
+      iid: "\\text{i.i.d.}",
+      argmax: "\\mathop{\\arg\\max}",
+      argmin: "\\mathop{\\arg\\min}",
+      l: "\\ell",
+      hat: "\\widehat",
+      independ: "\\perp\\!\\!\\!\\perp",
+      depend: "\\leftrightsquigarrow",
+      residual: "\\varepsilon",
+      sd: "\\mathrm{sd}",
+      LI: "\\mathrm{L.I.}",
+      range: "\\operatorname{range}",
+      Null: "\\operatorname{null}",
+      nullity: "\\operatorname{nullity}",
+      A: "A^{-1}",
+      alg: "\\operatorname{alg}",
+      fl: "\\operatorname{fl}",
+      algmult: "\\operatorname{alg.\\ mult.}",
+      geomult: "\\operatorname{geo.\\ mult.}",
+      diag: "\\operatorname{diag}",
+      gap: "\\operatorname{gap}",
+      pqde: "\\quad\\square",
+      lub: "\\operatorname{lub}",
+      Int: "\\operatorname{int}",
+      ac: "\\operatorname{ac}",
+      cl: "\\operatorname{cl}",
+      bd: "\\operatorname{bd}"
+    }
+  }
+};
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet"> 
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -159,7 +224,7 @@ window.Quarto = {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./cv.html"> 
+    <a class="nav-link" href="./cv/cv.pdf"> 
 <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item">
@@ -172,7 +237,7 @@ window.Quarto = {
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./blogs.html" aria-current="page"> 
-<span class="menu-text">My Blogs</span></a>
+<span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -193,7 +258,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Blog">Blog <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Quarto">Quarto <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Test">Test <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Arnoldi">Arnoldi <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Iterative Method">Iterative Method <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Linear Algebra">Linear Algebra <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Numerical Analysis">Numerical Analysis <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
@@ -247,36 +312,37 @@ window.Quarto = {
     </div>
 </div>
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="Quarto,Test,Blog" data-listing-date-sort="1729915200000" data-listing-file-modified-sort="1729924536612" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="108">
-<a href="./blogs/2024-10-26-test-blog/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-categories="Numerical Analysis,Iterative Method,Linear Algebra,Arnoldi" data-listing-date-sort="1733806800000" data-listing-file-modified-sort="1733902865338" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="111">
+<a href="./blogs/2024-12-10-arnoldi/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="./blogs/2024-10-26-test-blog/preview-image.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
+<p class="card-img-top"><img src="blogs/2024-12-10-arnoldi/diagram-20241209.png" alt="Arnoldi_figure" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
-blog post title
+Polynomial Representation of Arnoldi
 </h5>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Quarto'); return false;">
-Quarto
+<div class="listing-category" onclick="window.quartoListingCategory('Numerical Analysis'); return false;">
+Numerical Analysis
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Test'); return false;">
-Test
+<div class="listing-category" onclick="window.quartoListingCategory('Iterative Method'); return false;">
+Iterative Method
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Blog'); return false;">
-Blog
+<div class="listing-category" onclick="window.quartoListingCategory('Linear Algebra'); return false;">
+Linear Algebra
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Arnoldi'); return false;">
+Arnoldi
 </div>
 </div>
 <div class="card-text listing-description">
-blog post description (appears underneath the title in smaller text) which is included on the listing page
+I’m recently learning about the Arnoldi’s method, and the textbook mentioned that the it can be viewed from a polynomial approximation point of view. However, I think the…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Jiuru Lyu
 </div>
 <div class="listing-date">
-Oct 26, 2024
+Dec 10, 2024
 </div>
 </div>
 </div>
@@ -843,7 +909,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </a>
   </li>  
     <li class="nav-item compact">
-    <a class="nav-link" href="mailto:richard.jrlyu@outlook.com">
+    <a class="nav-link" href="mailto:jiuru.lyu@emory.edu">
       <i class="bi bi-envelope" role="img">
 </i> 
     </a>

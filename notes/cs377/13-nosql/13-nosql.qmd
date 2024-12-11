@@ -188,3 +188,21 @@ Primary Key: (Product ID, Type)
     - On the other hand, if we have a relational model (schema), the system will catch the typo and report an error.
 - *Note: it is important that hte application developers know which column qualifiers belong to each columns family, even though they ahve the flexibility to create new column qualifiers on the fly when new data rows are created.*
 - Compare to relational BD (row-oriented)
+
+## Warp up:
+- DBMS Advantages:
+  - Physical data independence
+  - Efficient data access
+  - Data integrity & security
+  - Concurrent access, crash recovery
+  - Reduced application development time
+- Why not use DBMS always?
+  - Can be expensive/complicated to set up & maintain
+  - Cost & complexity must be offset by need
+  - Some aspects are rigid (e.g., require schema)
+  - General-purpose, not suited for semi-structured or unstructured data
+    - NOSQL systems to the rescue
+- When to use NOSQL?
+  - NOSQL data storage systems makes sense when we need to deal with large amounts of semi-structured data
+    - E.g., social media, log analysis
+  - Most of the time, we work on organizational databases, which are not that large and can be handled by relational DBMS

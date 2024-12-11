@@ -240,6 +240,7 @@ window.Quarto = {
   <li><a href="#key-value-stores-dynamodb-amazon" id="toc-key-value-stores-dynamodb-amazon" class="nav-link" data-scroll-target="#key-value-stores-dynamodb-amazon">Key-Value Stores: DynamoDB (Amazon)</a></li>
   <li><a href="#column-based-systems-bigtable-google" id="toc-column-based-systems-bigtable-google" class="nav-link" data-scroll-target="#column-based-systems-bigtable-google">Column-Based Systems: BigTable (Google)</a></li>
   </ul></li>
+  <li><a href="#warp-up" id="toc-warp-up" class="nav-link" data-scroll-target="#warp-up">Warp up:</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs377/13-nosql/13-nosql.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs377/13-nosql/13-nosql.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -673,13 +674,50 @@ Tip&nbsp;1: For Dynamo, Schema is Defined per Item
 <li>Relational BD tables are row-oriented</li>
 <li>Big data stores are column-oriented</li>
 <li><em>E.g., for baking or health applications, we have row-oriented data model</em></li>
+<li>We dynamically create new column qualifiers as new data rows are created</li>
+<li>However, if there is a typo when adding new data, the system will not catch it.
+<ul>
+<li>For example, we have already added <code>fname</code> as a column qualifier, but we add <code>first_name</code> accidentally. The system will accept <code>first_name</code> as a new column qualifier, but it will not be able to catch the typo.</li>
+<li>On the other hand, if we have a relational model (schema), the system will catch the typo and report an error.</li>
+</ul></li>
 </ul></li>
 <li><em>Note: it is important that hte application developers know which column qualifiers belong to each columns family, even though they ahve the flexibility to create new column qualifiers on the fly when new data rows are created.</em></li>
 <li>Compare to relational BD (row-oriented)</li>
 </ul>
-
-
 </section>
+</section>
+<section id="warp-up" class="level2">
+<h2 class="anchored" data-anchor-id="warp-up">Warp up:</h2>
+<ul>
+<li>DBMS Advantages:
+<ul>
+<li>Physical data independence</li>
+<li>Efficient data access</li>
+<li>Data integrity &amp; security</li>
+<li>Concurrent access, crash recovery</li>
+<li>Reduced application development time</li>
+</ul></li>
+<li>Why not use DBMS always?
+<ul>
+<li>Can be expensive/complicated to set up &amp; maintain</li>
+<li>Cost &amp; complexity must be offset by need</li>
+<li>Some aspects are rigid (e.g., require schema)</li>
+<li>General-purpose, not suited for semi-structured or unstructured data
+<ul>
+<li>NOSQL systems to the rescue</li>
+</ul></li>
+</ul></li>
+<li>When to use NOSQL?
+<ul>
+<li>NOSQL data storage systems makes sense when we need to deal with large amounts of semi-structured data
+<ul>
+<li>E.g., social media, log analysis</li>
+</ul></li>
+<li>Most of the time, we work on organizational databases, which are not that large and can be handled by relational DBMS</li>
+</ul></li>
+</ul>
+
+
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
