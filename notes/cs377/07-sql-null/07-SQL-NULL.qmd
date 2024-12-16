@@ -6,7 +6,7 @@ author:
     url: https://jrlyu.github.io/
 date: 10-08-2024
 categories: [Coding, SQL, Database, Join, Null]
-draft: true
+draft: false
 ---
 
 ## Null values in SQL
