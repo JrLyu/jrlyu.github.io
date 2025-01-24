@@ -24,8 +24,9 @@ title: "Class Notes"
 #### Data Science, Statistics, and Causal Inference
 
 - [Introduction to Causal Inference](https://jrlyu.github.io/qtm110.io/)
-- [Mathematical Statistics](notes/MathStats.qmd)
 - [Google Data Analytics Learning Notes](https://jrlyu.github.io/google_analytics.io/)
+- [Mathematical Statistics](notes/MathStats.qmd)
+- [Machine Learning](notes/cs334.qmd)
 
 ### Computer Science
 

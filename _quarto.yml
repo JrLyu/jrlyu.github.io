@@ -61,7 +61,7 @@ format:
                     d: "\\mathrm{d}",
                     i: "\\mathrm{i}",
                     N: "\\mathbb{N}",
-                    "1": "\\mathds{1}",
+                    "1": "{\\Large{\\unicode{x1D7D9}}}",
                     bigO: "\\mathcal{O}",
                     sp: "\\operatorname{span}",
                     epsilon: "\\varepsilon",
@@ -112,3 +112,6 @@ format:
                 }
               };
               </script>
+
+filters:
+  - pseudocode

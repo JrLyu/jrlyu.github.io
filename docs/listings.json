@@ -40,5 +40,11 @@
       "/notes/cs377/12-design-theory/12-design-theory.html",
       "/notes/cs377/13-nosql/13-nosql.html"
     ]
+  },
+  {
+    "listing": "/notes/cs334.html",
+    "items": [
+      "/notes/cs334/01-Linear-Classification/01-Linear-Classification.html"
+    ]
   }
 ]

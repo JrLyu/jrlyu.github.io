@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2025-01-23">
+<meta name="description" content="This lecture discusses the linear classification, a fundamental concept in machine learning.">
 
-<title>Jiuru Lyu - Class Notes</title>
+<title>Jiuru Lyu - 1 Linear Classification</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,25 +26,27 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href=".//media/favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -83,7 +88,7 @@ window.MathJax = {
       d: "\\mathrm{d}",
       i: "\\mathrm{i}",
       N: "\\mathbb{N}",
-      "1": "\\mathds{1}",
+      "1": "{\\Large{\\unicode{x1D7D9}}}",
       bigO: "\\mathcal{O}",
       sp: "\\operatorname{span}",
       epsilon: "\\varepsilon",
@@ -138,8 +143,37 @@ window.MathJax = {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet"> 
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -149,7 +183,7 @@ window.MathJax = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Jiuru Lyu</span>
     </a>
   </div>
@@ -160,21 +194,21 @@ window.MathJax = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="dropdown-header">
  <span class="menu-text">CV</span></li>
   <li class="nav-item">
-    <a class="nav-link active" href="./notes.html" aria-current="page"> 
+    <a class="nav-link" href="../../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./photo.html"> 
+    <a class="nav-link" href="../../../photo.html"> 
 <span class="menu-text">Photograph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blogs.html"> 
+    <a class="nav-link" href="../../../blogs.html"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
@@ -199,26 +233,56 @@ window.MathJax = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#high-school-level-math" id="toc-high-school-level-math" class="nav-link active" data-scroll-target="#high-school-level-math">High School Level Math</a></li>
-  <li><a href="#college-level-math" id="toc-college-level-math" class="nav-link" data-scroll-target="#college-level-math">College Level Math</a></li>
-  <li><a href="#computer-science" id="toc-computer-science" class="nav-link" data-scroll-target="#computer-science">Computer Science</a></li>
-  <li><a href="#other-fields" id="toc-other-fields" class="nav-link" data-scroll-target="#other-fields">Other Fields</a></li>
+  <li><a href="#machine-learning-terminology" id="toc-machine-learning-terminology" class="nav-link active" data-scroll-target="#machine-learning-terminology">Machine Learning Terminology</a></li>
+  <li><a href="#linear-classifer-through-origin" id="toc-linear-classifer-through-origin" class="nav-link" data-scroll-target="#linear-classifer-through-origin">Linear Classifer (Through Origin)</a>
+  <ul class="collapse">
+  <li><a href="#graphical-representation" id="toc-graphical-representation" class="nav-link" data-scroll-target="#graphical-representation">Graphical Representation</a></li>
+  </ul></li>
+  <li><a href="#linear-classifier-with-offset" id="toc-linear-classifier-with-offset" class="nav-link" data-scroll-target="#linear-classifier-with-offset">Linear Classifier with Offset</a>
+  <ul class="collapse">
+  <li><a href="#graphical-representation-1" id="toc-graphical-representation-1" class="nav-link" data-scroll-target="#graphical-representation-1">Graphical Representation</a></li>
+  </ul></li>
+  <li><a href="#training-error" id="toc-training-error" class="nav-link" data-scroll-target="#training-error">Training Error</a>
+  <ul class="collapse">
+  <li><a href="#perception-algorithm" id="toc-perception-algorithm" class="nav-link" data-scroll-target="#perception-algorithm">Perception Algorithm</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/01-Linear-Classification/01-Linear-Classification.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/01-Linear-Classification/01-Linear-Classification.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Class Notes</h1>
-</div>
+<h1 class="title">1 Linear Classification</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Database</div>
+    <div class="quarto-category">Relational Model</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    This lecture discusses the linear classification, a fundamental concept in machine learning.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 23, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -228,56 +292,236 @@ window.MathJax = {
 </header>
 
 
-<section id="high-school-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="high-school-level-math">High School Level Math</h3>
+<section id="machine-learning-terminology" class="level2">
+<h2 class="anchored" data-anchor-id="machine-learning-terminology">Machine Learning Terminology</h2>
 <ul>
-<li><a href="./notes/IBMath.html">IB Math AA HL Notes</a></li>
+<li><strong>feature vector</strong>: <span class="math inline">\(\va x=\mqty[x_1&amp;x_2&amp;\cdots&amp;x_d]^\top\in\R^d\)</span>. <span class="math inline">\(\R^d\)</span> is called the feature space.</li>
+<li><strong>label</strong>: <span class="math inline">\(y\in\qty{-1,+1}\)</span>, binary.</li>
+<li><strong>training set of labeled examples</strong>: <span class="math display">\[D=\qty{\va x^{(i)},y^{(i)}}_{i=1}^N\]</span></li>
+<li><strong>classifier</strong>: <span class="math display">\[h:\R^d\to\qty{-1,+1}.\]</span>
+<ul>
+<li>Gola: select the best <span class="math inline">\(h\)</span> from a set of possible classifiers <span class="math inline">\(\mathcal{H}\)</span> that would (the ability to generalization).</li>
+<li>We will solve this goal by a learning algorithm, typically an optimization problem <span class="math inline">\(\wrt D\)</span>.</li>
+</ul></li>
 </ul>
 </section>
-<section id="college-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="college-level-math">College Level Math</h3>
-<section id="math-fundamentals" class="level4">
-<h4 class="anchored" data-anchor-id="math-fundamentals">Math Fundamentals</h4>
+<section id="linear-classifer-through-origin" class="level2">
+<h2 class="anchored" data-anchor-id="linear-classifer-through-origin">Linear Classifer (Through Origin)</h2>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-linear-classifier" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Thresholded Linear Mapping from Feature Vectors to Labels)</strong></span> <span class="math display">\[
+h(\va x; \va\theta)=\begin{cases}+1\quad\text{if }\va\theta\cdot\va x&gt;0,\\-1\quad\text{if }\va\theta\cdot\va x&lt;0\end{cases},
+\]</span> where <span class="math inline">\(\va\theta\in\R^d\)</span> is the <strong><em>parameter vector</em></strong>, and <span class="math inline">\(\va\theta=\mqty[\theta_1,\theta_2,\dots,\theta_d]^\top\)</span>.</p>
+<p>One can also write it using the <span class="math inline">\(\operatorname{sign}\)</span> function: <span class="math display">\[
+h(\va x;\va\theta)=\operatorname{sign}(\va\theta\cdot\va x)=\begin{cases}
++1\quad\text{if }\va\theta\cdot\va x&gt;0,\\
+0\quad\text{if }\va\theta\cdot\va x=0,\\
+-1\quad\text{if }\va\theta\cdot\va x&lt;0.
+\end{cases}.
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
 <ul>
-<li><a href="./notes/Calc2.html">Calculus II</a></li>
-<li><a href="./notes/Calc3.html">Multivariable Calculus/Advanced Calculus/Calculus III</a></li>
-<li><a href="./notes/LA.html">Linear Algebra</a></li>
-<li><a href="./notes/Proofs.html">Mathematical Proofs</a></li>
+<li>Recall: dot product: <span class="math display">\[
+\va\theta\cdot\va x=\theta_1x_1+\theta_2x_2+\cdots+\theta_dx_d=\sum_{j=1}^d\theta_jx_j,
+\]</span> a linear combination of input features.</li>
+<li>In <span class="math inline">\(h(\va x;\va\theta)\)</span>, different <span class="math inline">\(\va\theta\)</span>’s produce (potentially) different labelings for the same <span class="math inline">\(\va x\)</span>.</li>
+</ul>
+<section id="graphical-representation" class="level3">
+<h3 class="anchored" data-anchor-id="graphical-representation">Graphical Representation</h3>
+<div id="fig-decision-boundary-1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-decision-boundary-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/decision-boundary-1.jpeg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-decision-boundary-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Decision Boundary
+</figcaption>
+</figure>
+</div>
+<ul>
+<li><p>However, what happens on this <span class="math inline">\(90^\circ\)</span> line? We call this line the <strong><em>decision boundary</em></strong>, which separates the two classes. Recall: <span class="math display">\[
+\va\theta\cdot\va x=\norm{\va\theta}\cdot\norm{\va x}\cdot\cos 90^\circ=0.
+\]</span></p></li>
+<li><p>View the decision boundary as a <strong><em>hyperplane</em></strong> in <span class="math inline">\(\R^d\)</span>.</p>
+<ul>
+<li>Does the length of <span class="math inline">\(\va\theta\)</span> matter? No.</li>
+<li>Does the direction of <span class="math inline">\(\va\theta\)</span> matter? Yes.</li>
+</ul></li>
 </ul>
 </section>
-<section id="applied-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="applied-mathematics">Applied Mathematics</h4>
-<ul>
-<li><a href="./notes/ODE.html">Ordinary Differential Equations</a></li>
-<li><a href="./notes/nonlinearOpt.html">Nonlinear Optimization</a></li>
-<li><a href="./notes/NumericalAnalysis1.html">Undergraduate-Level Numerical Analysis</a></li>
-</ul>
 </section>
-<section id="data-science-statistics-and-causal-inference" class="level4">
-<h4 class="anchored" data-anchor-id="data-science-statistics-and-causal-inference">Data Science, Statistics, and Causal Inference</h4>
+<section id="linear-classifier-with-offset" class="level2">
+<h2 class="anchored" data-anchor-id="linear-classifier-with-offset">Linear Classifier with Offset</h2>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-linear-classifier-offset" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2 (Linear Classifier with Offset)</strong></span> <span class="math display">\[
+h(\va x;\va\theta,b)=\operatorname{sign}(\va\theta\cdot\va x+b),
+\]</span> where <span class="math inline">\(\va x\in\R^d\)</span>, <span class="math inline">\(\va\theta\in\R^d\)</span>, and <span class="math inline">\(b\in\R\)</span>. <span class="math inline">\(b\)</span> is called the <strong><em>offset</em></strong> or <strong><em>intercept</em></strong>.</p>
+</div>
+</div>
+</div>
+</div>
+<section id="graphical-representation-1" class="level3">
+<h3 class="anchored" data-anchor-id="graphical-representation-1">Graphical Representation</h3>
+<div id="fig-linear-classifier-with-offset" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-linear-classifier-with-offset-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/linear-classifier-offset.jpeg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-linear-classifier-with-offset-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Linear Classifier with Offset
+</figcaption>
+</figure>
+</div>
 <ul>
-<li><a href="https://jrlyu.github.io/qtm110.io/">Introduction to Causal Inference</a></li>
-<li><a href="https://jrlyu.github.io/google_analytics.io/">Google Data Analytics Learning Notes</a></li>
-<li><a href="./notes/MathStats.html">Mathematical Statistics</a></li>
-<li><a href="./notes/cs334.html">Machine Learning</a></li>
+<li>Note that the signed distance from <span class="math inline">\(\va\theta\cdot\va x=0\)</span> to the hyperplane <span class="math inline">\(\va\theta\cdot\va x+b=0\)</span> is given by: <span class="math display">\[
+\dfrac{-b}{\norm{\va\theta}}.
+\]</span></li>
 </ul>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span></p>
+<ul>
+<li>Pick a point on old decision boundary <span class="math inline">\(\va x^{(1)}\)</span> satisfies <span class="math display">\[\va\theta\cdot\va x^{(1)}=0.\]</span></li>
+<li>Pick a point on the new decision boundary <span class="math inline">\(\va x^{(2)}\)</span> satisfies <span class="math display">\[\va\theta\cdot\va x^{(2)}+b=0\implies\va\theta\va x^{(2)}=-b.\]</span></li>
+<li>Let <span class="math inline">\(\va v=\va x^{(2)}-\va x^{(1)}.\)</span></li>
+<li>Now, project <span class="math inline">\(\va v\)</span> into direction of <span class="math inline">\(\va\theta\)</span>: <span class="math display">\[
+\operatorname{proj}_{\va\theta}\va v=\qty(\va v\cdot\dfrac{\va\theta}{\norm{\va\theta}})\dfrac{\va\theta}{\norm{\va\theta}}.
+\]</span> Note: <span class="math inline">\(\dfrac{\va\theta}{\norm{\va\theta}}\)</span> is the unit vector in the direction of <span class="math inline">\(\va\theta\)</span>.</li>
+<li>Therefore, the signed sitance is given by: <span class="math display">\[
+\va v\cdot\dfrac{\va\theta}{\norm{\va\theta}}=\dfrac{\qty(\va x^{(2)}-\va x^{(1)})\cdot\va\theta}{\norm{\va\theta}}=\dfrac{\va x^{(2)}\cdot\va\theta-\va x^{(1)}\cdot\va\theta}{\norm{\va\theta}}=\dfrac{-b}{\norm{\va\theta}}.
+\]</span></li>
+</ul>
+</div>
 </section>
 </section>
-<section id="computer-science" class="level3">
-<h3 class="anchored" data-anchor-id="computer-science">Computer Science</h3>
+<section id="training-error" class="level2">
+<h2 class="anchored" data-anchor-id="training-error">Training Error</h2>
 <ul>
-<li><a href="./notes/cs171.html">Object-Oriented Programming &amp; Introduction to Data Structures</a></li>
-<li>Introduction to Data Structure and Algorithms</li>
-<li><a href="./notes/cs377.html">Database Systems</a></li>
+<li>Intuition: we want <span class="math inline">\(\va\theta\)</span> that works well on training data <span class="math inline">\(D\)</span>.</li>
 </ul>
-</section>
-<section id="other-fields" class="level3">
-<h3 class="anchored" data-anchor-id="other-fields">Other Fields</h3>
+<div class="callout callout-style-simple callout-caution">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="rem-overfitting" class="proof remark">
+<p><span class="proof-title"><em>Remark 1</em>. </span>We’ve restricted the class of possible clasassifiers to linear classifiers, reducing the chance of overfitting.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-training-error" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3 (Training Error and Learning Algorithms)</strong></span> The <strong><em>training error</em></strong> (<span class="math inline">\(\epsilon\)</span>) is the fraction of training examples for which the classifier produces wrong labels: <span class="math display">\[
+\epsilon_N(\va \theta)=\dfrac{1}{N}\sum_{i=1}^N\1\qty{y^{(i)}\neq h\qty(\va x^{(i)};\va\theta)},
+\]</span> where <span class="math inline">\(\1\{\cdot\}\)</span> returns <span class="math inline">\(1\)</span> if true and <span class="math inline">\(0\)</span> if false.</p>
+<p>An equivalent form is: <span class="math display">\[
+\epsilon_N(\va \theta)=\dfrac{1}{N}\sum_{i=1}^N\1\{{\color{orange}{\underbrace{y^{(i)}\qty(\va\theta\cdot\va x^{(i)})}_{\substack{y^(i)\text{ and }\va\theta\cdot\va x^{(i)}\\\text{ have opposite signs}}}}}{\color{green}{\overbrace{\leq 0}^{\substack{\text{points on the decision boundary}\\\text{are considered misclassified}}}}}\}
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
 <ul>
-<li><a href="https://jrlyu.github.io/intro_to_socio.io/">Introduction to Sociology</a></li>
+<li>Goal: Find <span class="math inline">\(\displaystyle\va\theta^*=\argmin_{\va\theta}\epsilon_N\qty(\va\theta)\)</span>.</li>
+<li>How:
+<ul>
+<li>In general, this is not easy to solve (it’s NP-hard).</li>
+<li>For now, we will consider a special case: <strong><em>linearly separable data</em></strong>.</li>
+</ul></li>
 </ul>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-linearly-separable" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4 (Linear Separable)</strong></span> Training examples <span class="math inline">\(D=\qty{\va x^{(i)}, y^{(i)}}_{i=1}^N\)</span> are <strong><em>linearly separable through the origin</em></strong> if <span class="math inline">\(\exists\ \va\theta\)</span> such that <span class="math display">\[
+y^{(i)}\qty(\va\theta\cdot\va x^{(i)})&gt;0\quad\forall\ i=1,\dots, N
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="rem-linearly-separable" class="proof remark">
+<p><span class="proof-title"><em>Remark 2</em>. </span>This assumption of linear separability is <strong>NOT</strong> testable.</p>
+</div>
+</div>
+</div>
+</div>
+<section id="perception-algorithm" class="level3">
+<h3 class="anchored" data-anchor-id="perception-algorithm">Perception Algorithm</h3>
+<ul>
+<li>The <strong><em>perception algorithm</em></strong> is a mistaken-driven algorithm. It starts with <span class="math inline">\(\va\theta=\va 0\)</span> (the zero vector), and then tries to update <span class="math inline">\(\va\theta\)</span> to correct any mistakes.</li>
+</ul>
+<div id="alg-perception-origin" class="pseudocode-container quarto-float" data-comment-delimiter="#" data-pseudocode-number="1" data-caption-prefix="Algorithm">
+<div class="pseudocode">
+\begin{algorithm} \caption{Perception (Through Origin)} \begin{algorithmic} \Procedure{Perception}{$D=\qty{\va x^{(i)}, y^{(i)}}_{i=1}^N$} \State $k=0$; $\va\theta^{(0)}=\va 0$ \While{not all points are correctly classified} \For{$i=1,\dots, N$} \State \Comment{$\color{green}\text{if mistake}$} \If{$y^{(i)}\qty(\va\theta^{(k)}\cdot\va x^{(i)})\leq 0$} \State $\va\theta^{(k+1)}=\va\theta^{(k)}+y^{(i)}\va x^{(i)}$ \State $k++$ \EndIf \EndFor \EndWhile \EndProcedure \end{algorithmic} \end{algorithm}
+</div>
+</div>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="thm-perception" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Existence of Perception Solution)</strong></span> The perception algorithm (<a href="#alg-perception-origin" class="quarto-xref">Algorithm 1</a>) converges after a finite number of mistkaes if the training examples are linearly separable through the origin.</p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>However, :
+<ul>
+<li>Solution is not unique</li>
+<li>May need to loop through the dataset more than once, or not use some points at all.</li>
+</ul></li>
+</ul>
+<div id="alg-perception-offset" class="pseudocode-container quarto-float" data-comment-delimiter="#" data-pseudocode-number="2" data-caption-prefix="Algorithm">
+<div class="pseudocode">
+\begin{algorithm} \caption{Perception (With Offset)} \begin{algorithmic} \Procedure{Perception}{$D=\qty{\va x^{(i)}, y^{(i)}}_{i=1}^N$} \State $k=0$; $\va\theta^{(0)}=\va 0$; $b^{(0)}=0$ \While{not all points are correctly classified} \For{$i=1,\dots, N$} \State \Comment{$\color{green}\text{if mistake}$} \If{$y^{(i)}\qty(\va\theta^{(k)}\cdot\va x^{(i)}+b^{(k)})\leq 0$} \State $\va\theta^{(k+1)}=\va\theta^{(k)}+y^{(i)}\va x^{(i)}$ \State $b^{(k+1)}=b^{(k)}+y^{(i)}$ \State $k++$ \EndIf \EndFor \EndWhile \EndProcedure \end{algorithmic} \end{algorithm}
+</div>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Produce augmented vecotrs: <span class="math display">\[\va x'=\mqty[1, \va x]^\top\quad\text{and}\quad\va\theta'=\mqty[b,\va\theta]^\top.\]</span> Then, we have <em>implicit offset</em> formula: <span class="math display">\[\va\theta'\cdot\va x'=b+\va\theta\cdot\va x.\]</span> Apply <a href="#alg-perception-origin" class="quarto-xref">Algorithm 1</a> to <span class="math inline">\(\va x'\)</span> and <span class="math inline">\(\va\theta'\)</span>: <span class="math display">\[
+\begin{aligned}
+\va\theta'^{(k+1)}&amp;=\va\theta'^{(k)}+y^{(i)}\va x'^{(i)}\\
+\mqty[b^{(k+1)},\va\theta^{(k+1)}]&amp;=\mqty[b^{(k)},\va\theta^{(k)}]+y^{(i)}\mqty[1,\va x^{(i)}]\\
+\implies \va\theta^{(k+1)}&amp;=\va\theta^{(k)}+y^{(i)}\va x^{(i)}\\
+b^{(k+1)}&amp;=b^{(k)}+y^{(i)}.
+\end{aligned}
+\]</span></p>
+</div>
 
 
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
@@ -820,7 +1064,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/01-Linear-Classification/01-Linear-Classification.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/01-Linear-Classification/01-Linear-Classification.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
@@ -845,6 +1089,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+    <script type="text/javascript">
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let pseudocodeOptions = {
+          indentSize: el.dataset.indentSize || "1.2em",
+          commentDelimiter: el.dataset.commentDelimiter || "//",
+          lineNumber: el.dataset.lineNumber === "true" ? true : false,
+          lineNumberPunc: el.dataset.lineNumberPunc || ":",
+          noEnd: el.dataset.noEnd === "true" ? true : false,
+          titlePrefix: el.dataset.captionPrefix || "Algorithm"
+        };
+        pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
+      });
+    })(document);
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let captionSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        if (captionSpan !== null) {
+          let captionPrefix = el.dataset.captionPrefix + " ";
+          let captionNumber = "";
+          if (el.dataset.pseudocodeNumber) {
+            captionNumber = el.dataset.pseudocodeNumber + " ";
+            if (el.dataset.chapterLevel) {
+              captionNumber = el.dataset.chapterLevel + "." + captionNumber;
+            }
+          }
+          captionSpan.innerHTML = captionPrefix + captionNumber;
+        }
+      });
+    })(document);
+    </script>
+  
 
 
 

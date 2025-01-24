@@ -1,0 +1,10 @@
+---
+title: "CS 334 Machine Learning"
+listing: 
+  contents: cs334
+  type: default
+  filter-ui: true
+  sort-ui: true
+  sort: "date asc" # can also sort on more than one field
+  categories: true # allows you to sort posts by assigned categories 
+---
