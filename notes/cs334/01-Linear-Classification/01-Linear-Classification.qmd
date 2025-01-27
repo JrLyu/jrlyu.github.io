@@ -138,17 +138,17 @@ This assumption of linear separability is **NOT** testable.
 :::
 :::
 
-### Perception Algorithm
-- The ***perception algorithm*** is a mistaken-driven algorithm. It starts with $\va\theta=\va 0$ (the zero vector), and then tries to update $\va\theta$ to correct any mistakes. 
+### Perceptron Algorithm
+- The ***perceptron algorithm*** is a mistaken-driven algorithm. It starts with $\va\theta=\va 0$ (the zero vector), and then tries to update $\va\theta$ to correct any mistakes. 
 
 ```pseudocode
 #| html-comment-delimiter: "#"
-#| label: alg-perception-origin
+#| label: alg-perceptron-origin
 
 \begin{algorithm}
-\caption{Perception (Through Origin)}
+\caption{Perceptron (Through Origin)}
 \begin{algorithmic}
-\Procedure{Perception}{$D=\qty{\va x^{(i)}, y^{(i)}}_{i=1}^N$}
+\Procedure{Perceptron}{$D=\qty{\va x^{(i)}, y^{(i)}}_{i=1}^N$}
 	\State $k=0$; $\va\theta^{(0)}=\va 0$
 	\While{not all points are correctly classified}
 		\For{$i=1,\dots, N$}
@@ -165,9 +165,9 @@ This assumption of linear separability is **NOT** testable.
 ```
 
 :::{.callout-important}
-:::{#thm-perception}
-## Existence of Perception Solution
-The perception algorithm (@alg-perception-origin) converges after a finite number of mistkaes if the training examples are linearly separable through the origin.
+:::{#thm-perceptron}
+## Existence of Perceptron Solution
+The perceptron algorithm (@alg-perceptron-origin) converges after a finite number of mistkaes if the training examples are linearly separable through the origin.
 :::
 :::
 
@@ -177,12 +177,12 @@ The perception algorithm (@alg-perception-origin) converges after a finite numbe
 
 ```pseudocode
 #| html-comment-delimiter: "#"
-#| label: alg-perception-offset
+#| label: alg-perceptron-offset
 
 \begin{algorithm}
-\caption{Perception (With Offset)}
+\caption{Perceptron (With Offset)}
 \begin{algorithmic}
-\Procedure{Perception}{$D=\qty{\va x^{(i)}, y^{(i)}}_{i=1}^N$}
+\Procedure{Perceptron}{$D=\qty{\va x^{(i)}, y^{(i)}}_{i=1}^N$}
 	\State $k=0$; $\va\theta^{(0)}=\va 0$; $b^{(0)}=0$
 	\While{not all points are correctly classified}
 		\For{$i=1,\dots, N$}
@@ -202,7 +202,7 @@ The perception algorithm (@alg-perception-origin) converges after a finite numbe
 :::{.proof}
 Produce augmented vecotrs: $$\va x'=\mqty[1, \va x]^\top\quad\text{and}\quad\va\theta'=\mqty[b,\va\theta]^\top.$$
 Then, we have *implicit offset* formula: $$\va\theta'\cdot\va x'=b+\va\theta\cdot\va x.$$
-Apply @alg-perception-origin to $\va x'$ and $\va\theta'$: 
+Apply @alg-perceptron-origin to $\va x'$ and $\va\theta'$: 
 $$
 \begin{aligned}
 \va\theta'^{(k+1)}&=\va\theta'^{(k)}+y^{(i)}\va x'^{(i)}\\
