@@ -5,7 +5,7 @@ author:
   - name: Jiuru Lyu
     url: https://jrlyu.github.io/
 date: 10-08-2024
-categories: [Coding, SQL, Database, Join, Null]
+categories: [Coding, SQL, Database, Join, "NULL"]
 draft: false
 ---
 

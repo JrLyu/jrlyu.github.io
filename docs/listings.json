@@ -1,29 +1,5 @@
 [
   {
-    "listing": "/blogs.html",
-    "items": [
-      "/blogs/2024-12-10-arnoldi/index.html"
-    ]
-  },
-  {
-    "listing": "/notes/cs171.html",
-    "items": [
-      "/notes/cs171/02-Review/Review.html",
-      "/notes/cs171/03-Objects_and_Classes/Objects_and_Classes.html",
-      "/notes/cs171/04-Packages/Packages.html",
-      "/notes/cs171/05-Inheritance-and-Polymorphism/Inheritance_and_Polymorphism.html",
-      "/notes/cs171/06-Abstract-Classes-and-Interfaces/Abstract_Classes_and_Interfaces.html",
-      "/notes/cs171/07-Generics/Generics.html",
-      "/notes/cs171/08-Array-Data-Structure/Array Data Structure.html",
-      "/notes/cs171/09-Stack-Data-Structure/Stack Data Structure.html",
-      "/notes/cs171/10-Queue-Data-Structure/Queue Data Structure.html",
-      "/notes/cs171/11-Linked-List/Linked List.html",
-      "/notes/cs171/12-Complexity-Analysis/Complexity Analysis.html",
-      "/notes/cs171/13-Sorting-Algorithms/Sorting Algorithms.html",
-      "/notes/cs171/14-Hashing/Hashing.html"
-    ]
-  },
-  {
     "listing": "/notes/cs377.html",
     "items": [
       "/notes/cs377/01-relational-model/01-The-Relational-Model.html",
@@ -45,6 +21,12 @@
     "listing": "/notes/cs334.html",
     "items": [
       "/notes/cs334/01-Linear-Classification/01-Linear-Classification.html"
+    ]
+  },
+  {
+    "listing": "/blogs.html",
+    "items": [
+      "/blogs/2024-12-10-arnoldi/index.html"
     ]
   }
 ]

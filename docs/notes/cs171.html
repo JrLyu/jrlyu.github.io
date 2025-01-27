@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Jiuru Lyu - CS 171 Introduction to Computer Science II</title>
+<title>CS 171 Introduction to Computer Science II – Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -38,12 +38,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -100,11 +102,76 @@ ul.task-list li input[type="checkbox"] {
     }
   })
   </script>
+<script>
+window.MathJax = {
+  loader: {
+    load: ['[tex]/physics']
+  },
+  tex: {
+    packages: {'[+]': ['physics']},
+    macros: {
+      R: "\\mathbb{R}",
+      C: "\\mathbb{C}",
+      Q: "\\mathbb{Q}",
+      d: "\\mathrm{d}",
+      i: "\\mathrm{i}",
+      N: "\\mathbb{N}",
+      "1": "{\\Large{\\unicode{x1D7D9}}}",
+      bigO: "\\mathcal{O}",
+      sp: "\\operatorname{span}",
+      epsilon: "\\varepsilon",
+      emptyset: "\\varnothing",
+      phi: "\\varphi",
+      dsst: "\\displaystyle",
+      st: "\\ \\text{s.t.}\\ ",
+      wrt: "\\ \\text{w.r.t.}\\ ",
+      bar: "\\overline",
+      tilde: "\\widetilde",
+      E: "\\vb{E}",
+      B: "\\vb{B}",
+      L: "\\vb{L}",
+      I: "\\vb{I}",
+      Var: "\\vb{Var}",
+      V: "\\vb{Var}",
+      Cov: "\\vb{Cov}",
+      MSE: "\\vb{MSE}",
+      P: "\\vb{P}",
+      M: "\\vb{M}",
+      iid: "\\text{i.i.d.}",
+      argmax: "\\mathop{\\arg\\max}",
+      argmin: "\\mathop{\\arg\\min}",
+      l: "\\ell",
+      hat: "\\widehat",
+      independ: "\\perp\\!\\!\\!\\perp",
+      depend: "\\leftrightsquigarrow",
+      residual: "\\varepsilon",
+      sd: "\\mathrm{sd}",
+      LI: "\\mathrm{L.I.}",
+      range: "\\operatorname{range}",
+      Null: "\\operatorname{null}",
+      nullity: "\\operatorname{nullity}",
+      A: "A^{-1}",
+      alg: "\\operatorname{alg}",
+      fl: "\\operatorname{fl}",
+      algmult: "\\operatorname{alg.\\ mult.}",
+      geomult: "\\operatorname{geo.\\ mult.}",
+      diag: "\\operatorname{diag}",
+      gap: "\\operatorname{gap}",
+      pqde: "\\quad\\square",
+      lub: "\\operatorname{lub}",
+      Int: "\\operatorname{int}",
+      ac: "\\operatorname{ac}",
+      cl: "\\operatorname{cl}",
+      bd: "\\operatorname{bd}"
+    }
+  }
+};
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet"> 
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -149,7 +216,7 @@ window.Quarto = {
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -159,8 +226,9 @@ window.Quarto = {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../cv/cv.pdf"> 
-<span class="menu-text">CV</span></a>
+    <span class="nav-link">
+<span class="menu-text">CV</span>
+    </span>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../notes.html"> 
@@ -176,7 +244,7 @@ window.Quarto = {
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
@@ -193,7 +261,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(13)</span></div><div class="category" data-category="Abstract Class">Abstract Class <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Algorithm">Algorithm <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Algorithms">Algorithms <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Array">Array <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Class">Class <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Coding">Coding <span class="quarto-category-count">(13)</span></div><div class="category" data-category="Complexity Analysis">Complexity Analysis <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Data Structure">Data Structure <span class="quarto-category-count">(6)</span></div><div class="category" data-category="Generics">Generics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Hash Table">Hash Table <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Hashing">Hashing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Inhertiance">Inhertiance <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Interface">Interface <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Java">Java <span class="quarto-category-count">(13)</span></div><div class="category" data-category="Linked List">Linked List <span class="quarto-category-count">(1)</span></div><div class="category" data-category="OOP">OOP <span class="quarto-category-count">(5)</span></div><div class="category" data-category="Objects">Objects <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Pakcage">Pakcage <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Polymorphism">Polymorphism <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Queue">Queue <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Sorting">Sorting <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Stack">Stack <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(13)</span></div><div class="category" data-category="QWJzdHJhY3QlMjBDbGFzcw==">Abstract Class <span class="quarto-category-count">(1)</span></div><div class="category" data-category="QWxnb3JpdGht">Algorithm <span class="quarto-category-count">(1)</span></div><div class="category" data-category="QWxnb3JpdGhtcw==">Algorithms <span class="quarto-category-count">(3)</span></div><div class="category" data-category="QXJyYXk=">Array <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q2xhc3M=">Class <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q29kaW5n">Coding <span class="quarto-category-count">(13)</span></div><div class="category" data-category="Q29tcGxleGl0eSUyMEFuYWx5c2lz">Complexity Analysis <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YSUyMFN0cnVjdHVyZQ==">Data Structure <span class="quarto-category-count">(6)</span></div><div class="category" data-category="R2VuZXJpY3M=">Generics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SGFzaCUyMFRhYmxl">Hash Table <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SGFzaGluZw==">Hashing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SW5oZXJ0aWFuY2U=">Inhertiance <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SW50ZXJmYWNl">Interface <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SmF2YQ==">Java <span class="quarto-category-count">(13)</span></div><div class="category" data-category="TGlua2VkJTIwTGlzdA==">Linked List <span class="quarto-category-count">(1)</span></div><div class="category" data-category="T09Q">OOP <span class="quarto-category-count">(5)</span></div><div class="category" data-category="T2JqZWN0cw==">Objects <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UGFrY2FnZQ==">Pakcage <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UG9seW1vcnBoaXNt">Polymorphism <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UXVldWU=">Queue <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U29ydGluZw==">Sorting <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3RhY2s=">Stack <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
@@ -247,10 +315,10 @@ window.Quarto = {
     </div>
 </div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Coding,Java,Algorithm,OOP,Data Structure" data-listing-date-sort="1693281600000" data-listing-file-modified-sort="1729979276023" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2847">
+<div class="quarto-post image-right" data-index="0" data-categories="Q29kaW5nJTJDSmF2YSUyQ0FsZ29yaXRobSUyQ09PUCUyQ0RhdGElMjBTdHJ1Y3R1cmU=" data-listing-date-sort="1693281600000" data-listing-file-modified-sort="1729979276023" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2847">
 <div class="thumbnail">
 <p><a href="../notes/cs171/02-Review/Review.html" class="no-external"></a></p><a href="../notes/cs171/02-Review/Review.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<!-- img(9CEB782EFEE6)[progressive=false, height=]:listing:notes/cs171/02-Review/Review.html -->
 </a><p><a href="../notes/cs171/02-Review/Review.html" class="no-external"></a></p>
 </div>
 <div class="body">
@@ -261,19 +329,19 @@ window.Quarto = {
 <a href="../notes/cs171/02-Review/Review.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Java'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SmF2YQ=='); return false;">
 Java
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Algorithm'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('QWxnb3JpdGht'); return false;">
 Algorithm
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('OOP'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('T09Q'); return false;">
 OOP
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Data Structure'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YSUyMFN0cnVjdHVyZQ=='); return false;">
 Data Structure
 </div>
 </div>
@@ -292,10 +360,10 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="Coding,Java,OOP,Objects,Class" data-listing-date-sort="1694059200000" data-listing-file-modified-sort="1729979326534" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4504">
+<div class="quarto-post image-right" data-index="1" data-categories="Q29kaW5nJTJDSmF2YSUyQ09PUCUyQ09iamVjdHMlMkNDbGFzcw==" data-listing-date-sort="1694059200000" data-listing-file-modified-sort="1729979326534" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4504">
 <div class="thumbnail">
 <p><a href="../notes/cs171/03-Objects_and_Classes/Objects_and_Classes.html" class="no-external"></a></p><a href="../notes/cs171/03-Objects_and_Classes/Objects_and_Classes.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<!-- img(9CEB782EFEE6)[progressive=false, height=]:listing:notes/cs171/03-Objects_and_Classes/Objects_and_Classes.html -->
 </a><p><a href="../notes/cs171/03-Objects_and_Classes/Objects_and_Classes.html" class="no-external"></a></p>
 </div>
 <div class="body">
@@ -306,19 +374,19 @@ Jiuru Lyu
 <a href="../notes/cs171/03-Objects_and_Classes/Objects_and_Classes.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Java'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SmF2YQ=='); return false;">
 Java
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('OOP'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('T09Q'); return false;">
 OOP
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Objects'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('T2JqZWN0cw=='); return false;">
 Objects
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Class'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q2xhc3M='); return false;">
 Class
 </div>
 </div>
@@ -337,10 +405,10 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="Coding,Java,OOP,Pakcage" data-listing-date-sort="1694836800000" data-listing-file-modified-sort="1729979106986" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="452">
+<div class="quarto-post image-right" data-index="2" data-categories="Q29kaW5nJTJDSmF2YSUyQ09PUCUyQ1Bha2NhZ2U=" data-listing-date-sort="1694836800000" data-listing-file-modified-sort="1729979106986" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="452">
 <div class="thumbnail">
 <p><a href="../notes/cs171/04-Packages/Packages.html" class="no-external"></a></p><a href="../notes/cs171/04-Packages/Packages.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<!-- img(9CEB782EFEE6)[progressive=false, height=]:listing:notes/cs171/04-Packages/Packages.html -->
 </a><p><a href="../notes/cs171/04-Packages/Packages.html" class="no-external"></a></p>
 </div>
 <div class="body">
@@ -351,16 +419,16 @@ Jiuru Lyu
 <a href="../notes/cs171/04-Packages/Packages.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Java'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SmF2YQ=='); return false;">
 Java
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('OOP'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('T09Q'); return false;">
 OOP
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Pakcage'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('UGFrY2FnZQ=='); return false;">
 Pakcage
 </div>
 </div>
@@ -379,10 +447,10 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="Coding,Java,OOP,Inhertiance,Polymorphism" data-listing-date-sort="1695096000000" data-listing-file-modified-sort="1729980537796" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="28" data-listing-word-count-sort="5567">
+<div class="quarto-post image-right" data-index="3" data-categories="Q29kaW5nJTJDSmF2YSUyQ09PUCUyQ0luaGVydGlhbmNlJTJDUG9seW1vcnBoaXNt" data-listing-date-sort="1695096000000" data-listing-file-modified-sort="1729980537796" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="28" data-listing-word-count-sort="5567">
 <div class="thumbnail">
 <p><a href="../notes/cs171/05-Inheritance-and-Polymorphism/Inheritance_and_Polymorphism.html" class="no-external"></a></p><a href="../notes/cs171/05-Inheritance-and-Polymorphism/Inheritance_and_Polymorphism.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<!-- img(9CEB782EFEE6)[progressive=false, height=]:listing:notes/cs171/05-Inheritance-and-Polymorphism/Inheritance_and_Polymorphism.html -->
 </a><p><a href="../notes/cs171/05-Inheritance-and-Polymorphism/Inheritance_and_Polymorphism.html" class="no-external"></a></p>
 </div>
 <div class="body">
@@ -393,19 +461,19 @@ Jiuru Lyu
 <a href="../notes/cs171/05-Inheritance-and-Polymorphism/Inheritance_and_Polymorphism.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Java'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SmF2YQ=='); return false;">
 Java
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('OOP'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('T09Q'); return false;">
 OOP
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Inhertiance'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SW5oZXJ0aWFuY2U='); return false;">
 Inhertiance
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Polymorphism'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('UG9seW1vcnBoaXNt'); return false;">
 Polymorphism
 </div>
 </div>
@@ -424,10 +492,10 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="Coding,Java,OOP,Interface,Abstract Class" data-listing-date-sort="1696392000000" data-listing-file-modified-sort="1729983444640" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1890">
+<div class="quarto-post image-right" data-index="4" data-categories="Q29kaW5nJTJDSmF2YSUyQ09PUCUyQ0ludGVyZmFjZSUyQ0Fic3RyYWN0JTIwQ2xhc3M=" data-listing-date-sort="1696392000000" data-listing-file-modified-sort="1729983444640" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1890">
 <div class="thumbnail">
 <p><a href="../notes/cs171/06-Abstract-Classes-and-Interfaces/Abstract_Classes_and_Interfaces.html" class="no-external"></a></p><a href="../notes/cs171/06-Abstract-Classes-and-Interfaces/Abstract_Classes_and_Interfaces.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<!-- img(9CEB782EFEE6)[progressive=false, height=]:listing:notes/cs171/06-Abstract-Classes-and-Interfaces/Abstract_Classes_and_Interfaces.html -->
 </a><p><a href="../notes/cs171/06-Abstract-Classes-and-Interfaces/Abstract_Classes_and_Interfaces.html" class="no-external"></a></p>
 </div>
 <div class="body">
@@ -438,19 +506,19 @@ Jiuru Lyu
 <a href="../notes/cs171/06-Abstract-Classes-and-Interfaces/Abstract_Classes_and_Interfaces.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Java'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SmF2YQ=='); return false;">
 Java
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('OOP'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('T09Q'); return false;">
 OOP
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Interface'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SW50ZXJmYWNl'); return false;">
 Interface
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Abstract Class'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('QWJzdHJhY3QlMjBDbGFzcw=='); return false;">
 Abstract Class
 </div>
 </div>
@@ -469,10 +537,10 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="Coding,Java,Generics" data-listing-date-sort="1696910400000" data-listing-file-modified-sort="1729983594540" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="783">
+<div class="quarto-post image-right" data-index="5" data-categories="Q29kaW5nJTJDSmF2YSUyQ0dlbmVyaWNz" data-listing-date-sort="1696910400000" data-listing-file-modified-sort="1729983594540" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="783">
 <div class="thumbnail">
 <p><a href="../notes/cs171/07-Generics/Generics.html" class="no-external"></a></p><a href="../notes/cs171/07-Generics/Generics.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<!-- img(9CEB782EFEE6)[progressive=false, height=]:listing:notes/cs171/07-Generics/Generics.html -->
 </a><p><a href="../notes/cs171/07-Generics/Generics.html" class="no-external"></a></p>
 </div>
 <div class="body">
@@ -483,13 +551,13 @@ Jiuru Lyu
 <a href="../notes/cs171/07-Generics/Generics.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Java'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SmF2YQ=='); return false;">
 Java
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Generics'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('R2VuZXJpY3M='); return false;">
 Generics
 </div>
 </div>
@@ -508,10 +576,10 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="Coding,Java,Data Structure,Array" data-listing-date-sort="1697256000000" data-listing-file-modified-sort="1730009524536" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2336">
+<div class="quarto-post image-right" data-index="6" data-categories="Q29kaW5nJTJDSmF2YSUyQ0RhdGElMjBTdHJ1Y3R1cmUlMkNBcnJheQ==" data-listing-date-sort="1697256000000" data-listing-file-modified-sort="1730009524536" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2336">
 <div class="thumbnail">
 <p><a href="../notes/cs171/08-Array-Data-Structure/Array Data Structure.html" class="no-external"></a></p><a href="../notes/cs171/08-Array-Data-Structure/Array Data Structure.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<!-- img(9CEB782EFEE6)[progressive=false, height=]:listing:notes/cs171/08-Array-Data-Structure/Array Data Structure.html -->
 </a><p><a href="../notes/cs171/08-Array-Data-Structure/Array Data Structure.html" class="no-external"></a></p>
 </div>
 <div class="body">
@@ -522,16 +590,16 @@ Jiuru Lyu
 <a href="../notes/cs171/08-Array-Data-Structure/Array Data Structure.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Java'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SmF2YQ=='); return false;">
 Java
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Data Structure'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YSUyMFN0cnVjdHVyZQ=='); return false;">
 Data Structure
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Array'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('QXJyYXk='); return false;">
 Array
 </div>
 </div>
@@ -550,10 +618,10 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="Coding,Java,Data Structure,Stack" data-listing-date-sort="1697601600000" data-listing-file-modified-sort="1730009765460" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="21" data-listing-word-count-sort="4081">
+<div class="quarto-post image-right" data-index="7" data-categories="Q29kaW5nJTJDSmF2YSUyQ0RhdGElMjBTdHJ1Y3R1cmUlMkNTdGFjaw==" data-listing-date-sort="1697601600000" data-listing-file-modified-sort="1730009765460" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="21" data-listing-word-count-sort="4081">
 <div class="thumbnail">
 <p><a href="../notes/cs171/09-Stack-Data-Structure/Stack Data Structure.html" class="no-external"></a></p><a href="../notes/cs171/09-Stack-Data-Structure/Stack Data Structure.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<!-- img(9CEB782EFEE6)[progressive=false, height=]:listing:notes/cs171/09-Stack-Data-Structure/Stack Data Structure.html -->
 </a><p><a href="../notes/cs171/09-Stack-Data-Structure/Stack Data Structure.html" class="no-external"></a></p>
 </div>
 <div class="body">
@@ -564,16 +632,16 @@ Jiuru Lyu
 <a href="../notes/cs171/09-Stack-Data-Structure/Stack Data Structure.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Java'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SmF2YQ=='); return false;">
 Java
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Data Structure'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YSUyMFN0cnVjdHVyZQ=='); return false;">
 Data Structure
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Stack'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('U3RhY2s='); return false;">
 Stack
 </div>
 </div>
@@ -592,10 +660,10 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="Coding,Java,Data Structure,Queue" data-listing-date-sort="1697601600000" data-listing-file-modified-sort="1730010349982" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1825">
+<div class="quarto-post image-right" data-index="8" data-categories="Q29kaW5nJTJDSmF2YSUyQ0RhdGElMjBTdHJ1Y3R1cmUlMkNRdWV1ZQ==" data-listing-date-sort="1697601600000" data-listing-file-modified-sort="1730010349982" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1825">
 <div class="thumbnail">
 <p><a href="../notes/cs171/10-Queue-Data-Structure/Queue Data Structure.html" class="no-external"></a></p><a href="../notes/cs171/10-Queue-Data-Structure/Queue Data Structure.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<!-- img(9CEB782EFEE6)[progressive=false, height=]:listing:notes/cs171/10-Queue-Data-Structure/Queue Data Structure.html -->
 </a><p><a href="../notes/cs171/10-Queue-Data-Structure/Queue Data Structure.html" class="no-external"></a></p>
 </div>
 <div class="body">
@@ -606,16 +674,16 @@ Jiuru Lyu
 <a href="../notes/cs171/10-Queue-Data-Structure/Queue Data Structure.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Java'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SmF2YQ=='); return false;">
 Java
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Data Structure'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YSUyMFN0cnVjdHVyZQ=='); return false;">
 Data Structure
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Queue'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('UXVldWU='); return false;">
 Queue
 </div>
 </div>
@@ -634,10 +702,10 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="Coding,Java,Data Structure,Linked List" data-listing-date-sort="1698897600000" data-listing-file-modified-sort="1730010784359" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="30" data-listing-word-count-sort="5880">
+<div class="quarto-post image-right" data-index="9" data-categories="Q29kaW5nJTJDSmF2YSUyQ0RhdGElMjBTdHJ1Y3R1cmUlMkNMaW5rZWQlMjBMaXN0" data-listing-date-sort="1698897600000" data-listing-file-modified-sort="1730010784359" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="30" data-listing-word-count-sort="5880">
 <div class="thumbnail">
 <p><a href="../notes/cs171/11-Linked-List/Linked List.html" class="no-external"></a></p><a href="../notes/cs171/11-Linked-List/Linked List.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<!-- img(9CEB782EFEE6)[progressive=false, height=]:listing:notes/cs171/11-Linked-List/Linked List.html -->
 </a><p><a href="../notes/cs171/11-Linked-List/Linked List.html" class="no-external"></a></p>
 </div>
 <div class="body">
@@ -648,16 +716,16 @@ Jiuru Lyu
 <a href="../notes/cs171/11-Linked-List/Linked List.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Java'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SmF2YQ=='); return false;">
 Java
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Data Structure'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YSUyMFN0cnVjdHVyZQ=='); return false;">
 Data Structure
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Linked List'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('TGlua2VkJTIwTGlzdA=='); return false;">
 Linked List
 </div>
 </div>
@@ -676,10 +744,10 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="Coding,Java,Algorithms,Complexity Analysis" data-listing-date-sort="1699678800000" data-listing-file-modified-sort="1731740992207" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2573">
+<div class="quarto-post image-right" data-index="10" data-categories="Q29kaW5nJTJDSmF2YSUyQ0FsZ29yaXRobXMlMkNDb21wbGV4aXR5JTIwQW5hbHlzaXM=" data-listing-date-sort="1699678800000" data-listing-file-modified-sort="1731740992207" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2573">
 <div class="thumbnail">
 <p><a href="../notes/cs171/12-Complexity-Analysis/Complexity Analysis.html" class="no-external"></a></p><a href="../notes/cs171/12-Complexity-Analysis/Complexity Analysis.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<!-- img(9CEB782EFEE6)[progressive=false, height=]:listing:notes/cs171/12-Complexity-Analysis/Complexity Analysis.html -->
 </a><p><a href="../notes/cs171/12-Complexity-Analysis/Complexity Analysis.html" class="no-external"></a></p>
 </div>
 <div class="body">
@@ -690,16 +758,16 @@ Jiuru Lyu
 <a href="../notes/cs171/12-Complexity-Analysis/Complexity Analysis.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Java'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SmF2YQ=='); return false;">
 Java
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Algorithms'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('QWxnb3JpdGhtcw=='); return false;">
 Algorithms
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Complexity Analysis'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29tcGxleGl0eSUyMEFuYWx5c2lz'); return false;">
 Complexity Analysis
 </div>
 </div>
@@ -718,10 +786,10 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-categories="Coding,Java,Algorithms,Sorting" data-listing-date-sort="1701666000000" data-listing-file-modified-sort="1731742089655" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="50" data-listing-word-count-sort="9818">
+<div class="quarto-post image-right" data-index="11" data-categories="Q29kaW5nJTJDSmF2YSUyQ0FsZ29yaXRobXMlMkNTb3J0aW5n" data-listing-date-sort="1701666000000" data-listing-file-modified-sort="1731742089655" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="50" data-listing-word-count-sort="9818">
 <div class="thumbnail">
 <p><a href="../notes/cs171/13-Sorting-Algorithms/Sorting Algorithms.html" class="no-external"></a></p><a href="../notes/cs171/13-Sorting-Algorithms/Sorting Algorithms.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<!-- img(9CEB782EFEE6)[progressive=false, height=]:listing:notes/cs171/13-Sorting-Algorithms/Sorting Algorithms.html -->
 </a><p><a href="../notes/cs171/13-Sorting-Algorithms/Sorting Algorithms.html" class="no-external"></a></p>
 </div>
 <div class="body">
@@ -732,16 +800,16 @@ Jiuru Lyu
 <a href="../notes/cs171/13-Sorting-Algorithms/Sorting Algorithms.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Java'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SmF2YQ=='); return false;">
 Java
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Algorithms'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('QWxnb3JpdGhtcw=='); return false;">
 Algorithms
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Sorting'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('U29ydGluZw=='); return false;">
 Sorting
 </div>
 </div>
@@ -760,10 +828,10 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-categories="Coding,Java,Data Structure,Algorithms,Hash Table,Hashing" data-listing-date-sort="1701838800000" data-listing-file-modified-sort="1731742685034" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="52" data-listing-word-count-sort="10214">
+<div class="quarto-post image-right" data-index="12" data-categories="Q29kaW5nJTJDSmF2YSUyQ0RhdGElMjBTdHJ1Y3R1cmUlMkNBbGdvcml0aG1zJTJDSGFzaCUyMFRhYmxlJTJDSGFzaGluZw==" data-listing-date-sort="1701838800000" data-listing-file-modified-sort="1731742685034" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="52" data-listing-word-count-sort="10214">
 <div class="thumbnail">
 <p><a href="../notes/cs171/14-Hashing/Hashing.html" class="no-external"></a></p><a href="../notes/cs171/14-Hashing/Hashing.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<!-- img(9CEB782EFEE6)[progressive=false, height=]:listing:notes/cs171/14-Hashing/Hashing.html -->
 </a><p><a href="../notes/cs171/14-Hashing/Hashing.html" class="no-external"></a></p>
 </div>
 <div class="body">
@@ -774,22 +842,22 @@ Jiuru Lyu
 <a href="../notes/cs171/14-Hashing/Hashing.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Java'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SmF2YQ=='); return false;">
 Java
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Data Structure'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YSUyMFN0cnVjdHVyZQ=='); return false;">
 Data Structure
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Algorithms'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('QWxnb3JpdGhtcw=='); return false;">
 Algorithms
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Hash Table'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SGFzaCUyMFRhYmxl'); return false;">
 Hash Table
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Hashing'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SGFzaGluZw=='); return false;">
 Hashing
 </div>
 </div>
@@ -992,18 +1060,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1035,7 +1092,45 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1070,7 +1165,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -1118,7 +1217,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -1377,6 +1475,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+    <script type="text/javascript">
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let pseudocodeOptions = {
+          indentSize: el.dataset.indentSize || "1.2em",
+          commentDelimiter: el.dataset.commentDelimiter || "//",
+          lineNumber: el.dataset.lineNumber === "true" ? true : false,
+          lineNumberPunc: el.dataset.lineNumberPunc || ":",
+          noEnd: el.dataset.noEnd === "true" ? true : false,
+          titlePrefix: el.dataset.captionPrefix || "Algorithm"
+        };
+        pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
+      });
+    })(document);
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let captionSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        if (captionSpan !== null) {
+          let captionPrefix = el.dataset.captionPrefix + " ";
+          let captionNumber = "";
+          if (el.dataset.pseudocodeNumber) {
+            captionNumber = el.dataset.pseudocodeNumber + " ";
+            if (el.dataset.chapterLevel) {
+              captionNumber = el.dataset.chapterLevel + "." + captionNumber;
+            }
+          }
+          captionSpan.innerHTML = captionPrefix + captionNumber;
+        }
+      });
+    })(document);
+    </script>
+  
 
 
 

@@ -94,7 +94,7 @@ $$
 ## Training Error
 - Intuition: we want $\va\theta$ that works well on training data $D$. 
 
-:::{.callout-caution}
+:::{.callout-warning}
 :::{#rem-overfitting}
 We've restricted the class of possible clasassifiers to linear classifiers, reducing the chance of overfitting.
 :::
@@ -164,7 +164,7 @@ This assumption of linear separability is **NOT** testable.
 \end{algorithm}
 ```
 
-:::{.callout-important}
+:::{.callout-caution}
 :::{#thm-perceptron}
 ## Existence of Perceptron Solution
 The perceptron algorithm (@alg-perceptron-origin) converges after a finite number of mistkaes if the training examples are linearly separable through the origin.

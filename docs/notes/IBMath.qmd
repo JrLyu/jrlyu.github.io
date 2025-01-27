@@ -1,8 +1,0 @@
----
-title: "Class Notes"
----
-
-
-```{=html}
-<embed src="pdf/Calculus II.pdf" width="800px" height="800px" />
-```

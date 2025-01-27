@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Jiuru Lyu - CS 377 Database Systems</title>
+<title>CS 377 Database Systems – Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -38,12 +38,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -114,7 +116,7 @@ window.MathJax = {
       d: "\\mathrm{d}",
       i: "\\mathrm{i}",
       N: "\\mathbb{N}",
-      "1": "\\mathds{1}",
+      "1": "{\\Large{\\unicode{x1D7D9}}}",
       bigO: "\\mathcal{O}",
       sp: "\\operatorname{span}",
       epsilon: "\\varepsilon",
@@ -169,7 +171,7 @@ window.MathJax = {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet"> 
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -214,7 +216,7 @@ window.Quarto = {
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -223,8 +225,11 @@ window.Quarto = {
     <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
-  <li class="dropdown-header">
- <span class="menu-text">CV</span></li>
+  <li class="nav-item">
+    <span class="nav-link">
+<span class="menu-text">CV</span>
+    </span>
+  </li>  
   <li class="nav-item">
     <a class="nav-link" href="../notes.html"> 
 <span class="menu-text">Notes</span></a>
@@ -239,7 +244,7 @@ window.Quarto = {
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
@@ -256,7 +261,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(13)</span></div><div class="category" data-category="Aggregation">Aggregation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="BCNF">BCNF <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Closure Test">Closure Test <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Coding">Coding <span class="quarto-category-count">(8)</span></div><div class="category" data-category="DB Design Theory">DB Design Theory <span class="quarto-category-count">(1)</span></div><div class="category" data-category="DDL">DDL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Database">Database <span class="quarto-category-count">(13)</span></div><div class="category" data-category="Database Design">Database Design <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ER Design">ER Design <span class="quarto-category-count">(1)</span></div><div class="category" data-category="FD Projection">FD Projection <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Functional Dependencies">Functional Dependencies <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JDBC">JDBC <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Java">Java <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Join">Join <span class="quarto-category-count">(2)</span></div><div class="category" data-category="NOSQL">NOSQL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Normalization">Normalization <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Relational Algebra">Relational Algebra <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Relational Model">Relational Model <span class="quarto-category-count">(2)</span></div><div class="category" data-category="SQL">SQL <span class="quarto-category-count">(8)</span></div><div class="category" data-category="Set Operations">Set Operations <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Subqueries">Subqueries <span class="quarto-category-count">(1)</span></div><div class="category" data-category="null">null <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(13)</span></div><div class="category" data-category="QWdncmVnYXRpb24=">Aggregation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="QkNORg==">BCNF <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q2xvc3VyZSUyMFRlc3Q=">Closure Test <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q29kaW5n">Coding <span class="quarto-category-count">(8)</span></div><div class="category" data-category="REIlMjBEZXNpZ24lMjBUaGVvcnk=">DB Design Theory <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RERM">DDL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YWJhc2U=">Database <span class="quarto-category-count">(13)</span></div><div class="category" data-category="RGF0YWJhc2UlMjBEZXNpZ24=">Database Design <span class="quarto-category-count">(2)</span></div><div class="category" data-category="RVIlMjBEZXNpZ24=">ER Design <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RkQlMjBQcm9qZWN0aW9u">FD Projection <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RnVuY3Rpb25hbCUyMERlcGVuZGVuY2llcw==">Functional Dependencies <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SkRCQw==">JDBC <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SmF2YQ==">Java <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Sm9pbg==">Join <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Tk9TUUw=">NOSQL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TlVMTA==">NULL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Tm9ybWFsaXphdGlvbg==">Normalization <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UmVsYXRpb25hbCUyMEFsZ2VicmE=">Relational Algebra <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UmVsYXRpb25hbCUyME1vZGVs">Relational Model <span class="quarto-category-count">(2)</span></div><div class="category" data-category="U1FM">SQL <span class="quarto-category-count">(8)</span></div><div class="category" data-category="U2V0JTIwT3BlcmF0aW9ucw==">Set Operations <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3VicXVlcmllcw==">Subqueries <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
@@ -310,7 +315,7 @@ window.Quarto = {
     </div>
 </div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Database,Relational Model" data-listing-date-sort="1724817600000" data-listing-file-modified-sort="1733330224367" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="719">
+<div class="quarto-post image-right" data-index="0" data-categories="RGF0YWJhc2UlMkNSZWxhdGlvbmFsJTIwTW9kZWw=" data-listing-date-sort="1724817600000" data-listing-file-modified-sort="1733330224367" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="719">
 <div class="thumbnail">
 <p><a href="../notes/cs377/01-relational-model/01-The-Relational-Model.html" class="no-external"></a></p><a href="../notes/cs377/01-relational-model/01-The-Relational-Model.html" class="no-external">
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -324,10 +329,10 @@ window.Quarto = {
 <a href="../notes/cs377/01-relational-model/01-The-Relational-Model.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Database'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2U='); return false;">
 Database
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Relational Model'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('UmVsYXRpb25hbCUyME1vZGVs'); return false;">
 Relational Model
 </div>
 </div>
@@ -346,7 +351,7 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="Database,Relational Model,Relational Algebra" data-listing-date-sort="1725768000000" data-listing-file-modified-sort="1733330215128" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1144">
+<div class="quarto-post image-right" data-index="1" data-categories="RGF0YWJhc2UlMkNSZWxhdGlvbmFsJTIwTW9kZWwlMkNSZWxhdGlvbmFsJTIwQWxnZWJyYQ==" data-listing-date-sort="1725768000000" data-listing-file-modified-sort="1733330215128" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1144">
 <div class="thumbnail">
 <p><a href="../notes/cs377/02-relational-algebra/02-Relational-Algebra.html" class="no-external"></a></p><a href="../notes/cs377/02-relational-algebra/02-Relational-Algebra.html" class="no-external">
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -360,13 +365,13 @@ Jiuru Lyu
 <a href="../notes/cs377/02-relational-algebra/02-Relational-Algebra.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Database'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2U='); return false;">
 Database
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Relational Model'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('UmVsYXRpb25hbCUyME1vZGVs'); return false;">
 Relational Model
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Relational Algebra'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('UmVsYXRpb25hbCUyMEFsZ2VicmE='); return false;">
 Relational Algebra
 </div>
 </div>
@@ -385,7 +390,7 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="Coding,SQL,Database" data-listing-date-sort="1725940800000" data-listing-file-modified-sort="1731010292719" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="657">
+<div class="quarto-post image-right" data-index="2" data-categories="Q29kaW5nJTJDU1FMJTJDRGF0YWJhc2U=" data-listing-date-sort="1725940800000" data-listing-file-modified-sort="1731010292719" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="657">
 <div class="thumbnail">
 <p><a href="../notes/cs377/03-sql-introduction/03-SQL-Introduction.html" class="no-external"></a></p><a href="../notes/cs377/03-sql-introduction/03-SQL-Introduction.html" class="no-external">
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -399,13 +404,13 @@ Jiuru Lyu
 <a href="../notes/cs377/03-sql-introduction/03-SQL-Introduction.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('SQL'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('U1FM'); return false;">
 SQL
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Database'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2U='); return false;">
 Database
 </div>
 </div>
@@ -424,7 +429,7 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="Coding,SQL,Database,Aggregation" data-listing-date-sort="1726286400000" data-listing-file-modified-sort="1731008913206" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="442">
+<div class="quarto-post image-right" data-index="3" data-categories="Q29kaW5nJTJDU1FMJTJDRGF0YWJhc2UlMkNBZ2dyZWdhdGlvbg==" data-listing-date-sort="1726286400000" data-listing-file-modified-sort="1731008913206" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="442">
 <div class="thumbnail">
 <p><a href="../notes/cs377/04-sql-aggregation/04-SQL-Aggregation.html" class="no-external"></a></p><a href="../notes/cs377/04-sql-aggregation/04-SQL-Aggregation.html" class="no-external">
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -438,16 +443,16 @@ Jiuru Lyu
 <a href="../notes/cs377/04-sql-aggregation/04-SQL-Aggregation.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('SQL'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('U1FM'); return false;">
 SQL
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Database'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2U='); return false;">
 Database
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Aggregation'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('QWdncmVnYXRpb24='); return false;">
 Aggregation
 </div>
 </div>
@@ -466,7 +471,7 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="Coding,SQL,Database,Set Operations" data-listing-date-sort="1726632000000" data-listing-file-modified-sort="1731009324649" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="689">
+<div class="quarto-post image-right" data-index="4" data-categories="Q29kaW5nJTJDU1FMJTJDRGF0YWJhc2UlMkNTZXQlMjBPcGVyYXRpb25z" data-listing-date-sort="1726632000000" data-listing-file-modified-sort="1731009324649" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="689">
 <div class="thumbnail">
 <p><a href="../notes/cs377/05-sql-set-operations/05-SQL-Set-Operations.html" class="no-external"></a></p><a href="../notes/cs377/05-sql-set-operations/05-SQL-Set-Operations.html" class="no-external">
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -480,16 +485,16 @@ Jiuru Lyu
 <a href="../notes/cs377/05-sql-set-operations/05-SQL-Set-Operations.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('SQL'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('U1FM'); return false;">
 SQL
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Database'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2U='); return false;">
 Database
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Set Operations'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('U2V0JTIwT3BlcmF0aW9ucw=='); return false;">
 Set Operations
 </div>
 </div>
@@ -508,7 +513,7 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="Coding,SQL,Database,Join" data-listing-date-sort="1727496000000" data-listing-file-modified-sort="1731009419134" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="513">
+<div class="quarto-post image-right" data-index="5" data-categories="Q29kaW5nJTJDU1FMJTJDRGF0YWJhc2UlMkNKb2lu" data-listing-date-sort="1727496000000" data-listing-file-modified-sort="1731009419134" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="513">
 <div class="thumbnail">
 <p><a href="../notes/cs377/06-sql-join/06-SQL-Join.html" class="no-external"></a></p><a href="../notes/cs377/06-sql-join/06-SQL-Join.html" class="no-external">
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -522,16 +527,16 @@ Jiuru Lyu
 <a href="../notes/cs377/06-sql-join/06-SQL-Join.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('SQL'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('U1FM'); return false;">
 SQL
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Database'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2U='); return false;">
 Database
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Join'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Sm9pbg=='); return false;">
 Join
 </div>
 </div>
@@ -550,7 +555,7 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="Coding,SQL,Database,Join," data-listing-date-sort="1728360000000" data-listing-file-modified-sort="1734317208117" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="523">
+<div class="quarto-post image-right" data-index="6" data-categories="Q29kaW5nJTJDU1FMJTJDRGF0YWJhc2UlMkNKb2luJTJDTlVMTA==" data-listing-date-sort="1728360000000" data-listing-file-modified-sort="1738014520577" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="523">
 <div class="thumbnail">
 <p><a href="../notes/cs377/07-sql-null/07-SQL-NULL.html" class="no-external"></a></p><a href="../notes/cs377/07-sql-null/07-SQL-NULL.html" class="no-external">
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -564,20 +569,20 @@ Jiuru Lyu
 <a href="../notes/cs377/07-sql-null/07-SQL-NULL.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('SQL'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('U1FM'); return false;">
 SQL
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Database'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2U='); return false;">
 Database
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Join'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Sm9pbg=='); return false;">
 Join
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory(''); return false;">
-
+<div class="listing-category" onclick="window.quartoListingCategory('TlVMTA=='); return false;">
+NULL
 </div>
 </div>
 <div class="listing-description">
@@ -595,7 +600,7 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="Coding,SQL,Database,Subqueries" data-listing-date-sort="1729224000000" data-listing-file-modified-sort="1734317214517" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="674">
+<div class="quarto-post image-right" data-index="7" data-categories="Q29kaW5nJTJDU1FMJTJDRGF0YWJhc2UlMkNTdWJxdWVyaWVz" data-listing-date-sort="1729224000000" data-listing-file-modified-sort="1734317214517" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="674">
 <div class="thumbnail">
 <p><a href="../notes/cs377/08-sql-subqueries/08-SQL-Subqueries.html" class="no-external"></a></p><a href="../notes/cs377/08-sql-subqueries/08-SQL-Subqueries.html" class="no-external">
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -609,16 +614,16 @@ Jiuru Lyu
 <a href="../notes/cs377/08-sql-subqueries/08-SQL-Subqueries.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('SQL'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('U1FM'); return false;">
 SQL
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Database'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2U='); return false;">
 Database
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Subqueries'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('U3VicXVlcmllcw=='); return false;">
 Subqueries
 </div>
 </div>
@@ -637,7 +642,7 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="Coding,SQL,Database,DDL" data-listing-date-sort="1730088000000" data-listing-file-modified-sort="1730835207973" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2237">
+<div class="quarto-post image-right" data-index="8" data-categories="Q29kaW5nJTJDU1FMJTJDRGF0YWJhc2UlMkNEREw=" data-listing-date-sort="1730088000000" data-listing-file-modified-sort="1730835207973" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2237">
 <div class="thumbnail">
 <p><a href="../notes/cs377/09-sql-ddl/09-SQL-DDL.html" class="no-external"></a></p><a href="../notes/cs377/09-sql-ddl/09-SQL-DDL.html" class="no-external">
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -651,16 +656,16 @@ Jiuru Lyu
 <a href="../notes/cs377/09-sql-ddl/09-SQL-DDL.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('SQL'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('U1FM'); return false;">
 SQL
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Database'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2U='); return false;">
 Database
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('DDL'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RERM'); return false;">
 DDL
 </div>
 </div>
@@ -679,7 +684,7 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="Coding,SQL,Database,Java,JDBC" data-listing-date-sort="1730260800000" data-listing-file-modified-sort="1731279873319" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="919">
+<div class="quarto-post image-right" data-index="9" data-categories="Q29kaW5nJTJDU1FMJTJDRGF0YWJhc2UlMkNKYXZhJTJDSkRCQw==" data-listing-date-sort="1730260800000" data-listing-file-modified-sort="1731279873319" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="919">
 <div class="thumbnail">
 <p><a href="../notes/cs377/10-JDBC/10-JDBC.html" class="no-external"></a></p><a href="../notes/cs377/10-JDBC/10-JDBC.html" class="no-external">
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -693,19 +698,19 @@ Jiuru Lyu
 <a href="../notes/cs377/10-JDBC/10-JDBC.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Coding'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29kaW5n'); return false;">
 Coding
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('SQL'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('U1FM'); return false;">
 SQL
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Database'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2U='); return false;">
 Database
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Java'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SmF2YQ=='); return false;">
 Java
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('JDBC'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('SkRCQw=='); return false;">
 JDBC
 </div>
 </div>
@@ -724,7 +729,7 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="Database,Database Design,ER Design" data-listing-date-sort="1731214800000" data-listing-file-modified-sort="1733330196219" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3006">
+<div class="quarto-post image-right" data-index="10" data-categories="RGF0YWJhc2UlMkNEYXRhYmFzZSUyMERlc2lnbiUyQ0VSJTIwRGVzaWdu" data-listing-date-sort="1731214800000" data-listing-file-modified-sort="1733330196219" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3006">
 <div class="thumbnail">
 <p><a href="../notes/cs377/11-er-design/11 ER Design.html" class="no-external"></a></p><a href="../notes/cs377/11-er-design/11 ER Design.html" class="no-external">
 <p class="card-img-top"><img src="cs377/11-er-design/figs/keys.png" alt="Keys"  class="thumbnail-image card-img"/></p>
@@ -738,13 +743,13 @@ Jiuru Lyu
 <a href="../notes/cs377/11-er-design/11 ER Design.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Database'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2U='); return false;">
 Database
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Database Design'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2UlMjBEZXNpZ24='); return false;">
 Database Design
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('ER Design'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RVIlMjBEZXNpZ24='); return false;">
 ER Design
 </div>
 </div>
@@ -763,7 +768,7 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-categories="Database,Database Design,DB Design Theory,BCNF,Normalization,Functional Dependencies,Closure Test,FD Projection" data-listing-date-sort="1731906000000" data-listing-file-modified-sort="1733330188686" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2942">
+<div class="quarto-post image-right" data-index="11" data-categories="RGF0YWJhc2UlMkNEYXRhYmFzZSUyMERlc2lnbiUyQ0RCJTIwRGVzaWduJTIwVGhlb3J5JTJDQkNORiUyQ05vcm1hbGl6YXRpb24lMkNGdW5jdGlvbmFsJTIwRGVwZW5kZW5jaWVzJTJDQ2xvc3VyZSUyMFRlc3QlMkNGRCUyMFByb2plY3Rpb24=" data-listing-date-sort="1731906000000" data-listing-file-modified-sort="1733330188686" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2942">
 <div class="thumbnail">
 <p><a href="../notes/cs377/12-design-theory/12-design-theory.html" class="no-external"></a></p><a href="../notes/cs377/12-design-theory/12-design-theory.html" class="no-external">
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -777,28 +782,28 @@ Jiuru Lyu
 <a href="../notes/cs377/12-design-theory/12-design-theory.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Database'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2U='); return false;">
 Database
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Database Design'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2UlMjBEZXNpZ24='); return false;">
 Database Design
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('DB Design Theory'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('REIlMjBEZXNpZ24lMjBUaGVvcnk='); return false;">
 DB Design Theory
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('BCNF'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('QkNORg=='); return false;">
 BCNF
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Normalization'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Tm9ybWFsaXphdGlvbg=='); return false;">
 Normalization
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Functional Dependencies'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RnVuY3Rpb25hbCUyMERlcGVuZGVuY2llcw=='); return false;">
 Functional Dependencies
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('Closure Test'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Q2xvc3VyZSUyMFRlc3Q='); return false;">
 Closure Test
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('FD Projection'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RkQlMjBQcm9qZWN0aW9u'); return false;">
 FD Projection
 </div>
 </div>
@@ -817,7 +822,7 @@ Jiuru Lyu
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-categories="Database,NOSQL" data-listing-date-sort="1733288400000" data-listing-file-modified-sort="1733764197340" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1335">
+<div class="quarto-post image-right" data-index="12" data-categories="RGF0YWJhc2UlMkNOT1NRTA==" data-listing-date-sort="1733288400000" data-listing-file-modified-sort="1733764197340" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1335">
 <div class="thumbnail">
 <p><a href="../notes/cs377/13-nosql/13-nosql.html" class="no-external"></a></p><a href="../notes/cs377/13-nosql/13-nosql.html" class="no-external">
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -831,10 +836,10 @@ Jiuru Lyu
 <a href="../notes/cs377/13-nosql/13-nosql.html" class="no-external"></a>
 </div>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Database'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJhc2U='); return false;">
 Database
 </div>
-<div class="listing-category" onclick="window.quartoListingCategory('NOSQL'); return false;">
+<div class="listing-category" onclick="window.quartoListingCategory('Tk9TUUw='); return false;">
 NOSQL
 </div>
 </div>
@@ -1037,18 +1042,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1080,7 +1074,45 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1115,7 +1147,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -1163,7 +1199,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -1422,6 +1457,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+    <script type="text/javascript">
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let pseudocodeOptions = {
+          indentSize: el.dataset.indentSize || "1.2em",
+          commentDelimiter: el.dataset.commentDelimiter || "//",
+          lineNumber: el.dataset.lineNumber === "true" ? true : false,
+          lineNumberPunc: el.dataset.lineNumberPunc || ":",
+          noEnd: el.dataset.noEnd === "true" ? true : false,
+          titlePrefix: el.dataset.captionPrefix || "Algorithm"
+        };
+        pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
+      });
+    })(document);
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let captionSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        if (captionSpan !== null) {
+          let captionPrefix = el.dataset.captionPrefix + " ";
+          let captionNumber = "";
+          if (el.dataset.pseudocodeNumber) {
+            captionNumber = el.dataset.pseudocodeNumber + " ";
+            if (el.dataset.chapterLevel) {
+              captionNumber = el.dataset.chapterLevel + "." + captionNumber;
+            }
+          }
+          captionSpan.innerHTML = captionPrefix + captionNumber;
+        }
+      });
+    })(document);
+    </script>
+  
 
 
 
