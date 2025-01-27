@@ -20,12 +20,17 @@ title: "Class Notes"
 - [Ordinary Differential Equations](notes/ODE.qmd)
 - [Nonlinear Optimization](notes/nonlinearOpt.qmd)
 - [Undergraduate-Level Numerical Analysis](notes/NumericalAnalysis1.qmd)
+- [PhD-Level Numerical Analysis I](notes/NumericalAnalysis2.qmd)
+
+#### Pure Mathematics
+- [Real Analysis](notes/RealAnalysis.qmd)
 
 #### Data Science, Statistics, and Causal Inference
 
 - [Introduction to Causal Inference](https://jrlyu.github.io/qtm110.io/)
 - [Google Data Analytics Learning Notes](https://jrlyu.github.io/google_analytics.io/)
 - [Mathematical Statistics](notes/MathStats.qmd)
+- Causal Designs and Inference
 - [Machine Learning](notes/cs334.qmd)
 
 ### Computer Science
