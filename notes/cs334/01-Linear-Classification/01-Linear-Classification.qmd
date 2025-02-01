@@ -1,11 +1,11 @@
 ---
 title: "1 Linear Classification"
-description: "This lecture discusses the linear classification, a fundamental concept in machine learning."
+description: "This lecture discusses the linear classification, a fundamental concept in machine learning. It introduces loss functions, training error, and the perceptron algorithm."
 author:
   - name: Jiuru Lyu
     url: https://jrlyu.github.io/
 date: 01-23-2025
-categories: [Database, Relational Model]
+categories: [Linear Cassification, Loss Function, Training Error, Perceptron]
 draft: false
 callout-appearance: simple
 ---

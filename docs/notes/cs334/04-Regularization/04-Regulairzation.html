@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2025-02-04">
 
-<title>CS 334 Machine Learning – Jiuru Lyu</title>
+<title>4 Regularization – Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,29 +25,27 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="..//media/favicon.ico" rel="icon">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script src="../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
-<link href="../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -73,35 +73,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <script>
 window.MathJax = {
   loader: {
@@ -171,37 +142,8 @@ window.MathJax = {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet"> 
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -211,7 +153,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Jiuru Lyu</span>
     </a>
   </div>
@@ -222,7 +164,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -231,15 +173,15 @@ window.Quarto = {
     </span>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../photo.html"> 
+    <a class="nav-link" href="../../../photo.html"> 
 <span class="menu-text">Photograph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../blogs.html"> 
+    <a class="nav-link" href="../../../blogs.html"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
@@ -259,22 +201,37 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="Q2xhc3NpZmljYXRpb24=">Classification <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R3JhZGllbnQlMjBEZXNjZW50">Gradient Descent <span class="quarto-category-count">(2)</span></div><div class="category" data-category="SGluZ2UlMjBMb3Nz">Hinge Loss <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGVhc3QlMjBTcXVhcmVz">Least Squares <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGluZWFyJTIwQ2Fzc2lmaWNhdGlvbg==">Linear Cassification <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGluZWFyJTIwUmVncmVlc2lvbg==">Linear Regreesion <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TG9zcyUyMEZ1bmN0aW9u">Loss Function <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Tm9ybWFsJTIwRXF1YXRpb24=">Normal Equation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UGVyY2VwdHJvbg==">Perceptron <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UmVndWxhcml6YXRpb24=">Regularization <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3F1YXJlZCUyMExvc3M=">Squared Loss <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VHJhaW5pbmclMjBFcnJvcg==">Training Error <span class="quarto-category-count">(1)</span></div></div></div>
+    </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">CS 334 Machine Learning</h1>
-</div>
+<h1 class="title">4 Regularization</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Regularization</div>
+  </div>
+  </div>
 
 
 
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta column-page">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 4, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -287,198 +244,7 @@ window.Quarto = {
 
 
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="listing-actions-group">
-   <div class="input-group input-group-sm quarto-listing-sort">
-     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
-       <option value="" disabled="" selected="" hidden="">Order By</option>
-       <option value="index" data-direction="asc">Default</option>
-         <option value="listing-title" data-direction="asc">
-          Title
-        </option>
-         <option value="listing-date-sort" data-direction="asc">
-          Date - Oldest
-        </option>
-         <option value="listing-date-sort" data-direction="desc">
-          Date - Newest
-        </option>
-         <option value="listing-author" data-direction="asc">
-          Author
-        </option>
-     </select>
-  </div>
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="TGluZWFyJTIwQ2Fzc2lmaWNhdGlvbiUyQ0xvc3MlMjBGdW5jdGlvbiUyQ1RyYWluaW5nJTIwRXJyb3IlMkNQZXJjZXB0cm9u" data-listing-date-sort="1737608400000" data-listing-file-modified-sort="1738386656661" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="596">
-<div class="thumbnail">
-<p><a href="../notes/cs334/01-Linear-Classification/01-Linear-Classification.html" class="no-external"></a></p><a href="../notes/cs334/01-Linear-Classification/01-Linear-Classification.html" class="no-external">
-<p class="card-img-top"><img src="cs334/01-Linear-Classification/figs/decision-boundary-1.jpeg"  class="thumbnail-image card-img"/></p>
-</a><p><a href="../notes/cs334/01-Linear-Classification/01-Linear-Classification.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../notes/cs334/01-Linear-Classification/01-Linear-Classification.html" class="no-external">1 Linear Classification</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../notes/cs334/01-Linear-Classification/01-Linear-Classification.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('TGluZWFyJTIwQ2Fzc2lmaWNhdGlvbg=='); return false;">
-Linear Cassification
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('TG9zcyUyMEZ1bmN0aW9u'); return false;">
-Loss Function
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('VHJhaW5pbmclMjBFcnJvcg=='); return false;">
-Training Error
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('UGVyY2VwdHJvbg=='); return false;">
-Perceptron
-</div>
-</div>
-<div class="listing-description">
-<a href="../notes/cs334/01-Linear-Classification/01-Linear-Classification.html" class="no-external">This lecture discusses the linear classification, a fundamental concept in machine learning. It introduces loss functions, training error, and the perceptron algorithm.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../notes/cs334/01-Linear-Classification/01-Linear-Classification.html" class="no-external">
-<div class="listing-date">
-Jan 23, 2025
-</div>
-<div class="listing-author">
-Jiuru Lyu
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="Q2xhc3NpZmljYXRpb24lMkNHcmFkaWVudCUyMERlc2NlbnQlMkNIaW5nZSUyMExvc3M=" data-listing-date-sort="1738040400000" data-listing-file-modified-sort="1738392416812" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="764">
-<div class="thumbnail">
-<p><a href="../notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html" class="no-external"></a></p><a href="../notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html" class="no-external">
-<p class="card-img-top"><img src="cs334/02-Gradient-Descent-on-Classification/figs/z-oLoss.jpeg"  class="thumbnail-image card-img"/></p>
-</a><p><a href="../notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html" class="no-external">2 Gradient Descent on Classification</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Q2xhc3NpZmljYXRpb24='); return false;">
-Classification
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R3JhZGllbnQlMjBEZXNjZW50'); return false;">
-Gradient Descent
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('SGluZ2UlMjBMb3Nz'); return false;">
-Hinge Loss
-</div>
-</div>
-<div class="listing-description">
-<a href="../notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html" class="no-external">This lecture discusses the gradient descent algorithm and its application to classification problem.It introduces the hinge loss function and the update rule for gradient descent.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html" class="no-external">
-<div class="listing-date">
-Jan 28, 2025
-</div>
-<div class="listing-author">
-Jiuru Lyu
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="TGluZWFyJTIwUmVncmVlc2lvbiUyQ0dyYWRpZW50JTIwRGVzY2VudCUyQ1NxdWFyZWQlMjBMb3NzJTJDTGVhc3QlMjBTcXVhcmVzJTJDTm9ybWFsJTIwRXF1YXRpb24=" data-listing-date-sort="1738213200000" data-listing-file-modified-sort="1738392881210" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="392">
-<div class="thumbnail">
-<p><a href="../notes/cs334/03-Linear-Regression/03-Linear-Regression.html" class="no-external"></a></p><a href="../notes/cs334/03-Linear-Regression/03-Linear-Regression.html" class="no-external">
-<p class="card-img-top"><img src="cs334/03-Linear-Regression/figs/squared-loss.jpeg"  class="thumbnail-image card-img"/></p>
-</a><p><a href="../notes/cs334/03-Linear-Regression/03-Linear-Regression.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../notes/cs334/03-Linear-Regression/03-Linear-Regression.html" class="no-external">3 Linear Regression</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../notes/cs334/03-Linear-Regression/03-Linear-Regression.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('TGluZWFyJTIwUmVncmVlc2lvbg=='); return false;">
-Linear Regreesion
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R3JhZGllbnQlMjBEZXNjZW50'); return false;">
-Gradient Descent
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('U3F1YXJlZCUyMExvc3M='); return false;">
-Squared Loss
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('TGVhc3QlMjBTcXVhcmVz'); return false;">
-Least Squares
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Tm9ybWFsJTIwRXF1YXRpb24='); return false;">
-Normal Equation
-</div>
-</div>
-<div class="listing-description">
-<a href="../notes/cs334/03-Linear-Regression/03-Linear-Regression.html" class="no-external">This lecture discusses the linear regression, a fundamental concept in machine learning. It introduces the squared loss function and the update rule for gradient descent. It also derived the closed-form solution for linear regression using matrix notation.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../notes/cs334/03-Linear-Regression/03-Linear-Regression.html" class="no-external">
-<div class="listing-date">
-Jan 30, 2025
-</div>
-<div class="listing-author">
-Jiuru Lyu
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="UmVndWxhcml6YXRpb24=" data-listing-date-sort="1738645200000" data-listing-file-modified-sort="1738392886727" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
-<div class="thumbnail">
-<p><a href="../notes/cs334/04-Regularization/04-Regulairzation.html" class="no-external"></a></p><a href="../notes/cs334/04-Regularization/04-Regulairzation.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="../notes/cs334/04-Regularization/04-Regulairzation.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../notes/cs334/04-Regularization/04-Regulairzation.html" class="no-external">4 Regularization</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../notes/cs334/04-Regularization/04-Regulairzation.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('UmVndWxhcml6YXRpb24='); return false;">
-Regularization
-</div>
-</div>
-<div class="listing-description">
-<a href="../notes/cs334/04-Regularization/04-Regulairzation.html" class="no-external"></a>
-</div>
-</div>
-<div class="metadata">
-<a href="../notes/cs334/04-Regularization/04-Regulairzation.html" class="no-external">
-<div class="listing-date">
-Feb 4, 2025
-</div>
-<div class="listing-author">
-Jiuru Lyu
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1048,7 +814,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/04-Regularization/04-Regulairzation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/04-Regularization/04-Regulairzation.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

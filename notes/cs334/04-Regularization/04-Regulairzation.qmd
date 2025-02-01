@@ -1,0 +1,11 @@
+---
+title: "4 Regularization"
+description: ""
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 02-4-2025
+categories: [Regularization]
+draft: false
+callout-appearance: simple
+---
