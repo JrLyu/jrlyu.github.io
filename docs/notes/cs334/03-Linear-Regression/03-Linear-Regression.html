@@ -342,7 +342,7 @@ R_N(\va\theta)=\dfrac{1}{N}\sum_{i=1}^N\dfrac{\qty(y^{(i)}-\va\theta\cdot\va x^{
 <p>So, the update rule is <span class="math display">\[
 \va\theta^{(k+1)}=\va\theta^{(k)}+\eta_k\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})\va x^{(i)}.
 \]</span></p>
-<div id="alg-SGD-regression" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-pseudocode-number="1" data-comment-delimiter="#">
+<div id="alg-SGD-regression" class="pseudocode-container quarto-float" data-pseudocode-number="1" data-comment-delimiter="#" data-caption-prefix="Algorithm">
 <div class="pseudocode">
 \begin{algorithm} \caption{SGD for Least Squares Regression} \begin{algorithmic} \State $k=0$; $\va\theta^{(0)}=\va 0$ \While{not converged} \State randomly shuffle points \For{$i=1,\dots, N$} \State $\va\theta^{(k+1)}=\va\theta^{(k)}+\eta_k\eval{\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})\va x^{(i)}}_{\va\theta=\va\theta^{(k)}}$ \State $k++$ \EndFor \EndWhile \end{algorithmic} \end{algorithm}
 </div>

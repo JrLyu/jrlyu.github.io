@@ -8,6 +8,7 @@
 
 <meta name="author" content="Jiuru Lyu">
 <meta name="dcterms.date" content="2025-02-04">
+<meta name="description" content="This lecture starts from the bias-variance tradeoff, and then introduces regularization as a way to control the tradeoff. We will discuss the L_2 regularization (Ridge Regression), L_1 regularization (Lasso Regression), and Elastic Net.">
 
 <title>4 Regularization – Jiuru Lyu</title>
 <style>
@@ -142,6 +143,35 @@ window.MathJax = {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet"> 
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../../styles.css">
 </head>
@@ -201,23 +231,39 @@ window.MathJax = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction-bias-variance-tradeoff" id="toc-introduction-bias-variance-tradeoff" class="nav-link active" data-scroll-target="#introduction-bias-variance-tradeoff">Introduction: Bias-Variance Tradeoff</a></li>
+  <li><a href="#regularization" id="toc-regularization" class="nav-link" data-scroll-target="#regularization">Regularization</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/04-Regularization/04-Regulairzation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/04-Regularization/04-Regulairzation.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">4 Regularization</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Regularization</div>
+    <div class="quarto-category">Bias-Variance Tradeoff</div>
+    <div class="quarto-category">Ridge Regression</div>
+    <div class="quarto-category">Lasso Regression</div>
+    <div class="quarto-category">Elastic Net</div>
   </div>
   </div>
 
+<div>
+  <div class="description">
+    This lecture starts from the bias-variance tradeoff, and then introduces regularization as a way to control the tradeoff. We will discuss the <span class="math inline">\(L_2\)</span> regularization (Ridge Regression), <span class="math inline">\(L_1\)</span> regularization (Lasso Regression), and Elastic Net.
+  </div>
+</div>
 
 
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta column-page-left">
 
     <div>
     <div class="quarto-title-meta-heading">Author</div>
@@ -241,8 +287,284 @@ window.MathJax = {
 </header>
 
 
+<section id="introduction-bias-variance-tradeoff" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-bias-variance-tradeoff">Introduction: Bias-Variance Tradeoff</h2>
+<ul>
+<li>Polynomial regression:
+<ul>
+<li>Instead of only using <span class="math inline">\(\phi(x)=[1,x]^\top\)</span> , we can add higher dimension terms of feature: <span class="math display">\[\phi(x)=[1,x,x^2,x^3,\dots]^\top\]</span></li>
+<li>However, if we get too far, we will encounter overfitting.</li>
+</ul></li>
+<li>Overfitting and Underfitting:
+<ul>
+<li>If we optimize <span class="math inline">\(R(\va\theta, D)\)</span>, <span class="math inline">\(R(\va\theta, D_\text{test})\)</span> can be learge due to:</li>
+</ul></li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Underfitting</th>
+<th style="text-align: center;">Overfitting</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Bias</td>
+<td style="text-align: center;">Variance</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Approximation error</td>
+<td style="text-align: center;">Estimation error</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Poor on training set</td>
+<td style="text-align: center;">Good on training set</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Poor on test set</td>
+<td style="text-align: center;">Poor on test set</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Adding more data will not help</td>
+<td style="text-align: center;">Adding more data will help</td>
+</tr>
+</tbody>
+</table>
+<div id="fig-complexity-error" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-complexity-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/complexity-error.jpeg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-complexity-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Model Complexity vs.&nbsp;Error: Bias-Variance Tradeoff
+</figcaption>
+</figure>
+</div>
+<ul>
+<li>Sources of Bias:
+<ul>
+<li>Model class too small: unable to represent the underlying relationship</li>
+<li>Models are “too global” (e.g., constant output, single linear separator)</li>
+</ul></li>
+<li>Reduing Bias: Use more complex models
+<ul>
+<li>Interaction terms</li>
+<li>Add more features</li>
+<li>Kernels</li>
+<li>Algorithm-specific approaches</li>
+</ul></li>
+<li>Sources of Variance:
+<ul>
+<li>Noise in labels or features</li>
+<li>Models are too “local” – sensitive to small changes in feature values</li>
+<li>Training dataset too small.</li>
+</ul></li>
+<li>Reducing Variance: Collect more data, or less complex models
+<ul>
+<li>Drop interaction terms</li>
+<li>Regualrization</li>
+<li>Feature selection</li>
+<li>Don’t use kernels</li>
+<li>Ensemble</li>
+</ul></li>
+<li>Balancing Bias and Variance: Generalizable Model
+<ul>
+<li>But how to control the tradeoff? <strong>Regularization</strong>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="regularization" class="level2">
+<h2 class="anchored" data-anchor-id="regularization">Regularization</h2>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-regularization" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Regularization Training Error)</strong></span> A “knob” for controlling model complexity: <span class="math display">\[
+J(\va\theta)=\underbrace{R_N(\va\theta)}_\text{emiprical risk}+\underbrace{\lambda\Omega(\va\theta)}_\text{regularization term},
+\]</span> where <span class="math inline">\(\lambda\)</span> is the regularization strength, <span class="math inline">\(\lambda&gt;0\)</span>, and <span class="math inline">\(\Omega(\va\theta)\)</span> is the regularizer/regularization penalty.</p>
+<p>The regularization strength <span class="math inline">\(\lambda\)</span> balances: - How well we fit the data, and - Complexity of model.</p>
+<p>Then, our goal is to <span class="math inline">\(\displaystyle\min_{\va\theta}J(\va\theta)\)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Common Regularizer:
+<ul>
+<li><span class="math inline">\(L_2\)</span>: Ridge Regression <span class="math display">\[\Omega(\va\theta)=\dfrac{\|\va\theta\|_2^2}{2}=\dfrac{1}{2}\sum_{j=1}^d\theta_j^2\]</span></li>
+<li><span class="math inline">\(L_1\)</span>: Lasso Regression <span class="math display">\[\Omega(\va\theta)=\|\va\theta\|_1=\sum_{j=1}^d\abs{\theta_j}\]</span></li>
+<li>Elastic net: <span class="math display">\[\Omega(\va\theta)=\lambda_2\|\va\theta\|_2^2+\lambda_1\|\va\theta\|_1\]</span></li>
+</ul></li>
+<li>Effect of Regularization:
+<ul>
+<li>When minimizing <span class="math inline">\(J(\va\theta)\)</span>, we are still trying to minimize <span class="math inline">\(R_N(\va\theta)\)</span>, but at the same time, minimize <span class="math inline">\(\Omega(\va\theta)\)</span>
+<ul>
+<li>Push parameters to small values</li>
+<li>Resist setting parameters away from default of <span class="math inline">\(0\)</span> unless data strong suggest otherwise.</li>
+</ul></li>
+<li>Why are small values in <span class="math inline">\(\va\theta\)</span> good?
+<ul>
+<li>Limit effect of small perturbations in individual factors on putput.</li>
+<li>If <span class="math inline">\(\theta_j=0\)</span> exactly, then <span class="math inline">\(j\)</span>-th parameter is effective unused <span class="math inline">\(\implies\)</span> feature selection.</li>
+<li>Occam’s Razor (<span class="math inline">\(13\)</span>-th century philosopher, William of Ockham): “When you have two competing hypotheses, the simpler one is preferred.”</li>
+</ul></li>
+</ul></li>
+<li>Ridge Regression (<span class="math inline">\(L_2\)</span>-Regularized Linear Regression) <span class="math display">\[J(\va\theta)=\sum_{i=1}^N\dfrac{(y^{(i)}-\va\theta\cdot\va x^{(i)})^2}{2}+\lambda\dfrac{\|\va\theta\|_2^2}{2},\]</span> where <span class="math inline">\(\dfrac{1}{N}\)</span> is absorbed into <span class="math inline">\(\lambda\)</span>.
+<ul>
+<li>SGD: <span class="math display">\[\grad_{\va\theta}\qty(\dfrac{\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})^2}{2}+\lambda\dfrac{\|\va\theta\|_2^2}{2})\]</span> gradient of squared <span class="math inline">\(L_2\)</span> norm: <span class="math inline">\(\|\va\theta\|_2^2=\theta_1^2+\cdots+\theta_d^2=\va\theta\cdot\va\theta\)</span>. So, <span class="math display">\[\pdv{\theta_j}\qty(\|\va\theta\|_2^2)=2\theta_j.\]</span> Then, we have <span class="math display">\[
+\begin{aligned}
+  \grad_{\va\theta}\qty(\|\va\theta\|_2^2)=\grad_{\va\theta}(\va\theta\cdot\va\theta)&amp;=\mqty[\displaystyle\pdv{\theta_1}\qty(\|\va\theta\|_2^2),\dots,\pdv{\theta_d}\qty(\|\va\theta\|_2^2)]\\
+  &amp;=\mqty[2\theta_1,2\theta_2,\dots,2\theta_d]\\
+  &amp;=2\va\theta.
+\end{aligned}
+\]</span> Therefore, <span class="math display">\[
+\grad_{\va\theta}\qty(\dfrac{\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})^2}{2}+\lambda\dfrac{\|\va\theta\|_2^2}{2})=-\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})\va x^{(i)}+\lambda\va\theta.
+\]</span> Hence, the SGD update rule is <span class="math display">\[
+\begin{aligned}
+\va\theta^{(k+1)}=\va\theta^{(k)}-\eta_k\eval{\qty[-\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})\va x^{(i)}+\lambda\va\theta]}_{\va\theta=\va\theta^{(k)}}\\
+&amp;=\va\theta^{(k)}+\eta_k\qty(y^{(i)}-\va\theta^{(k)}\cdot\va x^{(i)})\va x^{(i)}-\eta_k\lambda\va\theta^{(k)}\\
+&amp;=\underbrace{(1-\eta_k\lambda)}_{\text{between }0\text{ and }1}\va\theta^{(k)}+\underbrace{\eta_k\qty(y^{(i)}-\va\theta^{(k)}\cdot\va x^{(i)})\va x^{(i)}}_\text{same as before}.
+\end{aligned}
+\]</span> The term <span class="math inline">\(1-\eta_k\lambda\)</span> shrinks parameters towards <span class="math inline">\(0\)</span> in each update.</li>
+<li>Closed Form Solution: <span class="math display">\[
+\begin{aligned}
+J(\va\theta)&amp;=\dfrac{1}{2}(X\va\theta-\va y)^\top(X\va\theta-\va y)+\dfrac{\lambda}{2}\va\theta^\top\va\theta\\
+\grad_{\va\theta} J(\va\theta)&amp;=(XX)\va\theta-X^\top y+\lambda\va\theta\\
+&amp;=(XX+\lambda I_d)\va\theta-X^\top y=0\\
+\va\theta^*&amp;=(\underbrace{XX+\lambda I_d}_\text{always invertible})^{-1}X^\top y.
+\end{aligned}
+\]</span></li>
+</ul></li>
+<li>Geometric Interpretation of Regularization: <span class="math display">\[
+\va\theta^*=\argmin_{\va\theta}R_N(\va\theta)+\lambda\Omega(\va\theta) \iff \min_{\va\theta}R_N(\va\theta)\quad\text{s.t.}\quad\Omega(\va\theta)\leq B.
+\]</span>
+<ul>
+<li>We can transfer a constrained optimization problem to an unconstrained one by adding a penalty term.</li>
+<li>They are equivalent by the Lagrange multiplier.</li>
+</ul></li>
+</ul>
+<div id="fig-regularization-geometric" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-regularization-geometric-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/gradient-and-reg.jpeg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-regularization-geometric-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Geometric Interpretation of Regularization
+</figcaption>
+</figure>
+</div>
+<ul>
+<li>Where is the optimal soltuion of the constrained optimization problem? The solution is the intersection of the level set of <span class="math inline">\(R_N(\va\theta)\)</span> and the level set of <span class="math inline">\(\Omega(\va\theta)\)</span>.</li>
+<li>Method of Lagrange Multtiplier:
+<ul>
+<li>The pint where the level curve of function to minimize is tangent to (or just touching) the constraint.</li>
+</ul></li>
+<li>Intuition: two forces play
+<ul>
+<li><span class="math inline">\(\Omega(\va\theta)\leq B\)</span>: shrink <span class="math inline">\(\va\theta\)</span> towards winthin the constraint</li>
+<li><span class="math inline">\(\min R_N(\va\theta)\)</span>: move <span class="math inline">\(\va\theta\)</span> towards the uncosntraied minimizer.</li>
+</ul></li>
+<li><span class="math inline">\(L_2\)</span> regularization will make parameters generally small.</li>
+<li><span class="math inline">\(L_1\)</span> regularization will make parameters sparse, and make some parameters exeactly <span class="math inline">\(0\)</span>.</li>
+</ul>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="rem-regularization" class="proof remark">
+<p><span class="proof-title"><em>Remark 1</em> (Remarks on Regularization). </span></p>
+<ul>
+<li>If there is an offset/intercept, this coefficient is usually left unpenalized (depending on the implementation).
+<ul>
+<li>If we write <span class="math inline">\(\va\theta\cdot\va x+b\)</span> explicity, no penalty on <span class="math inline">\(b\)</span>.</li>
+<li>If we write augmented parameters, then we penalize <span class="math inline">\(b\)</span>.</li>
+</ul></li>
+<li>Regularization can be “unfair” if features are on the different scales. So, we need feature pre-procesing (e.g., centering and normalization).</li>
+<li>Pratical usage of regression: <code>sklearn</code></li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>sklearn.linear_model.LinearRegression</code></td>
+<td style="text-align: left;">closed form solution (wrapper of <code>scipy.linalg.lstsq</code> that uses SVD)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>sklearn.linear_model.Ridge</code></td>
+<td style="text-align: left;">Ridge regressionm, can select solver (SGD, SVD, etc.)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>sklearn.linear_model.Lasso</code></td>
+<td style="text-align: left;">Lasso regression, coordinate descent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>sklearn.linear_model.ElasticNet</code></td>
+<td style="text-align: left;">Elastic net, coordinate descent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>sklearn.linear_model.SGDRegressor</code></td>
+<td style="text-align: left;">generic SGD, mix and match different loss and regularizers</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Pratical use of linear classification: <code>sklearn</code></li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>sklearn.linear_model.LogisticRegression</code></td>
+<td style="text-align: left;">logistic regression, can select solver (SGD, Newton-CG, etc.)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>sklearn.linear_model.SGDClassifier</code></td>
+<td style="text-align: left;">generic SGD, mix and match different loss and regularizers</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>sklearn.linear_model.Perceptron</code></td>
+<td style="text-align: left;">perceptron, SGD with hinge loss</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>sklearn.svm.LinearSVC</code></td>
+<td style="text-align: left;">linear SVM, hinge loss (support vector machine)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>sklearn.svm.SVC</code></td>
+<td style="text-align: left;">non-linear SVM, kernel trick</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
 
 
+</section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -814,7 +1136,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/04-Regularization/04-Regulairzation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/04-Regularization/04-Regulairzation.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/04-Regularization/04-Regulairzation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/04-Regularization/04-Regulairzation.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
