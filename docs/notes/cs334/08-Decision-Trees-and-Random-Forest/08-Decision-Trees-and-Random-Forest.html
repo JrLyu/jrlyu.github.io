@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jiuru Lyu">
-<meta name="dcterms.date" content="2025-01-30">
-<meta name="description" content="This lecture discusses the linear regression, a fundamental concept in machine learning. It introduces the squared loss function and the update rule for gradient descent. It also derived the closed-form solution for linear regression using matrix notation.">
+<meta name="dcterms.date" content="2025-03-06">
+<meta name="description" content="This lecture discusses the basics od decision trees including how to build a decision tree. It also introduces ensemble methods and discusses the random forest algorithm as an example of ensemble methods.">
 
-<title>3 Linear Regression – Jiuru Lyu</title>
+<title>8 Decision Trees and Random Forest – Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -236,30 +236,35 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-loss-function" id="toc-the-loss-function" class="nav-link active" data-scroll-target="#the-loss-function">The Loss Function</a></li>
-  <li><a href="#ordinary-least-squares-ols" id="toc-ordinary-least-squares-ols" class="nav-link" data-scroll-target="#ordinary-least-squares-ols">Ordinary Least Squares (OLS)</a></li>
-  <li><a href="#closed-form-solution" id="toc-closed-form-solution" class="nav-link" data-scroll-target="#closed-form-solution">Closed-Form Solution</a></li>
+  <li><a href="#decision-tree" id="toc-decision-tree" class="nav-link active" data-scroll-target="#decision-tree">Decision Tree</a>
+  <ul class="collapse">
+  <li><a href="#entropy-conditional-entropy-and-information-gain" id="toc-entropy-conditional-entropy-and-information-gain" class="nav-link" data-scroll-target="#entropy-conditional-entropy-and-information-gain">Entropy, Conditional Entropy, and Information Gain</a></li>
+  <li><a href="#learning-decision-trees-a-greedy-approach" id="toc-learning-decision-trees-a-greedy-approach" class="nav-link" data-scroll-target="#learning-decision-trees-a-greedy-approach">Learning Decision Trees: A Greedy Approach</a></li>
+  </ul></li>
+  <li><a href="#ensemble-methods-and-random-forest" id="toc-ensemble-methods-and-random-forest" class="nav-link" data-scroll-target="#ensemble-methods-and-random-forest">Ensemble Methods and Random Forest</a>
+  <ul class="collapse">
+  <li><a href="#bootstrap-aggregatting-bagging" id="toc-bootstrap-aggregatting-bagging" class="nav-link" data-scroll-target="#bootstrap-aggregatting-bagging">Bootstrap Aggregatting (BAGGING)</a></li>
+  <li><a href="#further-decorrelate-trees-random-forest" id="toc-further-decorrelate-trees-random-forest" class="nav-link" data-scroll-target="#further-decorrelate-trees-random-forest">Further Decorrelate Trees: Random Forest</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/03-Linear-Regression/03-Linear-Regression.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/03-Linear-Regression/03-Linear-Regression.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/08-Decision-Trees-and-Random-Forest/08-Decision-Trees-and-Random-Forest.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/08-Decision-Trees-and-Random-Forest/08-Decision-Trees-and-Random-Forest.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">3 Linear Regression</h1>
+<h1 class="title">8 Decision Trees and Random Forest</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Linear Regreesion</div>
-    <div class="quarto-category">Gradient Descent</div>
-    <div class="quarto-category">Squared Loss</div>
-    <div class="quarto-category">Least Squares</div>
-    <div class="quarto-category">Normal Equation</div>
+    <div class="quarto-category">Decision Trees</div>
+    <div class="quarto-category">Ensemble Methods</div>
+    <div class="quarto-category">Random Forest</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    This lecture discusses the linear regression, a fundamental concept in machine learning. It introduces the squared loss function and the update rule for gradient descent. It also derived the closed-form solution for linear regression using matrix notation.
+    This lecture discusses the basics od decision trees including how to build a decision tree. It also introduces ensemble methods and discusses the random forest algorithm as an example of ensemble methods.
   </div>
 </div>
 
@@ -276,7 +281,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 30, 2025</p>
+      <p class="date">March 6, 2025</p>
     </div>
   </div>
   
@@ -288,193 +293,421 @@ window.Quarto = {
 </header>
 
 
-<p>Goal: Given data <span class="math inline">\(\qty{\va x^{(i)}, y^{(i)}}_{i=1}^N\)</span>, find a linear model <span class="math display">\[
-f(\va x;\va\theta)=\va\theta\cdot\va x,
-\]</span> such that minimizes the empirical loss.</p>
-<section id="the-loss-function" class="level2">
-<h2 class="anchored" data-anchor-id="the-loss-function">The Loss Function</h2>
+<section id="decision-tree" class="level2">
+<h2 class="anchored" data-anchor-id="decision-tree">Decision Tree</h2>
+<ul>
+<li>Interpretability: Given a linear classifier dinfed by <span class="math inline">\(\va\theta=[\theta_1,\theta_2,\dots,\theta_d]\)</span>. How can we interpret the meaning of each parameter/coefficient? <span class="math display">\[\norm{\theta_i}\text{: how this feature contributes to the decision.}\]</span> To fit nonlinear model, we can use kernels. However, with kernels, the fitted parameter <span class="math inline">\(\va\theta\)</span> becomes a blackbox, and we lose interpretability (especially when we use RBF kernels, <span class="math inline">\(\va\theta\in\R^\infty\)</span>).</li>
+<li>A different approach: <strong><em>Decision Tree</em></strong> <span class="math display">\[f:\mathcal{X}\to\mathcal{Y}\]</span>
+<ul>
+<li>Both features (<span class="math inline">\(\mathcal{X}\)</span>) and labels (<span class="math inline">\(\mathcal{Y}\)</span>) can be a continuous, descrete, or binary value.</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-decision-tree" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1 (Forming a Decision Tree)</strong></span> Suppose <span class="math inline">\(\va x\in\qty{0,1}^2\)</span></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(x_1\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x_2\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(y\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<div id="fig-decision-tree" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-decision-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/eg-decision-tree.jpeg" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-decision-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Decision Tree
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>We can use a <strong>boolean function</strong> of input feature to represent a decision tree.</li>
+</ul>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="rem-decision-tree-overfit" class="proof remark">
+<p><span class="proof-title"><em>Remark 1</em>. </span></p>
+<ul>
+<li>As the number of nodes increases, the hypothesis space grows.</li>
+<li>Trivial solution: each examples has its own leaf node. If <span class="math inline">\(\va x\in\qty{0,1}^d\)</span>, then we have <span class="math inline">\(2^d\)</span> leaf nodes.</li>
+<li>Problem: overffing, unlikely to generalize to unseen examples.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Goal: Find the smallest tree that performs well on training data.
+<ul>
+<li>However, finding the optimal partition of the data is NP-complete (hard).</li>
+<li>Instead, we can use a <strong>greedy appraoch</strong>:
+<ul>
+<li>Start with empty tree.</li>
+<li>Find best feature to split on.</li>
+<li>Recursively build branches into subtree.</li>
+</ul></li>
+</ul></li>
+</ul>
+<section id="entropy-conditional-entropy-and-information-gain" class="level3">
+<h3 class="anchored" data-anchor-id="entropy-conditional-entropy-and-information-gain">Entropy, Conditional Entropy, and Information Gain</h3>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-decision-tree-building" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2 (How to Find the Best Split)</strong></span> We want to predict whether ot not a flight will get delayed: <span class="math display">\[\text{training data: }\begin{cases}29\text{ positive}\\35\text{ negative}\end{cases}\implies[29^+, 35^-].\]</span> Suppose <span class="math inline">\(\va x=[x_1,x_2]\)</span> are two binary features:</p>
+<div id="fig-first-split" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-first-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/eg-tree.jpeg" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-first-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: First Slipt
+</figcaption>
+</figure>
+</div>
+<p>Splitting by <strong>snow</strong> is better because it produces more certain labels. <em>But, how do we measure uncertainty?</em></p>
+</div>
+</div>
+</div>
+</div>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<div id="def-square-loss" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1 (Squared Loss Function)</strong></span> The <strong>empirical loss</strong> for linear regression is defined by <span class="math display">\[
-R_N(\va\theta)=\dfrac{1}{N}\sum_{i=1}^N\operatorname{loss}\qty(y^{(i)}, \va\theta\cdot\va x^{(i)}),
-\]</span> where loss is the <strong>squared loss</strong>: <span class="math display">\[
-\operatorname{loss}(z)=\dfrac{z^2}{2}.
-\]</span></p>
-<p>This loss function is continuous, differentiable, and convex.</p>
-<p>Here is a graph of the squared loss function:</p>
-<div id="fig-squared-loss" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="def-shannon-entropy" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Shannon’s Entropy)</strong></span> Let <span class="math inline">\(D_N\)</span> be the training data, <span class="math inline">\(y\in\qty{-1,+1}\)</span> be the binary outcome/label.</p>
+<ul>
+<li><p><span class="math inline">\(\P_\oplus\)</span>: fraction of positive examples</p></li>
+<li><p><span class="math inline">\(\P_\ominus\)</span>: fraction of negative examples <span class="math display">\[\text{Entropy of }D_N=-\qty\Big(\P_\oplus\log_2\P_\oplus+\P_\ominus\log_2\P_\ominus)\]</span></p></li>
+<li><p>The definition uses <span class="math inline">\(\log_2\)</span> because entropy is measured in bits.</p></li>
+<li><p>It measures the expected number of bits needed to encode a randomly drawn value of <span class="math inline">\(y\)</span>.</p></li>
+</ul>
+<div id="fig-entropy-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-squared-loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/squared-loss.jpeg" class="img-fluid figure-img" style="width:30.0%">
+<div aria-describedby="fig-entropy-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/entropy-plot.jpeg" class="img-fluid figure-img" style="width:75.0%">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-squared-loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Squared Loss
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-entropy-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Plot of Entropy
 </figcaption>
 </figure>
 </div>
-<p>Intuition: we permits small discrepancies but penalizes large deviations.</p>
+<ul>
+<li><p>More generally, for categorical outcome <span class="math inline">\(y\in\qty{y_1,y_2,\dots,y_k}\)</span>, <span class="math display">\[
+\begin{aligned}
+H(y)&amp;=-\qty\Big(\P(Y=y_1)\log_2\P(Y=y_1)+\P(Y=y_2)\log_2\P(Y=y_2)+\cdots+\P(Y=y_k)\log_2\P(Y=y_k))\\
+&amp;=-\sum_{i=1}^k\P(Y=y_i)\log_2\P(Y=y_i)
+\end{aligned}
+\]</span></p></li>
+<li><p>Note: entropy is usually positive as <span class="math inline">\(\log_2\P(Y=y_i)\)</span> is negative.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Entropy and Peakyness:
+<ul>
+<li>Imagine rolling a die and plotting the empirical distribution: <img src="figs/distribution.jpeg" id="fig-distribution" class="img-fluid" style="width:100.0%" alt="Distribution and Entropy">
+<ul>
+<li>On the left: high entropy, more uncertain about the label, less peaky distribution</li>
+<li>On the right: low entropy, less uncertain about the label, more peaky distribution</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-conditional-entropy" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2 (Conditional Entropy)</strong></span> <span class="math display">\[H(Y\mid X=x)=-\qty(\sum_{i=1}^k\P(Y=y_i\mid X=x)\log_2\P(Y=y_i\mid X=x))\]</span> <span class="math display">\[H(Y\mid X)=\sum_{x\in X}\P(X=x)\cdot H(Y\mid X=x)\]</span></p>
+<ul>
+<li><span class="math inline">\(H(Y\mid X)\)</span> shows the average surprise of <span class="math inline">\(Y\)</span> when <span class="math inline">\(X\)</span> is known.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="rem-conditional-entropy" class="proof remark">
+<p><span class="proof-title"><em>Remark 2</em>. </span></p>
+<ul>
+<li>When does <span class="math inline">\(H(Y\mid X)=0\)</span>? When <span class="math inline">\(Y\)</span> is completely determined by <span class="math inline">\(X\)</span>.</li>
+<li>When does <span class="math inline">\(H(Y\mid X)=H(Y)\)</span>? When <span class="math inline">\(Y\independ X\)</span>.</li>
+<li>We can use conditional entropy to measure the quality of a split:
+<ul>
+<li><em>Idea</em>: if knowing <span class="math inline">\(x_1\)</span> reduces uncertainty more than knowing <span class="math inline">\(x_2\)</span>, we should split by <span class="math inline">\(x_1\)</span>.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-information-gain" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3 (Information Gain (IG) / Mutual Information)</strong></span> <span class="math display">\[
+IG(X;Y)=H(Y)-H(Y\mid X),
+\]</span></p>
+<ul>
+<li>where <span class="math inline">\(H(Y)\)</span> is the entropy of parent node, and <span class="math inline">\(H(Y\mid X)\)</span> is the average entropy of the children note.</li>
+<li><span class="math inline">\(IG\)</span> measures the amount of information we learn about <span class="math inline">\(Y\)</span> by knowing the value of <span class="math inline">\(C\)</span> (and vice versa <span class="math inline">\(\implies\)</span> symmetric).</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-decision-tree-building" class="theorem example">
+<p><span class="theorem-title"><strong>Example 3 (Back to the Example)</strong></span> We want to predict whether ot not a flight will get delayed: <span class="math display">\[\text{training data: }\begin{cases}29\text{ positive}\\35\text{ negative}\end{cases}\implies[29^+, 35^-].\]</span> Suppose <span class="math inline">\(\va x=[x_1,x_2]\)</span> are two binary features:</p>
+<div id="fig-first-split" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-first-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/eg-tree.jpeg" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-first-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: First Slipt
+</figcaption>
+</figure>
+</div>
+<ul>
+<li><p>Calculate entropy of <span class="math inline">\(y\)</span>: <span class="math display">\[H(y)=-\qty(\dfrac{29}{64}\log_2\dfrac{29}{64}+\dfrac{35}{64}\log_2\dfrac{35}{64})\approx0.9937\]</span></p></li>
+<li><p>Calcualte the conditional entropy for each feature: <span class="math display">\[
+\begin{aligned}
+H(y\mid x_1)&amp;=\dfrac{26}{64}\qty(-\dfrac{21}{26}\log_2\dfrac{21}{26}-\dfrac{5}{26}\log_2\dfrac{5}{26})+\dfrac{38}{64}\qty(-\dfrac{8}{38}\log_2\dfrac{8}{38}-\dfrac{30}{38}\log_2\dfrac{30}{38})\\
+&amp;=0.7278\\\\
+H(y\mid x_2)&amp;=\dfrac{45}{64}\qty(-\dfrac{18}{45}\log_2\dfrac{18}{45}-\dfrac{27}{45}\log_2\dfrac{27}{45})+\dfrac{19}{64}\qty(-\dfrac{11}{19}\log_2\dfrac{11}{19}-\dfrac{8}{19}\log_2\dfrac{8}{19})\\
+&amp;=0.9742.
+\end{aligned}
+\]</span></p></li>
+<li><p>Calcualte the information gain: <span class="math display">\[
+\begin{aligned}
+IG(x_1;y)&amp;=0.9937-0.7278=0.2659\\
+IG(x_2;y)&amp;=0.9937-0.9742=0.0195.
+\end{aligned}
+\]</span> So, <span class="math inline">\(IG(x_1;y)&gt;IG(x_2;y)\)</span>, <span class="math inline">\(x_1\)</span> is a better split.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Another Measure of Uncertainty: Gini Index and Gini Gain: <span class="math display">\[
+\begin{aligned}
+\text{Gini}(Y)&amp;=\sum_{k=1}^k\P(Y=y_k)\qty(1-\P(Y=y_k))=1-\sum_{k=1}^k\P(Y=y_k)^2\\
+\text{GiniGain}(X;Y)&amp;=\text{Gini}(Y)-\sum_{x\in X}\P(X=x)\text{Gini}(Y\mid X=x).
+\end{aligned}
+\]</span></li>
+</ul>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="rem-IG-and-Gini" class="proof remark">
+<p><span class="proof-title"><em>Remark 3</em>. </span>In practice, using <span class="math inline">\(IG\)</span> or <span class="math inline">\(\text{GiniGain}\)</span> may lead to different results, but it is unclear how different it can be.</p>
+<div id="fig-gini-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gini-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/gini-plot.jpeg" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gini-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Gini Index and Entropy Plot
+</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="ordinary-least-squares-ols" class="level2">
-<h2 class="anchored" data-anchor-id="ordinary-least-squares-ols">Ordinary Least Squares (OLS)</h2>
-<ul>
-<li>We will minimize the empirical loss with squared loss, i.e., <span class="math display">\[
-R_N(\va\theta)=\dfrac{1}{N}\sum_{i=1}^N\dfrac{\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})^2}{2},
-\]</span> using SGD algorithm</li>
-<li>Recall the gradient descent update rule: <span class="math display">\[
-\va\theta^{(k+1)}=\va\theta^{(k)}-\eta_k\eval{\grad_{\va\theta}\operatorname{loss}(y^{(i)}\va\theta\cdot\va x^{(i)})}_{\va\theta=\va\theta^{(k)}}
-\]</span></li>
-</ul>
-<p>In OLS case, we have <span class="math display">\[
+<section id="learning-decision-trees-a-greedy-approach" class="level3">
+<h3 class="anchored" data-anchor-id="learning-decision-trees-a-greedy-approach">Learning Decision Trees: A Greedy Approach</h3>
+<p><span class="math display">\[
 \begin{aligned}
-\grad_{\va\theta}\operatorname{loss}(y^{(i)}-\va\theta\cdot\va x^{(i)})&amp;=\grad_{\va\theta}\dfrac{\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})^2}{2}\\
-&amp;=-\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})\va x^{(i)}.
+\arg\max_{j=1,\dots,d}IG(x_j;y)&amp;=\arg\max_j H(y)-H(y\mid x_j)\\
+&amp;=\arg\min_j H(y\mid x_j).
 \end{aligned}
 \]</span></p>
-<p>So, the update rule is <span class="math display">\[
-\va\theta^{(k+1)}=\va\theta^{(k)}+\eta_k\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})\va x^{(i)}.
-\]</span></p>
-<div id="alg-SGD-regression" class="pseudocode-container quarto-float" data-pseudocode-number="1" data-caption-prefix="Algorithm" data-comment-delimiter="#">
+<ul>
+<li>When to stop growing a tree? (Stopping Criteria)
+<ul>
+<li>When all record have the same label (assume no noise).</li>
+<li>If all record have identical features (no further splits possible).</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="rem-bad-stopping-criteria" class="proof remark">
+<p><span class="proof-title"><em>Remark 4</em>. </span>We should not stop when all stributtes have <span class="math inline">\(0\ IG\)</span>. See <a href="#exm-decision-tree" class="quarto-xref">Example&nbsp;1</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="alg-decision-tree" class="pseudocode-container quarto-float" data-comment-delimiter="#" data-pseudocode-number="1" data-caption-prefix="Algorithm">
 <div class="pseudocode">
-\begin{algorithm} \caption{SGD for Least Squares Regression} \begin{algorithmic} \State $k=0$; $\va\theta^{(0)}=\va 0$ \While{not converged} \State randomly shuffle points \For{$i=1,\dots, N$} \State $\va\theta^{(k+1)}=\va\theta^{(k)}+\eta_k\eval{\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})\va x^{(i)}}_{\va\theta=\va\theta^{(k)}}$ \State $k++$ \EndFor \EndWhile \end{algorithmic} \end{algorithm}
+\begin{algorithm} \caption{Building Decision Tree} \begin{algorithmic} \Procedure{BuildTree}{$DS$} \IF{$y^{(i)}==y$ for all examples in $DS$} \Return{$y$} \ElseIf{$x^{(i)}==x$ for all examples in $DS$} \Return{majority label} \Else \State $x_s=\argmin_x H(y\mid x)$ \For{each value $v$ of $x_s$} \State $DS_y=\qty{\text{examples in }DS\text{ where }x_s=v}$ \State BuildTree($DS_y$)$\qquad$\Comment{recursive function} \EndFor \EndIf \EndProcedure \end{algorithmic} \end{algorithm}
 </div>
 </div>
+<ul>
+<li>How do we avoid overfitting? We want <strong>simpler trees</strong>.
+<ul>
+<li>Set a maximum depth</li>
+<li>Measure performance on validation data. If growing tree results in worse performance, stop.</li>
+<li>Post-prune: grow entire/full tree and then greedily remove nodes that affect validation error the least.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="ensemble-methods-and-random-forest" class="level2">
+<h2 class="anchored" data-anchor-id="ensemble-methods-and-random-forest">Ensemble Methods and Random Forest</h2>
+<ul>
+<li>Goal: Descreae variance without increasing bias (recall bias-variance trade-off)</li>
+<li>Idea: Average across multiple models to reduce estimation error. But we only have one single training set, how can we learn multiple models? <strong><em>BAGGING</em></strong></li>
+</ul>
+<section id="bootstrap-aggregatting-bagging" class="level3">
+<h3 class="anchored" data-anchor-id="bootstrap-aggregatting-bagging">Bootstrap Aggregatting (BAGGING)</h3>
+<ul>
+<li>General procedure:
+<ul>
+<li>Create <span class="math inline">\(B\)</span> bootstrap samples: <span class="math inline">\(D_N^{(1)},\dots,D_N^{(B)}\)</span></li>
+<li>Train decision tree on each <span class="math inline">\(D_N^{(b)}\)</span></li>
+<li>Classify new examples by majority vote (i.e., mode)</li>
+</ul></li>
+</ul>
+<div id="fig-bagging" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bagging-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/bagging.jpeg" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bagging-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: BAGGING
+</figcaption>
+</figure>
+</div>
+<ul>
+<li>Why does bagging work? (Assume <span class="math inline">\(y\in\qty{-1,+1}\)</span>)
+<ul>
+<li>Suppose we have <span class="math inline">\(B\)</span> independent classifers: <span class="math display">\[\hat f^{(b)}:\R^d\to\qty{-1,+1},\]</span> and each <span class="math inline">\(\hat f^{(b)}\)</span> has a misclassification rate of <span class="math inline">\(0.4\)</span>.
+<ul>
+<li>That is, if <span class="math inline">\(y^{(i)}=+1\)</span>, then <span class="math inline">\(\P\qty(\hat f^{(b)}(\va x^{(i)})=-1)=0.4\quad\forall b=1,\dots,B\)</span> and <span class="math inline">\(\forall\ i,\dots,d\)</span></li>
+</ul></li>
+<li>Now, applay baaged classifier: <span class="math display">\[\hat f^{(\text{bag})}(\va x)=\arg\max_{y\in\qty{-1,+1}}\sum_{b=1}^B\1\qty(\hat f^{(b)}(\va x)=\hat y)=\arg\max\qty{B_{-1},B_{+1}},\]</span> where <span class="math inline">\(B_{-1}\)</span> is the number of votes for <span class="math inline">\(-1\)</span>, and <span class="math inline">\(B_{+1}\)</span> is the number of votes for <span class="math inline">\(+1\)</span>. Then, <span class="math display">\[B_{-1}\sim\text{Binomial}(B,0.4).\]</span> Recall: if <span class="math inline">\(X\sim\text{Binomial}(n,p)\)</span>, then the probability of getting exactkly <span class="math inline">\(k\)</span> successes in <span class="math inline">\(n\)</span> trails is given by <span class="math display">\[P(X=k)=\binom{n}{k}p^k(1-p)^{n-k}.\]</span> Thus, misclassification rate of bagged classifer is <span class="math display">\[\begin{aligned}\P\qty(\hat f^{(\text{bag})}(\va x^{(i)})=-1)&amp;=\P\qty(B_{-1}\geq\dfrac{B}{2})\\&amp;=1-\P\qty(B_{-1}&lt;\dfrac{B}{2})\\&amp;=1-\sum_{k=1}^{\lfloor B/2\rfloor}\binom{B}{k}(0.4)^k(1-0.4)^{B-k}.\end{aligned}\]</span> Note: <span class="math display">\[\lim_{B\to+\infty}\sum_{k=1}^{\lfloor B/2\rfloor}\binom{B}{k}p^k(1-p)^{B-k}=1\]</span> as long as misclassification rate <span class="math inline">\(p&lt;0.5\)</span>. So, as <span class="math inline">\(B\to\infty\)</span>, misclassification <span class="math inline">\(\to0\)</span>.</li>
+</ul></li>
+<li>Reality: Predcition error rarely goes to <span class="math inline">\(0\)</span>.
+<ul>
+<li>Bagging only reduces estimation error (varaince).</li>
+<li>We don’t ahve independence assumption: classifiers trained on bootstrapped dataset are NOT independent.</li>
+</ul></li>
+</ul>
 <div class="callout callout-style-simple callout-warning">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<div id="rem-SGD-regression" class="proof remark">
-<p><span class="proof-title"><em>Remark 1</em> (Compare with Hinge Loss Classification). </span></p>
+<div id="rem-bagging" class="proof remark">
+<p><span class="proof-title"><em>Remark 5</em>. </span></p>
 <ul>
-<li>We make updates on every data points</li>
-<li>Stopping criteria, learning rate, shuffling, etc., are the same.</li>
+<li>On average, each bootstrap contain <span class="math inline">\(63.2\%\)</span> of original data.</li>
+<li>How similar are boostrap samples?
+<ul>
+<li>Probability of example <span class="math inline">\((i)\)</span> is not selected once: <span class="math inline">\(1-\dfrac{1}{n}\)</span>.</li>
+<li>Probability of example <span class="math inline">\((i)\)</span> is not selected at all: <span class="math inline">\(\qty(1-\dfrac{1}{n})^n\)</span>.</li>
+</ul></li>
+<li>Then, <span class="math display">\[\lim_{n\to\infty}\qty(1-\dfrac{1}{n})^n=\dfrac{1}{e}\approx36.8\%.\]</span> So, when <span class="math inline">\(n\to\infty\)</span>, the probability of example <span class="math inline">\((i)\)</span> is not selected at all is <span class="math inline">\(36.8\%\)</span>.</li>
 </ul>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="closed-form-solution" class="level2">
-<h2 class="anchored" data-anchor-id="closed-form-solution">Closed-Form Solution</h2>
+<section id="further-decorrelate-trees-random-forest" class="level3">
+<h3 class="anchored" data-anchor-id="further-decorrelate-trees-random-forest">Further Decorrelate Trees: Random Forest</h3>
 <ul>
-<li>Since <span class="math inline">\(R_N(\va\theta)\)</span> with squared loss is a covex function and differentiable everywhere, we can try to minimize it analytically by setting the gradient to <span class="math inline">\(0\)</span>.</li>
-<li>Rewrite empirical risk in matrix notation: <span class="math display">\[
-X=\mqty[-&amp;\va x^{(1)\top}&amp;-\\&amp;\vdots&amp;\\-&amp;\va x^{(N)\top}&amp;-]_{N\times d}\quad\text{and}\quad \va y=\mqty[y^{(1)}\\\vdots\\y^{(N)}]_{N\times 1}.
-\]</span> Then, the empirical risk is <span class="math display">\[
-\begin{aligned}
-R_N(\va\theta)=\dfrac{1}{2}\dfrac{1}{N}\sum_{i=1}^N\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})^2&amp;=\dfrac{1}{2N}\qty(X\va\theta-\va y)^\top\qty(X\va\theta-\va y)\\
-&amp;=\dfrac{1}{2N}\qty(\va\theta^\top X^\top X\va\theta-2\va\theta^\top (X^\top\va y)+\va y^\top\va y).
-\end{aligned}
-\]</span></li>
-</ul>
-<div id="tip-differentiation-rules" class="callout callout-style-simple callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip&nbsp;1: Commonly Used Differentiation Rules
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th style="text-align: center;"><span class="math inline">\(f(\va x)\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(\grad_{\va x}f(\va x)\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(\va v^\top\va x\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\va v\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;"><span class="math inline">\(\va x^\top\va x\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(2\va x\)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(\va x^\top A\va x\)</span></td>
-<td style="text-align: center;"><span class="math inline">\((A+A^\top)\va x\)</span> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
+<li>Random forest is an <strong>ensemble method</strong> designed specifically for trees (bagging applies more boardly).</li>
+<li>Two sources of randomness:
 <ul>
-<li>Therefore, the gradient of <span class="math inline">\(R_N(\va\theta)\)</span> is</li>
-</ul>
-<p><span class="math display">\[
-\begin{aligned}
-\grad_{\va\theta}R_N(\va\theta)&amp;=\dfrac{1}{2N}\qty(2X^\top X\va\theta-2(X^\top\va y))\\
-&amp;=\dfrac{1}{N}\qty(X^\top X\va\theta-X^\top\va y).
-\end{aligned}
-\]</span></p>
-<ul>
-<li>Set gradient to <span class="math inline">\(0\)</span>, we have</li>
-</ul>
-<p><span class="math display">\[
-\begin{aligned}
-\grad_{\va\theta}R_N(\va\theta)&amp;=0\\
-\dfrac{1}{N}\qty(X^\top X\va\theta-X^\top\va y)&amp;=0\\
-X^\top X\va\theta-X^\top\va y&amp;=0\\
-X^\top X\va\theta&amp;=X^\top\va y\\
-\va\theta^*&amp;=\qty(X^\top X)^{-1}X^\top\va y.
-\end{aligned}
-\]</span></p>
-<div class="callout callout-style-simple callout-warning">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<div id="rem-normal-equation" class="proof remark">
-<p><span class="proof-title"><em>Remark 2</em> (Normal Equation and Inveritibility). </span></p>
-<ul>
-<li>The solutions is called the <strong>Normal Equation</strong> or the <strong>OLS solution</strong>.</li>
-<li>OLS solution <span class="math inline">\(\va\theta^*=\qty(X^\top X)^{-1}X^\top\va y.\)</span> exists only when <span class="math inline">\(X^\top X\)</span> is invertible.</li>
-<li>Invertibility of <span class="math inline">\(X^\top X\)</span>: “Gram matrix”
-<ul>
-<li>Why might it be non-invertible/singular/degenerate? <span class="math display">\[\rank(X^\top X)\leq\rank(X)\leq\min\qty{N,d}\]</span>
-<ul>
-<li>If <span class="math inline">\(d&gt;N\)</span>, then <span class="math inline">\(\rank(X^\top X)\leq N&lt;d\)</span>. Since <span class="math inline">\(X^\top X\in\R^{d\times d}\)</span>, we know <span class="math inline">\(X^\top X\)</span> is not full rank, and thus non-invertible.</li>
-<li>For example, if we have duplicated features, say <span class="math inline">\(x_1=x_2\)</span>, then if <span class="math inline">\(\mqty[\theta_1,\theta_2]\)</span> is a solution, then <span class="math inline">\(\mqty[\theta_1-c,\theta_2+c]\)</span> is also a solution.</li>
-</ul></li>
-<li>What to do if <span class="math inline">\(X^\top X\)</span> is not invertible?
-<ul>
-<li>Monro-Penrose Pseudo-Inverse: <span class="math display">\[\va\theta^*=(X^\top X)^{\dagger}X^\top \va y=X^{\dagger}\va y\]</span></li>
-<li>Regularization: See <a href="jrlyu.github.io/notes/cs334/04-Regularization/04-Regularization.html">next lecture</a>.</li>
-</ul></li>
+<li>Bagging</li>
+<li>Random feature subsets:at erach node, best split chosen from subset of <span class="math inline">\(m\)</span> features instead of all <span class="math inline">\(d\)</span> features.</li>
 </ul></li>
 </ul>
-</div>
-</div>
+<div id="alg-random-forest" class="pseudocode-container quarto-float" data-comment-delimiter="#" data-pseudocode-number="2" data-caption-prefix="Algorithm">
+<div class="pseudocode">
+\begin{algorithm} \caption{Random Forest} \begin{algorithmic} \State{\# Bagging} \For{$b=1,\dots, B$} \State draw bootstrap sample $D_N^{(b)}$ of size $N$ from $D_N$ \State grow decision tree $DT^{(b)}$$\qquad$\Comment{See below code for growing $DT^{(b)}$} \EndFor \Return{ensemble $\qty{DT^{(1)}, \dots, DT^{(B)}}$} \State{\# Subprocedure for growing $DT^{(b)}$; random feature subset} \While{stopping criteria not met} \State Recursively repeat following steps for each node of tree: \State 1. select $m$ features at random from $d$ features \State 2. pick best feature to split on (using $IG$ or $\text{Gini}$) \State 3. split node into childre. \EndWhile \State{\# Another option to do Steps 1 and 2: } \State{1. compute $IG$ for all $d$ features} \State{2. randomly pick from top $m$} \end{algorithmic} \end{algorithm}
 </div>
 </div>
 
 
 </section>
+</section>
 
-
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>If <span class="math inline">\(A\)</span> is symmetric, then <span class="math inline">\(\grad_{\va x}f(\va x)=2A\va x\)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1040,11 +1273,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© Copyright 2024, Jiuru Lyu</p>
+<p>© Copyright 2025, Jiuru Lyu</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/03-Linear-Regression/03-Linear-Regression.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/03-Linear-Regression/03-Linear-Regression.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/08-Decision-Trees-and-Random-Forest/08-Decision-Trees-and-Random-Forest.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/08-Decision-Trees-and-Random-Forest/08-Decision-Trees-and-Random-Forest.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

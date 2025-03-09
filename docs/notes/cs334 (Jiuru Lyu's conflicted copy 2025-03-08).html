@@ -6,11 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Jiuru Lyu">
-<meta name="dcterms.date" content="2025-01-30">
-<meta name="description" content="This lecture discusses the linear regression, a fundamental concept in machine learning. It introduces the squared loss function and the update rule for gradient descent. It also derived the closed-form solution for linear regression using matrix notation.">
 
-<title>3 Linear Regression – Jiuru Lyu</title>
+<title>CS 334 Machine Learning – Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -26,27 +23,29 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../../">
-<link href="../../..//media/favicon.ico" rel="icon">
-<script src="../../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script src="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
-<link href="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="..//media/favicon.ico" rel="icon">
+<script src="../site_libs/quarto-listing/list.min.js"></script>
+<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -74,6 +73,35 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
 <script>
 window.MathJax = {
   loader: {
@@ -173,7 +201,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="../../../styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -183,7 +211,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../../../index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Jiuru Lyu</span>
     </a>
   </div>
@@ -194,7 +222,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -203,15 +231,15 @@ window.Quarto = {
     </span>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../notes.html"> 
+    <a class="nav-link" href="../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../photo.html"> 
+    <a class="nav-link" href="../photo.html"> 
 <span class="menu-text">Photograph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../blogs.html"> 
+    <a class="nav-link" href="../blogs.html"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
@@ -232,53 +260,21 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#the-loss-function" id="toc-the-loss-function" class="nav-link active" data-scroll-target="#the-loss-function">The Loss Function</a></li>
-  <li><a href="#ordinary-least-squares-ols" id="toc-ordinary-least-squares-ols" class="nav-link" data-scroll-target="#ordinary-least-squares-ols">Ordinary Least Squares (OLS)</a></li>
-  <li><a href="#closed-form-solution" id="toc-closed-form-solution" class="nav-link" data-scroll-target="#closed-form-solution">Closed-Form Solution</a></li>
-  </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/03-Linear-Regression/03-Linear-Regression.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/03-Linear-Regression/03-Linear-Regression.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
-    </div>
+        
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(8)</span></div><div class="category" data-category="Qmlhcy1WYXJpYW5jZSUyMFRyYWRlb2Zm">Bias-Variance Tradeoff <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q2xhc3NpZmljYXRpb24=">Classification <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Q2xhc3NpZmljYXRpb24lMjBNZXRyaWNz">Classification Metrics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q3Jvc3MlMjBWYWxpZGF0aW9u">Cross Validation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGVjaXNpb24lMjBUcmVlcw==">Decision Trees <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RWxhc3RpYyUyME5ldA==">Elastic Net <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RW5zZW1ibGUlMjBNZXRob2Rz">Ensemble Methods <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RmVhdHVyZSUyMEVuZ2luZWVyaW5n">Feature Engineering <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RmVhdHVyZSUyMFNlbGVjdGlvbg==">Feature Selection <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R3JhZGllbnQlMjBEZXNjZW50">Gradient Descent <span class="quarto-category-count">(2)</span></div><div class="category" data-category="SGluZ2UlMjBMb3Nz">Hinge Loss <span class="quarto-category-count">(1)</span></div><div class="category" data-category="S2VybmVscw==">Kernels <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGFzc28lMjBSZWdyZXNzaW9u">Lasso Regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGVhc3QlMjBTcXVhcmVz">Least Squares <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGluZWFyJTIwQ2Fzc2lmaWNhdGlvbg==">Linear Cassification <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGluZWFyJTIwUmVncmVlc2lvbg==">Linear Regreesion <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TG9naXN0aWMlMjBSZWdyZXNzaW9u">Logistic Regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TG9zcyUyMEZ1bmN0aW9u">Loss Function <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TW9kZWwlMjBBc3Nlc3NtZW50">Model Assessment <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TW9kZWwlMjBTZWxlY3Rpb24=">Model Selection <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Tm9ybWFsJTIwRXF1YXRpb24=">Normal Equation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UGVyY2VwdHJvbg==">Perceptron <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UmFuZG9tJTIwRm9yZXN0">Random Forest <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UmVncmVzc2lvbiUyME1ldHJpY3M=">Regression Metrics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UmVndWxhcml6YXRpb24=">Regularization <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UmlkZ2UlMjBSZWdyZXNzaW9u">Ridge Regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U2lnbW9pZCUyMEZ1bmN0aW9u">Sigmoid Function <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3F1YXJlZCUyMExvc3M=">Squared Loss <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VHJhaW5pbmclMjBFcnJvcg==">Training Error <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">3 Linear Regression</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">Linear Regreesion</div>
-    <div class="quarto-category">Gradient Descent</div>
-    <div class="quarto-category">Squared Loss</div>
-    <div class="quarto-category">Least Squares</div>
-    <div class="quarto-category">Normal Equation</div>
-  </div>
-  </div>
-
-<div>
-  <div class="description">
-    This lecture discusses the linear regression, a fundamental concept in machine learning. It introduces the squared loss function and the update rule for gradient descent. It also derived the closed-form solution for linear regression using matrix notation.
-  </div>
+<h1 class="title">CS 334 Machine Learning</h1>
 </div>
+
 
 
 <div class="quarto-title-meta column-page-left">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">January 30, 2025</p>
-    </div>
-  </div>
   
     
   </div>
@@ -288,193 +284,375 @@ window.Quarto = {
 </header>
 
 
-<p>Goal: Given data <span class="math inline">\(\qty{\va x^{(i)}, y^{(i)}}_{i=1}^N\)</span>, find a linear model <span class="math display">\[
-f(\va x;\va\theta)=\va\theta\cdot\va x,
-\]</span> such that minimizes the empirical loss.</p>
-<section id="the-loss-function" class="level2">
-<h2 class="anchored" data-anchor-id="the-loss-function">The Loss Function</h2>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<div id="def-square-loss" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1 (Squared Loss Function)</strong></span> The <strong>empirical loss</strong> for linear regression is defined by <span class="math display">\[
-R_N(\va\theta)=\dfrac{1}{N}\sum_{i=1}^N\operatorname{loss}\qty(y^{(i)}, \va\theta\cdot\va x^{(i)}),
-\]</span> where loss is the <strong>squared loss</strong>: <span class="math display">\[
-\operatorname{loss}(z)=\dfrac{z^2}{2}.
-\]</span></p>
-<p>This loss function is continuous, differentiable, and convex.</p>
-<p>Here is a graph of the squared loss function:</p>
-<div id="fig-squared-loss" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-squared-loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/squared-loss.jpeg" class="img-fluid figure-img" style="width:30.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-squared-loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Squared Loss
-</figcaption>
-</figure>
-</div>
-<p>Intuition: we permits small discrepancies but penalizes large deviations.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="ordinary-least-squares-ols" class="level2">
-<h2 class="anchored" data-anchor-id="ordinary-least-squares-ols">Ordinary Least Squares (OLS)</h2>
-<ul>
-<li>We will minimize the empirical loss with squared loss, i.e., <span class="math display">\[
-R_N(\va\theta)=\dfrac{1}{N}\sum_{i=1}^N\dfrac{\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})^2}{2},
-\]</span> using SGD algorithm</li>
-<li>Recall the gradient descent update rule: <span class="math display">\[
-\va\theta^{(k+1)}=\va\theta^{(k)}-\eta_k\eval{\grad_{\va\theta}\operatorname{loss}(y^{(i)}\va\theta\cdot\va x^{(i)})}_{\va\theta=\va\theta^{(k)}}
-\]</span></li>
-</ul>
-<p>In OLS case, we have <span class="math display">\[
-\begin{aligned}
-\grad_{\va\theta}\operatorname{loss}(y^{(i)}-\va\theta\cdot\va x^{(i)})&amp;=\grad_{\va\theta}\dfrac{\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})^2}{2}\\
-&amp;=-\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})\va x^{(i)}.
-\end{aligned}
-\]</span></p>
-<p>So, the update rule is <span class="math display">\[
-\va\theta^{(k+1)}=\va\theta^{(k)}+\eta_k\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})\va x^{(i)}.
-\]</span></p>
-<div id="alg-SGD-regression" class="pseudocode-container quarto-float" data-pseudocode-number="1" data-caption-prefix="Algorithm" data-comment-delimiter="#">
-<div class="pseudocode">
-\begin{algorithm} \caption{SGD for Least Squares Regression} \begin{algorithmic} \State $k=0$; $\va\theta^{(0)}=\va 0$ \While{not converged} \State randomly shuffle points \For{$i=1,\dots, N$} \State $\va\theta^{(k+1)}=\va\theta^{(k)}+\eta_k\eval{\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})\va x^{(i)}}_{\va\theta=\va\theta^{(k)}}$ \State $k++$ \EndFor \EndWhile \end{algorithmic} \end{algorithm}
-</div>
-</div>
-<div class="callout callout-style-simple callout-warning">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<div id="rem-SGD-regression" class="proof remark">
-<p><span class="proof-title"><em>Remark 1</em> (Compare with Hinge Loss Classification). </span></p>
-<ul>
-<li>We make updates on every data points</li>
-<li>Stopping criteria, learning rate, shuffling, etc., are the same.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="closed-form-solution" class="level2">
-<h2 class="anchored" data-anchor-id="closed-form-solution">Closed-Form Solution</h2>
-<ul>
-<li>Since <span class="math inline">\(R_N(\va\theta)\)</span> with squared loss is a covex function and differentiable everywhere, we can try to minimize it analytically by setting the gradient to <span class="math inline">\(0\)</span>.</li>
-<li>Rewrite empirical risk in matrix notation: <span class="math display">\[
-X=\mqty[-&amp;\va x^{(1)\top}&amp;-\\&amp;\vdots&amp;\\-&amp;\va x^{(N)\top}&amp;-]_{N\times d}\quad\text{and}\quad \va y=\mqty[y^{(1)}\\\vdots\\y^{(N)}]_{N\times 1}.
-\]</span> Then, the empirical risk is <span class="math display">\[
-\begin{aligned}
-R_N(\va\theta)=\dfrac{1}{2}\dfrac{1}{N}\sum_{i=1}^N\qty(y^{(i)}-\va\theta\cdot\va x^{(i)})^2&amp;=\dfrac{1}{2N}\qty(X\va\theta-\va y)^\top\qty(X\va\theta-\va y)\\
-&amp;=\dfrac{1}{2N}\qty(\va\theta^\top X^\top X\va\theta-2\va\theta^\top (X^\top\va y)+\va y^\top\va y).
-\end{aligned}
-\]</span></li>
-</ul>
-<div id="tip-differentiation-rules" class="callout callout-style-simple callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip&nbsp;1: Commonly Used Differentiation Rules
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th style="text-align: center;"><span class="math inline">\(f(\va x)\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(\grad_{\va x}f(\va x)\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(\va v^\top\va x\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\va v\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;"><span class="math inline">\(\va x^\top\va x\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(2\va x\)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(\va x^\top A\va x\)</span></td>
-<td style="text-align: center;"><span class="math inline">\((A+A^\top)\va x\)</span> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<ul>
-<li>Therefore, the gradient of <span class="math inline">\(R_N(\va\theta)\)</span> is</li>
-</ul>
-<p><span class="math display">\[
-\begin{aligned}
-\grad_{\va\theta}R_N(\va\theta)&amp;=\dfrac{1}{2N}\qty(2X^\top X\va\theta-2(X^\top\va y))\\
-&amp;=\dfrac{1}{N}\qty(X^\top X\va\theta-X^\top\va y).
-\end{aligned}
-\]</span></p>
-<ul>
-<li>Set gradient to <span class="math inline">\(0\)</span>, we have</li>
-</ul>
-<p><span class="math display">\[
-\begin{aligned}
-\grad_{\va\theta}R_N(\va\theta)&amp;=0\\
-\dfrac{1}{N}\qty(X^\top X\va\theta-X^\top\va y)&amp;=0\\
-X^\top X\va\theta-X^\top\va y&amp;=0\\
-X^\top X\va\theta&amp;=X^\top\va y\\
-\va\theta^*&amp;=\qty(X^\top X)^{-1}X^\top\va y.
-\end{aligned}
-\]</span></p>
-<div class="callout callout-style-simple callout-warning">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<div id="rem-normal-equation" class="proof remark">
-<p><span class="proof-title"><em>Remark 2</em> (Normal Equation and Inveritibility). </span></p>
-<ul>
-<li>The solutions is called the <strong>Normal Equation</strong> or the <strong>OLS solution</strong>.</li>
-<li>OLS solution <span class="math inline">\(\va\theta^*=\qty(X^\top X)^{-1}X^\top\va y.\)</span> exists only when <span class="math inline">\(X^\top X\)</span> is invertible.</li>
-<li>Invertibility of <span class="math inline">\(X^\top X\)</span>: “Gram matrix”
-<ul>
-<li>Why might it be non-invertible/singular/degenerate? <span class="math display">\[\rank(X^\top X)\leq\rank(X)\leq\min\qty{N,d}\]</span>
-<ul>
-<li>If <span class="math inline">\(d&gt;N\)</span>, then <span class="math inline">\(\rank(X^\top X)\leq N&lt;d\)</span>. Since <span class="math inline">\(X^\top X\in\R^{d\times d}\)</span>, we know <span class="math inline">\(X^\top X\)</span> is not full rank, and thus non-invertible.</li>
-<li>For example, if we have duplicated features, say <span class="math inline">\(x_1=x_2\)</span>, then if <span class="math inline">\(\mqty[\theta_1,\theta_2]\)</span> is a solution, then <span class="math inline">\(\mqty[\theta_1-c,\theta_2+c]\)</span> is also a solution.</li>
-</ul></li>
-<li>What to do if <span class="math inline">\(X^\top X\)</span> is not invertible?
-<ul>
-<li>Monro-Penrose Pseudo-Inverse: <span class="math display">\[\va\theta^*=(X^\top X)^{\dagger}X^\top \va y=X^{\dagger}\va y\]</span></li>
-<li>Regularization: See <a href="jrlyu.github.io/notes/cs334/04-Regularization/04-Regularization.html">next lecture</a>.</li>
-</ul></li>
-</ul></li>
-</ul>
-</div>
-</div>
-</div>
-</div>
 
 
-</section>
 
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>If <span class="math inline">\(A\)</span> is symmetric, then <span class="math inline">\(\grad_{\va x}f(\va x)=2A\va x\)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="listing-actions-group">
+   <div class="input-group input-group-sm quarto-listing-sort">
+     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
+     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+       <option value="" disabled="" selected="" hidden="">Order By</option>
+       <option value="index" data-direction="asc">Default</option>
+         <option value="listing-title" data-direction="asc">
+          Title
+        </option>
+         <option value="listing-date-sort" data-direction="asc">
+          Date - Oldest
+        </option>
+         <option value="listing-date-sort" data-direction="desc">
+          Date - Newest
+        </option>
+         <option value="listing-author" data-direction="asc">
+          Author
+        </option>
+     </select>
+  </div>
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="TGluZWFyJTIwQ2Fzc2lmaWNhdGlvbiUyQ0xvc3MlMjBGdW5jdGlvbiUyQ1RyYWluaW5nJTIwRXJyb3IlMkNQZXJjZXB0cm9u" data-listing-date-sort="1737608400000" data-listing-file-modified-sort="1738386656661" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="596">
+<div class="thumbnail">
+<p><a href="../notes/cs334/01-Linear-Classification/01-Linear-Classification.html" class="no-external"></a></p><a href="../notes/cs334/01-Linear-Classification/01-Linear-Classification.html" class="no-external">
+<p class="card-img-top"><img src="cs334/01-Linear-Classification/figs/decision-boundary-1.jpeg"  class="thumbnail-image card-img"/></p>
+</a><p><a href="../notes/cs334/01-Linear-Classification/01-Linear-Classification.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../notes/cs334/01-Linear-Classification/01-Linear-Classification.html" class="no-external">1 Linear Classification</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../notes/cs334/01-Linear-Classification/01-Linear-Classification.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('TGluZWFyJTIwQ2Fzc2lmaWNhdGlvbg=='); return false;">
+Linear Cassification
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('TG9zcyUyMEZ1bmN0aW9u'); return false;">
+Loss Function
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('VHJhaW5pbmclMjBFcnJvcg=='); return false;">
+Training Error
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('UGVyY2VwdHJvbg=='); return false;">
+Perceptron
+</div>
+</div>
+<div class="listing-description">
+<a href="../notes/cs334/01-Linear-Classification/01-Linear-Classification.html" class="no-external">This lecture discusses the linear classification, a fundamental concept in machine learning. It introduces loss functions, training error, and the perceptron algorithm.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../notes/cs334/01-Linear-Classification/01-Linear-Classification.html" class="no-external">
+<div class="listing-date">
+Jan 23, 2025
+</div>
+<div class="listing-author">
+Jiuru Lyu
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="Q2xhc3NpZmljYXRpb24lMkNHcmFkaWVudCUyMERlc2NlbnQlMkNIaW5nZSUyMExvc3M=" data-listing-date-sort="1738040400000" data-listing-file-modified-sort="1738392416812" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="764">
+<div class="thumbnail">
+<p><a href="../notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html" class="no-external"></a></p><a href="../notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html" class="no-external">
+<p class="card-img-top"><img src="cs334/02-Gradient-Descent-on-Classification/figs/z-oLoss.jpeg"  class="thumbnail-image card-img"/></p>
+</a><p><a href="../notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html" class="no-external">2 Gradient Descent on Classification</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Q2xhc3NpZmljYXRpb24='); return false;">
+Classification
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R3JhZGllbnQlMjBEZXNjZW50'); return false;">
+Gradient Descent
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('SGluZ2UlMjBMb3Nz'); return false;">
+Hinge Loss
+</div>
+</div>
+<div class="listing-description">
+<a href="../notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html" class="no-external">This lecture discusses the gradient descent algorithm and its application to classification problem.It introduces the hinge loss function and the update rule for gradient descent.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html" class="no-external">
+<div class="listing-date">
+Jan 28, 2025
+</div>
+<div class="listing-author">
+Jiuru Lyu
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="TGluZWFyJTIwUmVncmVlc2lvbiUyQ0dyYWRpZW50JTIwRGVzY2VudCUyQ1NxdWFyZWQlMjBMb3NzJTJDTGVhc3QlMjBTcXVhcmVzJTJDTm9ybWFsJTIwRXF1YXRpb24=" data-listing-date-sort="1738213200000" data-listing-file-modified-sort="1741490369189" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="392">
+<div class="thumbnail">
+<p><a href="../notes/cs334/03-Linear-Regression/03-Linear-Regression.html" class="no-external"></a></p><a href="../notes/cs334/03-Linear-Regression/03-Linear-Regression.html" class="no-external">
+<p class="card-img-top"><img src="cs334/03-Linear-Regression/figs/squared-loss.jpeg"  class="thumbnail-image card-img"/></p>
+</a><p><a href="../notes/cs334/03-Linear-Regression/03-Linear-Regression.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../notes/cs334/03-Linear-Regression/03-Linear-Regression.html" class="no-external">3 Linear Regression</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../notes/cs334/03-Linear-Regression/03-Linear-Regression.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('TGluZWFyJTIwUmVncmVlc2lvbg=='); return false;">
+Linear Regreesion
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R3JhZGllbnQlMjBEZXNjZW50'); return false;">
+Gradient Descent
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('U3F1YXJlZCUyMExvc3M='); return false;">
+Squared Loss
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('TGVhc3QlMjBTcXVhcmVz'); return false;">
+Least Squares
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Tm9ybWFsJTIwRXF1YXRpb24='); return false;">
+Normal Equation
+</div>
+</div>
+<div class="listing-description">
+<a href="../notes/cs334/03-Linear-Regression/03-Linear-Regression.html" class="no-external">This lecture discusses the linear regression, a fundamental concept in machine learning. It introduces the squared loss function and the update rule for gradient descent. It also derived the closed-form solution for linear regression using matrix notation.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../notes/cs334/03-Linear-Regression/03-Linear-Regression.html" class="no-external">
+<div class="listing-date">
+Jan 30, 2025
+</div>
+<div class="listing-author">
+Jiuru Lyu
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="UmVndWxhcml6YXRpb24lMkNCaWFzLVZhcmlhbmNlJTIwVHJhZGVvZmYlMkNSaWRnZSUyMFJlZ3Jlc3Npb24lMkNMYXNzbyUyMFJlZ3Jlc3Npb24lMkNFbGFzdGljJTIwTmV0" data-listing-date-sort="1738645200000" data-listing-file-modified-sort="1741490350485" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="885">
+<div class="thumbnail">
+<p><a href="../notes/cs334/04-Regularization/04-Regulairzation.html" class="no-external"></a></p><a href="../notes/cs334/04-Regularization/04-Regulairzation.html" class="no-external">
+<p class="card-img-top"><img src="cs334/04-Regularization/figs/complexity-error.jpeg"  class="thumbnail-image card-img"/></p>
+</a><p><a href="../notes/cs334/04-Regularization/04-Regulairzation.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../notes/cs334/04-Regularization/04-Regulairzation.html" class="no-external">4 Regularization</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../notes/cs334/04-Regularization/04-Regulairzation.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('UmVndWxhcml6YXRpb24='); return false;">
+Regularization
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Qmlhcy1WYXJpYW5jZSUyMFRyYWRlb2Zm'); return false;">
+Bias-Variance Tradeoff
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('UmlkZ2UlMjBSZWdyZXNzaW9u'); return false;">
+Ridge Regression
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('TGFzc28lMjBSZWdyZXNzaW9u'); return false;">
+Lasso Regression
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('RWxhc3RpYyUyME5ldA=='); return false;">
+Elastic Net
+</div>
+</div>
+<div class="listing-description">
+<a href="../notes/cs334/04-Regularization/04-Regulairzation.html" class="no-external">This lecture starts from the bias-variance tradeoff, and then introduces regularization as a way to control the tradeoff. We will discuss the <span class="math inline">\(L_2\)</span> regularization (Ridge Regression), <span class="math inline">\(L_1\)</span> regularization (Lasso Regression), and Elastic Net.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../notes/cs334/04-Regularization/04-Regulairzation.html" class="no-external">
+<div class="listing-date">
+Feb 4, 2025
+</div>
+<div class="listing-author">
+Jiuru Lyu
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="4" data-categories="TG9naXN0aWMlMjBSZWdyZXNzaW9uJTJDQ2xhc3NpZmljYXRpb24lMkNTaWdtb2lkJTIwRnVuY3Rpb24=" data-listing-date-sort="1738818000000" data-listing-file-modified-sort="1741490287472" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="374">
+<div class="thumbnail">
+<p><a href="../notes/cs334/05-Logistic-Regression/05-Logistic-Regression.html" class="no-external"></a></p><a href="../notes/cs334/05-Logistic-Regression/05-Logistic-Regression.html" class="no-external">
+<p class="card-img-top"><img src="cs334/05-Logistic-Regression/figs/sigmoid.jpeg"  class="thumbnail-image card-img"/></p>
+</a><p><a href="../notes/cs334/05-Logistic-Regression/05-Logistic-Regression.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../notes/cs334/05-Logistic-Regression/05-Logistic-Regression.html" class="no-external">5 Logistic Regression</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../notes/cs334/05-Logistic-Regression/05-Logistic-Regression.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('TG9naXN0aWMlMjBSZWdyZXNzaW9u'); return false;">
+Logistic Regression
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Q2xhc3NpZmljYXRpb24='); return false;">
+Classification
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('U2lnbW9pZCUyMEZ1bmN0aW9u'); return false;">
+Sigmoid Function
+</div>
+</div>
+<div class="listing-description">
+<a href="../notes/cs334/05-Logistic-Regression/05-Logistic-Regression.html" class="no-external">This lecture introduces the logistic regression model, which is used for binary classification. We will discuss the sigmoid function, the likelihood function, and the cost function.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../notes/cs334/05-Logistic-Regression/05-Logistic-Regression.html" class="no-external">
+<div class="listing-date">
+Feb 6, 2025
+</div>
+<div class="listing-author">
+Jiuru Lyu
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="5" data-categories="TW9kZWwlMjBTZWxlY3Rpb24lMkNNb2RlbCUyMEFzc2Vzc21lbnQlMkNDbGFzc2lmaWNhdGlvbiUyME1ldHJpY3MlMkNSZWdyZXNzaW9uJTIwTWV0cmljcyUyQ0Nyb3NzJTIwVmFsaWRhdGlvbg==" data-listing-date-sort="1739250000000" data-listing-file-modified-sort="1741490299465" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1292">
+<div class="thumbnail">
+<p><a href="../notes/cs334/06-Model-Assessment-and-Model-Selection/06-Model-Assessment-and-Model-Selection.html" class="no-external"></a></p><a href="../notes/cs334/06-Model-Assessment-and-Model-Selection/06-Model-Assessment-and-Model-Selection.html" class="no-external">
+<p class="card-img-top"><img src="cs334/06-Model-Assessment-and-Model-Selection/figs/threshold.jpeg" alt="Discrimination Thresholds"  class="thumbnail-image card-img"/></p>
+</a><p><a href="../notes/cs334/06-Model-Assessment-and-Model-Selection/06-Model-Assessment-and-Model-Selection.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../notes/cs334/06-Model-Assessment-and-Model-Selection/06-Model-Assessment-and-Model-Selection.html" class="no-external">6 Model Selection and Model Assessment</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../notes/cs334/06-Model-Assessment-and-Model-Selection/06-Model-Assessment-and-Model-Selection.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('TW9kZWwlMjBTZWxlY3Rpb24='); return false;">
+Model Selection
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('TW9kZWwlMjBBc3Nlc3NtZW50'); return false;">
+Model Assessment
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Q2xhc3NpZmljYXRpb24lMjBNZXRyaWNz'); return false;">
+Classification Metrics
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('UmVncmVzc2lvbiUyME1ldHJpY3M='); return false;">
+Regression Metrics
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Q3Jvc3MlMjBWYWxpZGF0aW9u'); return false;">
+Cross Validation
+</div>
+</div>
+<div class="listing-description">
+<a href="../notes/cs334/06-Model-Assessment-and-Model-Selection/06-Model-Assessment-and-Model-Selection.html" class="no-external">This lecture discusses the model assessment and model selection process. We will cover classification performance metrics, regression metrics, model assessment process, and model selection.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../notes/cs334/06-Model-Assessment-and-Model-Selection/06-Model-Assessment-and-Model-Selection.html" class="no-external">
+<div class="listing-date">
+Feb 11, 2025
+</div>
+<div class="listing-author">
+Jiuru Lyu
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="6" data-categories="RmVhdHVyZSUyMEVuZ2luZWVyaW5nJTJDRmVhdHVyZSUyMFNlbGVjdGlvbiUyQ0tlcm5lbHM=" data-listing-date-sort="1739854800000" data-listing-file-modified-sort="1741490326034" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1178">
+<div class="thumbnail">
+<p><a href="../notes/cs334/07-Feature-Selection-and-Kernels/07-Feature-Selection-and-Kernels.html" class="no-external"></a></p><a href="../notes/cs334/07-Feature-Selection-and-Kernels/07-Feature-Selection-and-Kernels.html" class="no-external">
+<p class="card-img-top"><img src="cs334/07-Feature-Selection-and-Kernels/figs/high-d-classification.jpeg"  class="thumbnail-image card-img"/></p>
+</a><p><a href="../notes/cs334/07-Feature-Selection-and-Kernels/07-Feature-Selection-and-Kernels.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../notes/cs334/07-Feature-Selection-and-Kernels/07-Feature-Selection-and-Kernels.html" class="no-external">7 Feature Selection and Kernels</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../notes/cs334/07-Feature-Selection-and-Kernels/07-Feature-Selection-and-Kernels.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('RmVhdHVyZSUyMEVuZ2luZWVyaW5n'); return false;">
+Feature Engineering
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('RmVhdHVyZSUyMFNlbGVjdGlvbg=='); return false;">
+Feature Selection
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('S2VybmVscw=='); return false;">
+Kernels
+</div>
+</div>
+<div class="listing-description">
+<a href="../notes/cs334/07-Feature-Selection-and-Kernels/07-Feature-Selection-and-Kernels.html" class="no-external">This lecture discusses the feature selection and kernel methods. We will cover feature engineering and selection methods, kernel methods, and kernel tricks.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../notes/cs334/07-Feature-Selection-and-Kernels/07-Feature-Selection-and-Kernels.html" class="no-external">
+<div class="listing-date">
+Feb 18, 2025
+</div>
+<div class="listing-author">
+Jiuru Lyu
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="7" data-categories="RGVjaXNpb24lMjBUcmVlcyUyQ0Vuc2VtYmxlJTIwTWV0aG9kcyUyQ1JhbmRvbSUyMEZvcmVzdA==" data-listing-date-sort="1741237200000" data-listing-file-modified-sort="1741491945030" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="344">
+<div class="thumbnail">
+<p><a href="../notes/cs334/08-Decision-Trees-and-Random-Forest/08-Decision-Trees-and-Random-Forest.html" class="no-external"></a></p><a href="../notes/cs334/08-Decision-Trees-and-Random-Forest/08-Decision-Trees-and-Random-Forest.html" class="no-external">
+<p class="card-img-top"><img src="cs334/08-Decision-Trees-and-Random-Forest/figs/eg-decision-tree.jpeg"  class="thumbnail-image card-img"/></p>
+</a><p><a href="../notes/cs334/08-Decision-Trees-and-Random-Forest/08-Decision-Trees-and-Random-Forest.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../notes/cs334/08-Decision-Trees-and-Random-Forest/08-Decision-Trees-and-Random-Forest.html" class="no-external">8 Decision Trees and Random Forest</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../notes/cs334/08-Decision-Trees-and-Random-Forest/08-Decision-Trees-and-Random-Forest.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('RGVjaXNpb24lMjBUcmVlcw=='); return false;">
+Decision Trees
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('RW5zZW1ibGUlMjBNZXRob2Rz'); return false;">
+Ensemble Methods
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('UmFuZG9tJTIwRm9yZXN0'); return false;">
+Random Forest
+</div>
+</div>
+<div class="listing-description">
+<a href="../notes/cs334/08-Decision-Trees-and-Random-Forest/08-Decision-Trees-and-Random-Forest.html" class="no-external">This lecture discusses the basics od decision trees including how to build a decision tree. It also introduces ensemble methods and discusses the random forest algorithm as an example of ensemble methods.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../notes/cs334/08-Decision-Trees-and-Random-Forest/08-Decision-Trees-and-Random-Forest.html" class="no-external">
+<div class="listing-date">
+Mar 6, 2025
+</div>
+<div class="listing-author">
+Jiuru Lyu
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1044,7 +1222,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/03-Linear-Regression/03-Linear-Regression.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/03-Linear-Regression/03-Linear-Regression.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
