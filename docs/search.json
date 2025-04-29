@@ -65,7 +65,7 @@
   {
     "objectID": "notes/NumericalAnalysis2.html",
     "href": "notes/NumericalAnalysis2.html",
-    "title": "PhD-Level Numerical Analysis I",
+    "title": "PhD-Level Numerical Analysis I (Numerical Linear Algebra)",
     "section": "",
     "text": "Back to top"
   },
@@ -158,14 +158,14 @@
     "href": "notes.html",
     "title": "Class Notes",
     "section": "",
-    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\nPhD-Level Numerical Analysis I\n\n\n\nPure Mathematics\n\nReal Analysis\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nGoogle Data Analytics Learning Notes\nMathematical Statistics\nCausal Designs and Inference\nMachine Learning\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\nDatabase Systems\n\n\n\nOther Fields\n\nIntroduction to Sociology\n\n\n\n\n\n Back to top"
+    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\nPhD-Level Numerical Analysis I (Numerical Linear Algebra)\n\n\n\nPure Mathematics\n\nReal Analysis\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nGoogle Data Analytics Learning Notes\nMathematical Statistics\nCausal Designs and Inference\nMachine Learning\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\nDatabase Systems\n\n\n\nOther Fields\n\nIntroduction to Sociology\n\n\n\n\n\n Back to top"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Jiuru Lyu",
     "section": "",
-    "text": "Hi! My name is Jiuru Lyu, and I am a junior at Emory University studying Applied Mathematics. In my leisure time, I enjoy coffee brewing, traveling, photograph, and commercial aviation.\n\n\n Back to top"
+    "text": "Hi! My name is Jiuru Lyu, and I am a junior at Emory University studying Applied Mathematics. In my leisure time, I enjoy coffee brewing, traveling, photography, and commercial aviation."
   },
   {
     "objectID": "notes/cs334/02-Gradient-Descent-on-Classification/02-Gradient-Descent-on-Classification.html",
@@ -362,5 +362,33 @@
     "title": "8 Decision Trees and Random Forest",
     "section": "Ensemble Methods and Random Forest",
     "text": "Ensemble Methods and Random Forest\n\nGoal: Descreae variance without increasing bias (recall bias-variance trade-off)\nIdea: Average across multiple models to reduce estimation error. But we only have one single training set, how can we learn multiple models? BAGGING\n\n\nBootstrap Aggregatting (BAGGING)\n\nGeneral procedure:\n\nCreate \\(B\\) bootstrap samples: \\(D_N^{(1)},\\dots,D_N^{(B)}\\)\nTrain decision tree on each \\(D_N^{(b)}\\)\nClassify new examples by majority vote (i.e., mode)\n\n\n\n\n\n\n\n\nFigure 6: BAGGING\n\n\n\n\nWhy does bagging work? (Assume \\(y\\in\\qty{-1,+1}\\))\n\nSuppose we have \\(B\\) independent classifers: \\[\\hat f^{(b)}:\\R^d\\to\\qty{-1,+1},\\] and each \\(\\hat f^{(b)}\\) has a misclassification rate of \\(0.4\\).\n\nThat is, if \\(y^{(i)}=+1\\), then \\(\\P\\qty(\\hat f^{(b)}(\\va x^{(i)})=-1)=0.4\\quad\\forall b=1,\\dots,B\\) and \\(\\forall\\ i,\\dots,d\\)\n\nNow, applay baaged classifier: \\[\\hat f^{(\\text{bag})}(\\va x)=\\arg\\max_{y\\in\\qty{-1,+1}}\\sum_{b=1}^B\\1\\qty(\\hat f^{(b)}(\\va x)=\\hat y)=\\arg\\max\\qty{B_{-1},B_{+1}},\\] where \\(B_{-1}\\) is the number of votes for \\(-1\\), and \\(B_{+1}\\) is the number of votes for \\(+1\\). Then, \\[B_{-1}\\sim\\text{Binomial}(B,0.4).\\] Recall: if \\(X\\sim\\text{Binomial}(n,p)\\), then the probability of getting exactkly \\(k\\) successes in \\(n\\) trails is given by \\[P(X=k)=\\binom{n}{k}p^k(1-p)^{n-k}.\\] Thus, misclassification rate of bagged classifer is \\[\\begin{aligned}\\P\\qty(\\hat f^{(\\text{bag})}(\\va x^{(i)})=-1)&=\\P\\qty(B_{-1}\\geq\\dfrac{B}{2})\\\\&=1-\\P\\qty(B_{-1}&lt;\\dfrac{B}{2})\\\\&=1-\\sum_{k=1}^{\\lfloor B/2\\rfloor}\\binom{B}{k}(0.4)^k(1-0.4)^{B-k}.\\end{aligned}\\] Note: \\[\\lim_{B\\to+\\infty}\\sum_{k=1}^{\\lfloor B/2\\rfloor}\\binom{B}{k}p^k(1-p)^{B-k}=1\\] as long as misclassification rate \\(p&lt;0.5\\). So, as \\(B\\to\\infty\\), misclassification \\(\\to0\\).\n\nReality: Predcition error rarely goes to \\(0\\).\n\nBagging only reduces estimation error (varaince).\nWe don’t ahve independence assumption: classifiers trained on bootstrapped dataset are NOT independent.\n\n\n\n\n\n\n\n\n\nRemark 5. \n\nOn average, each bootstrap contain \\(63.2\\%\\) of original data.\nHow similar are boostrap samples?\n\nProbability of example \\((i)\\) is not selected once: \\(1-\\dfrac{1}{n}\\).\nProbability of example \\((i)\\) is not selected at all: \\(\\qty(1-\\dfrac{1}{n})^n\\).\n\nThen, \\[\\lim_{n\\to\\infty}\\qty(1-\\dfrac{1}{n})^n=\\dfrac{1}{e}\\approx36.8\\%.\\] So, when \\(n\\to\\infty\\), the probability of example \\((i)\\) is not selected at all is \\(36.8\\%\\).\n\n\n\n\n\n\n\nFurther Decorrelate Trees: Random Forest\n\nRandom forest is an ensemble method designed specifically for trees (bagging applies more boardly).\nTwo sources of randomness:\n\nBagging\nRandom feature subsets:at erach node, best split chosen from subset of \\(m\\) features instead of all \\(d\\) features.\n\n\n\n\n\\begin{algorithm} \\caption{Random Forest} \\begin{algorithmic} \\State{\\# Bagging} \\For{$b=1,\\dots, B$} \\State draw bootstrap sample $D_N^{(b)}$ of size $N$ from $D_N$ \\State grow decision tree $DT^{(b)}$$\\qquad$\\Comment{See below code for growing $DT^{(b)}$} \\EndFor \\Return{ensemble $\\qty{DT^{(1)}, \\dots, DT^{(B)}}$} \\State{\\# Subprocedure for growing $DT^{(b)}$; random feature subset} \\While{stopping criteria not met} \\State Recursively repeat following steps for each node of tree: \\State 1. select $m$ features at random from $d$ features \\State 2. pick best feature to split on (using $IG$ or $\\text{Gini}$) \\State 3. split node into childre. \\EndWhile \\State{\\# Another option to do Steps 1 and 2: } \\State{1. compute $IG$ for all $d$ features} \\State{2. randomly pick from top $m$} \\end{algorithmic} \\end{algorithm}"
+  },
+  {
+    "objectID": "notes/RealAnalysis.html",
+    "href": "notes/RealAnalysis.html",
+    "title": "Real Analysis",
+    "section": "",
+    "text": "Back to top"
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "Jiuru Lyu",
+    "section": "Education",
+    "text": "Education\nEmory University (2022 - 2026) | Atlanta, GA  BS in Applied Mathematics and Statistics; Minor in Computer Science\nUnited World College Changshu China (2019 - 2022) | Suzhou, China  International Baccalaureate Diploma Programme"
+  },
+  {
+    "objectID": "index.html#research-experience",
+    "href": "index.html#research-experience",
+    "title": "Jiuru Lyu",
+    "section": "Research Experience",
+    "text": "Research Experience\nResearch Assistant @ Emory University (2025 - Present) | Atlanta, GA Topic: Numerical Methods for Mean-Field Games\nResearch Assistant @ Emory University (2025 - Present) | Atlanta, GA Topic: Spectral Graph Theory and Differential Equations\nResearch Assistant @ Emory University (2023 - Present) | Atlanta, GA Topic: Global Optimization for Morse Potential"
+  },
+  {
+    "objectID": "index.html#work-experience",
+    "href": "index.html#work-experience",
+    "title": "Jiuru Lyu",
+    "section": "Work Experience",
+    "text": "Work Experience\nSummer Digital Intern @ Baker Hughes (2024) | Shanghai, China"
   }
 ]

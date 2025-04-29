@@ -1,5 +1,5 @@
 ---
-title: "PhD-Level Numerical Analysis I"
+title: "PhD-Level Numerical Analysis I (Numerical Linear Algebra)"
 ---
 
 <embed src="pdf/PhD Numerical Analysis I.pdf" width="800px" height="800px" />
