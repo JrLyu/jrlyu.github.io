@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Class Notes – Jiuru Lyu</title>
+<title>Numerical ODEs and PDEs – Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,27 +23,27 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href=".//media/favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script src="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
-<link href="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="..//media/favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -141,7 +141,7 @@ window.MathJax = {
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Noto+Serif+TC:wght@200..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet">        
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -151,7 +151,7 @@ window.MathJax = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Jiuru Lyu</span>
     </a>
   </div>
@@ -162,7 +162,7 @@ window.MathJax = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -171,15 +171,15 @@ window.MathJax = {
     </span>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./notes.html" aria-current="page"> 
+    <a class="nav-link" href="../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./photo.html"> 
+    <a class="nav-link" href="../photo.html"> 
 <span class="menu-text">Photograph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blogs.html"> 
+    <a class="nav-link" href="../blogs.html"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
@@ -199,29 +199,20 @@ window.MathJax = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#high-school-level-math" id="toc-high-school-level-math" class="nav-link active" data-scroll-target="#high-school-level-math">High School Level Math</a></li>
-  <li><a href="#college-level-math" id="toc-college-level-math" class="nav-link" data-scroll-target="#college-level-math">College Level Math</a></li>
-  <li><a href="#computer-science" id="toc-computer-science" class="nav-link" data-scroll-target="#computer-science">Computer Science</a></li>
-  <li><a href="#other-fields" id="toc-other-fields" class="nav-link" data-scroll-target="#other-fields">Other Fields</a></li>
-  </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Class Notes</h1>
+<h1 class="title">Numerical ODEs and PDEs</h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta column-page">
 
     
   
@@ -233,66 +224,9 @@ window.MathJax = {
 </header>
 
 
-<section id="high-school-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="high-school-level-math">High School Level Math</h3>
-<ul>
-<li><a href="./notes/IBMath.html">IB Math AA HL Notes</a></li>
-</ul>
-</section>
-<section id="college-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="college-level-math">College Level Math</h3>
-<section id="math-fundamentals" class="level4">
-<h4 class="anchored" data-anchor-id="math-fundamentals">Math Fundamentals</h4>
-<ul>
-<li><a href="./notes/Calc2.html">Calculus II</a></li>
-<li><a href="./notes/Calc3.html">Multivariable Calculus/Advanced Calculus/Calculus III</a></li>
-<li><a href="./notes/LA.html">Linear Algebra</a></li>
-<li><a href="./notes/Proofs.html">Mathematical Proofs</a></li>
-</ul>
-</section>
-<section id="applied-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="applied-mathematics">Applied Mathematics</h4>
-<ul>
-<li><a href="./notes/ODE.html">Ordinary Differential Equations</a></li>
-<li><a href="./notes/nonlinearOpt.html">Nonlinear Optimization</a></li>
-<li><a href="./notes/NumericalAnalysis1.html">Undergraduate-Level Numerical Analysis</a></li>
-<li><a href="./notes/NumericalODEsPDEs.html">Numerical ODEs and PDEs</a></li>
-<li><a href="./notes/NumericalAnalysis2.html">PhD-Level Numerical Analysis I (Numerical Linear Algebra)</a></li>
-</ul>
-</section>
-<section id="pure-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="pure-mathematics">Pure Mathematics</h4>
-<ul>
-<li><a href="./notes/RealAnalysis.html">Real Analysis</a></li>
-</ul>
-</section>
-<section id="data-science-statistics-and-causal-inference" class="level4">
-<h4 class="anchored" data-anchor-id="data-science-statistics-and-causal-inference">Data Science, Statistics, and Causal Inference</h4>
-<ul>
-<li><a href="https://jrlyu.github.io/qtm110.io/">Introduction to Causal Inference</a></li>
-<li><a href="https://jrlyu.github.io/google_analytics.io/">Google Data Analytics Learning Notes</a></li>
-<li><a href="./notes/MathStats.html">Mathematical Statistics</a></li>
-<li>Causal Designs and Inference</li>
-<li><a href="./notes/cs334.html">Machine Learning</a></li>
-</ul>
-</section>
-</section>
-<section id="computer-science" class="level3">
-<h3 class="anchored" data-anchor-id="computer-science">Computer Science</h3>
-<ul>
-<li><a href="./notes/cs171.html">Object-Oriented Programming &amp; Introduction to Data Structures</a></li>
-<li>Introduction to Data Structure and Algorithms</li>
-<li><a href="./notes/cs377.html">Database Systems</a></li>
-</ul>
-</section>
-<section id="other-fields" class="level3">
-<h3 class="anchored" data-anchor-id="other-fields">Other Fields</h3>
-<ul>
-<li><a href="https://jrlyu.github.io/intro_to_socio.io/">Introduction to Sociology</a></li>
-</ul>
+<embed src="pdf/Numerical ODEs and PDEs.pdf" width="800px" height="800px">
 
 
-</section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -864,7 +798,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/NumericalODEsPDEs.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/NumericalODEsPDEs.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

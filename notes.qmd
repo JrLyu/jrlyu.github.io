@@ -20,6 +20,7 @@ title: "Class Notes"
 - [Ordinary Differential Equations](notes/ODE.qmd)
 - [Nonlinear Optimization](notes/nonlinearOpt.qmd)
 - [Undergraduate-Level Numerical Analysis](notes/NumericalAnalysis1.qmd)
+- [Numerical ODEs and PDEs](notes/NumericalODEsPDEs.qmd)
 - [PhD-Level Numerical Analysis I (Numerical Linear Algebra)](notes/NumericalAnalysis2.qmd)
 
 #### Pure Mathematics

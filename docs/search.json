@@ -158,7 +158,7 @@
     "href": "notes.html",
     "title": "Class Notes",
     "section": "",
-    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\nPhD-Level Numerical Analysis I (Numerical Linear Algebra)\n\n\n\nPure Mathematics\n\nReal Analysis\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nGoogle Data Analytics Learning Notes\nMathematical Statistics\nCausal Designs and Inference\nMachine Learning\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\nDatabase Systems\n\n\n\nOther Fields\n\nIntroduction to Sociology\n\n\n\n\n\n Back to top"
+    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\nNumerical ODEs and PDEs\nPhD-Level Numerical Analysis I (Numerical Linear Algebra)\n\n\n\nPure Mathematics\n\nReal Analysis\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nGoogle Data Analytics Learning Notes\nMathematical Statistics\nCausal Designs and Inference\nMachine Learning\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\nDatabase Systems\n\n\n\nOther Fields\n\nIntroduction to Sociology\n\n\n\n\n\n Back to top"
   },
   {
     "objectID": "index.html",
@@ -390,5 +390,12 @@
     "title": "Jiuru Lyu",
     "section": "Work Experience",
     "text": "Work Experience\nSummer Digital Intern @ Baker Hughes (2024) | Shanghai, China"
+  },
+  {
+    "objectID": "notes/NumericalODEsPDEs.html",
+    "href": "notes/NumericalODEsPDEs.html",
+    "title": "Numerical ODEs and PDEs",
+    "section": "",
+    "text": "Back to top"
   }
 ]
