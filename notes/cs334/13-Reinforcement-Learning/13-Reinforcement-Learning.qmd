@@ -1,0 +1,183 @@
+---
+title: "13 Reinforcement Learning"
+description: "This lecture discusses the basics of reinforcement learning, including the concepts of agents, environments, rewards, and policies. It also covers the exploration-exploitation trade-off and multi-armed bandit problem."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 04-13-2025
+categories: [Reinforcement Learning, Multi-Armed Bandit, Exploration-Exploitation]
+draft: false
+callout-appearance: simple
+---
+
+Reinforcement learning is agent-oriented learning. 
+
+## The RL Interface: Sequential Decision Making
+- Overfiew: At each time $t$, the agent
+  - Observe state $S_t$ (Environment)
+  - Executes an action $a_t$
+  - Receives a scalar reward $r_t$
+  - Transitions to the next state $S_{t+1}$.
+- The process is repeated and forms a trajectory of states, actions, and rewards: $s_1,a_1,r_1,s_2,a_2,r_2,\dots$.
+
+:::{.callout-note}
+:::{#def-markov-decision-process}
+## Markov Decision Process (MDP)
+- $\mathcal{S}$: set of states
+- $\mathcal{A}$: set of actions
+- $R$: reward function $$p(r_t\mid s_t,a_t)$$
+- $P$: transition function $$p(s_{t+1}\mid s_t,a_t)$$
+
+<u>**Policy**</u>: mapping from states to actions $$\pi:\mathcal{S}\to\mathcal{A}$$
+<u>**Goal**</u>: learn polyci that maximizes the cummulative reward: $$G=\sum_{t=1}^Tr_t.$$
+:::
+:::
+
+## Multi-Armed Bandit Problem
+![Multi-Armed Bandit Problem](figs/multi-armed-bandit.jpeg){#fig-multi-armed-bandit}
+
+- Set-up: 
+  - $\mathcal{S}$: single state
+  - $\mathcal{A}$: arms $a=1,a=2,a=3,\dots,a=k$.
+  - $R$: $P(r\mid a)$ for $a\in\mathcal{A}$, pobablistic mapping from action to reward. 
+  - <u>**Task**</u>: Agent sequentially chooses which arm to pull next. 
+    
+    for steps $t=1,\dots, T$: The arm chosed to pull: $a_t\in\mathcal{A}$. Observed reward: $r_t\sim P(r\mid a_t)$.
+  - <u>**Goal**</u>: Decide a sequence of actions that maximizes cumulative reward $$\sum_{t=1}^T r_t$$
+  - <u>**Assumption**</u>: Reward depends only on the action taken. i.e., it is i.i.d. with expectation $\mu(a)$ for $a=1,\dots, k$.
+
+:::{.callout-tip}
+:::{#exm-multi-armed-bandit}
+## Example: Best Arm to Pull
+- action $1$: $\mu(a)=8$
+- action $2$: $\mu(a)=12$
+- action $3$: $\mu(a)=12.5$
+- action $4$: $\mu(a)=11$
+
+Action $3$ is the best since $\mu(a)$ is the highest. If we know $\mu(a)$ for $a\in\mathcal{A}$, then always taking $a=3$ givesn the highest cummulative reward. 
+:::
+:::
+
+- <u>**Challenge**</u>: $\mu(a)$ is unknown, the distribution is unknown. 
+
+### Action-Value Methods
+- Main idea: learn $Q(a)\approx\mu(a)\quad\forall\,a\in\mathcal{A}$. 
+- Suppose we have $a_1,r_1,a_2,r_2,\dots,a_{t-1},r_{t-1}$. 
+- Estimate $\mu(a)$ for $a\in\mathcal{A}$ as sample average: 
+$$
+\begin{aligned}
+Q_t(a)&=\dfrac{\text{sum of rewards when action }a\text{ is taken previously}}{\text{number of times action }a\text{ is taken previously}}\\
+&=\dfrac{\dsst\sum_{i=1}^{t-1}r_1\1\qty{a_i=a}}{\dsst\underbrace{\sum_{i=1}^{t-1}\1\qty{a_i=a}}_{N_t(a)}}
+\end{aligned}
+$$
+
+:::{.callout-warning}
+:::{#rem-convergence}
+## Convergence of Sample Average
+Sample average converges to the true value if action is taken infinitely number of times: 
+$$
+\lim_{N_t(a)\to\infty}Q_t(a)=\mu(a),
+$$
+where $N_t(a)$ is the number of times action $a$ has been taken by time $t$. 
+:::
+:::
+
+- Given $Q_t(a)$ for all $a\in\mathcal{A}$, the greedy action $a_t^*=\argmax_{a}Q_t(a)$.
+- For the next action $a_t$:
+  - if $a_t=a_t^*$, we are **exploiting**, we kind of know which actions are good.
+  - if $a_t\neq a_t^*$, we are **exploring**, we want to collect more data to improve estimates. 
+- We can only pick one $a_t$, so we can't do both. 
+
+  BUT, we have to do both. 
+- This is the **key dilemma** in reinforcement learning: ***Exploration vs. Exploitation***.
+  - **Exploration**: gain more information about value of each action.
+  - **Exploitation**: Revisit actions that are already known to given high rewards. 
+- First attempt: Naïve approach: 
+  - Exploration phase: Try each arm $100$ times.
+  - Estimate their value as $Q(a)$ for $a\in\mathcal{A}$.
+  - Exploitation phase: Always pick $a^*=\argmax_a Q(a)$.
+  - Problem: 
+    - Is $100$ times too much? e.g., negtive rewards $10$ consecutive times
+    - Is $100$ times enough? $Q(a)\to\mu(a)$ in the limit of infinite samples. We should never stop exploring. 
+- Second attempt: $\epsilon$-Greedy Action Selection: 
+  - This ia simple, effective way to balance exploration and exploitation.
+
+```pseudocode
+#| html-comment-delimiter: "#"
+#| label: alg-epsilon-greedy
+
+\begin{algorithm}
+\caption{$\epsilon$-Greedy Action Selection}
+\begin{algorithmic}
+\State{Initialize $\begin{cases}Q(a)=0\\N(a)=0\end{cases}$ for $a=1,\dots,k$}
+\For{$t=1,2,3,\dots$}
+  \State{$a_t=\begin{cases}\dsst\argmax_a Q(a)&\text{with probability }1-\epsilon\longrightarrow\text{exploitation}\\\text{random action}&\text{with probability }\epsilon\longrightarrow\text{exploration}\end{cases}\qquad$} \# breaks ties randomly
+  \State{Take action $a_t$, receive reward $r_t$}
+  \State{update: $\begin{cases}N(a_t)\gets N(a_t)+1\\Q(a_t)\gets Q(a_t)+\dfrac{1}{N(a_t)}\qty\Big[r_t-Q(a_t)]\end{cases}\qquad$} \# incremental implementation of sample average
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+```
+
+:::{.callout-warning}
+:::{#rem-epsilon-greedy}
+## $\epsilon$ Controls the Exploration Rate
+- Larger $\epsilon$, explore more, learn faster, converge to suboptimal.
+- Smaller $\epsilon$, explore less, learn slower, converge to near-optimal. 
+:::
+:::
+
+- $\epsilon$-greedy explores forever, and we have constant exploration rate. 
+  - Should we explore forever?
+  - Yes! But perhaps explore less as time goes by. 
+  - Key idea: "**Optimism in the face of uncertainty**"
+    - The more uncertain we are about an action, the more important it is to explore that action. 
+
+- Optimistic initialization: 
+  - Initialize $Q(a)$ to some positive value
+  - Encourage exploration initially, naturally gets "washed out" as we collect data.
+  - This method is somewhat hacky, but it works.
+
+```pseudocode
+#| html-comment-delimiter: "#"
+#| label: alg-optimistic-initializaiton
+
+\begin{algorithm}
+\caption{Optimistic Initialization (Somewhat Hacky)}
+\begin{algorithmic}
+\State{Initialize $\begin{cases}Q(a)=\textcolor{red}{Q_0},&\text{where }Q_0>0\\N(a)=0\end{cases}$ for $a=1,\dots,k\qquad$} \# Larger $Q_0$, more exploration
+\For{$t=1,2,3,\dots$}
+  \State{$a_t=\dsst\argmax_{a}Q(a)\qquad$} \# breaks ties randomly
+  \State{Take action $a_t$, receive reward $r_t$}
+  \State{update: $\begin{cases}N(a_t)\gets N(a_t)+1\\Q(a_t)\gets Q(a_t)+\dfrac{1}{N(a_t)}\qty\Big[r_t-Q(a_t)]\end{cases}\qquad$} \# incremental implementation of sample average
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+```
+
+- Upper Confidence Bound (UCB) Action Selection: 
+  - Select actions greedily based on potential of being the best
+  - Estimate $Q(a)+\text{Uncertainty }N(a)$.  
+  - UCB Score: $$Q_t(a)+c\sqrt{\dfrac{\ln(t)}{N_t(a)}},\quad c>0,$$ where
+    - $Q_t(a)$ is the sample average estimate
+    - $\dsst c\sqrt{\dfrac{\ln(t)}{N_t(a)}}$ is the exploration bonus
+    - $c$ is the degree of exploration. Larger $c$, more exploration. 
+  - As $N_t(a)$ increases, more certain, explore less that action.
+  - As $t$ increases, but $N_t(a)$ doesn't increase, explore more of that action. 
+
+```pseudocode
+#| html-comment-delimiter: "#"
+#| label: alg-ucb-action-selection
+
+\begin{algorithm}
+\caption{Upper Confidence Bound (UCB) Action Selection}
+\begin{algorithmic}
+\State{Initialize $\begin{cases}Q(a)=0\\N(a)=0\end{cases}$ for $a=1,\dots,k\qquad$}
+\For{$t=1,2,3,\dots$}
+  \State{$a_t=\dsst\argmax_{a}\mqty[\textcolor{red}{Q_t(a)+c\sqrt{\dfrac{\ln(t)}{N_t(a)}}}]\qquad$} \# breaks ties randomly
+  \State{Take action $a_t$, receive reward $r_t$}
+  \State{update: $\begin{cases}N(a_t)\gets N(a_t)+1\\Q(a_t)\gets Q(a_t)+\dfrac{1}{N(a_t)}\qty\Big[r_t-Q(a_t)]\end{cases}\qquad$} \# incremental implementation of sample average
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+```

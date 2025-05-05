@@ -1,0 +1,33 @@
+---
+title: "14 Recommender Systems"
+description: "This lecture discusses the basics of recommender systems, focusing on collaborative filtering. It introduces the nearest neighbor algorithm and matrix factorization techniques, including low-rank approximation via alternative minimization algorithm."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 04-15-2025
+categories: [Recommender Systems, Collaborative Filtering, Matrix Factorization]
+draft: false
+callout-appearance: simple
+---
+
+- Collaborative filtering: 
+  - Recommender problems that can be reduced to a matrix completion problem.
+  - We have a $n\times m$ matrix, where $n$ is the number of users and $m$ is the number of movies. Each entry $Y_{a,i}\in\qty{1,\dots,5}$ is the rating of user $a$ for movie $i$.
+  - The key idea is to borrow experience from other similar users. 
+
+## Nearest Neighbors Prediction
+- $KNN(a,i)$: $k$ nearest neighbors
+  - The $k$ most similar users to $a$, who has rated movie $i$. $$\hat Y_{a,i}=\dfrac{1}{\abs{KNN(a,i)}}\sum_{b\in KNN(a,i)}Y_{b,i}$$
+  - How to find $KNN$? Correlation. Also, we can consider an average correction. 
+  - Pro: Interpretable, easy to implement.
+  - Con: Slow. 
+
+## Matrix Factorization
+- Notation: $$Y:n\times m,$$ where $Y$ is the ratings, $n$ is the number of users, and $m$ is the number of items.
+- Problem: missing entries: not all $Y_{a,i}$'s are observed. $\implies$ Matrix completion problem: 
+  - Fill out the missing entries
+  - Predict the unkonwn ratings. 
+
+### First Attempt
+- Let $\hat Y$ represent the approximation of the true, unerlying rating matrix. Formulate a regression problem with regularization: $$J(\hat Y)=\dfrac{1}{2}=\sum_{a,i\in D}\qty(Y_{ai}-\hat Y_{ai}^2+\dfrac{\lambda}{2}\sum_{a,i}\hat Y_{ai}^2),$$ where $D$ is the set of observed data and the regularization term is added to all data. 
+- Objective: find $\hat Y$ that minimizes $J(\hat Y)$. FOC gives us $$\pdv{J}{\hat Y_{ai}}=-\1\qty{(a,i)\in D}\qty(Y_{ai}-\hat Y_{ai})+\lambda\hat Y_{ai}\overset{\text{set}}{=}0.$$

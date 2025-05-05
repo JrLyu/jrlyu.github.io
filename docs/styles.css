@@ -11,6 +11,13 @@
   font-style: italic;
 }
 
+.crimson-pro-<uniquifier> {
+  font-family: "Crimson Pro", serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
+
 // <uniquifier>: Use a unique and descriptive class name
 // <weight>: Use a value from 100 to 800
 
@@ -54,6 +61,6 @@ code, pre {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Sedan", "Noto Serif TC", serif;
+  font-family: "Sedan", "Crimson Pro", "Noto Serif TC", serif;
 }
 

@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2025-03-20">
+<meta name="description" content="This lecture discusses Boosting, a powerful ensemble learning technique that combines weak learners to create a strong learner.">
 
-<title>Class Notes –  Jiuru Lyu</title>
+<title>9 Boosting – Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,30 +26,30 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href=".//media/favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-cf3f2c26eef976f46b51aa29f3e196e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-ccd81253fefb92e9cd3f9eb5b5d87b54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-cf3f2c26eef976f46b51aa29f3e196e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
-<link href="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-ccd81253fefb92e9cd3f9eb5b5d87b54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -143,8 +146,37 @@ window.MathJax = {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Noto+Serif+TC:wght@200..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -315,8 +347,8 @@ window.MathJax = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title"><img src="./media/icon.png" alt="JL logo" style="height: 50px; margin-right: 8px;"> Jiuru Lyu</span>
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Jiuru Lyu</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -326,7 +358,7 @@ window.MathJax = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -335,15 +367,15 @@ window.MathJax = {
     </span>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./notes.html" aria-current="page"> 
+    <a class="nav-link" href="../../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./photo.html"> 
+    <a class="nav-link" href="../../../photo.html"> 
 <span class="menu-text">Photograph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blogs.html"> 
+    <a class="nav-link" href="../../../blogs.html"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
@@ -368,12 +400,10 @@ window.MathJax = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#high-school-level-math" id="toc-high-school-level-math" class="nav-link active" data-scroll-target="#high-school-level-math">High School Level Math</a></li>
-  <li><a href="#college-level-math" id="toc-college-level-math" class="nav-link" data-scroll-target="#college-level-math">College Level Math</a></li>
-  <li><a href="#computer-science" id="toc-computer-science" class="nav-link" data-scroll-target="#computer-science">Computer Science</a></li>
-  <li><a href="#other-fields" id="toc-other-fields" class="nav-link" data-scroll-target="#other-fields">Other Fields</a></li>
+  <li><a href="#bosting-introduction" id="toc-bosting-introduction" class="nav-link active" data-scroll-target="#bosting-introduction">Bosting Introduction</a></li>
+  <li><a href="#adaboost-adaptive-boosting" id="toc-adaboost-adaptive-boosting" class="nav-link" data-scroll-target="#adaboost-adaptive-boosting">AdaBoost: Adaptive Boosting</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/09-Boosting/09-Boosting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/09-Boosting/09-Boosting.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
@@ -381,14 +411,36 @@ window.MathJax = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Class Notes</h1>
-</div>
+<h1 class="title">9 Boosting</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Boosting</div>
+    <div class="quarto-category">AdaBoost</div>
+    <div class="quarto-category">Ensemble Methods</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    This lecture discusses Boosting, a powerful ensemble learning technique that combines weak learners to create a strong learner.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 20, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -398,62 +450,167 @@ window.MathJax = {
 </header>
 
 
-<section id="high-school-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="high-school-level-math">High School Level Math</h3>
+<p><u><strong>Goal</strong></u>: Reduce both approximation and estimation error at the same time (bias-variance tradeoff).</p>
+<section id="bosting-introduction" class="level2">
+<h2 class="anchored" data-anchor-id="bosting-introduction">Bosting Introduction</h2>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-boosting" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Boosting)</strong></span> Combine simple “weak” classifiers into a more complex “stronger” model.</p>
 <ul>
-<li><a href="./notes/IBMath.html">IB Math AA HL Notes</a></li>
+<li>Type of boosting methos: AdaBoost and Gradient Boosting</li>
+<li>Weak classifier: Decision stump (a one-level decision tree)</li>
+</ul>
+<div id="fig-decision-stump" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-decision-stump-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/decision-stump.jpg" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-decision-stump-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Decision Stump
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Notation: <span class="math display">\[
+h\qty(\va x;\va\theta)=\operatorname{sign}(\theta_1(x_k-\theta_0))=\pm1,
+\]</span> where <span class="math inline">\(\va\theta=(k,\theta_0,\theta_1)\)</span> such that <span class="math inline">\(k\)</span> denotes the coordinate, <span class="math inline">\(\theta_0\)</span> is the location, and <span class="math inline">\(\theta_1\)</span> is the direction.</p></li>
+<li><p>Ensemble as a weighted combination of decision stumps: <span class="math display">\[
+\begin{aligned}
+h_M(\va x)&amp;=\sum_{m=1}^M\alpha_m h\qty(\va x;\va\theta^{(m)})&amp;\text{for}\quad \alpha_m\geq0.\\
+&amp;=\alpha_1 h\qty(\va x;\va\theta^{(1)})+\alpha_2 h\qty(\va x;\va\theta^{(2)})+\cdots+\alpha_M h\qty(\va x;\va\theta^{(M)})
+\end{aligned}
+\]</span></p></li>
+<li><p>This can be viewed as a linear classifier: <span class="math inline">\(h_M(\va x)=\va\alpha\cdot\phi(\va x)\)</span>, where</p>
+<ul>
+<li><span class="math inline">\(\phi(\va x)=\mqty[h(\va x;\va\theta^{(1)},\dots,h(\va x;\va\theta^{(M)})]\)</span>, the feature mapping</li>
+<li><span class="math inline">\(\va\alpha=\mqty[\alpha_1,\dots,\alpha_m]\)</span>, the parameter vector <span class="math inline">\(\va\alpha\in\R^M\)</span>.</li>
+</ul></li>
+<li><p><span class="math inline">\(\phi(\va x)\in\R^M\)</span>:</p>
+<ul>
+<li>intead of specifying <span class="math inline">\(\phi(\va x)\)</span>, we learn <span class="math inline">\(\phi(\cdot)\)</span> in addition to <span class="math inline">\(\va\alpha\)</span>.</li>
+<li><span class="math inline">\(M\)</span>, the number of weak learners, is a <em>hyperparameter</em>.</li>
+</ul></li>
 </ul>
 </section>
-<section id="college-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="college-level-math">College Level Math</h3>
-<section id="math-fundamentals" class="level4">
-<h4 class="anchored" data-anchor-id="math-fundamentals">Math Fundamentals</h4>
+<section id="adaboost-adaptive-boosting" class="level2">
+<h2 class="anchored" data-anchor-id="adaboost-adaptive-boosting">AdaBoost: Adaptive Boosting</h2>
 <ul>
-<li><a href="./notes/Calc2.html">Calculus II</a></li>
-<li><a href="./notes/Calc3.html">Multivariable Calculus/Advanced Calculus/Calculus III</a></li>
-<li><a href="./notes/LA.html">Linear Algebra</a></li>
-<li><a href="./notes/Proofs.html">Mathematical Proofs</a></li>
+<li>One of the simplies and most popular boosting algorithms.</li>
+<li>Algorithm Overview:
+<ul>
+<li>Set example weights uniformly.</li>
+<li>For each weak learner <span class="math inline">\(m=1,\dots, M\)</span>:
+<ul>
+<li>Train decision stump on weighted examples</li>
+<li>Apply decision stump to all examples</li>
+<li>Set decision stump weight based on weighted error</li>
+<li>Set example weights based on ensemble predictions.</li>
+</ul></li>
+</ul></li>
+<li>A greedy approach: Given the current ensemble, find the next weak learner that, if added, makes a better new ensemble.
+<ul>
+<li>Suppose we have the frist <span class="math inline">\((m-1)\)</span> decision stumps, which make up an ensemble classifier <span class="math display">\[h(\va x;\va\theta^{(1)}),\ h(\va x;\va\theta^{(2)}),\dots, h(\va x;\va\theta^{(m-1)})\implies h_{m-1}(\va x).\]</span></li>
+<li><strong>Goal:</strong> Find the next decision stump <span class="math inline">\(h(\va x;\va\theta^{(m)})\)</span> and its weight <span class="math inline">\(\alpha_m\)</span> in order to minimize the same training loss (empirical risk) of the new ensemble <span class="math inline">\(h_m(\va x)\)</span>: <span class="math display">\[
+\begin{aligned}
+\argmin_{\va\theta^{(m)},\alpha_m} J(\alpha_m,\va\theta^{(m)})&amp;=\argmin_{\va\theta^{(m)},\alpha_m}\sum_{i=1}^N \operatorname{loss}\qty(y^{(i)}\cdot h_m(\va x^{(i)})) &amp;\text{exponential }\operatorname{loss}(\cdot)=e^{-z}=\exp(-z).\\
+J(\alpha_m,\va\theta^{(m)})&amp;=\sum_{i=1}^N \exp\qty(-y^{(i)}\cdot h_m(\va x^{(i)}))\\
+&amp;=\sum_{i=1}^N \exp\bigg(-y^{(i)}\bigg[\underbrace{h_{m-1}(\va x^{(i)})}_{\substack{\text{previous}\\\text{ensemble}}}+\underbrace{\alpha_mh(\va x;\va\theta^{(m)})}_{\text{update}}\bigg]\bigg)\\
+&amp;=\sum_{i=1}^N\underbrace{\exp\qty(-y^{(i)}h_{m-1}(\va x^{(i)}))}_{\substack{\text{independent of }\alpha_m,\va\theta^{(m)}\\\text{denote it as }w_{m-1}(i)}}\exp\qty(-y^{(i)}\alpha_mh(\va x;\va\theta^{(m)}))\\
+&amp;=\sum_{i=1}^N w_{m-1}(i)\exp\qty(-y^{(i)}\alpha_mh(\va x;\va\theta^{(m)}))\\
+\end{aligned}
+\]</span></li>
+<li>Let <span class="math inline">\(w_{m-1}(i)=\exp\qty(-y^{(i)}h_{m-1}(\va x^{(i)}))\)</span>:
+<ul>
+<li>Loss associated with the previous ensemble with respect to the <span class="math inline">\((i)\)</span>-th point.</li>
+<li>Used as weight for each training example: <span class="math inline">\(i=1,\dots, N\)</span>.</li>
+<li>New decision stump <span class="math inline">\(\va\theta^{(m)}\)</span> will be more heavily influenced by examples that were misclassified by the previous ensemble.</li>
+</ul></li>
+<li><em>Note</em>: weighted loss associated with point <span class="math inline">\(\va x^{(i)}\)</span> in the objective: <span class="math display">\[
+J(\alpha_m,\va\theta{(m)})=\begin{cases}w_{m-1}(i)\exp(-\alpha_m)\quad&amp;\text{if }\va x^{(i)}\text{ is correctly classified}\\w_{m-1}(i)\exp(\alpha_m)\quad&amp;\text{o/w}.\end{cases}
+\]</span> If <span class="math inline">\(\va x^{(i)}\)</span> is correctly classified: <span class="math inline">\(y^{(i)}=h(\va x;\va\theta^{(m)})\)</span>. Let’s normalize example weigths so that they sum to <span class="math inline">\(1\)</span>: <span class="math display">\[
+\tilde w_{m-1}(i)=\dfrac{w_{m-1}(i)}{\dsst\sum_{j} w_{m-1}(j)}.
+\]</span> Then, <span class="math display">\[
+\begin{aligned}
+\tilde J(\alpha_m,\va\theta^{(m)})&amp;=\underbrace{\exp(-\alpha_m)\sum_{i:y^{(i)}=h(\va x^{(i)};\va\theta^{(m)})}\tilde w_{m-1}(i)}_\text{correctly classified}+\underbrace{\exp(\alpha_m)\sum_{i:y^{(i)}\neq h(\va x^{(i)};\va\theta^{(m)})}\tilde w_{m-1}(i)}_\text{incorrect points}\\
+&amp;=\exp(-\alpha_m)\underbrace{\sum_{i=1}^N\tilde w_{m-1}(i)}_{=1}-\exp(-\alpha_m)\sum_{i=1}^N\tilde{w}_{m-1}(i)\1\qty{y^{(i)}\neq h(\va x^{(i)}\neq h(\va x^{(i);\va\theta^{(m)}}))}\\
+&amp;\qquad\qquad+\exp(\alpha_m)\sum_{i=1}^N\tilde{w}_{m-1}(i)\1\qty{y^{(i)}\neq h(\va x^{(i)};\va\theta^{(m)})}\\
+&amp;=\exp(-\alpha_m)+\underbrace{\qty\bigg(\exp(\alpha_m)-\exp(-\alpha_m))}_{\geq0}\sum_{i=1}^N\tilde{w}_{m-1}(i)\1\qty{y^{(i)}\neq h(\va x^{(i)};\va\theta^{(m)})}\\
+\end{aligned}
+\]</span> So, our objective is <span class="math display">\[
+\argmin_{\va\theta^{(m)},\alpha_m}\exp(-\alpha_m)+\qty\bigg(\exp(\alpha_m)-\exp(-\alpha_m))\sum_{i=1}^N\tilde{w}_{m-1}(i)\1\qty{y^{(i)}\neq h(\va x^{(i)};\va\theta^{(m)})}
+\]</span></li>
+<li>To solve:
+<ul>
+<li>First solve for best <span class="math inline">\(\va\theta^{(m)*}\)</span>, then <span class="math display">\[
+\va\theta^{(m)*}=\argmin_{\va\theta^{(m)}}\underbrace{\sum_{i=1}^N\tilde{w}_{m-1}(i)\1\qty{y^{(i)}\neq h(\va x^{(i)};\va\theta^{(m)})}}_{\substack{\epsilon_m\text{: weighted classification error}\\\text{of decision stumps}}}=\argmin_{\va\theta^{(m)}}\,\epsilon_m
+\]</span> It is easy to optimize <span class="math inline">\(\va\theta^{(m)}\)</span> via an exhaustive search over all possible decision stumps. Denote <span class="math display">\[
+\tilde\epsilon_m=\sum_{i=1}^N\tilde{w}_{m-1}(i)\1\qty{y^{(i)}\neq h(\va x^{(i)};\va\theta^{(m)*})}
+\]</span></li>
+<li>Figure out how much weight to give it. <span class="math display">\[
+\alpha_m^*=\argmin_{\alpha_m}\underbrace{\exp(-\alpha_m)+\qty[\exp(\alpha_m)-\exp(-\alpha_m)]\tilde\epsilon_m}_{L(\alpha_m).}
+\]</span> By FOC: <span class="math display">\[
+\begin{aligned}
+\dfrac{\partial L(\alpha_m)}{\partial\alpha_m}=-\exp(-\alpha_m)+\qty[\exp(\alpha_m)-\exp(-\alpha_m)]\tilde\epsilon_m&amp;\overset{\text{set}}{=}0\\
+(\epsilon_m-1)\exp(-\alpha_m)+\epsilon_m\exp(\alpha_m)&amp;=0\\
+\implies\alpha_m^*&amp;=\dfrac{1}{2}\ln\dfrac{1-\tilde\epsilon_m}{\tilde\epsilon_m}\\
+\end{aligned}
+\]</span></li>
+</ul></li>
+</ul></li>
 </ul>
-</section>
-<section id="applied-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="applied-mathematics">Applied Mathematics</h4>
+<div id="alg-adaboost" class="pseudocode-container quarto-float" data-comment-delimiter="#" data-pseudocode-number="1" data-caption-prefix="Algorithm">
+<div class="pseudocode">
+\begin{algorithm} \caption{AdaBoost} \begin{algorithmic} \State{Set $\tilde w_0(i)=\dfrac{1}{N}$ for $i=1,\dots, N$} \# Set example weights uniformly \For{$m=1,\dots,M$} \State{\# for each weak leaner} \State{Find $\va\theta^{(m)}$ that minimizes $\epsilon_m$} \# Train decision stump on weighted examples \State{Set $\alpha_m=\dfrac{1}{2}\ln\qty(\dfrac{1-\tilde\epsilon_m}{\tilde\epsilon_m})$} \# Set decision stump weight based on weighted error \State{\# Update weights based on the new ensemble} \# Set example weights based on ensemble predictions \For{$i=1,\dots,N$} \State{$\tilde w_m(i)=\dfrac{\tilde w_{m-1}(i)\exp\qty(-y^{(i)}\alpha_m^*h_m(\va x^{(i)};\theta^{(m)*}))}{Z_m}$} \# Update weights \State{where $Z_m$ is the normalization factor to ensure weigths sum to $1$} \EndFor \EndFor \State{Find ensemble classifier $\dsst h_M(\va x)=\sum_{m=1}^M\alpha_mh(\va x;\va\theta^{(m)})$} \end{algorithmic} \end{algorithm}
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-adaboost" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1 (How AdaBoost Works in Action)</strong></span> &nbsp;</p>
+<div id="fig-boosting-example" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boosting-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/eg-boosting.jpeg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boosting-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Boosting Example
+</figcaption>
+</figure>
+</div>
+<div id="fig-boosting-example2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boosting-example2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/eg-boosting2.jpeg" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boosting-example2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Graphical Representation of Boosting Results
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
 <ul>
-<li><a href="./notes/ODE.html">Ordinary Differential Equations</a></li>
-<li><a href="./notes/nonlinearOpt.html">Nonlinear Optimization</a></li>
-<li><a href="./notes/NumericalAnalysis1.html">Undergraduate-Level Numerical Analysis</a></li>
-<li><a href="./notes/NumericalODEsPDEs.html">Numerical ODEs and PDEs</a></li>
-<li><a href="./notes/NumericalAnalysis2.html">PhD-Level Numerical Analysis I (Numerical Linear Algebra)</a></li>
-</ul>
-</section>
-<section id="pure-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="pure-mathematics">Pure Mathematics</h4>
+<li>Properties of Boosting:
 <ul>
-<li><a href="./notes/RealAnalysis.html">Real Analysis</a></li>
-</ul>
-</section>
-<section id="data-science-statistics-and-causal-inference" class="level4">
-<h4 class="anchored" data-anchor-id="data-science-statistics-and-causal-inference">Data Science, Statistics, and Causal Inference</h4>
-<ul>
-<li><a href="https://jrlyu.github.io/qtm110.io/">Introduction to Causal Inference</a></li>
-<li><a href="https://jrlyu.github.io/google_analytics.io/">Google Data Analytics Learning Notes</a></li>
-<li><a href="./notes/MathStats.html">Mathematical Statistics</a></li>
-<li>Causal Designs and Inference</li>
-<li><a href="./notes/cs334.html">Machine Learning</a></li>
-</ul>
-</section>
-</section>
-<section id="computer-science" class="level3">
-<h3 class="anchored" data-anchor-id="computer-science">Computer Science</h3>
-<ul>
-<li><a href="./notes/cs171.html">Object-Oriented Programming &amp; Introduction to Data Structures</a></li>
-<li>Introduction to Data Structure and Algorithms</li>
-<li><a href="./notes/cs377.html">Database Systems</a></li>
-</ul>
-</section>
-<section id="other-fields" class="level3">
-<h3 class="anchored" data-anchor-id="other-fields">Other Fields</h3>
-<ul>
-<li><a href="https://jrlyu.github.io/intro_to_socio.io/">Introduction to Sociology</a></li>
+<li>Weighted training error <span class="math inline">\(\hat\epsilon_m\)</span> (for each iteration’s new weak error): tends to increase with each boosting iteration.</li>
+<li><strong>Ensemble training error</strong> does not necessarily decrease monotonically. <strong>Ensemble exponential loss</strong> decreases monotonically (as this is what we are minimizing).</li>
+<li><strong>Ensemble test error</strong> (generalization error) does not increase even after a large number of boosting iterations (more <strong>robust</strong> to overfitting).</li>
+</ul></li>
 </ul>
 
 
@@ -876,11 +1033,11 @@ window.MathJax = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>Created with <a href="https://quarto.org/">Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 May 4.</p>
+<p>Created with <a href="https://quarto.org/">Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 Apr.&nbsp;29.</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/09-Boosting/09-Boosting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/09-Boosting/09-Boosting.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

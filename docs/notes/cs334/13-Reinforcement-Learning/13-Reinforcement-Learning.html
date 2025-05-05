@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2025-04-13">
+<meta name="description" content="This lecture discusses the basics of reinforcement learning, including the concepts of agents, environments, rewards, and policies. It also covers the exploration-exploitation trade-off and multi-armed bandit problem.">
 
-<title>Class Notes –  Jiuru Lyu</title>
+<title>13 Reinforcement Learning – Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,30 +26,30 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href=".//media/favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-cf3f2c26eef976f46b51aa29f3e196e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-ccd81253fefb92e9cd3f9eb5b5d87b54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-cf3f2c26eef976f46b51aa29f3e196e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
-<link href="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-ccd81253fefb92e9cd3f9eb5b5d87b54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -143,8 +146,37 @@ window.MathJax = {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Noto+Serif+TC:wght@200..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -315,8 +347,8 @@ window.MathJax = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title"><img src="./media/icon.png" alt="JL logo" style="height: 50px; margin-right: 8px;"> Jiuru Lyu</span>
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Jiuru Lyu</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -326,7 +358,7 @@ window.MathJax = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -335,15 +367,15 @@ window.MathJax = {
     </span>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./notes.html" aria-current="page"> 
+    <a class="nav-link" href="../../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./photo.html"> 
+    <a class="nav-link" href="../../../photo.html"> 
 <span class="menu-text">Photograph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blogs.html"> 
+    <a class="nav-link" href="../../../blogs.html"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
@@ -368,12 +400,13 @@ window.MathJax = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#high-school-level-math" id="toc-high-school-level-math" class="nav-link active" data-scroll-target="#high-school-level-math">High School Level Math</a></li>
-  <li><a href="#college-level-math" id="toc-college-level-math" class="nav-link" data-scroll-target="#college-level-math">College Level Math</a></li>
-  <li><a href="#computer-science" id="toc-computer-science" class="nav-link" data-scroll-target="#computer-science">Computer Science</a></li>
-  <li><a href="#other-fields" id="toc-other-fields" class="nav-link" data-scroll-target="#other-fields">Other Fields</a></li>
+  <li><a href="#the-rl-interface-sequential-decision-making" id="toc-the-rl-interface-sequential-decision-making" class="nav-link active" data-scroll-target="#the-rl-interface-sequential-decision-making">The RL Interface: Sequential Decision Making</a></li>
+  <li><a href="#multi-armed-bandit-problem" id="toc-multi-armed-bandit-problem" class="nav-link" data-scroll-target="#multi-armed-bandit-problem">Multi-Armed Bandit Problem</a>
+  <ul class="collapse">
+  <li><a href="#action-value-methods" id="toc-action-value-methods" class="nav-link" data-scroll-target="#action-value-methods">Action-Value Methods</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/13-Reinforcement-Learning/13-Reinforcement-Learning.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/13-Reinforcement-Learning/13-Reinforcement-Learning.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
@@ -381,14 +414,36 @@ window.MathJax = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Class Notes</h1>
-</div>
+<h1 class="title">13 Reinforcement Learning</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Reinforcement Learning</div>
+    <div class="quarto-category">Multi-Armed Bandit</div>
+    <div class="quarto-category">Exploration-Exploitation</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    This lecture discusses the basics of reinforcement learning, including the concepts of agents, environments, rewards, and policies. It also covers the exploration-exploitation trade-off and multi-armed bandit problem.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 13, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -398,65 +453,208 @@ window.MathJax = {
 </header>
 
 
-<section id="high-school-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="high-school-level-math">High School Level Math</h3>
+<p>Reinforcement learning is agent-oriented learning.</p>
+<section id="the-rl-interface-sequential-decision-making" class="level2">
+<h2 class="anchored" data-anchor-id="the-rl-interface-sequential-decision-making">The RL Interface: Sequential Decision Making</h2>
 <ul>
-<li><a href="./notes/IBMath.html">IB Math AA HL Notes</a></li>
-</ul>
-</section>
-<section id="college-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="college-level-math">College Level Math</h3>
-<section id="math-fundamentals" class="level4">
-<h4 class="anchored" data-anchor-id="math-fundamentals">Math Fundamentals</h4>
+<li>Overfiew: At each time <span class="math inline">\(t\)</span>, the agent
 <ul>
-<li><a href="./notes/Calc2.html">Calculus II</a></li>
-<li><a href="./notes/Calc3.html">Multivariable Calculus/Advanced Calculus/Calculus III</a></li>
-<li><a href="./notes/LA.html">Linear Algebra</a></li>
-<li><a href="./notes/Proofs.html">Mathematical Proofs</a></li>
+<li>Observe state <span class="math inline">\(S_t\)</span> (Environment)</li>
+<li>Executes an action <span class="math inline">\(a_t\)</span></li>
+<li>Receives a scalar reward <span class="math inline">\(r_t\)</span></li>
+<li>Transitions to the next state <span class="math inline">\(S_{t+1}\)</span>.</li>
+</ul></li>
+<li>The process is repeated and forms a trajectory of states, actions, and rewards: <span class="math inline">\(s_1,a_1,r_1,s_2,a_2,r_2,\dots\)</span>.</li>
 </ul>
-</section>
-<section id="applied-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="applied-mathematics">Applied Mathematics</h4>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-markov-decision-process" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Markov Decision Process (MDP))</strong></span> &nbsp;</p>
 <ul>
-<li><a href="./notes/ODE.html">Ordinary Differential Equations</a></li>
-<li><a href="./notes/nonlinearOpt.html">Nonlinear Optimization</a></li>
-<li><a href="./notes/NumericalAnalysis1.html">Undergraduate-Level Numerical Analysis</a></li>
-<li><a href="./notes/NumericalODEsPDEs.html">Numerical ODEs and PDEs</a></li>
-<li><a href="./notes/NumericalAnalysis2.html">PhD-Level Numerical Analysis I (Numerical Linear Algebra)</a></li>
+<li><span class="math inline">\(\mathcal{S}\)</span>: set of states</li>
+<li><span class="math inline">\(\mathcal{A}\)</span>: set of actions</li>
+<li><span class="math inline">\(R\)</span>: reward function <span class="math display">\[p(r_t\mid s_t,a_t)\]</span></li>
+<li><span class="math inline">\(P\)</span>: transition function <span class="math display">\[p(s_{t+1}\mid s_t,a_t)\]</span></li>
 </ul>
+<p><u><strong>Policy</strong></u>: mapping from states to actions <span class="math display">\[\pi:\mathcal{S}\to\mathcal{A}\]</span> <u><strong>Goal</strong></u>: learn polyci that maximizes the cummulative reward: <span class="math display">\[G=\sum_{t=1}^Tr_t.\]</span></p>
+</div>
+</div>
+</div>
+</div>
 </section>
-<section id="pure-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="pure-mathematics">Pure Mathematics</h4>
+<section id="multi-armed-bandit-problem" class="level2">
+<h2 class="anchored" data-anchor-id="multi-armed-bandit-problem">Multi-Armed Bandit Problem</h2>
+<div id="fig-multi-armed-bandit" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-multi-armed-bandit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/multi-armed-bandit.jpeg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-multi-armed-bandit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Multi-Armed Bandit Problem
+</figcaption>
+</figure>
+</div>
 <ul>
-<li><a href="./notes/RealAnalysis.html">Real Analysis</a></li>
-</ul>
-</section>
-<section id="data-science-statistics-and-causal-inference" class="level4">
-<h4 class="anchored" data-anchor-id="data-science-statistics-and-causal-inference">Data Science, Statistics, and Causal Inference</h4>
+<li>Set-up:
 <ul>
-<li><a href="https://jrlyu.github.io/qtm110.io/">Introduction to Causal Inference</a></li>
-<li><a href="https://jrlyu.github.io/google_analytics.io/">Google Data Analytics Learning Notes</a></li>
-<li><a href="./notes/MathStats.html">Mathematical Statistics</a></li>
-<li>Causal Designs and Inference</li>
-<li><a href="./notes/cs334.html">Machine Learning</a></li>
+<li><p><span class="math inline">\(\mathcal{S}\)</span>: single state</p></li>
+<li><p><span class="math inline">\(\mathcal{A}\)</span>: arms <span class="math inline">\(a=1,a=2,a=3,\dots,a=k\)</span>.</p></li>
+<li><p><span class="math inline">\(R\)</span>: <span class="math inline">\(P(r\mid a)\)</span> for <span class="math inline">\(a\in\mathcal{A}\)</span>, pobablistic mapping from action to reward.</p></li>
+<li><p><u><strong>Task</strong></u>: Agent sequentially chooses which arm to pull next.</p>
+<p>for steps <span class="math inline">\(t=1,\dots, T\)</span>: The arm chosed to pull: <span class="math inline">\(a_t\in\mathcal{A}\)</span>. Observed reward: <span class="math inline">\(r_t\sim P(r\mid a_t)\)</span>.</p></li>
+<li><p><u><strong>Goal</strong></u>: Decide a sequence of actions that maximizes cumulative reward <span class="math display">\[\sum_{t=1}^T r_t\]</span></p></li>
+<li><p><u><strong>Assumption</strong></u>: Reward depends only on the action taken. i.e., it is i.i.d. with expectation <span class="math inline">\(\mu(a)\)</span> for <span class="math inline">\(a=1,\dots, k\)</span>.</p></li>
+</ul></li>
 </ul>
-</section>
-</section>
-<section id="computer-science" class="level3">
-<h3 class="anchored" data-anchor-id="computer-science">Computer Science</h3>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-multi-armed-bandit" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1 (Example: Best Arm to Pull)</strong></span> &nbsp;</p>
 <ul>
-<li><a href="./notes/cs171.html">Object-Oriented Programming &amp; Introduction to Data Structures</a></li>
-<li>Introduction to Data Structure and Algorithms</li>
-<li><a href="./notes/cs377.html">Database Systems</a></li>
+<li>action <span class="math inline">\(1\)</span>: <span class="math inline">\(\mu(a)=8\)</span></li>
+<li>action <span class="math inline">\(2\)</span>: <span class="math inline">\(\mu(a)=12\)</span></li>
+<li>action <span class="math inline">\(3\)</span>: <span class="math inline">\(\mu(a)=12.5\)</span></li>
+<li>action <span class="math inline">\(4\)</span>: <span class="math inline">\(\mu(a)=11\)</span></li>
 </ul>
-</section>
-<section id="other-fields" class="level3">
-<h3 class="anchored" data-anchor-id="other-fields">Other Fields</h3>
+<p>Action <span class="math inline">\(3\)</span> is the best since <span class="math inline">\(\mu(a)\)</span> is the highest. If we know <span class="math inline">\(\mu(a)\)</span> for <span class="math inline">\(a\in\mathcal{A}\)</span>, then always taking <span class="math inline">\(a=3\)</span> givesn the highest cummulative reward.</p>
+</div>
+</div>
+</div>
+</div>
 <ul>
-<li><a href="https://jrlyu.github.io/intro_to_socio.io/">Introduction to Sociology</a></li>
+<li><u><strong>Challenge</strong></u>: <span class="math inline">\(\mu(a)\)</span> is unknown, the distribution is unknown.</li>
 </ul>
+<section id="action-value-methods" class="level3">
+<h3 class="anchored" data-anchor-id="action-value-methods">Action-Value Methods</h3>
+<ul>
+<li>Main idea: learn <span class="math inline">\(Q(a)\approx\mu(a)\quad\forall\,a\in\mathcal{A}\)</span>.</li>
+<li>Suppose we have <span class="math inline">\(a_1,r_1,a_2,r_2,\dots,a_{t-1},r_{t-1}\)</span>.</li>
+<li>Estimate <span class="math inline">\(\mu(a)\)</span> for <span class="math inline">\(a\in\mathcal{A}\)</span> as sample average: <span class="math display">\[
+\begin{aligned}
+Q_t(a)&amp;=\dfrac{\text{sum of rewards when action }a\text{ is taken previously}}{\text{number of times action }a\text{ is taken previously}}\\
+&amp;=\dfrac{\dsst\sum_{i=1}^{t-1}r_1\1\qty{a_i=a}}{\dsst\underbrace{\sum_{i=1}^{t-1}\1\qty{a_i=a}}_{N_t(a)}}
+\end{aligned}
+\]</span></li>
+</ul>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="rem-convergence" class="proof remark">
+<p><span class="proof-title"><em>Remark 1</em> (Convergence of Sample Average). </span>Sample average converges to the true value if action is taken infinitely number of times: <span class="math display">\[
+\lim_{N_t(a)\to\infty}Q_t(a)=\mu(a),
+\]</span> where <span class="math inline">\(N_t(a)\)</span> is the number of times action <span class="math inline">\(a\)</span> has been taken by time <span class="math inline">\(t\)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Given <span class="math inline">\(Q_t(a)\)</span> for all <span class="math inline">\(a\in\mathcal{A}\)</span>, the greedy action <span class="math inline">\(a_t^*=\argmax_{a}Q_t(a)\)</span>.</p></li>
+<li><p>For the next action <span class="math inline">\(a_t\)</span>:</p>
+<ul>
+<li>if <span class="math inline">\(a_t=a_t^*\)</span>, we are <strong>exploiting</strong>, we kind of know which actions are good.</li>
+<li>if <span class="math inline">\(a_t\neq a_t^*\)</span>, we are <strong>exploring</strong>, we want to collect more data to improve estimates.</li>
+</ul></li>
+<li><p>We can only pick one <span class="math inline">\(a_t\)</span>, so we can’t do both.</p>
+<p>BUT, we have to do both.</p></li>
+<li><p>This is the <strong>key dilemma</strong> in reinforcement learning: <strong><em>Exploration vs.&nbsp;Exploitation</em></strong>.</p>
+<ul>
+<li><strong>Exploration</strong>: gain more information about value of each action.</li>
+<li><strong>Exploitation</strong>: Revisit actions that are already known to given high rewards.</li>
+</ul></li>
+<li><p>First attempt: Naïve approach:</p>
+<ul>
+<li>Exploration phase: Try each arm <span class="math inline">\(100\)</span> times.</li>
+<li>Estimate their value as <span class="math inline">\(Q(a)\)</span> for <span class="math inline">\(a\in\mathcal{A}\)</span>.</li>
+<li>Exploitation phase: Always pick <span class="math inline">\(a^*=\argmax_a Q(a)\)</span>.</li>
+<li>Problem:
+<ul>
+<li>Is <span class="math inline">\(100\)</span> times too much? e.g., negtive rewards <span class="math inline">\(10\)</span> consecutive times</li>
+<li>Is <span class="math inline">\(100\)</span> times enough? <span class="math inline">\(Q(a)\to\mu(a)\)</span> in the limit of infinite samples. We should never stop exploring.</li>
+</ul></li>
+</ul></li>
+<li><p>Second attempt: <span class="math inline">\(\epsilon\)</span>-Greedy Action Selection:</p>
+<ul>
+<li>This ia simple, effective way to balance exploration and exploitation.</li>
+</ul></li>
+</ul>
+<div id="alg-epsilon-greedy" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-comment-delimiter="#" data-pseudocode-number="1">
+<div class="pseudocode">
+\begin{algorithm} \caption{$\epsilon$-Greedy Action Selection} \begin{algorithmic} \State{Initialize $\begin{cases}Q(a)=0\\N(a)=0\end{cases}$ for $a=1,\dots,k$} \For{$t=1,2,3,\dots$} \State{$a_t=\begin{cases}\dsst\argmax_a Q(a)&amp;\text{with probability }1-\epsilon\longrightarrow\text{exploitation}\\\text{random action}&amp;\text{with probability }\epsilon\longrightarrow\text{exploration}\end{cases}\qquad$} \# breaks ties randomly \State{Take action $a_t$, receive reward $r_t$} \State{update: $\begin{cases}N(a_t)\gets N(a_t)+1\\Q(a_t)\gets Q(a_t)+\dfrac{1}{N(a_t)}\qty\Big[r_t-Q(a_t)]\end{cases}\qquad$} \# incremental implementation of sample average \EndFor \end{algorithmic} \end{algorithm}
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="rem-epsilon-greedy" class="proof remark">
+<p><span class="proof-title"><em>Remark 2</em> (<span class="math inline">\(\epsilon\)</span> Controls the Exploration Rate). </span></p>
+<ul>
+<li>Larger <span class="math inline">\(\epsilon\)</span>, explore more, learn faster, converge to suboptimal.</li>
+<li>Smaller <span class="math inline">\(\epsilon\)</span>, explore less, learn slower, converge to near-optimal.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(\epsilon\)</span>-greedy explores forever, and we have constant exploration rate.
+<ul>
+<li>Should we explore forever?</li>
+<li>Yes! But perhaps explore less as time goes by.</li>
+<li>Key idea: “<strong>Optimism in the face of uncertainty</strong>”
+<ul>
+<li>The more uncertain we are about an action, the more important it is to explore that action.</li>
+</ul></li>
+</ul></li>
+<li>Optimistic initialization:
+<ul>
+<li>Initialize <span class="math inline">\(Q(a)\)</span> to some positive value</li>
+<li>Encourage exploration initially, naturally gets “washed out” as we collect data.</li>
+<li>This method is somewhat hacky, but it works.</li>
+</ul></li>
+</ul>
+<div id="alg-optimistic-initializaiton" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-comment-delimiter="#" data-pseudocode-number="2">
+<div class="pseudocode">
+\begin{algorithm} \caption{Optimistic Initialization (Somewhat Hacky)} \begin{algorithmic} \State{Initialize $\begin{cases}Q(a)=\textcolor{red}{Q_0},&amp;\text{where }Q_0&gt;0\\N(a)=0\end{cases}$ for $a=1,\dots,k\qquad$} \# Larger $Q_0$, more exploration \For{$t=1,2,3,\dots$} \State{$a_t=\dsst\argmax_{a}Q(a)\qquad$} \# breaks ties randomly \State{Take action $a_t$, receive reward $r_t$} \State{update: $\begin{cases}N(a_t)\gets N(a_t)+1\\Q(a_t)\gets Q(a_t)+\dfrac{1}{N(a_t)}\qty\Big[r_t-Q(a_t)]\end{cases}\qquad$} \# incremental implementation of sample average \EndFor \end{algorithmic} \end{algorithm}
+</div>
+</div>
+<ul>
+<li>Upper Confidence Bound (UCB) Action Selection:
+<ul>
+<li>Select actions greedily based on potential of being the best</li>
+<li>Estimate <span class="math inline">\(Q(a)+\text{Uncertainty }N(a)\)</span>.<br>
+</li>
+<li>UCB Score: <span class="math display">\[Q_t(a)+c\sqrt{\dfrac{\ln(t)}{N_t(a)}},\quad c&gt;0,\]</span> where
+<ul>
+<li><span class="math inline">\(Q_t(a)\)</span> is the sample average estimate</li>
+<li><span class="math inline">\(\dsst c\sqrt{\dfrac{\ln(t)}{N_t(a)}}\)</span> is the exploration bonus</li>
+<li><span class="math inline">\(c\)</span> is the degree of exploration. Larger <span class="math inline">\(c\)</span>, more exploration.</li>
+</ul></li>
+<li>As <span class="math inline">\(N_t(a)\)</span> increases, more certain, explore less that action.</li>
+<li>As <span class="math inline">\(t\)</span> increases, but <span class="math inline">\(N_t(a)\)</span> doesn’t increase, explore more of that action.</li>
+</ul></li>
+</ul>
+<div id="alg-ucb-action-selection" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-comment-delimiter="#" data-pseudocode-number="3">
+<div class="pseudocode">
+\begin{algorithm} \caption{Upper Confidence Bound (UCB) Action Selection} \begin{algorithmic} \State{Initialize $\begin{cases}Q(a)=0\\N(a)=0\end{cases}$ for $a=1,\dots,k\qquad$} \For{$t=1,2,3,\dots$} \State{$a_t=\dsst\argmax_{a}\mqty[\textcolor{red}{Q_t(a)+c\sqrt{\dfrac{\ln(t)}{N_t(a)}}}]\qquad$} \# breaks ties randomly \State{Take action $a_t$, receive reward $r_t$} \State{update: $\begin{cases}N(a_t)\gets N(a_t)+1\\Q(a_t)\gets Q(a_t)+\dfrac{1}{N(a_t)}\qty\Big[r_t-Q(a_t)]\end{cases}\qquad$} \# incremental implementation of sample average \EndFor \end{algorithmic} \end{algorithm}
+</div>
+</div>
 
 
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
@@ -876,11 +1074,11 @@ window.MathJax = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>Created with <a href="https://quarto.org/">Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 May 4.</p>
+<p>Created with <a href="https://quarto.org/">Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 Apr.&nbsp;29.</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/13-Reinforcement-Learning/13-Reinforcement-Learning.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/13-Reinforcement-Learning/13-Reinforcement-Learning.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

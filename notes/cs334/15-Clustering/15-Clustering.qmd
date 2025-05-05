@@ -1,0 +1,12 @@
+---
+title: "10 Introduction to Neural Networks"
+description: "This lecture discusses the basics of neural networks, including their architecture, activation functions, and training process. It also covers the concept of backpropagation and its role in optimizing neural networks."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 04-20-2025
+categories: [Neural Networks, Backpropagation, Activation Functions]
+draft: false
+callout-appearance: simple
+---
+

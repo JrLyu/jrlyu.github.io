@@ -1,0 +1,33 @@
+---
+title: "12 Recurrent Neural Networks"
+description: "This lecture discusses the basics of recurrent neural networks (RNNs), including their architecture, training process, and applications. It also covers the concept of long short-term memory (LSTM) networks and their role in handling sequential data."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 04-7-2025
+categories: [Neural Networks, Recurrent Neural Networks, LSTM, Deep Learning]
+draft: false
+callout-appearance: simple
+---
+
+## Recurrent Neural Networks (RNNs)
+- Application: 
+  - Language modeling
+  - Sequence tagging
+  - Text classification
+- RNN is a family of neural networks for processing **sequential data** of arbitrary length.
+  - Output of the layer can connect back to the neuron itself or a layer before it. 
+  - Share same weights across several time steps.
+- A **recurrence function** is applied at each step: $$h_t=f_W(h_{t-1},x_t),$$ where
+  - $h_t$ is the new state
+  - $f_W$ is a neural network with parameter $W$
+  - $h_{t-1}$ is the old state
+  - $x-t$ is the input feature vector at time step $t$
+- Vanilla RNN: connect the output of the last layer to the input of the next layer.
+  - The problem of long-term dependencies:
+    - Appeal of RNN is to connect previous information to current task.
+    - Gap between relevant information and where we need it can be large.
+    - Long-range dependencies are difficult to learn because of vanishing gradients or exploding gradients.
+- To solve the problem, we introduce **LSTM** networks and **GRU** networks. 
+- There are other more advanced architectures, such as **Attention** and **Transformer** networks.
+ 

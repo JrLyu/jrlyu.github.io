@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Jiuru Lyu"
+  title: "<img src='/media/icon.png' alt='JL logo' style='height: 50px; margin-right: 8px;'> Jiuru Lyu"
   repo-url: https://github.com/JrLyu/jrlyu.github.io
   repo-actions: [edit, source, issue]
   search: true
@@ -24,7 +24,7 @@ website:
       - href: blogs.qmd
         text: Blogs
   page-footer: 
-    left: "Created with <a href='https://quarto.org/'>Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 Apr. 29."
+    left: "Created with <a href='https://quarto.org/'>Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 May 4."
     right: 
       - icon: linkedin
         href: https://www.linkedin.com/in/jiuru-lyu/
@@ -44,7 +44,7 @@ format:
     header-includes: | 
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Noto+Serif+TC:wght@200..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">        
+      <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Noto+Serif+TC:wght@200..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Sedan:ital@0;1&display=swap" rel="stylesheet">
     include-in-header:
           - text: |
               <script>

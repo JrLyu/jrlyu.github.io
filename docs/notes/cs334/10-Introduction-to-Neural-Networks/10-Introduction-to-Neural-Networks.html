@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2025-03-25">
+<meta name="description" content="This lecture discusses the basics of neural networks, including their architecture, activation functions, and training process. It also covers the concept of backpropagation and its role in optimizing neural networks.">
 
-<title>Class Notes –  Jiuru Lyu</title>
+<title>10 Introduction to Neural Networks – Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,30 +26,30 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href=".//media/favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-cf3f2c26eef976f46b51aa29f3e196e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-ccd81253fefb92e9cd3f9eb5b5d87b54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-cf3f2c26eef976f46b51aa29f3e196e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
-<link href="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../..//media/favicon.ico" rel="icon">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-ccd81253fefb92e9cd3f9eb5b5d87b54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -143,8 +146,37 @@ window.MathJax = {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Noto+Serif+TC:wght@200..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -315,8 +347,8 @@ window.MathJax = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title"><img src="./media/icon.png" alt="JL logo" style="height: 50px; margin-right: 8px;"> Jiuru Lyu</span>
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Jiuru Lyu</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -326,7 +358,7 @@ window.MathJax = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -335,15 +367,15 @@ window.MathJax = {
     </span>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./notes.html" aria-current="page"> 
+    <a class="nav-link" href="../../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./photo.html"> 
+    <a class="nav-link" href="../../../photo.html"> 
 <span class="menu-text">Photograph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blogs.html"> 
+    <a class="nav-link" href="../../../blogs.html"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
@@ -368,12 +400,17 @@ window.MathJax = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#high-school-level-math" id="toc-high-school-level-math" class="nav-link active" data-scroll-target="#high-school-level-math">High School Level Math</a></li>
-  <li><a href="#college-level-math" id="toc-college-level-math" class="nav-link" data-scroll-target="#college-level-math">College Level Math</a></li>
-  <li><a href="#computer-science" id="toc-computer-science" class="nav-link" data-scroll-target="#computer-science">Computer Science</a></li>
-  <li><a href="#other-fields" id="toc-other-fields" class="nav-link" data-scroll-target="#other-fields">Other Fields</a></li>
+  <li><a href="#representing-data" id="toc-representing-data" class="nav-link active" data-scroll-target="#representing-data">Representing Data</a></li>
+  <li><a href="#introduction-to-neural-networks" id="toc-introduction-to-neural-networks" class="nav-link" data-scroll-target="#introduction-to-neural-networks">Introduction to Neural Networks</a></li>
+  <li><a href="#training-neural-networks" id="toc-training-neural-networks" class="nav-link" data-scroll-target="#training-neural-networks">Training Neural Networks</a></li>
+  <li><a href="#backpropagation" id="toc-backpropagation" class="nav-link" data-scroll-target="#backpropagation">Backpropagation</a>
+  <ul class="collapse">
+  <li><a href="#simple-single-layer-nn" id="toc-simple-single-layer-nn" class="nav-link" data-scroll-target="#simple-single-layer-nn">Simple Single-Layer NN</a></li>
+  <li><a href="#two-layer-nn-one-hidden-layer" id="toc-two-layer-nn-one-hidden-layer" class="nav-link" data-scroll-target="#two-layer-nn-one-hidden-layer">Two-Layer NN (One Hidden Layer)</a></li>
+  <li><a href="#three-layer-nn-two-hidden-layers" id="toc-three-layer-nn-two-hidden-layers" class="nav-link" data-scroll-target="#three-layer-nn-two-hidden-layers">Three-Layer NN (Two Hidden Layers)</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/10-Introduction-to-Neural-Networks/10-Introduction-to-Neural-Networks.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/10-Introduction-to-Neural-Networks/10-Introduction-to-Neural-Networks.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
@@ -381,14 +418,36 @@ window.MathJax = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Class Notes</h1>
-</div>
+<h1 class="title">10 Introduction to Neural Networks</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Neural Networks</div>
+    <div class="quarto-category">Backpropagation</div>
+    <div class="quarto-category">Activation Functions</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    This lecture discusses the basics of neural networks, including their architecture, activation functions, and training process. It also covers the concept of backpropagation and its role in optimizing neural networks.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 25, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -398,65 +457,322 @@ window.MathJax = {
 </header>
 
 
-<section id="high-school-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="high-school-level-math">High School Level Math</h3>
+<section id="representing-data" class="level2">
+<h2 class="anchored" data-anchor-id="representing-data">Representing Data</h2>
 <ul>
-<li><a href="./notes/IBMath.html">IB Math AA HL Notes</a></li>
+<li>Successful machine learning application relies on successful representation of data. <span class="math display">\[
+\text{Input}\longrightarrow\text{Feature Representation}\longrightarrow\text{Learning Algorithm}
+\]</span></li>
+<li>Machine learning practitioners put a lot of effort into feature engineering:
+<ul>
+<li>How can we get good representations <strong>automatically</strong>?</li>
+<li>How can we <strong>learn</strong> good features?</li>
+</ul></li>
+<li>Methods for non-linear classification:
+<ul>
+<li>Explicit feature mapping <span class="math inline">\(\phi(\va x)\)</span>: <span class="math display">\[\hat y=\operatorname{sign}(\va\theta\cdot\phi(\va x)).\]</span>
+<ul>
+<li>Hand-crafted, labor-intensive, could become very high dimensional.</li>
+<li><span class="math inline">\(\phi(\va x)\)</span> depends on <span class="math inline">\(\va x\)</span> alone and is not learned.</li>
+</ul></li>
+<li>Implicit feature mapping via a kernel: <span class="math display">\[\hat y=\operatorname{sign}\qty(\sum_{j=1}^N\alpha_j y^{(j)}K(\va x^{(j)},\va x))=\operatorname{sign}(\va\alpha\cdot\phi(\va x)),\]</span> where <span class="math inline">\(\phi(\va x)=\mqty[y^{(1)}K(\va x^{(1)},\va x),\dots,y^{(N)}K(\va x^{(N)},\va x)]\)</span>.
+<ul>
+<li><span class="math inline">\(\phi(\va x)\)</span> depends on <span class="math inline">\(\va x\)</span> and the training set <span class="math inline">\(\qty{\va x^{(i)},y^{(i)}}_{i=1}^N\)</span>, but is not learned.</li>
+</ul></li>
+<li>Boosting ensemble: <span class="math display">\[\hat y=\operatorname{sign}\qty(\sum_{m=1}^M\alpha_mh(\va x;\va\theta^{(m)}))=\operatorname{sign}(\va\alpha\cdot\phi(\va x)),\]</span> where <span class="math inline">\(\phi(\va x)=\mqty[h(\va x;\va\theta^{(1)}),\dots,h(\va x;\va\theta^{(M)})]\)</span>.
+<ul>
+<li><span class="math inline">\(\phi(\va x)\)</span> is learned via a greedy approach in boosting.</li>
+<li>Optimization is performed sequentially choosing one weak classifier at a time.</li>
+</ul></li>
+<li>Neural networks:
+<ul>
+<li><strong>Jointly Learning</strong></li>
+<li>Model parameters and feature representations are learned at the same time.</li>
+</ul></li>
+</ul></li>
 </ul>
 </section>
-<section id="college-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="college-level-math">College Level Math</h3>
-<section id="math-fundamentals" class="level4">
-<h4 class="anchored" data-anchor-id="math-fundamentals">Math Fundamentals</h4>
+<section id="introduction-to-neural-networks" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-neural-networks">Introduction to Neural Networks</h2>
 <ul>
-<li><a href="./notes/Calc2.html">Calculus II</a></li>
-<li><a href="./notes/Calc3.html">Multivariable Calculus/Advanced Calculus/Calculus III</a></li>
-<li><a href="./notes/LA.html">Linear Algebra</a></li>
-<li><a href="./notes/Proofs.html">Mathematical Proofs</a></li>
+<li>Other names:
+<ul>
+<li>Feedforward neural networks (FNN)</li>
+<li>Multilayer perceptrons (MLP)</li>
+<li>Fully-connected/Dense networks</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-neural-networks" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Neural Networks)</strong></span> <strong>Neural networks</strong> are composed of simple computational units called neurons/units.</p>
+<div id="fig-neural-network" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-neural-network-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/neuron-eg.jpeg" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-neural-network-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Example of a Neural Network
+</figcaption>
+</figure>
+</div>
+<ul>
+<li><span class="math inline">\(z=z(\va x;\va w)=w_1x_1+w_2x_2+w_3x_3\)</span>, and <span class="math inline">\(h=g(z)\)</span> is the activation function.</li>
+<li>Example of activation function: sigmoid function: <span class="math display">\[h=g(z)=\dfrac{1}{1+e^{-z}}.\]</span></li>
+</ul>
+<p><strong>Neurons</strong> are arranged in a network composed of layers. The specific arrangement corresponds to the architecture. - <strong>Input layer</strong>: The first layer of the network, which receives the input data. - <strong>Hidden layers</strong>: Intermediate layers between the input and output layers. Each hidden layer consists of multiple neurons that process the input data. - <strong>Output layer</strong>: The final layer of the network, which produces the output predictions.</p>
+<div id="fig-nn-layers" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-layers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/nn-layers.jpeg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-layers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Example of Layers
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="rem-Single-Layer-NN" class="proof remark">
+<p><span class="proof-title"><em>Remark 1</em> (Single-Layer Neural Network). </span>A single-layer neural network is simply logistic regression. <span class="math display">\[
+\va x=\mqty[x_1\\x_2\\x_3],\quad \va w=\mqty[w_1\\w_2\\w_3],\quad \implies\quad\hat y=h(\va x;\va w)=\dfrac{1}{1+\exp(-\va w\cdot\va x)}.
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="rem-offset" class="proof remark">
+<p><span class="proof-title"><em>Remark 2</em> (Offset/Bias Term). </span>We can always include an offset/intercept/bias term by adding a constant input.</p>
+<div id="fig-nn-bias" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-bias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/bias.jpeg" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-bias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Adding Bias
+</figcaption>
+</figure>
+</div>
+<p><span class="math display">\[
+z=z(\va x;\va w)=w_0+w_1x_1+w_2x_2+w_3x_3+w_4.
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Adding one hidden layer:
+<ul>
+<li>Notation: the weight <span class="math inline">\(W_{ik}^{(j)}\)</span>, where <span class="math inline">\(j\)</span>-th layer, <span class="math inline">\(i\)</span>-th input, and <span class="math inline">\(k\)</span>-th unit. <img src="figs/one-layer-nn.jpeg" id="fig-one-layer-nn" class="img-fluid" style="width:50.0%" alt="One Hidden Layer"></li>
+<li>Two-layer network since ther eare two sets of weights.</li>
+<li>Forward propagation: <img src="figs/forward-prop.jpeg" id="fig-forward-prop" class="img-fluid" alt="Forward Propagation"></li>
+<li>Common activation functions:
+<ul>
+<li>ReLU: <span class="math inline">\(g(z)=\max\qty{0,z}\)</span>.</li>
+<li>Threshold: <span class="math inline">\(g(z)=\operatorname{sign}(z)\)</span>.</li>
+<li>Softmax: <span class="math inline">\(g(z)=\dfrac{e^z}{\dsst\sum_ke^{z_k}}\)</span> for multiclass classification.</li>
+<li>Sigmoid: <span class="math inline">\(g(z)=\dfrac{1}{(1+e^{-z})}\)</span>.</li>
+<li>Hyperbolic tangent: <span class="math inline">\(g(z)=\tanh(z)\)</span>.</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-NN-eg" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1 (What is neural network doing?)</strong></span> &nbsp;</p>
+<div id="nn-eg" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/nn-eg.jpeg" class="img-fluid figure-img"></p>
+<figcaption>Neural Network Effects</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="training-neural-networks" class="level2">
+<h2 class="anchored" data-anchor-id="training-neural-networks">Training Neural Networks</h2>
+<p><u><strong>Gaol</strong></u>: Formulate an optimization problem to find the weifghts. Apply SGD.</p>
+<ul>
+<li><p>Set-up: <span class="math inline">\(D=\qty{\va x^{(i)},y^{(i)}}_{i=1}^N\)</span>, <span class="math inline">\(\va x\in\R^d\)</span>, <span class="math inline">\(y\in\qty{-1,+1}\)</span>.</p>
+<p>We want to learn <span class="math inline">\(\va\theta=\mqty[w_{10}^{(1)},w_{11}^{(1)},\dots,w_{km}^{(L)}]\)</span> parameter of the neural network in order to minimize loss over training examples: <span class="math display">\[
+J(\va\theta)=\dfrac{1}{N}\sum_{i=1}^N\operatorname{loss}(y^{(i)}\cdot h(\va x^{(i)};\va\theta)),
+\]</span> where <span class="math inline">\(y^{(i)}\)</span> is the true label and <span class="math inline">\(h(\va x^{(i)};\va\theta)\)</span> is the neural network output.</p></li>
+</ul>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="rem-loss" class="proof remark">
+<p><span class="proof-title"><em>Remark 3</em> (Choice of Loss Function). </span><span class="math inline">\(\operatorname{loss}(\cdot)\)</span> can be any (sub)differentiable loss function. For example, hinge loss.</p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Overview of Optimization Procedure: SGD
+<ul>
+<li>Initialize <span class="math inline">\(\va\theta\)</span> to small random values (to prevent learning the same features).</li>
+<li>Select <span class="math inline">\(i=\qty{1,\dots,N}\)</span> at random (or mini-batch).</li>
+<li>Update <span class="math display">\[\va\theta^{(k+1)}=\va\theta^{(k)}-\eval{\eta_k\grad_{\va\theta}\operatorname{loss}\qty(y^{(i)}\cdot h(\va x^{(i)};\va\theta))}_{\va\theta=\va\theta^{(k)}}.\]</span></li>
+</ul></li>
+</ul>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="rem-sgd" class="proof remark">
+<p><span class="proof-title"><em>Remark 4</em> (Number of Parameters/Dimensions). </span>Gradient vector has the same dimensionality as the number of parameters. <span class="math display">\[
+d'=\sum_{\l=1}^{\text{number of layers}}\qty(\text{number of inputs for layer }\l)\times\qty(\text{number of ouputs for layer }\l).
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="backpropagation" class="level2">
+<h2 class="anchored" data-anchor-id="backpropagation">Backpropagation</h2>
+<section id="simple-single-layer-nn" class="level3">
+<h3 class="anchored" data-anchor-id="simple-single-layer-nn">Simple Single-Layer NN</h3>
+<div id="fig-single-layer-nn" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-single-layer-nn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/single-layer-nn.jpeg" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-single-layer-nn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: single-layer-nn
+</figcaption>
+</figure>
+</div>
+<ul>
+<li><p>We consider no activation function: <span class="math display">\[h(\va x;\theta)=w_0+\sum_{j=1}^dw_jx_j=z.\]</span></p></li>
+<li><p>Consider Hinge loss: <span class="math display">\[L=\max\qty{0, 1-yz}.\]</span></p></li>
+<li><p>For <span class="math inline">\(j=1,\dots, d\)</span>: <span class="math display">\[\pdv{L}{w_j}=\pdv{L}{z}\cdot\pdv{z}{w_j}=-y\cdot\1\qty{L&gt;0}\cdot x_j,\quad\text{Chain Rule: }L(z(w)).\]</span></p>
+<p>The update rule is: if <span class="math inline">\(\operatorname{loss}(yz)&gt;0\)</span> (equivalent to <span class="math inline">\(y\cdot h(\va x;\va\theta^{(k)})&lt;1\)</span>.), then <span class="math inline">\(w_j^{(k+1)}=w_j^{(k)}+\eta_kyx_j\)</span>.</p></li>
+<li><p><span class="math inline">\(j=0\)</span>: <span class="math display">\[\pdv{L}{w_0}=\pdv{L}{z}\cdot\pdv{z}{w_0}=-y\cdot\1\qty{L&gt;0}\cdot 1=-y\cdot\1{K&gt;0}.\]</span></p>
+<p>The update rule is if <span class="math inline">\(\operatorname{loss}(yz)&gt;0\)</span>, then <span class="math inline">\(w_0^{(k+1)}=w_0^{(k)}+\eta_ky\)</span>.</p></li>
 </ul>
 </section>
-<section id="applied-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="applied-mathematics">Applied Mathematics</h4>
+<section id="two-layer-nn-one-hidden-layer" class="level3">
+<h3 class="anchored" data-anchor-id="two-layer-nn-one-hidden-layer">Two-Layer NN (One Hidden Layer)</h3>
+<div id="fig-two-layer-nn" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-two-layer-nn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/two-layer-nn.jpeg" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-layer-nn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Two-Layer NN
+</figcaption>
+</figure>
+</div>
+<p><span class="math display">\[
+\begin{aligned}
+z_j^{(2)}&amp;=w_{0j}^{(1)}+\sum_{i=1}^d x_iw_{ij}^{(1)}\\
+h_j^{(2)}&amp;=\max\qty{0,z_j^{(2)}}\\
+z^{(3)}&amp;=w_{0}^{(2)}+\sum_{j=1}^m h_j^{(2)}w_j^{(2)}\\
+h(\va x;\va\theta)&amp;=z^{(3)}&amp;\text{(no activation function)}
+\end{aligned}
+\]</span></p>
 <ul>
-<li><a href="./notes/ODE.html">Ordinary Differential Equations</a></li>
-<li><a href="./notes/nonlinearOpt.html">Nonlinear Optimization</a></li>
-<li><a href="./notes/NumericalAnalysis1.html">Undergraduate-Level Numerical Analysis</a></li>
-<li><a href="./notes/NumericalODEsPDEs.html">Numerical ODEs and PDEs</a></li>
-<li><a href="./notes/NumericalAnalysis2.html">PhD-Level Numerical Analysis I (Numerical Linear Algebra)</a></li>
+<li>Notation change: <span class="math inline">\(i=0,\dots, d\)</span> and <span class="math inline">\(j=1,\dots, m\)</span>
+<ul>
+<li><span class="math inline">\(w_{ij}=w_{ij}^{(1)}\)</span></li>
+<li><span class="math inline">\(v_j=w_j^{(2)}\)</span></li>
+<li><span class="math inline">\(z_j=z_j^{(2)}\)</span></li>
+<li><span class="math inline">\(h_j=h_j^{(2)}\)</span></li>
+<li><span class="math inline">\(z=z^{(3)}\)</span></li>
+<li>Then, <span class="math display">\[
+\begin{aligned}
+z_j&amp;=w_{0j}+\sum_{i=1}^d x_iw_{ij}\\
+h_j&amp;=\max\qty{0,z_j}\\
+z&amp;=v_0+\sum_{j=1}^m h_jv_j\\
+h(\va x;\va\theta)&amp;=z\\
+L&amp;=\max\qty{0,1-yz} &amp;\text{(loss function)}.
+\end{aligned}
+\]</span></li>
+</ul></li>
+<li>To work out the update rule, let’s go <em>backwards</em>
+<ul>
+<li>Output layer is simple linear classifier based on <span class="math inline">\(h_j\)</span>’s: <span class="math display">\[
+\begin{aligned}
+h(\va x;\va\theta)&amp;=z=\va v\cdot\phi(\va x)\\
+\phi(\va x)&amp;=\mqty[1, h_1,\dots,h_m]\\
+\va v&amp;=\mqty[v_0,v_1,\dots,v_m]\\
+\pdv{L}{v_j}&amp;=\pdv{L}{z}\cdot\pdv{z}{v_j}=-y\1\qty{L&gt;0}h_j
+\end{aligned}
+\]</span> So, the update rule is <span class="math inline">\(v_j^{(k+1)}=v_j^{(k)}+\eta_ky\1\qty{L&gt;0}h_j\)</span>.</li>
+<li>Hidden layer: each unit is a linear combination of input feature <span class="math inline">\(x_i\)</span>’s followed by activation function <span class="math inline">\(g\)</span>, but its update <span class="math inline">\(h_j\)</span> is used as input to the ouput layer, so changing <span class="math inline">\(w_{ij}\)</span> will affect the loss through <span class="math inline">\(z_j,h_j\)</span>, and <span class="math inline">\(z\)</span>. <span class="math display">\[
+\begin{aligned}
+\pdv{L}{w_{ij}}&amp;=\pdv{L}{z}\cdot\pdv{z}{h_j}\cdot\pdv{h_j}{z_j}\cdot\pdv{z_j}{w_{ij}}\\
+&amp;=-y\1\qty{L&gt;0}v_j\cdot\1\qty{z_j&gt;0}\cdot x_i\\
+\end{aligned}
+\]</span> Then, the update rule is <span class="math inline">\(w_{ij}^{(k+1)}=w_{ij}^{(k)}+\eta_ky\1\qty{L&gt;0}v_j\1\qty{z_j&gt;0}x_i\)</span> for <span class="math inline">\(i=0,\dots,d\)</span> and <span class="math inline">\(j=0,\dots,m\)</span>.</li>
+</ul></li>
+<li>This is the <strong>backpropagation</strong>: <span class="math display">\[
+\begin{aligned}
+\pdv{L}{v_1}&amp;=\pdv{L}{z}\cdot\pdv{z}{v_1}\\
+\pdv{L}{w_{11}}&amp;=\pdv{L}{z}\cdot\pdv{z}{h_1}\cdot\pdv{h_1}{z_1}\cdot\pdv{z_1}{w_{11}}\\
+\pdv{L}{w_{01}}&amp;=\pdv{L}{z}\cdot\pdv{z}{h_1}\cdot\pdv{h_1}{z_1}\cdot\pdv{z_1}{w_{01}}\\
+\end{aligned}
+\]</span>
+<ul>
+<li>Observation: intermediate partial derivatives are <strong>shared</strong>. Overlapping subproblems, implemented via <strong>dynamic programming</strong>.</li>
+<li>Backpropagation: Chain Rule + Dynamic Programming.</li>
+<li>Subroutine for effeciently computing the gradient (i.e., all partial derivatives) of a neural network:
+<ul>
+<li>for each training example:
+<ul>
+<li>make a forward pass, go through the layers and make a prediction</li>
+<li>calculate loss</li>
+<li>make a backward pass, go through the layers in reverse and calculate the partial derivatives.</li>
+</ul></li>
+<li>Use the gradient information in an optimiztioon procedure (e.g.&nbsp;SGD).</li>
+</ul></li>
+</ul></li>
 </ul>
 </section>
-<section id="pure-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="pure-mathematics">Pure Mathematics</h4>
-<ul>
-<li><a href="./notes/RealAnalysis.html">Real Analysis</a></li>
-</ul>
-</section>
-<section id="data-science-statistics-and-causal-inference" class="level4">
-<h4 class="anchored" data-anchor-id="data-science-statistics-and-causal-inference">Data Science, Statistics, and Causal Inference</h4>
-<ul>
-<li><a href="https://jrlyu.github.io/qtm110.io/">Introduction to Causal Inference</a></li>
-<li><a href="https://jrlyu.github.io/google_analytics.io/">Google Data Analytics Learning Notes</a></li>
-<li><a href="./notes/MathStats.html">Mathematical Statistics</a></li>
-<li>Causal Designs and Inference</li>
-<li><a href="./notes/cs334.html">Machine Learning</a></li>
-</ul>
-</section>
-</section>
-<section id="computer-science" class="level3">
-<h3 class="anchored" data-anchor-id="computer-science">Computer Science</h3>
-<ul>
-<li><a href="./notes/cs171.html">Object-Oriented Programming &amp; Introduction to Data Structures</a></li>
-<li>Introduction to Data Structure and Algorithms</li>
-<li><a href="./notes/cs377.html">Database Systems</a></li>
-</ul>
-</section>
-<section id="other-fields" class="level3">
-<h3 class="anchored" data-anchor-id="other-fields">Other Fields</h3>
-<ul>
-<li><a href="https://jrlyu.github.io/intro_to_socio.io/">Introduction to Sociology</a></li>
-</ul>
+<section id="three-layer-nn-two-hidden-layers" class="level3">
+<h3 class="anchored" data-anchor-id="three-layer-nn-two-hidden-layers">Three-Layer NN (Two Hidden Layers)</h3>
+<div id="fig-three-layer-nn" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-three-layer-nn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/three-layer-nn.jpeg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-three-layer-nn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Three-Layer NN
+</figcaption>
+</figure>
+</div>
 
 
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
@@ -876,11 +1192,11 @@ window.MathJax = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>Created with <a href="https://quarto.org/">Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 May 4.</p>
+<p>Created with <a href="https://quarto.org/">Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 Apr.&nbsp;29.</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs334/10-Introduction-to-Neural-Networks/10-Introduction-to-Neural-Networks.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs334/10-Introduction-to-Neural-Networks/10-Introduction-to-Neural-Networks.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
