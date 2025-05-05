@@ -24,7 +24,7 @@ website:
       - href: blogs.qmd
         text: Blogs
   page-footer: 
-    left: "Created with <a href='https://quarto.org/'>Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 May 4."
+    left: "Created with <a href='https://quarto.org/'>Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 May 5."
     right: 
       - icon: linkedin
         href: https://www.linkedin.com/in/jiuru-lyu/

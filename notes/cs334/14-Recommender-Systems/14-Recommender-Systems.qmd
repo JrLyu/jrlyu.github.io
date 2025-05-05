@@ -31,3 +31,96 @@ callout-appearance: simple
 ### First Attempt
 - Let $\hat Y$ represent the approximation of the true, unerlying rating matrix. Formulate a regression problem with regularization: $$J(\hat Y)=\dfrac{1}{2}=\sum_{a,i\in D}\qty(Y_{ai}-\hat Y_{ai}^2+\dfrac{\lambda}{2}\sum_{a,i}\hat Y_{ai}^2),$$ where $D$ is the set of observed data and the regularization term is added to all data. 
 - Objective: find $\hat Y$ that minimizes $J(\hat Y)$. FOC gives us $$\pdv{J}{\hat Y_{ai}}=-\1\qty{(a,i)\in D}\qty(Y_{ai}-\hat Y_{ai})+\lambda\hat Y_{ai}\overset{\text{set}}{=}0.$$
+  - If $(a,i)\notin D$: unobserved entries: $$\hat Y_{ai}=0\quad\text{constantly predicting }0$$
+  - If $(a,i)\in D$: observed data: 
+$$
+\begin{aligned}
+-\qty(Y_{ai}-\hat Y_{ai})+\lambda\hat Y_{ai}&=0\\
+\hat Y_{ai}&=\dfrac{Y_{ai}}{1+\lambda}\quad\longrightarrow\text{shrinking real values}
+\end{aligned}
+$$
+So, we have a trivial solution that is not useful. 
+- Problem: without constraints, we can set each entry independently.
+- Idea: impose a constraint such that row/column are linearly dependent. 
+  - Use a **low-rank approximation** via matrix factorization (constraint on rank).
+
+### Low-Rank Approximation
+$$
+Y\text{ is }n\times m\qquad\xrightarrow{\quad\text{approximation}\quad} \hat Y=UV^\top,\quad\text{where }U\in\R^{n\times k}, V\in\R^{m\times d}.
+$$
+
+- $\rank(\hat Y)=\min\qty{\rank(U),\rank(V)}$. <br> If we choose $d\in\min\qty{m,n}$, then $\rank(\hat Y)=d$. <br> So, $\hat Y$ is not full rank, and entries of $\hat Y$ are not linearly independent. 
+- <u>**Goal</u>: Learn $U$ and $V$ such that $\hat Y$ is a good approximation of $Y$. 
+- Notation: <br> Let $\va u^{(a)}\in\R^d$ be the $a$-th row of $U$: $$U=\mqty[-&\va u^{(1)\top}&-\\&\vdots\\-&\va u^{(n)^\top}&-].$$ Let $\va v^{(i)}\in\R^d$ be the $i$-th row of $V$: $$V=\mqty[|&&|\\\va v^{(1)}&\cdots&\va v^{(m)}\\|&&|].$$ Then, $$\mqty[UV^\top]_{a,i}=\va u^{(a)}\cdot\va v^{(i)}=\hat Y_{a,i}.$$
+- Then, the new objective function is 
+$$
+\begin{aligned}
+J(U,V)&=\dfrac{1}{2}\sum_{(a,i)\in D}\qty(Y_{ai}-\mqty[UV^\top]_{a,i})^2+\dfrac{\lambda}{2}\sum_{a=1}^n\sum_{k=1}^dU_{ak}^2+\dfrac{\lambda}{2}\sum_{i=1}^m\sum_{k=1}^dV_{i,k}^2\\
+&=\dfrac{1}{2}\sum_{(a,i)\in D}\qty(Y_{ai}-\va u^{(a)}\cdot\va v^{(i)})^2+\dfrac{\lambda}{2}\sum_{a=1}^n\norm{\va u^{(a)}}^2+\dfrac{\lambda}{2}\sum_{i=1}^m\norm{\va v^{(i)}}^2.
+\end{aligned}
+$$
+Optimization problem: $$\min_{U,V}J(U,V).$$
+  - If $d=\min\qty{m,n}$, then $\hat Y$ is full rank. <br> We are reduced to the trivial solution since each element can be chosen independently. 
+  - The smaller $d$, the more constrained the problem becomes. <br> Both $d$ and $\lambda$ are hyperparameters. 
+- How do we solve for this? **Symmetry** 
+  - If we know $U$, we can solve $V$. ($U$ is feature and $V$ is parameter).
+  - If we know $V$, we can solve $U$.
+  - **Alternative minimization**.
+
+```pseudocode
+#| html-comment-delimiter: "#"
+#| label: alg-alernative-minimization
+
+\begin{algorithm}
+\caption{Alternative Minimization}
+\begin{algorithmic}
+\State{(0) Initialize movie feature vectors randomly $\va v^{(1)},\va v^{(2)},\dots,\va v^{(m)}$.}
+\While{not converged}
+  \State{\# Stop when $U$ and $V$ does not change}
+  \State{(1) Fix $\va v^{(1)},\dots,\va v^{(m)}$, solve for $\va u^{(1)},\dots,\va u^{(n)}$:}
+  \State{$\qquad\dsst\min_{\va u^{(a)}}\dfrac{1}{2}\sum_{i\in D_a}\qty(Y_{ai}-\va u^{(a)}\cdot\va v^{(i)})^2+\dfrac{\lambda}{2}\norm{\va u^{(a)}}^2$.} \# $D_a$: all movies rated by user $a$; ridge regression
+  \State{Do this for each $a=1,\dots,n$, we have}
+  \State{$\qquad\va u^{(a)},\dots,\va u^{(n)}$.}
+  \State{(2) Fix $\va u^{(1)},\dots,\va u^{(n)}$, solve for $\va v^{(1)},\dots,\va v^{(m)}$.}
+  \State{$\qquad\dsst\min_{\va v^{(i)}}\dfrac{1}{2}\sum_{a\in D_i}\qty(Y_{ai}-\va u^{(a)}\cdot\va v^{(i)})^2+\dfrac{\lambda}{2}\norm{\va v^{(i)}}^2$.} \# $D_i$: all users rated movie $i$; ridge regression
+  \State{Do this for each $i=1,\dots,m$, we get}
+  \State{$\qquad\va v^{(1)},\dots,\va v^{(m)}$.}
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+```
+
+- Theoretical guarantees: 
+  - $J(U,V)$ monotonically decreases as we iterate.
+  - Potentially many local minima. So, initialization is important.
+
+:::{.callout-tip}
+:::{#exm-Alternating-Minimization}
+## Alternating Minimization Example
+$$
+Y=\mqty[5&?&7\\?&2&?\\7&1&4\\4&?&?\\?&3&6]
+$$
+
+- Hyperparameters: $d=1$, $\lambda=1$. 
+- After some iterations, we have $$U=\mqty[6,2,3,3,5]^\top\quad\text{and}\quad V=\mqty[4,1,5]^\top.$$
+- Then, we will update $u^{(1)}$ as follows
+  - $\text{error}=\qty(Y_{1,1}-\hat Y_{1,1})^2=\qty(5-6\times4)^2=19^2$.
+  - Fix $V$, update $U$. Find $u^{(1)}$. $$\tag{Objective}\min_{u^{(1)}}\dfrac{1}{2}\sum_{i\in D_1}\qty(Y_{1i}-u^{(1)}v^{(i)})^2+\dfrac{1}{2}\qty(u^{(1)})^2\equiv J\qty(u^{(1)})$$
+$$
+\begin{aligned}
+J\qty(u^{(1)})&=\dfrac{1}{2}\qty[\qty(Y_{11}-u^{(1)}v^{(1)})^2+\qty(Y_{13}-u^{(1)}v^{(3)})^2]+\dfrac{1}{2}\qty(u^{(1)})^2\\
+&=\dfrac{1}{2}\qty[\qty(5-4u^{(1)})^2+\qty(7-5u^{(1)})^2]+\dfrac{1}{2}\qty(u^{(1)})^2
+\end{aligned}
+$$
+So, the FOC gives us 
+$$
+\begin{aligned}
+\dv{u^{(1)}}J\qty(u^{(1)})=-4\qty(5-4u^{(1)})-5\qty(7-5u^{(1)})+u^{(1)}&=0\\
+-20+16u^{(1)}-35+25u^{(1)}+u^{(1)}&=0\\
+42u^{(1)}&=55\\
+u^{(1)}&=\dfrac{55}{42}\approx 1.31
+\end{aligned}
+$$
+  - Hence, the new $\hat Y$ is $$\hat Y_{11}=u^{(1)}\cdot v^{(1)}=\dfrac{55}{42}\times4=\dfrac{110}{21}\approx5.24.$$ Then, the new error is $$\text{error}=\qty(Y_{11}-\hat Y_{11})=\qty(5-5.24)^2\approx0.057\quad\rightarrow\text{better!}$$
+:::
+::: 
