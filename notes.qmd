@@ -22,6 +22,8 @@ title: "Class Notes"
 - [Undergraduate-Level Numerical Analysis](notes/NumericalAnalysis1.qmd)
 - [Numerical ODEs and PDEs](notes/NumericalODEsPDEs.qmd)
 - [PhD-Level Numerical Analysis I (Numerical Linear Algebra)](notes/NumericalAnalysis2.qmd)
+- [PhD-Level Numerical Analysis II](notes/NumericalAnalysis3.qmd)
+
 
 #### Pure Mathematics
 - [Real Analysis](notes/RealAnalysis.qmd)

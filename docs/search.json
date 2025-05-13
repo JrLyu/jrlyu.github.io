@@ -158,7 +158,7 @@
     "href": "notes.html",
     "title": "Class Notes",
     "section": "",
-    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\nNumerical ODEs and PDEs\nPhD-Level Numerical Analysis I (Numerical Linear Algebra)\n\n\n\nPure Mathematics\n\nReal Analysis\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nGoogle Data Analytics Learning Notes\nMathematical Statistics\nCausal Designs and Inference\nMachine Learning\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\nDatabase Systems\n\n\n\nOther Fields\n\nIntroduction to Sociology\n\n\n\n\n\n Back to top"
+    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\nNumerical ODEs and PDEs\nPhD-Level Numerical Analysis I (Numerical Linear Algebra)\nPhD-Level Numerical Analysis II\n\n\n\nPure Mathematics\n\nReal Analysis\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nGoogle Data Analytics Learning Notes\nMathematical Statistics\nCausal Designs and Inference\nMachine Learning\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\nDatabase Systems\n\n\n\nOther Fields\n\nIntroduction to Sociology\n\n\n\n\n\n Back to top"
   },
   {
     "objectID": "index.html",
@@ -614,5 +614,12 @@
     "title": "Polynomial Representation of Arnoldi",
     "section": "Polynomial Representation",
     "text": "Polynomial Representation\nAs \\(Q_ny\\in\\mathcal{K}_n(A,b)=\\sp\\qty{b,Ab,A^2b,\\dots,A^{n-1}b}\\), we can rewrite \\(Q_ny\\) as linear combinations of \\(b,Ab,A^2b,\\dots,A^{n-1}b\\): \\[\nQ_ny=y_1b+y_2Ab+\\dots+y_nA^{n-1}b\n\\]\nPlug-in this into (Arnoldi Approx.), we get \\[\n\\begin{aligned}\n\\min_{y\\in\\C^n}\\|r_n\\|&=\\min_{y\\in\\C^n}\\norm{A^nb-Q_ny}_2\\\\\n&=\\min_{y\\in\\C^n}\\norm{A^nb-\\qty(y_1b+y_2Ab+\\dots+y_nA^{n-1}b)}_2\\\\\n&=\\min_{y\\in\\C^n}\\norm{A^nb-y_1b-y_2Ab-\\dots-y_nA^{n-1}b}_2\\\\\n&=\\min_{y\\in\\C^n}\\norm{-y_1b-y_2Ab-\\dots-y_nA^{n-1}b+A^nb}_2\\\\\n&=\\min_{y\\in\\C^n}\\|(\\underbrace{-y_1I-y_2A-\\dots-y_nA^{n-1}+A^n}_{p_n(A)})b\\|_2\\\\\n&=\\min_{\\substack{p_n\\in P_n\\\\p_n\\text{ monic}}}\\norm{p_n(A)b}_2.\n\\end{aligned}\n\\]\n\n\n\n[1] Lloyd N. Trefethen and David Bau, “Numerical Linear Algebra, Twenty-fifth Anniversary Edition  SIAM Publications Library,” Other Titles in Applied Mathematics. https://epubs.siam.org/doi/book/10.1137/1.9781611977165."
+  },
+  {
+    "objectID": "notes/NumericalAnalysis3.html",
+    "href": "notes/NumericalAnalysis3.html",
+    "title": "PhD-Level Numerical Analysis II",
+    "section": "",
+    "text": "Back to top"
   }
 ]

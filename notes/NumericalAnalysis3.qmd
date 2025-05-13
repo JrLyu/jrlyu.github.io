@@ -1,0 +1,5 @@
+---
+title: "PhD-Level Numerical Analysis II"
+---
+
+<embed src="pdf/PhD Numerical Analysis II.pdf" width="800px" height="800px" />
