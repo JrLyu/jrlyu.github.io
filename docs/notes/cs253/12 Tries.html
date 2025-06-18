@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2024-05-20">
+<meta name="description" content="This lecture introduces the Trie data structure and its applications">
 
-<title>Class Notes –  Jiuru Lyu</title>
+<title>12 Tries –  Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,30 +23,64 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href=".//media/favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script src="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
-<link href="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../..//media/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,8 +177,37 @@ window.MathJax = {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Noto+Serif+TC:wght@200..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -151,8 +217,8 @@ window.MathJax = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title"><img src="./media/icon.png" alt="JL logo" style="height: 50px; margin-right: 8px;"> Jiuru Lyu</span>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title"><img src="../../media/icon.png" alt="JL logo" style="height: 50px; margin-right: 8px;"> Jiuru Lyu</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -162,7 +228,7 @@ window.MathJax = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -171,15 +237,15 @@ window.MathJax = {
     </span>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./notes.html" aria-current="page"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./photo.html"> 
+    <a class="nav-link" href="../../photo.html"> 
 <span class="menu-text">Photograph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blogs.html"> 
+    <a class="nav-link" href="../../blogs.html"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
@@ -204,26 +270,50 @@ window.MathJax = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#high-school-level-math" id="toc-high-school-level-math" class="nav-link active" data-scroll-target="#high-school-level-math">High School Level Math</a></li>
-  <li><a href="#college-level-math" id="toc-college-level-math" class="nav-link" data-scroll-target="#college-level-math">College Level Math</a></li>
-  <li><a href="#computer-science" id="toc-computer-science" class="nav-link" data-scroll-target="#computer-science">Computer Science</a></li>
-  <li><a href="#other-fields" id="toc-other-fields" class="nav-link" data-scroll-target="#other-fields">Other Fields</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#trie-data-structure" id="toc-trie-data-structure" class="nav-link" data-scroll-target="#trie-data-structure">Trie Data Structure</a></li>
+  <li><a href="#improvement-on-trie-compressed-trie" id="toc-improvement-on-trie-compressed-trie" class="nav-link" data-scroll-target="#improvement-on-trie-compressed-trie">Improvement on Trie: Compressed Trie</a></li>
+  <li><a href="#search-for-substring" id="toc-search-for-substring" class="nav-link" data-scroll-target="#search-for-substring">Search for Substring</a></li>
+  <li><a href="#application-of-tries-data-compression-by-huffman-coding" id="toc-application-of-tries-data-compression-by-huffman-coding" class="nav-link" data-scroll-target="#application-of-tries-data-compression-by-huffman-coding">Application of Tries: Data Compression by Huffman Coding</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs253/12 Tries.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs253/12 Tries.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Class Notes</h1>
-</div>
+<h1 class="title">12 Tries</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Coding</div>
+    <div class="quarto-category">Java</div>
+    <div class="quarto-category">Algorithm</div>
+    <div class="quarto-category">Tries</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    This lecture introduces the Trie data structure and its applications
+  </div>
+</div>
 
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 20, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -233,66 +323,330 @@ window.MathJax = {
 </header>
 
 
-<section id="high-school-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="high-school-level-math">High School Level Math</h3>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-tries" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1</strong></span> &nbsp;</p>
 <ul>
-<li><a href="./notes/IBMath.html">IB Math AA HL Notes</a></li>
+<li>A <strong><em>String</em></strong> is a sequence of characters.
+<ul>
+<li><i>Examples:
+</i><ul><i>
+<li>Python program</li>
+<li>HTML document</li>
+<li>DNA sequence</li>
+</i><li><i>Digitized image</i></li>
+</ul></li>
+</ul></li>
+<li>An <strong><em>alphabet</em></strong> <span class="math inline">\(\mathbf{\Sigma}\)</span> is the set of possible characters for a family of strings:
+<ul>
+<li><i>Examples:
+</i><ul><i>
+<li>a, b, c, …, x, y, z</li>
+<li>ASCII characters</li>
+<li>Unicode</li>
+<li>{0, 1}</li>
+</i><li><i>{A, T, C, G}</i></li>
+</ul></li>
+</ul></li>
+<li>We denote the <strong><em>alphabet size</em></strong> by <span class="math inline">\(|\mathbf{\Sigma}|\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-substring" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2</strong></span> Let <span class="math inline">\(P\)</span> be a string of size <span class="math inline">\(m\)</span>.</p>
+<ul>
+<li>A <strong><em>substring</em></strong> <span class="math inline">\(P[i\dots j]\)</span> of <span class="math inline">\(P\)</span> is the subsequence of <span class="math inline">\(P\)</span> consisting of the characters with indices between <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>.</li>
+<li><i>Example: “tire” is a substring of “retrieval” (with indices between <span class="math inline">\(2\)</span> and <span class="math inline">\(5\)</span>).</i></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pattern Matching Problem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong><em>Pattern Matching Problem</em></strong>: Given strings <span class="math inline">\(\mathbf{T}\)</span> (text) and <span class="math inline">\(\mathbf{P}\)</span> (query), the pattern matching problem consists of finding a substring of <span class="math inline">\(\mathbf{T}\)</span> equal to <span class="math inline">\(\mathbf{P}\)</span>.</p>
+<ul>
+<li>Applications:
+<ul>
+<li>Text editors</li>
+<li>Search engines</li>
+<li>Bioinformatics</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<ul>
+<li>Pattern Matching: Brute-Force Method
+<ul>
+<li>The <strong><em>Brute-Force pattern matching algorithm</em></strong> compares the key <span class="math inline">\(\mathbf{P}\)</span> with the text <span class="math inline">\(\mathbf{T}\)</span> for each possible shift of <span class="math inline">\(\mathbf{P}\)</span> relative to <span class="math inline">\(\mathbf{T}\)</span> until either
+<ul>
+<li>a match is found, or</li>
+<li>all placements of the pattern have been tried.</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> This method finds the first occurrence of the query in the text<span class="co">.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">text</span><span class="co"> </span>the text to search</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">query</span><span class="co"> </span>the query to search for</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@return</span> the index of the first occurrence of the query in the text<span class="co">,</span> or <span class="co">-1</span> if the query is not found</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="dt">int</span> <span class="fu">findBrute</span><span class="op">(</span><span class="dt">char</span><span class="op">[]</span> text<span class="op">,</span> <span class="dt">char</span><span class="op">[]</span> query<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> n <span class="op">=</span> text<span class="op">.</span><span class="fu">length</span><span class="op">;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> m <span class="op">=</span> query<span class="op">.</span><span class="fu">length</span><span class="op">;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> n <span class="op">-</span> m<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span> <span class="co">// test shift i of the pattern</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="op">(</span> k <span class="op">&lt;</span> m <span class="op">&amp;&amp;</span> text<span class="op">[</span>i <span class="op">+</span> k<span class="op">]</span> <span class="op">==</span> query<span class="op">[</span>k<span class="op">]</span> <span class="op">)</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>            k<span class="op">++;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>k <span class="op">==</span> m<span class="op">)</span> <span class="cf">return</span> i<span class="op">;</span> <span class="co">// match at i</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span> <span class="co">// no match found</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>The time complexity of the Brute-Force pattern matching algorithm is <span class="math inline">\(\mathcal{O}(nm)\)</span>.
+<ul>
+<li>In real world, <span class="math inline">\(n\)</span> is usually very large, so this algorithm is not efficient.</li>
+</ul></li>
 </ul>
 </section>
-<section id="college-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="college-level-math">College Level Math</h3>
-<section id="math-fundamentals" class="level4">
-<h4 class="anchored" data-anchor-id="math-fundamentals">Math Fundamentals</h4>
+<section id="trie-data-structure" class="level1">
+<h1>Trie Data Structure</h1>
 <ul>
-<li><a href="./notes/Calc2.html">Calculus II</a></li>
-<li><a href="./notes/Calc3.html">Multivariable Calculus/Advanced Calculus/Calculus III</a></li>
-<li><a href="./notes/LA.html">Linear Algebra</a></li>
-<li><a href="./notes/Proofs.html">Mathematical Proofs</a></li>
-<li><a href="./notes/ProofPractice.html">Proof Practice</a></li>
+<li>The standard <strong><em>trie</em></strong> for a set of strings <span class="math inline">\(S\)</span> is an ordered tree such that:
+<ul>
+<li>Each node but the root is labeled with a character</li>
+<li>The children of a node are alphabetically ordered</li>
+<li>The paths from the nodes (those with index numbers) to the root yield the strings in text.</li>
+</ul></li>
+</ul>
+<div id="fig-trie-example" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-trie-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/TrieExample.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-trie-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Trie Example
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="improvement-on-trie-compressed-trie" class="level1">
+<h1>Improvement on Trie: Compressed Trie</h1>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-substring" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3</strong></span> Let <span class="math inline">\(P\)</span> be a string of size <span class="math inline">\(m\)</span>.</p>
+<ul>
+<li>A <strong><em>substring</em></strong> <span class="math inline">\(P[i\dots j]\)</span> of <span class="math inline">\(P\)</span> is the subsequence of <span class="math inline">\(P\)</span> consisting of the characters with indices between <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>.
+<ul>
+<li><i>Example: “tire” is a substring of “retrieval” (with indices between <span class="math inline">\(2\)</span> and <span class="math inline">\(5\)</span>).</i></li>
+</ul></li>
+<li>A <strong><em>prefix</em></strong> of <span class="math inline">\(P\)</span> is a substring of the type <span class="math inline">\(P[0\dots i]\)</span>
+<ul>
+<li><i>Example: “ret” is a prefix of “retrieval” (with indices between <span class="math inline">\(0\)</span> and <span class="math inline">\(2\)</span>).</i></li>
+</ul></li>
+<li>A <strong><em>suffix</em></strong> of <span class="math inline">\(P\)</span> is a substring of the type <span class="math inline">\(P[i\dots m-1]\)</span>
+<ul>
+<li><i> Example: “eval” is a suffix of “retrieval” (with indices between <span class="math inline">\(5\)</span> and <span class="math inline">\(8\)</span>).</i></li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Compressed Tries
+<ul>
+<li>Problem: the space complexity of a trie is <span class="math inline">\(\mathcal{O}(n|\mathbf\Sigma|)\)</span>, where <span class="math inline">\(n\)</span> is the number of strings in the trie. This is not efficient when <span class="math inline">\(n\)</span> is large.</li>
+<li>We can compress the trie by Compressing each chain of single-child nodes into a node.
+<ul>
+<li>In this case, each internal node has at least two children.</li>
+</ul></li>
+<li>Claim: The space complexity of a compressed trie is <span class="math inline">\(\mathcal{O}(s|\mathbf{\Sigma}|)\)</span>, where <span class="math inline">\(s\)</span> is the number of strings.</li>
+</ul>
+<font face="palatino" size="3" color="grey"><b>Proof.</b>
+<p>
+The number of leaves is equal to the number of strings <span class="math inline">\(s\)</span>. Moreover, the number of internal nodes is no more than the number of leaves <span class="math inline">\(s\)</span> because each internal node has multiple children. Therefore, the number of node is no more than <span class="math inline">\(2s\)</span>. Since each node has <span class="math inline">\(\mathcal{O}(|\mathbf{\Sigma}|)\)</span> space, the total space complexity should be <span class="math inline">\(\mathcal{O}(2s|\mathbf{\Sigma}|)\sim\mathcal{O}(s\cdot|\mathbf{\Sigma}|).\qquad\blacksquare\)</span>
+</p>
+</font></li>
 </ul>
 </section>
-<section id="applied-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="applied-mathematics">Applied Mathematics</h4>
+<section id="search-for-substring" class="level1">
+<h1>Search for Substring</h1>
 <ul>
-<li><a href="./notes/ODE.html">Ordinary Differential Equations</a></li>
-<li><a href="./notes/NonlinearOpt.html">Nonlinear Optimization</a></li>
-<li><a href="./notes/NA1.html">Undergraduate-Level Numerical Analysis</a></li>
-<li><a href="./notes/NumericalDEs.html">Numerical ODEs and PDEs</a></li>
-<li><a href="./notes/NA2.html">PhD-Level Numerical Analysis I (Numerical Linear Algebra)</a></li>
-<li><a href="./notes/NA3.html">PhD-Level Numerical Analysis II</a></li>
+<li>The trie we built until now can only allow us to match the whole word or match the prefix.</li>
+</ul>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm">
+<p>Suppose we want to search if a given key is a substring of the string “minimize.”</p>
+<ul>
+<li>The Brute-Force algorithm will have <span class="math inline">\(\mathcal{O}(mn)\)</span> time complexity.</li>
+<li>To speed up, we can enumerate all the suffixes of “minimize”: “e”, “ze”, “ize”, “mize”, “imize”, “nimize”, “inimize”, “minimize”.</li>
+<li>Then, we can organize them into a trie, and enjoy <span class="math inline">\(\mathcal{O}(m)\)</span> time complexity to search for the query.</li>
+<li>If we can find the query to be a prefix of any suffix, then the query is a substring of the string.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Though the time complexity is <span class="math inline">\(\mathcal{O}(m)\)</span>, the space complexity is <span class="math inline">\(\mathcal{O}(m^2)\)</span>, which is not efficient.</li>
+<li>Suffix trie: compact representation. <img src="figs/SuffixTrie.png" id="fig-suffix-trie" class="img-fluid" style="width:75.0%" alt="Suffix Trie">
+<ul>
+<li>This way we enjoy linear space complexity as well.</li>
+</ul></li>
 </ul>
 </section>
-<section id="pure-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="pure-mathematics">Pure Mathematics</h4>
+<section id="application-of-tries-data-compression-by-huffman-coding" class="level1">
+<h1>Application of Tries: Data Compression by Huffman Coding</h1>
 <ul>
-<li><a href="./notes/LADR.html">Linear Algebra Done Right</a></li>
-<li><a href="./notes/RealAnalysis.html">Real Analysis</a></li>
+<li>Compression reduces the size of a file:
+<ul>
+<li>To save space when storing it</li>
+<li>To save time when transmitting it</li>
+<li>Most files have lost of redundancy</li>
+</ul></li>
+<li>Who needs compression?
+<ul>
+<li>Moore’s Law: number transistors on a chip doubles every 18 months</li>
+<li>Parkinson’s Law: data expands to fill the space available for storage</li>
+<li>Text, images, sound, video, etc.</li>
+</ul></li>
+<li>Applications:
+<ul>
+<li>Generic file compression:
+<ul>
+<li>Files: GZIP,BZIP,7z.</li>
+<li>Archivers: PKZIP.</li>
+<li>File systems: NTFS, HFS+, ZFS.</li>
+</ul></li>
+<li>Multimedia.
+<ul>
+<li>Images: GIF,JPEG.</li>
+<li>Sound: MP3.</li>
+<li>Video: MPEG, DivXTM, HDTV.</li>
+</ul></li>
+<li>Communication.
+<ul>
+<li>ITU-T T4 Group 3 Fax.</li>
+<li>V.42bis modem.</li>
+<li>Skype.</li>
+</ul></li>
+<li>Databases. Google, Facebook, ….</li>
+</ul></li>
+<li>String data with space efficiency:
+<ul>
+<li>All of the types of data we process with modern computer systems have something in common: They are ultimately represented in binary</li>
+<li>If we can represent the data in fewer bits, we can save space.</li>
+<li>However, if we simply use, say, A:0, B:1, R:00, C:01, D:10, I:11, we will have ambiguity.
+<ul>
+<li>This is because some of the codes are prefixes of others.</li>
+<li>For example, the code for “A” is a prefix of the code for “R”.</li>
+</ul></li>
+<li>We need a code that is <strong><em>prefix-free</em></strong>.
+<ul>
+<li>This means that no code is a prefix of any other code.</li>
+<li>This is also called a <strong><em>prefix code</em></strong>.</li>
+</ul></li>
+</ul></li>
+<li>Prefix-free codes: compression and expansion
+<ul>
+<li>A binary trie representation
+<ul>
+<li>Ordered children: 0 leads to left child, 1 leads to right child.</li>
+<li>Each leaf holds a character <img src="figs/PrefixFreeCodes.png" class="img-fluid" alt="Prefix-Free Codes"></li>
+</ul></li>
+</ul></li>
+<li>Huffman Enconding Trie Overview
+<ul>
+<li>How to obtain the best prefix-free code?
+<ul>
+<li>Frequently-used characters with shorter code</li>
+<li>So, they are closer to the root</li>
+<li>We will use a bottom-up constructing algorithm to build a trie from least frequent to most frequent characters.
+<ul>
+<li>Step 1: Get all the characters’ frequencies for string
+<ul>
+<li>We build <span class="math inline">\(|\mathbf{\Sigma}|\)</span> singleton tries, namely trie with only one node.</li>
+</ul></li>
+<li>Step 2: Bottom-up construction from least frequent nodes
+<ul>
+<li>In each iteration, we pick up two lowest frequency tries and merge them into a single trie whose frequency is the sum of these two tries.</li>
+<li>We iterate until all merged into a single trie.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
 </ul>
-</section>
-<section id="data-science-statistics-and-causal-inference" class="level4">
-<h4 class="anchored" data-anchor-id="data-science-statistics-and-causal-inference">Data Science, Statistics, and Causal Inference</h4>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="prp-Proposition" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1 (Proposition)</strong></span> Huffman algorithm produces an optimal (no prefix-free code uses fewer bits) prefix-free code for a given set of character frequencies.</p>
+</div>
+</div>
+</div>
+</div>
 <ul>
-<li><a href="https://jrlyu.github.io/qtm110.io/">Introduction to Causal Inference</a></li>
-<li><a href="https://jrlyu.github.io/google_analytics.io/">Google Data Analytics Learning Notes</a></li>
-<li><a href="./notes/Probability.html">Mathematical Statistics – Propability Theory</a></li>
-<li><a href="./notes/Inference.html">Mathematical Statistics – Statistical Inference</a></li>
-<li>Causal Designs and Inference</li>
-<li><a href="./notes/cs334.html">Machine Learning</a></li>
-</ul>
-</section>
-</section>
-<section id="computer-science" class="level3">
-<h3 class="anchored" data-anchor-id="computer-science">Computer Science</h3>
+<li>Time complexity of Huffman algorithm:
 <ul>
-<li><a href="./notes/cs171.html">Object-Oriented Programming &amp; Introduction to Data Structures</a></li>
-<li><a href="./notes/cs253.html">Introduction to Data Structure and Algorithms</a></li>
-<li><a href="./notes/cs377.html">Database Systems</a></li>
-</ul>
-</section>
-<section id="other-fields" class="level3">
-<h3 class="anchored" data-anchor-id="other-fields">Other Fields</h3>
+<li><span class="math inline">\(\mathcal{O}(|\mathbf{\Sigma}|\cdot\log|\mathbf{\Sigma}|)\)</span>, where <span class="math inline">\(|\mathbf{\Sigma}|\)</span> is the alphabet size (<code>R</code> in the code implementation).</li>
+</ul></li>
+<li>Using Huffman encoding for data compression:
 <ul>
-<li><a href="https://jrlyu.github.io/intro_to_socio.io/">Introduction to Sociology</a></li>
+<li>Dynamic model: Use a custom prefix-free code for each message.</li>
+<li>Compressing:
+<ul>
+<li>Read message</li>
+<li>Built prefix-free code for message</li>
+<li>Compress message using prefix-free code</li>
+</ul></li>
+<li>Uncompressing:
+<ul>
+<li>Read compressed message and expand it using prefix-free code</li>
+</ul></li>
+</ul></li>
+<li>Applications of Huffman encoding:
+<ul>
+<li>JPEG, MP3, MPEG, ZIP, etc.</li>
+<li>Google, Facebook, etc.</li>
+<li>Communication systems: Skype, etc.</li>
+</ul></li>
 </ul>
 
 
@@ -868,7 +1222,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs253/12 Tries.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs253/12 Tries.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

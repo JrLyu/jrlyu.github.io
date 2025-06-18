@@ -1,0 +1,179 @@
+---
+title: "11 Maximum Flow"
+description: "This lecture introduces the Maximum Flow algorithm"
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 05-19-2024
+categories: [Coding, Java, Algorithm, Maximum Flow]
+draft: false
+callout-appearance: simple
+---
+
+
+# Introduction
+- Mincut problem
+  - Input: An edge-weighted digraph (each edge has a positive capacity), source vertex $s$, and target vertex $t$. 
+    ![Maximum Flow](figs/MaxFlow.png){#fig-MaxFlow width=75%}
+
+:::{.callout-note}
+:::{#def-cut-capacity}
+- A ***$st$-cut (aka. cut)*** is a partition of the vertices into two disjoint sets, with $s$ in one set $A$ and $t$ is the other set $B$.
+- Its ***capacity*** is the sum of the capacities of the edges from $A$ to $B$.
+  
+![Cut Capacity](figs/CutCapacity.png){#fig-cut-capacity width=75%}
+:::
+:::
+
+  - ***Minimum $st$-ct (mincut) problem***: Find a cut of minimum capacity. 
+- Maxflow problem: 
+  - Input: An edge-weighted digraph (each edge has a positive capacity), source vertex $s$, and target vertex $t$.
+
+:::{.callout-note}
+:::{#def-flow}
+- A ***$st$-flow (aka. flow)*** is an assignment of values to the edges such that:
+- Capacity constraint: $0\leq\text{edge's flow}\leq\text{edge's capacity}$
+- Local equilibrium: inflow = outflow at every vertex (except $s$ and $t$).
+
+![Flow](figs/Flow.png){#fig-flow width=75%}
+:::
+:::
+
+:::{.callout-note}
+:::{#def-value}
+The ***value*** of a flow is the inflow at $t$ (we assume no edges point to $s$ or from $t$). 
+
+![Value](figs/Value.png){#fig-value width=75%}
+:::
+:::
+
+  - The ***maximum flow problem*** is the find a flow of maximum value. 
+- Essentially, the mincut problem and the maxflow problem are dual (=equivalent).
+
+# Ford-Fulkerson Algorithm
+- Initialization: Starts with a flow of value 0.
+- Augmenting path: Find an undirected path from $s$ to $t$ such that:
+  - Can increase flow on forward edges (not full)
+    ![Augmenting Path1](figs/AugmentingPath1.png){#fig-augmenting-path1 width=75%}
+    ![Augmenting Path2](figs/AugmentingPath2.png){#fig-augmenting-path2 width=75%}
+  - Can decrease flow on backward edge (not empty)
+    ![Augmenting Path3](figs/AugmentingPath3.png){#fig-augmenting-path3 width=75%}
+    ![Augmenting Path4](figs/AugmentingPath4.png){#fig-augmenting-path4 width=75%}
+- Termination: All paths from $s$ to $t$ are blocked either by a
+  - Full forward edge, or an
+  - Empty backward edge. 
+
+  ![Termination of Maxflow](figs/TerminationOfMaxFlow.png){#fig-termination-of-maxflow width=75%}
+
+```
+Algorithm (Ford-Fulkerson's Algorithm): 
+INPUT: Edge-weighted digraph, source vertex s, target vertex t
+OUTPUT: Maximum flow
+
+Start with 0 flow
+while (there exists an augmenting path) {
+     1. find an augmenting path
+     2. compute the bottleneck capacity
+        1. increase flow on that path by bottleneck capacity
+}
+```
+
+# Maxflow-Mincut Theorem
+:::{.callout-note}
+:::{#def-net-flow}
+The ***net flow*** across a cut $(A,B)$ is the sum of the flows on its edges from $A$ to $B$ minus the sum of the flows on its edges from $B$ to $A$. 
+
+![Net Flow](figs/NetFlow.png){#fig-net-flow width=75%}
+
+- In this example, we use black nodes to represent the set $A$ and white nodes to represent the set $B$.
+- Therefore, the sum of flows from $A$ to $B$ (bold black arrows) is $10+10+0+0+10+5=35$, and the sum of flows from $B$ to $A$ (bold blue arrows) is $0+0+5+5=10$. 
+- The net flow across the cut is $35-10=25$.
+:::
+:::
+
+:::{.callout-tip}
+:::{#exm-flow-value-lemma}
+# Flow-Value Lemma
+Let $f$ be any flow and let $(A,B)$ be any cut. Then, the net flow across $(A,B)$ equals the value of the flow $f$.
+
+- To think of this lemma intuitively, we can consider the conservation of flow. More formally, we can prove it via induction
+
+<font face="palatino" color="grey"><p><b>Proof. </b> (by Mathematical Induction). We will induct on the size of $B$ </p><p><b>Base Case</b>: $B=\{t\}$. </p> <b>Inductive Steps</b>: remains true by local equilibrium when moving any vertex from $A$ to $B$.$\qquad\blacksquare$</font>
+:::
+:::
+
+:::{.callout-important}
+:::{#cor-flow-value-lemma}
+Outflow from $s$ $=$ the inflow to $t$ $=$ value of flow.
+:::
+:::
+
+:::{.callout-tip}
+:::{#exm-weak-duality}
+# Weak Duality
+Let $f$ be any flow and let $(A,B)$ be any cut. Then, the value of the flow $f$ is $\leq$ the capacity of the cut $(A,B)$.
+
+<font face="palatino" color="grey"><b>Proof. </b> Note that $$\begin{aligned}\text{Value of flow }f &= \text{net flow across cut }(A, B)&\textit{Flow-value Lemma}\\&\leq \text{capacity of cut }(A, B) &\textit{Flow bounded by capacity}.\end{aligned}$$ The proof is complete. $\qquad\blacksquare$ </font>
+:::
+:::
+
+:::{.callout-important}
+:::{#thm-augmenting-path}
+# Augmenting path theorem 
+A flow $f$ is a maxflow $\iff$ no augmenting paths. 
+:::
+:::
+
+:::{.callout-important}
+:::{#thm-Maxflow-mincut-theorem}
+# Maxflow-mincut theorem
+Value of the maxflow $=$ capacity of mincut.
+:::
+:::
+
+<font face="palatino" color="grey">
+  <b>Proof.</b> The following three conditions are equivalent for any flow $f$: 
+  <ol>
+    <li>There exists a cut whose capacity equals the value of the flow $f$.</li>
+    <li>$f$ is a maxflow.</li>
+    <li>There is no augmenting path with respect to $f$.</li>
+  </ol>
+
+  <p>1 $\implies$ 2: Suppose that $(A,B)$ is a cut with capacity equal to the value of $f$. Then,</p>
+
+  $$
+  \begin{aligned}
+  \text{value of any flow } f' &\leq \text{capacity of } (A,B) && \textit{(by weak duality)} \\
+  &= \text{value of } f && \textit{(by assumption)}
+  \end{aligned}
+  $$
+
+  <p>Thus, $f$ is a maxflow. $\quad\square$</p>
+
+  <p>2 $\implies$ 3: We will prove the contrapositive, i.e., $\neg 3 \implies \neg 2$. Suppose that there is an augmenting path with respect to $f$. Then, we can improve the flow $f$ by sending flow along this path, which implies that $f$ is not a maxflow. $\quad\square$</p>
+
+  <p>3 $\implies$ 1: Suppose that there is no augmenting path with respect to $f$. Let $(A,B)$ be a cut where $A$ is the set of vertices connected to $s$ by an undirected path with no full forward or empty backward edges. By definition of cut, $s \in A$. Since there is no augmenting path, $t \in B$. Then,</p>
+
+  $$
+  \begin{aligned}
+  \text{capacity of cut} &= \text{net flow across cut} && \textit{(forward edges full; backward edges empty)} \\
+  &= \text{value of flow } f && \textit{(flow-value lemma)}
+  \end{aligned}
+  $$
+
+  We complete the proof. $\quad\square$
+</font>
+
+
+- To compute mincut $(A,B)$ from maxflow $f$:
+  - By augmenting path theorem, no augmenting paths with respect to $f$.
+  - Compute $A=$ set of vertices connected to $s$ by an undirected path with no full forward or empty backward edges.
+  
+  ![Mincut from Maxflow](figs/MincutFromMaxflow.png){#fig-mincut-from-maxflow width=75%}
+
+# Java Implementation of Ford-Fulkerson Algorithm
+- Augmenting path revisit: it is a sequence of edges from $s$ to $t$, where each edge is:
+  - either “non-full forward edge”
+  - or “non-empty backward edge”.
+- Bottlenect capacity: the minimum capacity of the edges in the augmenting path.
+- Bad news: number of augmenting paths could be equal to the value of the maxflow.

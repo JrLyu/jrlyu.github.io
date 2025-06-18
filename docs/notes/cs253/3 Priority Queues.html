@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2024-05-11">
+<meta name="description" content="This lecture introduces the basic concepts of priority queues, heaps, and how to implement them in Java.">
+
+<title>3 Priority Queues and Heaps –  Jiuru Lyu</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../..//media/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+window.MathJax = {
+  loader: {
+    load: ['[tex]/physics']
+  },
+  tex: {
+    packages: {'[+]': ['physics']},
+    macros: {
+      R: "\\mathbb{R}",
+      C: "\\mathbb{C}",
+      Q: "\\mathbb{Q}",
+      d: "\\mathrm{d}",
+      i: "\\mathrm{i}",
+      N: "\\mathbb{N}",
+      "1": "{\\Large{\\unicode{x1D7D9}}}",
+      bigO: "\\mathcal{O}",
+      sp: "\\operatorname{span}",
+      epsilon: "\\varepsilon",
+      emptyset: "\\varnothing",
+      phi: "\\varphi",
+      dsst: "\\displaystyle",
+      st: "\\ \\text{s.t.}\\ ",
+      wrt: "\\ \\text{w.r.t.}\\ ",
+      bar: "\\overline",
+      tilde: "\\widetilde",
+      E: "\\vb{E}",
+      B: "\\vb{B}",
+      L: "\\vb{L}",
+      I: "\\vb{I}",
+      Var: "\\vb{Var}",
+      V: "\\vb{Var}",
+      Cov: "\\vb{Cov}",
+      MSE: "\\vb{MSE}",
+      P: "\\vb{P}",
+      M: "\\vb{M}",
+      iid: "\\text{i.i.d.}",
+      argmax: "\\mathop{\\arg\\max}",
+      argmin: "\\mathop{\\arg\\min}",
+      l: "\\ell",
+      hat: "\\widehat",
+      independ: "\\perp\\!\\!\\!\\perp",
+      depend: "\\leftrightsquigarrow",
+      residual: "\\varepsilon",
+      sd: "\\mathrm{sd}",
+      LI: "\\mathrm{L.I.}",
+      range: "\\operatorname{range}",
+      Null: "\\operatorname{null}",
+      nullity: "\\operatorname{nullity}",
+      A: "A^{-1}",
+      alg: "\\operatorname{alg}",
+      fl: "\\operatorname{fl}",
+      algmult: "\\operatorname{alg.\\ mult.}",
+      geomult: "\\operatorname{geo.\\ mult.}",
+      diag: "\\operatorname{diag}",
+      gap: "\\operatorname{gap}",
+      pqde: "\\quad\\square",
+      lub: "\\operatorname{lub}",
+      Int: "\\operatorname{int}",
+      ac: "\\operatorname{ac}",
+      cl: "\\operatorname{cl}",
+      bd: "\\operatorname{bd}"
+    }
+  }
+};
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Noto+Serif+TC:wght@200..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title"><img src="../../media/icon.png" alt="JL logo" style="height: 50px; margin-right: 8px;"> Jiuru Lyu</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <span class="nav-link">
+<span class="menu-text">CV</span>
+    </span>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../photo.html"> 
+<span class="menu-text">Photograph</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blogs.html"> 
+<span class="menu-text">Blogs</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#heaps" id="toc-heaps" class="nav-link" data-scroll-target="#heaps">Heaps</a>
+  <ul class="collapse">
+  <li><a href="#tree-terminology" id="toc-tree-terminology" class="nav-link" data-scroll-target="#tree-terminology">Tree Terminology</a></li>
+  <li><a href="#heap" id="toc-heap" class="nav-link" data-scroll-target="#heap">Heap</a></li>
+  </ul></li>
+  <li><a href="#implementing-priority-queues-using-heaps" id="toc-implementing-priority-queues-using-heaps" class="nav-link" data-scroll-target="#implementing-priority-queues-using-heaps">Implementing Priority Queues using Heaps</a></li>
+  <li><a href="#comparison-between-heaps-against-unsortedsorted-lists" id="toc-comparison-between-heaps-against-unsortedsorted-lists" class="nav-link" data-scroll-target="#comparison-between-heaps-against-unsortedsorted-lists">Comparison between Heaps against Unsorted/Sorted Lists</a></li>
+  <li><a href="#adaptable-priority-queue" id="toc-adaptable-priority-queue" class="nav-link" data-scroll-target="#adaptable-priority-queue">Adaptable Priority Queue</a></li>
+  <li><a href="#final-remarks-bottom-up-heap-construction" id="toc-final-remarks-bottom-up-heap-construction" class="nav-link" data-scroll-target="#final-remarks-bottom-up-heap-construction">Final Remarks: Bottom-Up Heap Construction</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs253/3 Priority Queues.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs253/3 Priority Queues.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">3 Priority Queues and Heaps</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Coding</div>
+    <div class="quarto-category">Java</div>
+    <div class="quarto-category">Data Structure</div>
+    <div class="quarto-category">Priority Queue</div>
+    <div class="quarto-category">Heaps</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    This lecture introduces the basic concepts of priority queues, heaps, and how to implement them in Java.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 11, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-pq" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1</strong></span> <strong><em>Priority Queue</em></strong> allows the removal of the elements that has first priority.</p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>In priority queue, we have a <code>key</code> of an entry that indicates the priority (the smaller the <code>key</code>, the higher priority).</li>
+<li>We also have a <code>value</code> of an entry that holds the element values.</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="kw">class</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> K k<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> V v<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">Entry</span><span class="op">(</span>K key<span class="op">,</span> V<span class="op">,</span> value<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        k <span class="op">=</span> key<span class="op">;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        v <span class="op">=</span> value<span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>The Priority Queue Abstract Data Type (ADT) is defined by the following interface:</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> <span class="bu">PriorityQueue</span><span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> <span class="fu">size</span><span class="op">();</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">boolean</span> <span class="fu">isEmpty</span><span class="op">();</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Insert the entry into current priority queue.</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">insert</span><span class="op">(</span>K key<span class="op">,</span> V value<span class="op">);</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Return the entry with the smallest key</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">min</span><span class="op">();</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Pop out the entry with the smallest key</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">removeMin</span><span class="op">();</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>How to tell “Priority”: the java’s <code>java.util.Comparator</code> interface
+<ul>
+<li><code>&lt;0</code> designates that <code>e1&lt;e2</code></li>
+<li><code>=0</code> designates that <code>e1=e2</code></li>
+<li><code>&gt;0</code> designates that <code>e1&gt;e2</code> ```java import java.util.*;</li>
+</ul></li>
+</ul>
+<p>public class DefaultComparator<e> implements Comparator<e> { <span class="citation" data-cites="Override">@Override</span> public int compare(E e1, E e2) { return ((Comparable<e>)e1).compareTo(e2); } }</e></e></e></p>
+<pre><code>
+# Implementing Priority Queues using Linked Lists
+- Using Unsorted List
+```java
+import java.until.*;
+public class UnsortedPriorityQueue&lt;K,V&gt; {
+    protected static class Entry&lt;K,V&gt; {
+        public K k;
+        public V v;
+        public Entry(K key, V value) {
+            k = key;
+            v = value;
+        }
+    }
+
+    private int size = 0;
+    private Comparator&lt;K&gt; comp;
+    public UnsortedPriorityQueue(Comparator&lt;K&gt; c) {
+        comp = c;
+    }
+    public UnsortedPriorityQueue() {
+        this(new DefaultComparator&lt;K&gt;());
+    }
+
+    private DoublyLinkedList&lt;Entry&lt;K,V&gt;&gt; list = new DoublyLinkedList&lt;&gt;();
+
+    public DoublyLinkedList.Node&lt;Entry&lt;K,V&gt;&gt; findMin(){...}
+    public Entry&lt;K,V&gt; insert(K key, V value) {...}
+    public Entry&lt;K,V&gt; min() {...}
+    public Entry&lt;K,V&gt; removeMin() {...}
+}</code></pre>
+<ul>
+<li>In this implementation of Priority Queue (PQ), we use a doubly linked list to store the entries.
+<ul>
+<li>If we use an array, we have <span class="math inline">\(\mathcal{O}(n)\)</span> time complexity when removing.</li>
+<li>If we use a singly linked list, we have <span class="math inline">\(\mathcal{O}
+(n)\)</span> when deleting the minimum element.</li>
+</ul></li>
+<li>Implementation of <code>findMin()</code></li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> DoublyLinkedList<span class="op">.</span><span class="fu">Node</span><span class="op">&lt;</span>Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;&gt;</span> <span class="fu">findMin</span><span class="op">()</span> <span class="op">{</span> <span class="co">// Time complexity = O(n)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    DoublyLinkedList<span class="op">.</span><span class="fu">Node</span><span class="op">&lt;</span>Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;&gt;</span> min <span class="op">=</span> list<span class="op">.</span><span class="fu">head</span><span class="op">.</span><span class="fu">next</span><span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    DoublyLinkedList<span class="op">.</span><span class="fu">Node</span><span class="op">&lt;</span>Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;&gt;</span> walk <span class="op">=</span> list<span class="op">.</span><span class="fu">head</span><span class="op">.</span><span class="fu">next</span><span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>walk<span class="op">.</span><span class="fu">next</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>comp<span class="op">.</span><span class="fu">compare</span><span class="op">(</span>walk<span class="op">.</span><span class="fu">element</span><span class="op">.</span><span class="fu">k</span><span class="op">,</span> min<span class="op">.</span><span class="fu">element</span><span class="op">.</span><span class="fu">k</span><span class="op">)</span> <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            min <span class="op">=</span> walk<span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        walk <span class="op">=</span> walk<span class="op">.</span><span class="fu">next</span><span class="op">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> min<span class="op">;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Implementation of <code>insert()</code>, <code>min()</code>, <code>removeMin()</code></li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">min</span><span class="op">()</span> <span class="op">{</span> <span class="co">// Time complexity = O(n)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>list<span class="op">.</span><span class="fu">isEmpty</span><span class="op">())</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">findMin</span><span class="op">().</span><span class="fu">element</span><span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">removeMin</span><span class="op">()</span> <span class="op">{</span> <span class="co">// Time complexity = O(n)</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>list<span class="op">.</span><span class="fu">isEmpty</span><span class="op">())</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> list<span class="op">.</span><span class="fu">delete</span><span class="op">(</span><span class="fu">findMin</span><span class="op">());;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">insert</span><span class="op">(</span>K key<span class="op">,</span> V value<span class="op">)</span> <span class="op">{</span> <span class="co">// Time complexity = O(1)</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> newest <span class="op">=</span> <span class="kw">new</span> Entry<span class="op">&lt;&gt;(</span>key<span class="op">,</span> value<span class="op">);</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="fu">insert</span><span class="op">(</span>newest<span class="op">,</span> list<span class="op">.</span><span class="fu">tail</span><span class="op">.</span><span class="fu">previous</span><span class="op">,</span> list<span class="op">.</span><span class="fu">tail</span><span class="op">);</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> newest<span class="op">;</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Using Sorted List</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.*;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> SortedPriorityQueue<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="dt">static</span> <span class="kw">class</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> K k<span class="op">;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> V v<span class="op">;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">Entry</span><span class="op">(</span>K key<span class="op">,</span> V value<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            k <span class="op">=</span> key<span class="op">;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            v <span class="op">=</span> value<span class="op">;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">int</span> size <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="bu">Comparator</span><span class="op">&lt;</span>K<span class="op">&gt;</span> comp<span class="op">;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">SortedPriorityQueue</span><span class="op">(</span><span class="bu">Comparator</span><span class="op">&lt;</span>K<span class="op">&gt;</span> c<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        comp <span class="op">=</span> c<span class="op">;</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">SortedPriorityQueue</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">(</span><span class="kw">new</span> DefaultComparator<span class="op">&lt;</span>K<span class="op">&gt;());</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">isEmpty</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> size <span class="op">==</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> DoublyLinkedList<span class="op">&lt;</span>Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;&gt;</span> list <span class="op">=</span> <span class="kw">new</span> DoublyLinkedList<span class="op">&lt;&gt;();</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">insert</span><span class="op">(</span>K key<span class="op">,</span> V value<span class="op">)</span> <span class="op">{</span><span class="kw">...</span><span class="op">}</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">min</span><span class="op">()</span> <span class="op">{</span><span class="kw">...</span><span class="op">}</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">removeMin</span><span class="op">()</span> <span class="op">{</span><span class="kw">...</span><span class="op">}</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>In this implementation of PQ, we also used a doubly linked list.
+<ul>
+<li>If we use array, we will have <span class="math inline">\(\mathcal{O}(n)\)</span> time complexity when inserting because we need to shift the elements to maintain the sorting.</li>
+<li>If we use singly linked list, we will only need one pointer, and hence we need less space than doubly linked list. However, we will have <span class="math inline">\(\mathcal{O}(n)\)</span> time complexity when inserting because we need to find the position to insert.</li>
+</ul></li>
+<li>Implementation of <code>min()</code> and <code>removeMin()</code></li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">min</span><span class="op">()</span> <span class="op">{</span> <span class="co">// Time complexity = O(1)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>list<span class="op">.</span><span class="fu">isEmpty</span><span class="op">())</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> list<span class="op">.</span><span class="fu">head</span><span class="op">.</span><span class="fu">next</span><span class="op">.</span><span class="fu">element</span><span class="op">;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">removeMin</span><span class="op">()</span> <span class="op">{</span> <span class="co">// Time complexity = O(1)</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>list<span class="op">.</span><span class="fu">isEmpty</span><span class="op">())</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> list<span class="op">.</span><span class="fu">delete</span><span class="op">(</span>list<span class="op">.</span><span class="fu">head</span><span class="op">.</span><span class="fu">next</span><span class="op">);</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Implementation of <code>insert()</code></li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">insert</span><span class="op">(</span>K key<span class="op">,</span> V value<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> newest <span class="op">=</span> <span class="kw">new</span> Entry<span class="op">&lt;&gt;(</span>key<span class="op">,</span> value<span class="op">);</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    DoublyLinkedList<span class="op">.</span><span class="fu">Node</span><span class="op">&lt;</span>Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;&gt;</span> walk <span class="op">=</span> list<span class="op">.</span><span class="fu">tail</span><span class="op">.</span><span class="fu">previous</span><span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>walk<span class="op">.</span><span class="fu">previous</span> <span class="op">!=</span> <span class="kw">null</span> <span class="op">&amp;&amp;</span> comp<span class="op">.</span><span class="fu">compare</span><span class="op">(</span>newest<span class="op">.</span><span class="fu">k</span><span class="op">,</span> walk<span class="op">.</span><span class="fu">element</span><span class="op">.</span><span class="fu">k</span><span class="op">)</span> <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        walk <span class="op">=</span> walk<span class="op">.</span><span class="fu">previous</span><span class="op">;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="fu">insert</span><span class="op">(</span>newest<span class="op">,</span> walk<span class="op">,</span> walk<span class="op">.</span><span class="fu">next</span><span class="op">);</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> newest<span class="op">;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="heaps" class="level1">
+<h1>Heaps</h1>
+<section id="tree-terminology" class="level2">
+<h2 class="anchored" data-anchor-id="tree-terminology">Tree Terminology</h2>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-tree" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2</strong></span> &nbsp;</p>
+<ul>
+<li><strong><em>Root</em></strong>: the node without a parent. (e.g., A)</li>
+<li><strong><em>Internal node</em></strong>: a node with at least one child. (e.g., A, B, C, F)</li>
+<li><strong><em>External node</em></strong>: a node without any children. (e.g, D, E, I, J, K, G, H)</li>
+<li><strong><em>Ancestor of a node</em></strong>: parent, grandparent, grand- grandparent, etc.</li>
+<li><strong><em>Descendant of a node</em></strong>: child, grandchild, grand- grandchild, etc.</li>
+<li><strong><em>Depth of a node</em></strong>: the number of ancestors.</li>
+<li><strong><em>Height of a tree</em></strong>: the maximum depth of any node in the tree. (e.g, 3)</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="fig-tree-intro" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tree-intro-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/TreeIntroduction.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tree-intro-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Tree Introduction
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-binary-tree" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3</strong></span> <strong><em>Binary Trees</em></strong>: Each internal node has at most two children.</p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>We call the children of a node the <strong><em>left child</em></strong> and <strong><em>right child</em></strong>.</li>
+<li>Different types of Binary Trees:
+<ul>
+<li><strong>Perfect</strong> Binary Tree
+<ul>
+<li>All internal nodes have two children.</li>
+<li>All external nodes have the same depth.</li>
+<li>Number of nodes: <span class="math inline">\(n=2^0+2^1+^2+\cdots+2^h=2^{h+1}-1\)</span>, where <span class="math inline">\(h\)</span> is the height of the tree.</li>
+</ul></li>
+<li><strong>Complete</strong> Binary Tree
+<ul>
+<li>All levels except the last are completely filled</li>
+<li>All nodes in the last level are as far left as possible</li>
+<li>Number of nodes: <span class="math display">\[
+2^0+2^1+\cdots+2^{h-1}\leq n\leq2^0+2^1+\cdots+2^h \\
+\implies 2^h-1\leq n\leq 2^{h+1}-1 \\
+\implies \log(n+1)-2\leq h\leq\log(n+1).
+\]</span></li>
+</ul></li>
+</ul></li>
+</ul>
+<div id="fig-different-binary-trees" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-different-binary-trees-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/DifferentBinaryTree.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-different-binary-trees-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Different Binary Trees
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="heap" class="level2">
+<h2 class="anchored" data-anchor-id="heap">Heap</h2>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-heap" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4</strong></span> <strong><em>Heap</em></strong>: A heap is a binary tree storing keys at its nodes and satisfying the following properties: - <strong>Heap-Order</strong>: for every node (except root), its key is larger than or equal to its parent’s key. - Must be a <strong>complete binary tree</strong>.</p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Heaps and Priority Queues
+<ul>
+<li>We can use a heap to implement a priority queue.</li>
+<li>We store a <code>(key, value)</code> item at each node.</li>
+<li>We can get the entry will minimal key in <span class="math inline">\(\mathcal{O}(1)\)</span>.</li>
+<li>We hope <code>removeMin()</code> and <code>insert()</code> can also be fast.</li>
+</ul></li>
+<li>Heap operation: <code>insert()/swim()</code>
+<ul>
+<li>Place the new entry just beyond the rightmost node at the bottom level of the tree. Swim until it becomes a heap.
+<ul>
+<li>If the current layer is full, add a new layer.</li>
+<li>When adding a new layer, the new layer must be added from left to right.</li>
+<li>If the current node is smaller than its parent, swap them.</li>
+</ul></li>
+<li>Time complexity: what is really time-consuming here is the <code>swap()</code> operation. In total, we can at most swap <span class="math inline">\(h\)</span> times (the number of layers), so the time complexity should be <span class="math inline">\(\mathcal{O}(h)=\mathcal{O}(\log n)\)</span>.</li>
+</ul></li>
+<li>Heap operation: <code>removeMin()/sink()</code>
+<ul>
+<li>Cut and paste the heap’s last entry to its root. Sink until it becomes a heap.
+<ul>
+<li>Pull the last entry up to the root.</li>
+<li>Compare the new root with its children. Swap it with the smaller child if necessary.</li>
+<li>Repeat until we retain the heap-order property.</li>
+</ul></li>
+<li>Time complexity: it is the <code>sawp()</code> operation that is time-consuming. In total, we can at most swap <span class="math inline">\(h\)</span> times (the number of layers), so the time complexity should also be <span class="math inline">\(\mathcal{O}(h)=\mathcal{O}(\log n)\)</span>.</li>
+</ul></li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Method</th>
+<th style="text-align: center;">Unosrted List</th>
+<th style="text-align: center;">Sorted List</th>
+<th style="text-align: center;">Heap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>size()</code></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>isEmtpy()</code></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>insert()</code></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(n)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(\log n)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>min()</code></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(n)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>removeMin()</code></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(n)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(\log n)\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="implementing-priority-queues-using-heaps" class="level1">
+<h1>Implementing Priority Queues using Heaps</h1>
+<ul>
+<li>Insert via a swim process
+<ul>
+<li>We insert the new entry at the end of the heap.</li>
+<li>We then swim the new entry up the heap until it is in the correct position.</li>
+<li>The time complexity is <span class="math inline">\(\mathcal{O}(\log n)\)</span>.</li>
+</ul></li>
+<li>RemoveMin via a sink process
+<ul>
+<li>We remove the root entry and replace it with the last entry in the heap.</li>
+<li>We then sink the new root down the heap until it is in the correct position.</li>
+<li>The time complexity is <span class="math inline">\(\mathcal{O}(\log n)\)</span>.</li>
+</ul></li>
+<li>Instead of really building a “tree” structure, we use array to implement a heap.
+<ul>
+<li>The root is at index 0.</li>
+<li>The left child of a node at index <span class="math inline">\(i\)</span> is at index <span class="math inline">\(2i+1\)</span>.</li>
+<li>The right child of a node at index <span class="math inline">\(i\)</span> is at index <span class="math inline">\(2i+2\)</span>.</li>
+<li>Based on the above, we can easily find the parent of a node at index <span class="math inline">\(i\)</span> by using the formula <span class="math inline">\(\lfloor(i-1)/2\rfloor\)</span>. (or in <code>java</code>, simply use <code>(i-1)/2</code> because it will automatically round down to the nearest integer.)</li>
+</ul></li>
+<li>The following code builds the <code>HeapPriorityQueue</code> class.</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.*;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> HeapPriorityQueue<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Nested Entry class</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="dt">static</span> <span class="kw">class</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> K k<span class="op">;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> V v<span class="op">;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">Entry</span><span class="op">(</span>K key<span class="op">,</span> V value<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>            k <span class="op">=</span> key<span class="op">;</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>            v <span class="op">=</span> value<span class="op">;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="co">// End of nested Entry class</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="bu">ArrayList</span><span class="op">&lt;</span>Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;&gt;</span> heap <span class="op">=</span> <span class="kw">new</span> <span class="bu">ArrayList</span><span class="op">&lt;&gt;();</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="bu">Comparator</span><span class="op">&lt;</span>K<span class="op">&gt;</span> comp<span class="op">;</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">HeapPriorityQueue</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">(</span><span class="kw">new</span> DefaultComparator<span class="op">&lt;</span>K<span class="op">&gt;());</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">HeapPriorityQueue</span><span class="op">(</span><span class="bu">Comparator</span><span class="op">&lt;</span>K<span class="op">&gt;</span> c<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        comp <span class="op">=</span> c<span class="op">;</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="dt">int</span> <span class="fu">leftchild</span><span class="op">(</span><span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> j <span class="op">+</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="dt">int</span> <span class="fu">rightchild</span><span class="op">(</span><span class="dt">int</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> j <span class="op">+</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="dt">int</span> <span class="fu">parent</span><span class="op">(</span><span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">(</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="dt">boolean</span> <span class="fu">hasLeft</span><span class="op">(</span><span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fu">leftchild</span><span class="op">(</span>j<span class="op">)</span> <span class="op">&lt;</span> heap<span class="op">.</span><span class="fu">size</span><span class="op">();</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="dt">boolean</span> <span class="fu">hasRight</span><span class="op">(</span><span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fu">rightchild</span><span class="op">(</span>j<span class="op">)</span> <span class="op">&lt;</span> heap<span class="op">.</span><span class="fu">size</span><span class="op">();</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">int</span> <span class="fu">size</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> heap<span class="op">.</span><span class="fu">size</span><span class="op">();</span></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">isEmpty</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> heap<span class="op">.</span><span class="fu">isEmpty</span><span class="op">();</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Swap the entries at indices i and j of the array list</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="dt">void</span> <span class="fu">swap</span><span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>        Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> temp <span class="op">=</span> heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span>i<span class="op">);</span></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>        heap<span class="op">.</span><span class="fu">set</span><span class="op">(</span>i<span class="op">,</span> heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span>j<span class="op">));</span></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>        heap<span class="op">.</span><span class="fu">set</span><span class="op">(</span>j<span class="op">,</span> temp<span class="op">);</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">insert</span><span class="op">(</span>K key<span class="op">,</span> V value<span class="op">)</span> <span class="op">{</span><span class="kw">...</span><span class="op">}</span></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">removeMin</span><span class="op">(){</span><span class="kw">...</span><span class="op">}</span></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>The following code implements the <code>insert()</code> based on the swim process.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">insert</span><span class="op">(</span>K key<span class="op">,</span> V value<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> newEntry <span class="op">=</span> <span class="kw">new</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;(</span>key<span class="op">,</span> value<span class="op">);</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// insert newEntry after the last entry in the heap</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    heap<span class="op">.</span><span class="fu">add</span><span class="op">(</span>newEntry<span class="op">);</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// swim the new entry up to its proper position</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">swim</span><span class="op">(</span>heap<span class="op">.</span><span class="fu">size</span><span class="op">()</span> <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> newEntry<span class="op">;</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="kw">protected</span> <span class="dt">void</span> <span class="fu">swim</span><span class="op">(</span><span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// when j is the not the root, we need to compare it with its parent</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>j <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">// check if the current entry is smaller than its parent</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>comp<span class="op">.</span><span class="fu">compare</span><span class="op">(</span>heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span>j<span class="op">).</span><span class="fu">k</span><span class="op">,</span> heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span><span class="fu">parent</span><span class="op">(</span>j<span class="op">)).</span><span class="fu">k</span><span class="op">)</span> <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>            <span class="co">// swap them</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">swap</span><span class="op">(</span>j<span class="op">,</span> <span class="fu">parent</span><span class="op">(</span>j<span class="op">));</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>            j <span class="op">=</span> <span class="fu">parent</span><span class="op">(</span>j<span class="op">);</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>The following code implements the <code>removeMin()</code> based on the sink process.</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">removeMin</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span><span class="fu">size</span><span class="op">()</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Step 1: move the last entry to the root</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">swap</span><span class="op">(</span><span class="dv">0</span><span class="op">,</span> heap<span class="op">.</span><span class="fu">size</span><span class="op">()</span> <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Step 2: remove the last entry (which is the smallest entry after step 1)</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> removed <span class="op">=</span> heap<span class="op">.</span><span class="fu">remove</span><span class="op">(</span><span class="fu">size</span><span class="op">()</span> <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Step 3: sink the new root down to its proper position</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sink</span><span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> removed<span class="op">;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="kw">protected</span> <span class="dt">void</span> <span class="fu">sink</span><span class="op">(</span><span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span><span class="op">(</span><span class="fu">hasLeft</span><span class="op">(</span>j<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">// to find a smaller child</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> smallerChild <span class="op">=</span> <span class="fu">leftchild</span><span class="op">(</span>j<span class="op">);</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span><span class="fu">hasRight</span><span class="op">(</span>j<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>comp<span class="op">.</span><span class="fu">compare</span><span class="op">(</span>heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span>smallerChild<span class="op">).</span><span class="fu">k</span><span class="op">,</span> heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span><span class="fu">rightchild</span><span class="op">(</span>j<span class="op">)).</span><span class="fu">k</span><span class="op">)</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>                <span class="co">// update smallerChild to the right child</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>                smallerChild <span class="op">=</span> <span class="fu">rightchild</span><span class="op">(</span>j<span class="op">);</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>        <span class="co">// compare the smaller child with the current entry</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>comp<span class="op">.</span><span class="fu">compare</span><span class="op">(</span>heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span>j<span class="op">).</span><span class="fu">k</span><span class="op">,</span> heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span>smallerChild<span class="op">).</span><span class="fu">k</span><span class="op">)</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>            <span class="co">// swap them</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>            <span class="fu">swap</span><span class="op">(</span>j<span class="op">,</span> smallerChild<span class="op">);</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>            j <span class="op">=</span> smallerChild<span class="op">;</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="comparison-between-heaps-against-unsortedsorted-lists" class="level1">
+<h1>Comparison between Heaps against Unsorted/Sorted Lists</h1>
+<ul>
+<li>Sorting with Priority Queue
+<ul>
+<li>Insert all the entries into priority queue</li>
+<li>RemoveMin all the entries from the priority queue</li>
+</ul></li>
+<li>Generally, the code is as follows:</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Sorts sequence S, using initially empty priority queue P to produce the order</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="op">&lt;</span>E<span class="op">&gt;</span> <span class="dt">void</span> <span class="fu">pqSort</span><span class="op">(</span>PositionalList<span class="op">&lt;</span>E<span class="op">&gt;</span> S<span class="op">,</span> <span class="bu">PriorityQueue</span><span class="op">&lt;</span>E<span class="op">,?&gt;</span> P<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> n <span class="op">=</span> S<span class="op">.</span><span class="fu">size</span><span class="op">();</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Phase 1: insert</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> n<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        E element <span class="op">=</span> S<span class="op">.</span><span class="fu">remove</span><span class="op">(</span>S<span class="op">.</span><span class="fu">firt</span><span class="op">());</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        P<span class="op">.</span><span class="fu">insert</span><span class="op">(</span>element<span class="op">,</span> <span class="kw">null</span><span class="op">);</span> <span class="co">// element is key, null value</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Phase 2: removeMin</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> n<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        E element <span class="op">=</span> P<span class="op">.</span><span class="fu">removeMin</span><span class="op">().</span><span class="fu">getKey</span><span class="op">();</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        S<span class="op">.</span><span class="fu">addLast</span><span class="op">(</span>element<span class="op">);</span> <span class="co">// the smallest key in P is next placed in S</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Sorting with priority queue using unsorted list
+<ul>
+<li>The time complexity of whole Phase 1 is <span class="math inline">\(\mathcal{O}(n)\)</span></li>
+<li>The time complexity of whole Phase 2 is <span class="math inline">\(\mathcal{O}(n^2)\)</span></li>
+<li>The total time complexity is <span class="math inline">\(\mathcal{O}(n^2)\)</span>.</li>
+</ul></li>
+<li>Sorting with priority queue using sorted list
+<ul>
+<li>The time complexity of whole Phase 1 is <span class="math inline">\(\mathcal{O}(n^2)\)</span></li>
+<li>The time complexity of whole Phase 2 is <span class="math inline">\(\mathcal{O}(n)\)</span></li>
+<li>The total time complexity is <span class="math inline">\(\mathcal{O}(n^2)\)</span>.</li>
+</ul></li>
+<li>Sorting with priority queue using heaps
+<ul>
+<li>The time complexity of whole Phase 1 is <span class="math inline">\(\mathcal{O}(n\log n)\)</span></li>
+<li>The time complexity of whole Phase 2 is <span class="math inline">\(\mathcal{O}(n\log n)\)</span></li>
+<li>The total time complexity is <span class="math inline">\(\mathcal{O}(n\log n)\)</span>.</li>
+</ul></li>
+<li>Further saving memory: in-place sorting
+<ul>
+<li>In-place sorting: the sorting algorithm does not require any extra memory.</li>
+<li>To achieve in-place sorting, we can use the same array to store the priority queue.</li>
+<li>Each time, we add one more element to the sorted part of the array. All the operations are done in the same array.</li>
+<li>After phase 1, the array is sorted.</li>
+<li>By doing phase 2, we can get the descending order of the array.</li>
+</ul></li>
+</ul>
+</section>
+<section id="adaptable-priority-queue" class="level1">
+<h1>Adaptable Priority Queue</h1>
+<ul>
+<li>In an adaptable priority queue, we can do the following operations:
+<ul>
+<li><code>remove(e)</code>: Removes entry <code>e</code> from the priority queue.</li>
+<li><code>replaceKey(e, k)</code>: replaces the key of existing entry <code>e</code> with a new key <code>k</code>.</li>
+<li><code>replaceValue(e, v)</code>: replaces the value of existing entry <code>e</code> with a new value <code>v</code>.</li>
+</ul></li>
+<li>This data structure requires the heap to be able to locate (=knowing the index of) a given entry efficiently. However, in order to match a key, in our older heap structure, it is not efficient.
+<ul>
+<li>To improve, we can use a hash table to store the index of each entry.</li>
+<li>Another way is directly storing the index in the entry class.</li>
+<li><em>Note</em>: the index of each location is fixed. That is, the root will always be with index 0, the left child of the root will always be with index 1, and the right child of the root will always be with index 2. After any operation, the index of each position will not change. Hence, we need to re-write the swap method as well. <img src="figs/AdaptablePQ.png" id="fig-adaptable-pq" class="img-fluid" style="width:75.0%" alt="Adaptable Priority Queue"></li>
+</ul></li>
+<li>The key idea here is that we empower the user to remove, replace the key, and replace the value of any entry in the priority queue. However, to enable that, the user are required to specify the entry location, by using the index of the entry.</li>
+<li>The following code implements the <code>AdaptableHeapPriorityQueue</code> class.</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.*;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> HeapAdaptablePriorityQueue<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="kw">extends</span> HeapPriorityQueue<span class="op">&lt;</span>K<span class="op">.</span><span class="fu">V</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Nested AdaptablePQEntry class</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="dt">static</span> <span class="kw">class</span> AdaptableEntry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="kw">extends</span> Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">int</span> index<span class="op">;</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">AdaptableEntry</span><span class="op">(</span>K key<span class="op">,</span> V value<span class="op">,</span> <span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>            <span class="kw">super</span><span class="op">(</span>key<span class="op">,</span> value<span class="op">);</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>            index <span class="op">=</span> j<span class="op">;</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">int</span> <span class="fu">getIndex</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> index<span class="op">;</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">setIndex</span><span class="op">(</span><span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>            index <span class="op">=</span> j<span class="op">;</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="co">// End of nested AdaptablePQEntry class</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">HeapAdaptablePriorityQueue</span><span class="op">(</span><span class="bu">Comparator</span><span class="op">&lt;</span>K<span class="op">&gt;</span> c<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>        <span class="kw">super</span><span class="op">(</span>c<span class="op">);</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">HeapAdaptablePriorityQueue</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>        <span class="kw">super</span><span class="op">();</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> AdaptableEntry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> <span class="fu">validate</span><span class="op">(</span>AdaptableEntry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> entry<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> j <span class="op">=</span> entry<span class="op">.</span><span class="fu">getIndex</span><span class="op">();</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>j <span class="op">&gt;=</span> heap<span class="op">.</span><span class="fu">size</span><span class="op">()</span> <span class="op">||</span> j<span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">||</span> heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span>j<span class="op">).</span><span class="fu">k</span> <span class="op">!=</span> entry<span class="op">.</span><span class="fu">k</span> <span class="op">||</span> heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span>j<span class="op">).</span><span class="fu">v</span> <span class="op">!=</span> entry<span class="op">.</span><span class="fu">v</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>            <span class="co">// verify that the entry is in the heap</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>            <span class="cf">throw</span> <span class="kw">new</span> <span class="bu">IllegalArgumentException</span><span class="op">(</span><span class="st">"Invalid entry"</span><span class="op">);</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> entry<span class="op">;</span></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">bubble</span><span class="op">(</span><span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>j <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> comp<span class="op">.</span><span class="fu">compare</span><span class="op">(</span>heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span>j<span class="op">).</span><span class="fu">k</span><span class="op">,</span> heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span><span class="fu">parent</span><span class="op">(</span>j<span class="op">)).</span><span class="fu">k</span><span class="op">)</span> <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>            <span class="co">// if the current entry is smaller than its parent, we need to swim it up</span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>            <span class="fu">swim</span><span class="op">(</span>j<span class="op">);</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>            <span class="co">// if the current entry is larger than its parent, we need to sink it down</span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>            <span class="fu">sink</span><span class="op">(</span>j<span class="op">);</span></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">replaceKey</span><span class="op">(</span>AdaptableEntry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> entry<span class="op">,</span> K key<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Time complexity = O(log n)</span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>        AdaptableEntry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> locator <span class="op">=</span> <span class="fu">validate</span><span class="op">(</span>entry<span class="op">);</span></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>        heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span>locator<span class="op">.</span><span class="fu">index</span><span class="op">).</span><span class="fu">k</span> <span class="op">=</span> key<span class="op">;</span></span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>        <span class="fu">bubble</span><span class="op">(</span>locator<span class="op">.</span><span class="fu">index</span><span class="op">);</span></span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>    <span class="co">// We need a new swap function to update the index of the entries</span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="dt">void</span> <span class="fu">swap</span><span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>        <span class="kw">super</span><span class="op">.</span><span class="fu">swap</span><span class="op">(</span>i<span class="op">,</span> j<span class="op">);</span></span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>        <span class="op">((</span>AdaptableEntry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;)</span> heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span>i<span class="op">)).</span><span class="fu">setIndex</span><span class="op">(</span>j<span class="op">);</span></span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>        <span class="op">((</span>AdaptableEntry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;)</span> heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span>j<span class="op">)).</span><span class="fu">setIndex</span><span class="op">(</span>i<span class="op">);</span></span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">remove</span><span class="op">(</span>AdaptableEntry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> entry<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Time complexity = O(log n)</span></span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>        AdaptableEntry<span class="op">&lt;</span>k<span class="op">,</span>V<span class="op">&gt;</span> locator <span class="op">=</span> <span class="fu">validate</span><span class="op">(</span>entry<span class="op">);</span></span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> j <span class="op">=</span> locator<span class="op">.</span><span class="fu">getIndex</span><span class="op">();</span></span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a>        <span class="fu">swap</span><span class="op">(</span>j<span class="op">,</span> heap<span class="op">.</span><span class="fu">size</span><span class="op">()</span> <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a>        heap<span class="op">.</span><span class="fu">remove</span><span class="op">(</span>heap<span class="op">.</span><span class="fu">size</span><span class="op">()</span> <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a>        <span class="fu">bubble</span><span class="op">(</span>j<span class="op">);</span></span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">replaceValue</span><span class="op">(</span>AdaptableEntry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> entry<span class="op">,</span> V value<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Time complexity = O(1)</span></span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a>        AdaptableEntry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;</span> locator <span class="op">=</span> <span class="fu">validate</span><span class="op">(</span>entry<span class="op">);</span></span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a>        heap<span class="op">.</span><span class="fu">get</span><span class="op">(</span>locator<span class="op">.</span><span class="fu">getIndex</span><span class="op">()).</span><span class="fu">v</span> <span class="op">=</span> value<span class="op">;</span></span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="final-remarks-bottom-up-heap-construction" class="level1">
+<h1>Final Remarks: Bottom-Up Heap Construction</h1>
+<ul>
+<li>If we have <span class="math inline">\(n\)</span> entries and want to use them to use <code>insert()</code> to build a heap, the total time complexity is <span class="math inline">\(\mathcal{O}(n\log n)\)</span>.
+<ul>
+<li>A simple proof is that the time complexity of <code>insert()</code> is <span class="math inline">\(\mathcal{O}(\log n)\)</span>, and we need to do it <span class="math inline">\(n\)</span> times.</li>
+</ul></li>
+<li>To improve, we can use a bottom-up approach to build a heap.
+<ul>
+<li>We start from the last internal node and do the <code>sink()</code> operation.</li>
+<li>We then move to the second last internal node and do the <code>sink()</code> operation.</li>
+<li>We repeat until we reach the root.</li>
+<li>The time complexity to complete heap construction is <span class="math inline">\(\mathcal{O}(n)\)</span>. <img src="figs/Bottom-UpHeap.png" id="fig-bottom-up-heap" class="img-fluid" style="width:75.0%" alt="Bottom-Up Heap Construction"> <img src="figs/Bottom-UpHeap2.png" id="fig-bottom-up-heap2" class="img-fluid" style="width:75.0%" alt="Bottem-Up Heap Construction Example"></li>
+</ul></li>
+<li>A simple proof of the time complexity is that: the maximal number of swapping operations is bounded by the number of edges in the tree, which is bounded by the number of entries in the tree. Hence, the time complexity is <span class="math inline">\(\mathcal{O}(n)\)</span>.</li>
+</ul>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Created with <a href="https://quarto.org/">Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 May 5.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs253/3 Priority Queues.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs253/3 Priority Queues.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jiuru-lyu/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JrLyu">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="mailto:jiuru.lyu@emory.edu">
+      <i class="bi bi-envelope" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+    <script type="text/javascript">
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let pseudocodeOptions = {
+          indentSize: el.dataset.indentSize || "1.2em",
+          commentDelimiter: el.dataset.commentDelimiter || "//",
+          lineNumber: el.dataset.lineNumber === "true" ? true : false,
+          lineNumberPunc: el.dataset.lineNumberPunc || ":",
+          noEnd: el.dataset.noEnd === "true" ? true : false,
+          titlePrefix: el.dataset.captionPrefix || "Algorithm"
+        };
+        pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
+      });
+    })(document);
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let captionSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        if (captionSpan !== null) {
+          let captionPrefix = el.dataset.captionPrefix + " ";
+          let captionNumber = "";
+          if (el.dataset.pseudocodeNumber) {
+            captionNumber = el.dataset.pseudocodeNumber + " ";
+            if (el.dataset.chapterLevel) {
+              captionNumber = el.dataset.chapterLevel + "." + captionNumber;
+            }
+          }
+          captionSpan.innerHTML = captionPrefix + captionNumber;
+        }
+      });
+    })(document);
+    </script>
+  
+
+
+
+
+</body></html>

@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2024-05-19">
+<meta name="description" content="This lecture introduces the Maximum Flow algorithm">
 
-<title>Class Notes –  Jiuru Lyu</title>
+<title>11 Maximum Flow –  Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,27 +26,27 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href=".//media/favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script src="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
-<link href="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../..//media/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,8 +143,37 @@ window.MathJax = {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Noto+Serif+TC:wght@200..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -151,8 +183,8 @@ window.MathJax = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title"><img src="./media/icon.png" alt="JL logo" style="height: 50px; margin-right: 8px;"> Jiuru Lyu</span>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title"><img src="../../media/icon.png" alt="JL logo" style="height: 50px; margin-right: 8px;"> Jiuru Lyu</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -162,7 +194,7 @@ window.MathJax = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -171,15 +203,15 @@ window.MathJax = {
     </span>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./notes.html" aria-current="page"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./photo.html"> 
+    <a class="nav-link" href="../../photo.html"> 
 <span class="menu-text">Photograph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blogs.html"> 
+    <a class="nav-link" href="../../blogs.html"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
@@ -204,26 +236,49 @@ window.MathJax = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#high-school-level-math" id="toc-high-school-level-math" class="nav-link active" data-scroll-target="#high-school-level-math">High School Level Math</a></li>
-  <li><a href="#college-level-math" id="toc-college-level-math" class="nav-link" data-scroll-target="#college-level-math">College Level Math</a></li>
-  <li><a href="#computer-science" id="toc-computer-science" class="nav-link" data-scroll-target="#computer-science">Computer Science</a></li>
-  <li><a href="#other-fields" id="toc-other-fields" class="nav-link" data-scroll-target="#other-fields">Other Fields</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#ford-fulkerson-algorithm" id="toc-ford-fulkerson-algorithm" class="nav-link" data-scroll-target="#ford-fulkerson-algorithm">Ford-Fulkerson Algorithm</a></li>
+  <li><a href="#maxflow-mincut-theorem" id="toc-maxflow-mincut-theorem" class="nav-link" data-scroll-target="#maxflow-mincut-theorem">Maxflow-Mincut Theorem</a></li>
+  <li><a href="#java-implementation-of-ford-fulkerson-algorithm" id="toc-java-implementation-of-ford-fulkerson-algorithm" class="nav-link" data-scroll-target="#java-implementation-of-ford-fulkerson-algorithm">Java Implementation of Ford-Fulkerson Algorithm</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs253/11 Maximum Flow.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs253/11 Maximum Flow.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Class Notes</h1>
-</div>
+<h1 class="title">11 Maximum Flow</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Coding</div>
+    <div class="quarto-category">Java</div>
+    <div class="quarto-category">Algorithm</div>
+    <div class="quarto-category">Maximum Flow</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    This lecture introduces the Maximum Flow algorithm
+  </div>
+</div>
 
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 19, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -233,66 +288,303 @@ window.MathJax = {
 </header>
 
 
-<section id="high-school-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="high-school-level-math">High School Level Math</h3>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
 <ul>
-<li><a href="./notes/IBMath.html">IB Math AA HL Notes</a></li>
+<li>Mincut problem
+<ul>
+<li>Input: An edge-weighted digraph (each edge has a positive capacity), source vertex <span class="math inline">\(s\)</span>, and target vertex <span class="math inline">\(t\)</span>. <img src="figs/MaxFlow.png" id="fig-MaxFlow" class="img-fluid" style="width:75.0%" alt="Maximum Flow"></li>
+</ul></li>
+</ul>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-cut-capacity" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1</strong></span> &nbsp;</p>
+<ul>
+<li>A <strong><em><span class="math inline">\(st\)</span>-cut (aka. cut)</em></strong> is a partition of the vertices into two disjoint sets, with <span class="math inline">\(s\)</span> in one set <span class="math inline">\(A\)</span> and <span class="math inline">\(t\)</span> is the other set <span class="math inline">\(B\)</span>.</li>
+<li>Its <strong><em>capacity</em></strong> is the sum of the capacities of the edges from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>.</li>
+</ul>
+<div id="fig-cut-capacity" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cut-capacity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/CutCapacity.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cut-capacity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Cut Capacity
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li><strong><em>Minimum <span class="math inline">\(st\)</span>-ct (mincut) problem</em></strong>: Find a cut of minimum capacity.</li>
+<li>Maxflow problem:
+<ul>
+<li>Input: An edge-weighted digraph (each edge has a positive capacity), source vertex <span class="math inline">\(s\)</span>, and target vertex <span class="math inline">\(t\)</span>.</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-flow" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2</strong></span> &nbsp;</p>
+<ul>
+<li>A <strong><em><span class="math inline">\(st\)</span>-flow (aka. flow)</em></strong> is an assignment of values to the edges such that:</li>
+<li>Capacity constraint: <span class="math inline">\(0\leq\text{edge's flow}\leq\text{edge's capacity}\)</span></li>
+<li>Local equilibrium: inflow = outflow at every vertex (except <span class="math inline">\(s\)</span> and <span class="math inline">\(t\)</span>).</li>
+</ul>
+<div id="fig-flow" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-flow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/Flow.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-flow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Flow
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-value" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3</strong></span> The <strong><em>value</em></strong> of a flow is the inflow at <span class="math inline">\(t\)</span> (we assume no edges point to <span class="math inline">\(s\)</span> or from <span class="math inline">\(t\)</span>).</p>
+<div id="fig-value" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-value-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/Value.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-value-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Value
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>The <strong><em>maximum flow problem</em></strong> is the find a flow of maximum value.</li>
+<li>Essentially, the mincut problem and the maxflow problem are dual (=equivalent).</li>
 </ul>
 </section>
-<section id="college-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="college-level-math">College Level Math</h3>
-<section id="math-fundamentals" class="level4">
-<h4 class="anchored" data-anchor-id="math-fundamentals">Math Fundamentals</h4>
+<section id="ford-fulkerson-algorithm" class="level1">
+<h1>Ford-Fulkerson Algorithm</h1>
 <ul>
-<li><a href="./notes/Calc2.html">Calculus II</a></li>
-<li><a href="./notes/Calc3.html">Multivariable Calculus/Advanced Calculus/Calculus III</a></li>
-<li><a href="./notes/LA.html">Linear Algebra</a></li>
-<li><a href="./notes/Proofs.html">Mathematical Proofs</a></li>
-<li><a href="./notes/ProofPractice.html">Proof Practice</a></li>
+<li>Initialization: Starts with a flow of value 0.</li>
+<li>Augmenting path: Find an undirected path from <span class="math inline">\(s\)</span> to <span class="math inline">\(t\)</span> such that:
+<ul>
+<li>Can increase flow on forward edges (not full) <img src="figs/AugmentingPath1.png" id="fig-augmenting-path1" class="img-fluid" style="width:75.0%" alt="Augmenting Path1"> <img src="figs/AugmentingPath2.png" id="fig-augmenting-path2" class="img-fluid" style="width:75.0%" alt="Augmenting Path2"></li>
+<li>Can decrease flow on backward edge (not empty) <img src="figs/AugmentingPath3.png" id="fig-augmenting-path3" class="img-fluid" style="width:75.0%" alt="Augmenting Path3"> <img src="figs/AugmentingPath4.png" id="fig-augmenting-path4" class="img-fluid" style="width:75.0%" alt="Augmenting Path4"></li>
+</ul></li>
+<li>Termination: All paths from <span class="math inline">\(s\)</span> to <span class="math inline">\(t\)</span> are blocked either by a
+<ul>
+<li>Full forward edge, or an</li>
+<li>Empty backward edge.</li>
+</ul>
+<div id="fig-termination-of-maxflow" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-termination-of-maxflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/TerminationOfMaxFlow.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-termination-of-maxflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Termination of Maxflow
+</figcaption>
+</figure>
+</div></li>
+</ul>
+<pre><code>Algorithm (Ford-Fulkerson's Algorithm): 
+INPUT: Edge-weighted digraph, source vertex s, target vertex t
+OUTPUT: Maximum flow
+
+Start with 0 flow
+while (there exists an augmenting path) {
+     1. find an augmenting path
+     2. compute the bottleneck capacity
+        1. increase flow on that path by bottleneck capacity
+}</code></pre>
+</section>
+<section id="maxflow-mincut-theorem" class="level1">
+<h1>Maxflow-Mincut Theorem</h1>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-net-flow" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4</strong></span> The <strong><em>net flow</em></strong> across a cut <span class="math inline">\((A,B)\)</span> is the sum of the flows on its edges from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> minus the sum of the flows on its edges from <span class="math inline">\(B\)</span> to <span class="math inline">\(A\)</span>.</p>
+<div id="fig-net-flow" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-net-flow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/NetFlow.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-net-flow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Net Flow
+</figcaption>
+</figure>
+</div>
+<ul>
+<li>In this example, we use black nodes to represent the set <span class="math inline">\(A\)</span> and white nodes to represent the set <span class="math inline">\(B\)</span>.</li>
+<li>Therefore, the sum of flows from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> (bold black arrows) is <span class="math inline">\(10+10+0+0+10+5=35\)</span>, and the sum of flows from <span class="math inline">\(B\)</span> to <span class="math inline">\(A\)</span> (bold blue arrows) is <span class="math inline">\(0+0+5+5=10\)</span>.</li>
+<li>The net flow across the cut is <span class="math inline">\(35-10=25\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-flow-value-lemma" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1 (Flow-Value Lemma)</strong></span> Let <span class="math inline">\(f\)</span> be any flow and let <span class="math inline">\((A,B)\)</span> be any cut. Then, the net flow across <span class="math inline">\((A,B)\)</span> equals the value of the flow <span class="math inline">\(f\)</span>.</p>
+<ul>
+<li>To think of this lemma intuitively, we can consider the conservation of flow. More formally, we can prove it via induction</li>
+</ul>
+<font face="palatino" color="grey">
+<p>
+<b>Proof. </b> (by Mathematical Induction). We will induct on the size of <span class="math inline">\(B\)</span>
+</p>
+<p>
+<b>Base Case</b>: <span class="math inline">\(B=\{t\}\)</span>.
+</p>
+</font><p><font face="palatino" color="grey"><b>Inductive Steps</b>: remains true by local equilibrium when moving any vertex from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>.<span class="math inline">\(\qquad\blacksquare\)</span></font></p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="cor-flow-value-lemma" class="theorem corollary">
+<p><span class="theorem-title"><strong>Corollary 1</strong></span> Outflow from <span class="math inline">\(s\)</span> <span class="math inline">\(=\)</span> the inflow to <span class="math inline">\(t\)</span> <span class="math inline">\(=\)</span> value of flow.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-weak-duality" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2 (Weak Duality)</strong></span> Let <span class="math inline">\(f\)</span> be any flow and let <span class="math inline">\((A,B)\)</span> be any cut. Then, the value of the flow <span class="math inline">\(f\)</span> is <span class="math inline">\(\leq\)</span> the capacity of the cut <span class="math inline">\((A,B)\)</span>.</p>
+<p><font face="palatino" color="grey"><b>Proof. </b> Note that <span class="math display">\[\begin{aligned}\text{Value of flow }f &amp;= \text{net flow across cut }(A, B)&amp;\textit{Flow-value Lemma}\\&amp;\leq \text{capacity of cut }(A, B) &amp;\textit{Flow bounded by capacity}.\end{aligned}\]</span> The proof is complete. <span class="math inline">\(\qquad\blacksquare\)</span> </font></p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="thm-augmenting-path" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Augmenting path theorem)</strong></span> A flow <span class="math inline">\(f\)</span> is a maxflow <span class="math inline">\(\iff\)</span> no augmenting paths.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="thm-Maxflow-mincut-theorem" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2 (Maxflow-mincut theorem)</strong></span> Value of the maxflow <span class="math inline">\(=\)</span> capacity of mincut.</p>
+</div>
+</div>
+</div>
+</div>
+<font face="palatino" color="grey"> <b>Proof.</b> The following three conditions are equivalent for any flow <span class="math inline">\(f\)</span>:
+<ol>
+<li>
+There exists a cut whose capacity equals the value of the flow <span class="math inline">\(f\)</span>.
+</li>
+<li>
+<span class="math inline">\(f\)</span> is a maxflow.
+</li>
+<li>
+There is no augmenting path with respect to <span class="math inline">\(f\)</span>.
+</li>
+</ol>
+<p>
+1 <span class="math inline">\(\implies\)</span> 2: Suppose that <span class="math inline">\((A,B)\)</span> is a cut with capacity equal to the value of <span class="math inline">\(f\)</span>. Then,
+</p>
+<p><span class="math display">\[
+  \begin{aligned}
+  \text{value of any flow } f' &amp;\leq \text{capacity of } (A,B) &amp;&amp; \textit{(by weak duality)} \\
+  &amp;= \text{value of } f &amp;&amp; \textit{(by assumption)}
+  \end{aligned}
+  \]</span></p>
+<p>
+Thus, <span class="math inline">\(f\)</span> is a maxflow. <span class="math inline">\(\quad\square\)</span>
+</p>
+<p>
+2 <span class="math inline">\(\implies\)</span> 3: We will prove the contrapositive, i.e., <span class="math inline">\(\neg 3 \implies \neg 2\)</span>. Suppose that there is an augmenting path with respect to <span class="math inline">\(f\)</span>. Then, we can improve the flow <span class="math inline">\(f\)</span> by sending flow along this path, which implies that <span class="math inline">\(f\)</span> is not a maxflow. <span class="math inline">\(\quad\square\)</span>
+</p>
+<p>
+3 <span class="math inline">\(\implies\)</span> 1: Suppose that there is no augmenting path with respect to <span class="math inline">\(f\)</span>. Let <span class="math inline">\((A,B)\)</span> be a cut where <span class="math inline">\(A\)</span> is the set of vertices connected to <span class="math inline">\(s\)</span> by an undirected path with no full forward or empty backward edges. By definition of cut, <span class="math inline">\(s \in A\)</span>. Since there is no augmenting path, <span class="math inline">\(t \in B\)</span>. Then,
+</p>
+<p><span class="math display">\[
+  \begin{aligned}
+  \text{capacity of cut} &amp;= \text{net flow across cut} &amp;&amp; \textit{(forward edges full; backward edges empty)} \\
+  &amp;= \text{value of flow } f &amp;&amp; \textit{(flow-value lemma)}
+  \end{aligned}
+  \]</span></p>
+</font><p><font face="palatino" color="grey">We complete the proof. <span class="math inline">\(\quad\square\)</span> </font></p>
+<ul>
+<li>To compute mincut <span class="math inline">\((A,B)\)</span> from maxflow <span class="math inline">\(f\)</span>:
+<ul>
+<li>By augmenting path theorem, no augmenting paths with respect to <span class="math inline">\(f\)</span>.</li>
+<li>Compute <span class="math inline">\(A=\)</span> set of vertices connected to <span class="math inline">\(s\)</span> by an undirected path with no full forward or empty backward edges.</li>
+</ul>
+<div id="fig-mincut-from-maxflow" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mincut-from-maxflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/MincutFromMaxflow.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mincut-from-maxflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Mincut from Maxflow
+</figcaption>
+</figure>
+</div></li>
 </ul>
 </section>
-<section id="applied-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="applied-mathematics">Applied Mathematics</h4>
+<section id="java-implementation-of-ford-fulkerson-algorithm" class="level1">
+<h1>Java Implementation of Ford-Fulkerson Algorithm</h1>
 <ul>
-<li><a href="./notes/ODE.html">Ordinary Differential Equations</a></li>
-<li><a href="./notes/NonlinearOpt.html">Nonlinear Optimization</a></li>
-<li><a href="./notes/NA1.html">Undergraduate-Level Numerical Analysis</a></li>
-<li><a href="./notes/NumericalDEs.html">Numerical ODEs and PDEs</a></li>
-<li><a href="./notes/NA2.html">PhD-Level Numerical Analysis I (Numerical Linear Algebra)</a></li>
-<li><a href="./notes/NA3.html">PhD-Level Numerical Analysis II</a></li>
-</ul>
-</section>
-<section id="pure-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="pure-mathematics">Pure Mathematics</h4>
+<li>Augmenting path revisit: it is a sequence of edges from <span class="math inline">\(s\)</span> to <span class="math inline">\(t\)</span>, where each edge is:
 <ul>
-<li><a href="./notes/LADR.html">Linear Algebra Done Right</a></li>
-<li><a href="./notes/RealAnalysis.html">Real Analysis</a></li>
-</ul>
-</section>
-<section id="data-science-statistics-and-causal-inference" class="level4">
-<h4 class="anchored" data-anchor-id="data-science-statistics-and-causal-inference">Data Science, Statistics, and Causal Inference</h4>
-<ul>
-<li><a href="https://jrlyu.github.io/qtm110.io/">Introduction to Causal Inference</a></li>
-<li><a href="https://jrlyu.github.io/google_analytics.io/">Google Data Analytics Learning Notes</a></li>
-<li><a href="./notes/Probability.html">Mathematical Statistics – Propability Theory</a></li>
-<li><a href="./notes/Inference.html">Mathematical Statistics – Statistical Inference</a></li>
-<li>Causal Designs and Inference</li>
-<li><a href="./notes/cs334.html">Machine Learning</a></li>
-</ul>
-</section>
-</section>
-<section id="computer-science" class="level3">
-<h3 class="anchored" data-anchor-id="computer-science">Computer Science</h3>
-<ul>
-<li><a href="./notes/cs171.html">Object-Oriented Programming &amp; Introduction to Data Structures</a></li>
-<li><a href="./notes/cs253.html">Introduction to Data Structure and Algorithms</a></li>
-<li><a href="./notes/cs377.html">Database Systems</a></li>
-</ul>
-</section>
-<section id="other-fields" class="level3">
-<h3 class="anchored" data-anchor-id="other-fields">Other Fields</h3>
-<ul>
-<li><a href="https://jrlyu.github.io/intro_to_socio.io/">Introduction to Sociology</a></li>
+<li>either “non-full forward edge”</li>
+<li>or “non-empty backward edge”.</li>
+</ul></li>
+<li>Bottlenect capacity: the minimum capacity of the edges in the augmenting path.</li>
+<li>Bad news: number of augmenting paths could be equal to the value of the maxflow.</li>
 </ul>
 
 
@@ -868,7 +1160,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs253/11 Maximum Flow.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs253/11 Maximum Flow.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

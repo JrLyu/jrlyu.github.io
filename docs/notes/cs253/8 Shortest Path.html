@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2024-05-16">
+<meta name="description" content="This lecture introduces the concept of shortest path in graphs, including BFS for unweighted graphs and Dijkstra’s algorithm for weighted graphs.">
 
-<title>Class Notes –  Jiuru Lyu</title>
+<title>8 Shortest Path –  Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,27 +26,27 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href=".//media/favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script src="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
-<link href="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../..//media/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,8 +143,37 @@ window.MathJax = {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Noto+Serif+TC:wght@200..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -151,8 +183,8 @@ window.MathJax = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title"><img src="./media/icon.png" alt="JL logo" style="height: 50px; margin-right: 8px;"> Jiuru Lyu</span>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title"><img src="../../media/icon.png" alt="JL logo" style="height: 50px; margin-right: 8px;"> Jiuru Lyu</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -162,7 +194,7 @@ window.MathJax = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -171,15 +203,15 @@ window.MathJax = {
     </span>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./notes.html" aria-current="page"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./photo.html"> 
+    <a class="nav-link" href="../../photo.html"> 
 <span class="menu-text">Photograph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blogs.html"> 
+    <a class="nav-link" href="../../blogs.html"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
@@ -204,26 +236,50 @@ window.MathJax = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#high-school-level-math" id="toc-high-school-level-math" class="nav-link active" data-scroll-target="#high-school-level-math">High School Level Math</a></li>
-  <li><a href="#college-level-math" id="toc-college-level-math" class="nav-link" data-scroll-target="#college-level-math">College Level Math</a></li>
-  <li><a href="#computer-science" id="toc-computer-science" class="nav-link" data-scroll-target="#computer-science">Computer Science</a></li>
-  <li><a href="#other-fields" id="toc-other-fields" class="nav-link" data-scroll-target="#other-fields">Other Fields</a></li>
+  <li><a href="#beyond-connected-graphs" id="toc-beyond-connected-graphs" class="nav-link active" data-scroll-target="#beyond-connected-graphs">Beyond Connected Graphs</a>
+  <ul class="collapse">
+  <li><a href="#bfs-to-find-shortest-path-in-unweighted-graph" id="toc-bfs-to-find-shortest-path-in-unweighted-graph" class="nav-link" data-scroll-target="#bfs-to-find-shortest-path-in-unweighted-graph">BFS to Find Shortest Path in Unweighted Graph</a></li>
+  <li><a href="#shortest-path-search-in-weighted-graph" id="toc-shortest-path-search-in-weighted-graph" class="nav-link" data-scroll-target="#shortest-path-search-in-weighted-graph">Shortest Path Search in Weighted Graph</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs253/8 Shortest Path.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs253/8 Shortest Path.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Class Notes</h1>
-</div>
+<h1 class="title">8 Shortest Path</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Coding</div>
+    <div class="quarto-category">Java</div>
+    <div class="quarto-category">Algorithm</div>
+    <div class="quarto-category">Shortest Path</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    This lecture introduces the concept of shortest path in graphs, including BFS for unweighted graphs and Dijkstra’s algorithm for weighted graphs.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 16, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -233,69 +289,123 @@ window.MathJax = {
 </header>
 
 
-<section id="high-school-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="high-school-level-math">High School Level Math</h3>
+<section id="beyond-connected-graphs" class="level1">
+<h1>Beyond Connected Graphs</h1>
 <ul>
-<li><a href="./notes/IBMath.html">IB Math AA HL Notes</a></li>
+<li>If the graph is not connected, we can still complete the graph traversal by calling <code>DFS()</code> method.</li>
 </ul>
-</section>
-<section id="college-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="college-level-math">College Level Math</h3>
-<section id="math-fundamentals" class="level4">
-<h4 class="anchored" data-anchor-id="math-fundamentals">Math Fundamentals</h4>
+<pre><code>Algorithm
+    Randomly select a vertex from the unvisited vertices
+    Apply DFS
+    Repeat the process untill all vertices are visited</code></pre>
+<section id="bfs-to-find-shortest-path-in-unweighted-graph" class="level2">
+<h2 class="anchored" data-anchor-id="bfs-to-find-shortest-path-in-unweighted-graph">BFS to Find Shortest Path in Unweighted Graph</h2>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-length" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1</strong></span> &nbsp;</p>
 <ul>
-<li><a href="./notes/Calc2.html">Calculus II</a></li>
-<li><a href="./notes/Calc3.html">Multivariable Calculus/Advanced Calculus/Calculus III</a></li>
-<li><a href="./notes/LA.html">Linear Algebra</a></li>
-<li><a href="./notes/Proofs.html">Mathematical Proofs</a></li>
-<li><a href="./notes/ProofPractice.html">Proof Practice</a></li>
+<li>In unweighted graphs, the <strong><em>length of a path</em></strong> is defined as the number of edges in this path.</li>
+<li>Length of the shortest path between two vertices is known as their <strong><em>distance</em></strong>.</li>
 </ul>
-</section>
-<section id="applied-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="applied-mathematics">Applied Mathematics</h4>
+</div>
+</div>
+</div>
+</div>
 <ul>
-<li><a href="./notes/ODE.html">Ordinary Differential Equations</a></li>
-<li><a href="./notes/NonlinearOpt.html">Nonlinear Optimization</a></li>
-<li><a href="./notes/NA1.html">Undergraduate-Level Numerical Analysis</a></li>
-<li><a href="./notes/NumericalDEs.html">Numerical ODEs and PDEs</a></li>
-<li><a href="./notes/NA2.html">PhD-Level Numerical Analysis I (Numerical Linear Algebra)</a></li>
-<li><a href="./notes/NA3.html">PhD-Level Numerical Analysis II</a></li>
-</ul>
-</section>
-<section id="pure-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="pure-mathematics">Pure Mathematics</h4>
+<li>BFS can find the shortest paths.
 <ul>
-<li><a href="./notes/LADR.html">Linear Algebra Done Right</a></li>
-<li><a href="./notes/RealAnalysis.html">Real Analysis</a></li>
+<li>BFS is a process of “iteratively visiting the unvisited neighbors closest to source.”</li>
+<li>BFS tree records the shortest path from the starting vertex to all other vertices.</li>
+<li><em>Example</em>: the BFS tree is marked in the blue and solid arrows in the following graph.</li>
+</ul></li>
 </ul>
+<div id="fig-bfs-tree" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bfs-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/BFSTree.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bfs-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: BFS Tree
+</figcaption>
+</figure>
+</div>
 </section>
-<section id="data-science-statistics-and-causal-inference" class="level4">
-<h4 class="anchored" data-anchor-id="data-science-statistics-and-causal-inference">Data Science, Statistics, and Causal Inference</h4>
+<section id="shortest-path-search-in-weighted-graph" class="level2">
+<h2 class="anchored" data-anchor-id="shortest-path-search-in-weighted-graph">Shortest Path Search in Weighted Graph</h2>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-weighted-graph" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2</strong></span> &nbsp;</p>
 <ul>
-<li><a href="https://jrlyu.github.io/qtm110.io/">Introduction to Causal Inference</a></li>
-<li><a href="https://jrlyu.github.io/google_analytics.io/">Google Data Analytics Learning Notes</a></li>
-<li><a href="./notes/Probability.html">Mathematical Statistics – Propability Theory</a></li>
-<li><a href="./notes/Inference.html">Mathematical Statistics – Statistical Inference</a></li>
-<li>Causal Designs and Inference</li>
-<li><a href="./notes/cs334.html">Machine Learning</a></li>
+<li>We will consider non-negative weight in this lecture.</li>
+<li>The <strong><em>weight</em></strong> of an edge <span class="math inline">\(e=(u,v)\)</span> is denoted as <span class="math inline">\(w(u,v)\)</span> or <span class="math inline">\(w(e)\)</span>.</li>
+<li>In weighted graph, the <strong><em>length of a path</em></strong> <span class="math inline">\(P\)</span> is the sum of the weights of the edges in <span class="math inline">\(P=((v_0,v_1), (v_1,v_2),\dots,(v_{k-1},v_k))\)</span>: <span class="math display">\[w(P)=\sum_{i=0}^{k-1}w(v_i,v_{i+1}).\]</span></li>
+<li><strong><em>Distance</em></strong> between two vertices denotes the length of the shortest path between them.</li>
 </ul>
-</section>
-</section>
-<section id="computer-science" class="level3">
-<h3 class="anchored" data-anchor-id="computer-science">Computer Science</h3>
+</div>
+</div>
+</div>
+</div>
 <ul>
-<li><a href="./notes/cs171.html">Object-Oriented Programming &amp; Introduction to Data Structures</a></li>
-<li><a href="./notes/cs253.html">Introduction to Data Structure and Algorithms</a></li>
-<li><a href="./notes/cs377.html">Database Systems</a></li>
-</ul>
-</section>
-<section id="other-fields" class="level3">
-<h3 class="anchored" data-anchor-id="other-fields">Other Fields</h3>
+<li>In a weigthed graph, the general idea of finding the shortest path is to:
 <ul>
-<li><a href="https://jrlyu.github.io/intro_to_socio.io/">Introduction to Sociology</a></li>
+<li>Start from a source vertex, initialize all the vertices’ distances to starting vertex as infinity</li>
+<li>Visit the univisted closest vertex</li>
+<li>Update the distance of the neighbors</li>
+<li>Repeat the process until all vertices are visited</li>
+</ul></li>
+<li>Claim: <strong>Through the process above, once a vertex is visited, its currently recorded distance is already the shortest distance to the starting vertex.</strong></li>
 </ul>
+<font color="grey" size="3" face="palatino"><b>Proof</b> (by contradiction).
+<p>
+Assume the above claim is false: “Suppose the currently visited vertex <span class="math inline">\(z\)</span> is the first one whose recorded distance is not the shortest path length.”
+</p>
+<p>
+Then, one of the following situation must happens:
+</p><ul>
+<li>
+<b>Situation 1</b>: All vertices in the path are visited vertices.
+</li>
+<li>
+<b>Situation 2</b>:Shortest path goes through some unvisited vertices.
+</li>
+</ul>
+<p></p>
+<p>
+If situation 1 happens, assume vertex <span class="math inline">\(v\)</span> is the predecessor of <span class="math inline">\(z\)</span> in the shortest path, then we should have already examined this path while visiting <span class="math inline">\(v\)</span> and its neighbors and recordes this as the distance. <b>This leads to contradiction.</b>
+</p>
+<p>
+If situation 2 happens, then let’s assume vertex <span class="math inline">\(y\)</span> is the first unvisted vertex in the shortest path and vertex <span class="math inline">\(x\)</span> is <span class="math inline">\(y\)</span>’s predecessor in the shortest path. So, vertex <span class="math inline">\(x\)</span> is already visited before visiting <span class="math inline">\(z\)</span> and <span class="math inline">\(x\)</span>’s neighbor <span class="math inline">\(y\)</span> has smaller distance to <span class="math inline">\(s\)</span> (the source vertex) than <span class="math inline">\(z\)</span>, so <span class="math inline">\(y\)</span> should be visited earlier than <span class="math inline">\(z\)</span>. <b>This also leads to contradiction.</b>
+</p>
+<p>
+Because of the contradictions, the statement cannot be false. The proof is therefore completed. <span class="math inline">\(\qquad\blacksquare\)</span>
+</p>
+</font><p><font color="grey" size="3" face="palatino"></font></p>
+<ul>
+<li>Dijkstra’s Algorithm</li>
+</ul>
+<pre><code>Algorithm MST(s):
+  INPUT: start vertex s;
+  OUTPUT: all vertices' distances to s;
+
+  START:
+  Initialize all the vertices' distances to the starting vertex as infinity
+  while there is still unvisited vertex do {
+    1. visit the unvisited closest vertex;
+    2. update this vertex’s neighbors’ distances;
+  }</code></pre>
 
 
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
@@ -868,7 +978,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs253/8 Shortest Path.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs253/8 Shortest Path.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

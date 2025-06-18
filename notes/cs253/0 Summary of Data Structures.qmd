@@ -1,0 +1,15 @@
+---
+title: "0 Summary of Data Structures"
+description: "This lecture introduces the basic data structures and their relationships."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 05-08-2024
+categories: [Coding, Java, Algorithm, Data Structure] # self-defined categories
+draft: false
+callout-appearance: simple
+---
+
+# Summary of Data Structures
+
+![Summary of Data Structures](figs/Summary.png){#fig-summary}

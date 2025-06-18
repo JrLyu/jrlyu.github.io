@@ -60,5 +60,23 @@
       "/notes/cs171/13-Sorting-Algorithms/Sorting Algorithms.html",
       "/notes/cs171/14-Hashing/Hashing.html"
     ]
+  },
+  {
+    "listing": "/notes/cs253.html",
+    "items": [
+      "/notes/cs253/0 Summary of Data Structures.html",
+      "/notes/cs253/1 Array List.html",
+      "/notes/cs253/2 Linked List, Stack, and Queue.html",
+      "/notes/cs253/3 Priority Queues.html",
+      "/notes/cs253/4 Trees and Binary Search Trees.html",
+      "/notes/cs253/5 Balanced Search Tree and AVL Tree.html",
+      "/notes/cs253/6 Graph Basics.html",
+      "/notes/cs253/7 Directed Acyclic Graph (DAG).html",
+      "/notes/cs253/8 Shortest Path.html",
+      "/notes/cs253/9 Union-find.html",
+      "/notes/cs253/10 Minimum Spanning Tree (MST).html",
+      "/notes/cs253/11 Maximum Flow.html",
+      "/notes/cs253/12 Tries.html"
+    ]
   }
 ]

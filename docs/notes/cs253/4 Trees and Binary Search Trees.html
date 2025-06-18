@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2024-05-12">
+<meta name="description" content="This lecture introduces the basic concepts of trees and binary search trees in Java.">
+
+<title>4 Trees and Binary Search Trees –  Jiuru Lyu</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../..//media/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+window.MathJax = {
+  loader: {
+    load: ['[tex]/physics']
+  },
+  tex: {
+    packages: {'[+]': ['physics']},
+    macros: {
+      R: "\\mathbb{R}",
+      C: "\\mathbb{C}",
+      Q: "\\mathbb{Q}",
+      d: "\\mathrm{d}",
+      i: "\\mathrm{i}",
+      N: "\\mathbb{N}",
+      "1": "{\\Large{\\unicode{x1D7D9}}}",
+      bigO: "\\mathcal{O}",
+      sp: "\\operatorname{span}",
+      epsilon: "\\varepsilon",
+      emptyset: "\\varnothing",
+      phi: "\\varphi",
+      dsst: "\\displaystyle",
+      st: "\\ \\text{s.t.}\\ ",
+      wrt: "\\ \\text{w.r.t.}\\ ",
+      bar: "\\overline",
+      tilde: "\\widetilde",
+      E: "\\vb{E}",
+      B: "\\vb{B}",
+      L: "\\vb{L}",
+      I: "\\vb{I}",
+      Var: "\\vb{Var}",
+      V: "\\vb{Var}",
+      Cov: "\\vb{Cov}",
+      MSE: "\\vb{MSE}",
+      P: "\\vb{P}",
+      M: "\\vb{M}",
+      iid: "\\text{i.i.d.}",
+      argmax: "\\mathop{\\arg\\max}",
+      argmin: "\\mathop{\\arg\\min}",
+      l: "\\ell",
+      hat: "\\widehat",
+      independ: "\\perp\\!\\!\\!\\perp",
+      depend: "\\leftrightsquigarrow",
+      residual: "\\varepsilon",
+      sd: "\\mathrm{sd}",
+      LI: "\\mathrm{L.I.}",
+      range: "\\operatorname{range}",
+      Null: "\\operatorname{null}",
+      nullity: "\\operatorname{nullity}",
+      A: "A^{-1}",
+      alg: "\\operatorname{alg}",
+      fl: "\\operatorname{fl}",
+      algmult: "\\operatorname{alg.\\ mult.}",
+      geomult: "\\operatorname{geo.\\ mult.}",
+      diag: "\\operatorname{diag}",
+      gap: "\\operatorname{gap}",
+      pqde: "\\quad\\square",
+      lub: "\\operatorname{lub}",
+      Int: "\\operatorname{int}",
+      ac: "\\operatorname{ac}",
+      cl: "\\operatorname{cl}",
+      bd: "\\operatorname{bd}"
+    }
+  }
+};
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Noto+Serif+TC:wght@200..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title"><img src="../../media/icon.png" alt="JL logo" style="height: 50px; margin-right: 8px;"> Jiuru Lyu</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <span class="nav-link">
+<span class="menu-text">CV</span>
+    </span>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../photo.html"> 
+<span class="menu-text">Photograph</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blogs.html"> 
+<span class="menu-text">Blogs</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#tree-terminology" id="toc-tree-terminology" class="nav-link active" data-scroll-target="#tree-terminology">Tree Terminology</a></li>
+  <li><a href="#binary-tree-implementation" id="toc-binary-tree-implementation" class="nav-link" data-scroll-target="#binary-tree-implementation">Binary Tree Implementation</a></li>
+  <li><a href="#tree-traversal-algorithms" id="toc-tree-traversal-algorithms" class="nav-link" data-scroll-target="#tree-traversal-algorithms">Tree Traversal Algorithms</a></li>
+  <li><a href="#binary-search-trees" id="toc-binary-search-trees" class="nav-link" data-scroll-target="#binary-search-trees">Binary Search Trees</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs253/4 Trees and Binary Search Trees.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs253/4 Trees and Binary Search Trees.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">4 Trees and Binary Search Trees</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Coding</div>
+    <div class="quarto-category">Java</div>
+    <div class="quarto-category">Data Structure</div>
+    <div class="quarto-category">Trees</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    This lecture introduces the basic concepts of trees and binary search trees in Java.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 12, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="tree-terminology" class="level1">
+<h1>Tree Terminology</h1>
+<ul>
+<li><p><strong>Root</strong>: The top node in a tree.</p></li>
+<li><p><strong>Internal node</strong>: node with at least one child.</p></li>
+<li><p><strong>External node</strong> (a.k.a. leaf): node with no children.</p></li>
+<li><p><strong>Ancestor</strong> of a node: parent, grandparent, great-grandparent, etc.</p></li>
+<li><p><strong>Descendant</strong> of a node: child, grandchild, great-grandchild, etc.</p></li>
+<li><p><strong>Depth</strong> of a node: number of ancestors.</p></li>
+<li><p><strong>Height</strong> of a node: maximum depth of any node.</p></li>
+<li><p><strong>Subtree</strong>: tree consisting of a node and ALL its descendants.</p></li>
+<li><p><strong>Siblings</strong>: children sharing the same parent.</p></li>
+<li><p><strong>Edge</strong>: parent-child pair</p></li>
+<li><p><strong>Path</strong>: sequence of nodes such that any two consecutive nodes in the sequence form an edge.</p></li>
+<li><p>The relation between number of nodes <span class="math inline">\(n\)</span> and number of edges <span class="math inline">\(e\)</span> is given by <span class="math inline">\(n=e+1\)</span>. This is because every node except the root has exactly one incoming edge.</p></li>
+<li><p><strong>Binary Trees</strong>: Each internal node has at most two children. We call these children the left and right child.</p>
+<ul>
+<li><strong>Proper Tree</strong>: Internal nodes must have two children.
+<ul>
+<li>Application 1: a binary tree associated with a decision process.
+<ul>
+<li>Internal nodes: questions with yes/no answer</li>
+<li>External nodes: outcomes/decisions</li>
+</ul></li>
+<li>Application 2: arithmetic expression tree
+<ul>
+<li>Internal nodes: operators</li>
+<li>External nodes: operands</li>
+</ul></li>
+</ul></li>
+<li><strong>Perfect Tree</strong>: All interior nodes have two children, and all leaves have the same depth.
+<ul>
+<li>Perfect tree is a special case of proper tree.</li>
+</ul></li>
+<li><strong>Complete Tree</strong>: All levels except the last are completed filled, and all nodes in the last level are as far left as possible.</li>
+</ul></li>
+</ul>
+</section>
+<section id="binary-tree-implementation" class="level1">
+<h1>Binary Tree Implementation</h1>
+<ul>
+<li>Array-based implementation
+<ul>
+<li>It is not efficient when the tree is not complete.</li>
+<li>If we use array-based implementation, there must be some empty slots in the array if the tree is not complete.</li>
+</ul></li>
+<li>Therefore, we will be using a linked structure based tree. It will attain the following methods:</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">attach</span><span class="op">(</span>p<span class="op">,</span> t1<span class="op">,</span> t2<span class="op">);</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> E <span class="fu">remove</span><span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">int</span> <span class="fu">depth</span><span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">int</span> <span class="fu">height</span><span class="op">(</span>p<span class="op">);</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fig-linked-binary-tree" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-linked-binary-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/LinkedListBinaryTree.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-linked-binary-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Linked Structure Based Tree
+</figcaption>
+</figure>
+</div>
+<ul>
+<li>The following is a simple implementation of a binary tree.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> LinkedBinaryTree<span class="op">&lt;</span>E<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Static nested class of Node</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="dt">static</span> <span class="kw">class</span> <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="kw">public</span> E element<span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="kw">public</span> <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> parent<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      <span class="kw">public</span> <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> left<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      <span class="kw">public</span> <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> right<span class="op">;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">public</span> <span class="bu">Node</span><span class="op">(</span>E e<span class="op">,</span> <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> above<span class="op">,</span> <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> leftChild<span class="op">,</span> <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> rightChild<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        element <span class="op">=</span> e<span class="op">;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        parent <span class="op">=</span> above<span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        left <span class="op">=</span> leftChild<span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>          ight <span class="op">=</span> rightChild<span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="co">// End of Node class</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Basic methods</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> root <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">int</span> size <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">int</span> <span class="fu">size</span><span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> size<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">isEmpty</span><span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> size <span class="op">==</span> <span class="dv">0</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> <span class="fu">root</span><span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> root<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">LinkedBinaryTree</span><span class="op">()</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">int</span> <span class="fu">numChildren</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>      <span class="dt">int</span> count <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>p<span class="op">.</span><span class="fu">left</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> count<span class="op">++;</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>p<span class="op">.</span><span class="fu">right</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> count<span class="op">++;</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> count<span class="op">;</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">isInternal</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> <span class="fu">numChildren</span><span class="op">(</span>p<span class="op">)</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">;}</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">isExternal</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> <span class="fu">numChildren</span><span class="op">(</span>p<span class="op">)</span> <span class="op">==</span> <span class="dv">0</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> <span class="fu">addLeft</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">,</span> E e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>p<span class="op">.</span><span class="fu">left</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="cf">throw</span> <span class="kw">new</span> <span class="bu">IllegalArgumentException</span><span class="op">(</span><span class="st">"p already has a left child"</span><span class="op">);</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>      <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> child <span class="op">=</span> <span class="kw">new</span> <span class="bu">Node</span><span class="op">&lt;&gt;(</span>e<span class="op">,</span> p<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="kw">null</span><span class="op">);</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>      p<span class="op">.</span><span class="fu">left</span> <span class="op">=</span> child<span class="op">;</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>      size<span class="op">++;</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> child<span class="op">;</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> <span class="fu">addRight</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">,</span> E e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>p<span class="op">.</span><span class="fu">right</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="cf">throw</span> <span class="kw">new</span> <span class="bu">IllegalArgumentException</span><span class="op">(</span><span class="st">"p already has a right child"</span><span class="op">);</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>      <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> child <span class="op">=</span> <span class="kw">new</span> <span class="bu">Node</span><span class="op">&lt;&gt;(</span>e<span class="op">,</span> p<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="kw">null</span><span class="op">);</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>      p<span class="op">.</span><span class="fu">right</span> <span class="op">=</span> child<span class="op">;</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>      size<span class="op">++;</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> child<span class="op">;</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="co">//  Major methods</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">attach</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">,</span> LinkedBinaryTree<span class="op">&lt;</span>E<span class="op">&gt;</span> t1<span class="op">,</span> LinkedBinaryTree<span class="op">&lt;</span>E<span class="op">&gt;</span> t2<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>      <span class="co">// only hanld nodes with no children</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span><span class="fu">numChildren</span><span class="op">(</span>p<span class="op">)</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">throw</span> <span class="kw">new</span> <span class="bu">IllegalArgumentException</span><span class="op">(</span><span class="st">"p is not a leaf"</span><span class="op">);</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>      <span class="fu">addLeft</span><span class="op">(</span>p<span class="op">,</span> t1<span class="op">.</span><span class="fu">root</span><span class="op">.</span><span class="fu">element</span><span class="op">);</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>      <span class="fu">addRight</span><span class="op">(</span>p<span class="op">,</span> t2<span class="op">.</span><span class="fu">root</span><span class="op">.</span><span class="fu">element</span><span class="op">);</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> E <span class="fu">remove</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">)</span> <span class="op">{</span> <span class="kw">...</span> <span class="op">}</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">int</span> <span class="fu">depth</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">)</span> <span class="op">{</span> <span class="kw">...</span> <span class="op">}</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">int</span> <span class="fu">height</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">)</span> <span class="op">{</span> <span class="kw">...</span> <span class="op">}</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>The following is an implementation of the <code>remove</code> method.
+<ul>
+<li>The time complexity of the <code>remove</code> method is <span class="math inline">\(\mathcal{O}(1)\)</span>. <img src="figs/BinaryTreeRemove.png" id="fig-remove-method" class="img-fluid" style="width:75.0%" alt="Remove Method"></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> E <span class="fu">remove</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// only handle nodes with less than two children</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// if two children</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span><span class="fu">numChildren</span><span class="op">(</span>p<span class="op">)</span> <span class="op">==</span> <span class="dv">2</span><span class="op">)</span> <span class="cf">throw</span> <span class="kw">new</span> <span class="bu">IllegalArgumentException</span><span class="op">(</span><span class="st">"p has two children"</span><span class="op">);</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">// operate on child</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">// define a child, to hold the only one child. If no child, then it is null.</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> child<span class="op">;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>p<span class="op">.</span><span class="fu">left</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> child <span class="op">=</span> p<span class="op">.</span><span class="fu">left</span><span class="op">;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> child <span class="op">=</span> p<span class="op">.</span><span class="fu">right</span><span class="op">;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>child <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> child<span class="op">.</span><span class="fu">parent</span> <span class="op">=</span> p<span class="op">.</span><span class="fu">parent</span><span class="op">;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>p <span class="op">==</span> root<span class="op">)</span> root <span class="op">=</span> child<span class="op">;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> parent <span class="op">=</span> p<span class="op">.</span><span class="fu">parent</span><span class="op">;</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>p <span class="op">==</span> parent<span class="op">.</span><span class="fu">left</span><span class="op">)</span> parent<span class="op">.</span><span class="fu">left</span> <span class="op">=</span> child<span class="op">;</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> parent<span class="op">.</span><span class="fu">right</span> <span class="op">=</span> child<span class="op">;</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    E temp <span class="op">=</span> p<span class="op">.</span><span class="fu">element</span><span class="op">;</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    p<span class="op">.</span><span class="fu">parent</span> <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    p<span class="op">.</span><span class="fu">left</span> <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    p<span class="op">.</span><span class="fu">element</span> <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    size<span class="op">--;</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> temp<span class="op">;</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><code>depth()</code> implementation
+<ul>
+<li>We will know the depth of Node <code>p</code>, if we know the depth of its parent.</li>
+<li>When <code>p</code> is the root, we knot its depth is <code>0</code>.</li>
+<li>The time complexity of the <code>depth</code> method is <span class="math inline">\(\mathcal{O}(d)\)</span>, where <span class="math inline">\(d\)</span> is the actual depth of the node. <img src="figs/BinaryTreeDepth.png" id="fig-depth-method" class="img-fluid" style="width:75.0%" alt="Depth Method"></li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">int</span> <span class="fu">depth</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>p <span class="op">==</span> root<span class="op">)</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">return</span> <span class="dv">1</span> <span class="op">+</span> <span class="fu">depth</span><span class="op">(</span>p<span class="op">.</span><span class="fu">parent</span><span class="op">);</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><code>height()</code> implementation
+<ul>
+<li>The method returns the height of the subtree rooted at <code>p</code>.</li>
+<li>The height of a node is the maximum of the heights of its children plus 1.</li>
+<li>The time complexity of the <code>height</code> method is <span class="math inline">\(\mathcal{O}(n)\)</span>.</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">int</span> <span class="fu">height</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> h <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>p<span class="op">.</span><span class="fu">left</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> h <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span><span class="op">(</span>h<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> <span class="fu">height</span><span class="op">(</span>p<span class="op">.</span><span class="fu">left</span><span class="op">));</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>p<span class="op">.</span><span class="fu">rght</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> h <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span><span class="op">(</span>h<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> <span class="fu">height</span><span class="op">(</span>p<span class="op">.</span><span class="fu">right</span><span class="op">));</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> h<span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li>Analysis of Time Complexity</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Method</th>
+<th style="text-align: center;">Time Complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>size()</code>, <code>isEmpty()</code></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>root()</code>, <code>parent()</code>, <code>left()</code>, <code>right()</code>, <code>isInternal()</code>, <code>isExternal()</code>, <code>numChildren()</code></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>addLeft()</code>, <code>addRight()</code>, <code>attach()</code></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>remove(p)</code></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(1)\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>depth(p)</code></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(d)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>height(p)</code></td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{O}(n)\)</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>If we use an array-based implementation, the space complexity is <span class="math inline">\(\mathcal{O}(2^n)\)</span>, where <span class="math inline">\(n\)</span> is the number of nodes in the tree.
+<ul>
+<li>On the other hand, using a linked structure based implementation, the space complexity is <span class="math inline">\(\mathcal{O}(n)\)</span>.</li>
+</ul></li>
+<li>Data structure of General Trees</li>
+<li>The following is a simple implementation of a general tree. <img src="figs/GeneralTree.png" id="fig-general-tree" class="img-fluid" style="width:75.0%" alt="General Tree"></li>
+</ul>
+</section>
+<section id="tree-traversal-algorithms" class="level1">
+<h1>Tree Traversal Algorithms</h1>
+<ul>
+<li><p>Depth first: visit the current subtree before the siblings</p>
+<ul>
+<li>Preorder: visit the subtree’s root, then the other part of the subtree. <img src="figs/PreorderTraversal.png" id="fig-preorder" class="img-fluid" style="width:75.0%" alt="Preorder"></li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">protected</span> <span class="dt">void</span> <span class="fu">preorderSubtree</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">,</span> <span class="bu">List</span><span class="op">&lt;</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;&gt;</span> <span class="kw">record</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">record</span><span class="op">.</span><span class="fu">add</span><span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>p<span class="op">.</span><span class="fu">left</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="fu">preorderSubtree</span><span class="op">(</span>p<span class="op">.</span><span class="fu">left</span><span class="op">,</span> <span class="kw">record</span><span class="op">);</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>p<span class="op">.</span><span class="fu">right</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="fu">preorderSubtree</span><span class="op">(</span>p<span class="op">.</span><span class="fu">right</span><span class="op">,</span> <span class="kw">record</span><span class="op">);</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Postorder: visit the other part of the subtree, then subtree’s root. <img src="figs/PostorderTraversal.png" id="fig-postorder" class="img-fluid" style="width:75.0%" alt="Postorder"></li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">protected</span> <span class="dt">void</span> <span class="fu">postorderSubtree</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">,</span> <span class="bu">List</span><span class="op">&lt;</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;&gt;</span> <span class="kw">record</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>p<span class="op">.</span><span class="fu">left</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="fu">postorderSubtree</span><span class="op">(</span>p<span class="op">.</span><span class="fu">left</span><span class="op">,</span> <span class="kw">record</span><span class="op">);</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>p<span class="op">.</span><span class="fu">right</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="fu">postorderSubtree</span><span class="op">(</span>p<span class="op">.</span><span class="fu">right</span><span class="op">,</span> <span class="kw">record</span><span class="op">);</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">record</span><span class="op">.</span><span class="fu">add</span><span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Inorder (only for binary trees): visit left branch of the subtree, then subtree’s root, then the right branch of the subtree. <img src="figs/InorderTraversal.png" id="fig-inorder" class="img-fluid" style="width:75.0%" alt="Inorder"></li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">protected</span> <span class="dt">void</span> <span class="fu">inorderSubtree</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> p<span class="op">,</span> <span class="bu">List</span><span class="op">&lt;</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;&gt;</span> <span class="kw">record</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>p<span class="op">.</span><span class="fu">left</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="fu">inorderSubtree</span><span class="op">(</span>p<span class="op">.</span><span class="fu">left</span><span class="op">,</span> <span class="kw">record</span><span class="op">);</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">record</span><span class="op">.</span><span class="fu">add</span><span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>p<span class="op">.</span><span class="fu">right</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="fu">inorderSubtree</span><span class="op">(</span>p<span class="op">.</span><span class="fu">right</span><span class="op">,</span> <span class="kw">record</span><span class="op">);</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Breath first: visit the nodes level by level (visit siblings before the current subtree) <img src="figs/BreathFirst.png" id="fig-breath-first" class="img-fluid" style="width:75.0%" alt="Breath First"></p>
+<ul>
+<li>In order to achieve breath first traversal, we will use a LinkedListQueue data structure.</li>
+<li>The usage of queue structure is because the key idea of our traversal is first in, first out</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">protected</span> <span class="dt">void</span> <span class="fu">breathFirst</span><span class="op">(</span><span class="bu">List</span><span class="op">&lt;</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;&gt;</span> <span class="kw">record</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span><span class="fu">isEmpty</span><span class="op">())</span> <span class="op">{</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    LinkedListQueue<span class="op">&lt;</span><span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;&gt;</span> queue <span class="op">=</span> <span class="kw">new</span> LinkedListQueue<span class="op">&lt;&gt;();</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    queue<span class="op">.</span><span class="fu">enqueue</span><span class="op">(</span>root<span class="op">);</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(!</span>queue<span class="op">.</span><span class="fu">isEmpty</span><span class="op">())</span> <span class="op">{</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      <span class="bu">Node</span><span class="op">&lt;</span>E<span class="op">&gt;</span> current <span class="op">=</span> queue<span class="op">.</span><span class="fu">dequeue</span><span class="op">();</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      <span class="kw">record</span><span class="op">.</span><span class="fu">add</span><span class="op">(</span>current<span class="op">);</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>current<span class="op">.</span><span class="fu">left</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> queue<span class="op">.</span><span class="fu">enqueue</span><span class="op">(</span>current<span class="op">.</span><span class="fu">left</span><span class="op">);</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>current<span class="op">.</span><span class="fu">right</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> queue<span class="op">.</span><span class="fu">enqueue</span><span class="op">(</span>current<span class="op">.</span><span class="fu">right</span><span class="op">);</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+</section>
+<section id="binary-search-trees" class="level1">
+<h1>Binary Search Trees</h1>
+<ul>
+<li>Motivation: Search an item from an item collection where items are constantly added or removed. The following functionality will be implemented:
+<ul>
+<li><code>get(k)</code>: Returns the value <code>v</code> associated with key <code>k</code>, if such an entry exists; otherwise return <code>null</code>.</li>
+<li><code>insert(k,v)</code>: associates value <code>v</code> with key <code>k</code>, replacing and returning any existing value if the map already contains an entry with key equal to <code>k</code>.</li>
+<li><code>delete(k)</code>: removes the entry with key equal to <code>k</code>, if one exists, and returns its value; otherwise return <code>null</code>.</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="rem">
+<p>Why don’t we use heap or priority queue? - Using a heap, the function <code>get(k)</code> will be slow. - Using a priority queue, the function <code>insert(k,v)</code> and <code>delete(k)</code> will be slow.</p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Binary Search Tree (BST)
+<ul>
+<li>A <strong>binary search tree</strong> is a proper binary tree, where each internal position <code>p</code> stores a key-value pair <code>(k,v)</code> such that
+<ul>
+<li>Keys stored in the left subtree of <code>p</code> are less than <code>k</code>.</li>
+<li>Keys stored in the right subtree of <code>p</code> are greater than <code>k</code>.</li>
+</ul></li>
+<li>To ensure the tree is a proper binary tree, the external nodes are “dummy” (sentinel) nodes. They are fake notes (place-holder) that do not store any key-value pair.</li>
+</ul></li>
+</ul>
+<div id="fig-dummy-nodes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dummy-nodes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/DummyNodes.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dummy-nodes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Dummy Nodes
+</figcaption>
+</figure>
+</div>
+<ul>
+<li><p>Generally speaking, the time complexity to search for a key in a binary search tree is <span class="math inline">\(\mathcal{O}(h)\)</span>, where <span class="math inline">\(h\)</span> is the height of the tree.</p></li>
+<li><p>Implementing <code>treeSearch(p, k)</code></p>
+<ul>
+<li>The method will return the node containing key <code>k</code>.</li>
+<li>The idea is to start from the given node <code>p</code>, and then compare the key <code>k</code> with the key of the current node.</li>
+<li>If the key <code>k</code> is less than that of the current node, we will continue to search in the left subtree. (based on the property of BST)</li>
+<li>Otherwise, we will search the right subtree.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="bu">Node</span><span class="op">&lt;</span>Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;&gt;</span> <span class="fu">treeSearch</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;&gt;</span> p<span class="op">,</span> K key<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Base Cases:</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span><span class="fu">isExternal</span><span class="op">(</span>p<span class="op">))</span> <span class="cf">return</span> p<span class="op">;</span> <span class="co">// no such key since we are starting at a dummy node</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>p<span class="op">.</span><span class="fu">element</span><span class="op">.</span><span class="fu">k</span> <span class="op">==</span> key<span class="op">)</span> <span class="cf">return</span> p<span class="op">;</span> <span class="co">// found!</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Resursive Cases</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>comp<span class="op">.</span><span class="fu">compare</span><span class="op">(</span>p<span class="op">.</span><span class="fu">element</span><span class="op">.</span><span class="fu">k</span><span class="op">,</span> key<span class="op">)</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">treeSearch</span><span class="op">(</span>p<span class="op">.</span><span class="fu">left</span><span class="op">,</span> key<span class="op">);</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">treeSearch</span><span class="op">(</span>p<span class="op">.</span><span class="fu">right</span><span class="op">,</span> key<span class="op">);</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Implementing <code>insert(k, v)</code></p>
+<ul>
+<li>The method will insert the key-value pair <code>(k,v)</code> into the tree. If the key already exists, the value will be replaced.</li>
+<li>The idea is to first determine the position to insert the key-value pair. So, we will use the <code>treeSearch</code> method to find the position.</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">insert</span><span class="op">(</span>K key<span class="op">,</span> V value<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Step 1: find the node</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">Node</span><span class="op">&lt;</span>Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;&gt;</span> p <span class="op">=</span> <span class="fu">treeSearch</span><span class="op">(</span>root<span class="op">,</span> key<span class="op">);;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Step 2: operate on the node depending on the result</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span><span class="fu">isExternal</span><span class="op">(</span>p<span class="op">))</span> <span class="op">{</span> <span class="co">// Situation 1: the key is found</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  p<span class="op">.</span><span class="fu">element</span><span class="op">.</span><span class="fu">v</span> <span class="op">=</span> value<span class="op">;</span> <span class="co">// replace the value</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span> <span class="co">// Situation 2: the key is not found, and we are at a dummy node</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  p<span class="op">.</span><span class="fu">element</span> <span class="op">=</span> <span class="kw">new</span> Entry<span class="op">&lt;&gt;(</span>key<span class="op">,</span> value<span class="op">);</span> <span class="co">// insert the key-value pair</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// udpate the left child</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addLeft</span><span class="op">(</span>p<span class="op">,</span> <span class="kw">null</span><span class="op">);</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// update the right child</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addRight</span><span class="op">(</span>p<span class="op">,</span> <span class="kw">null</span><span class="op">);</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Implementing <code>delete(k)</code></p>
+<ul>
+<li>The method will remove the key-value pair <code>(k,v)</code> from the tree and return the value corresponding to the key <code>k</code>.</li>
+<li>If the key is not found, the method will return <code>null</code>.</li>
+<li>There are three possible conditions of the node <code>p</code>:
+<ul>
+<li><code>p</code> is a leaf node: we can simply remove the node.</li>
+<li><code>p</code> has only one child: we can remove the node and replace it with its child.</li>
+<li><code>p</code> has two children:
+<ul>
+<li>Step 1: Find the node with key being closest to the target node: rightmost node of left-subtree (or leftmost node of right-subtree).</li>
+<li>Step 2: Replace the target node with the node with the closest key.</li>
+<li>Step 3: Delete the original place of the node with the closest key via the remove operation. ```java public void deleteHelper(Node&lt;Entry&lt;K,V&gt;&gt; p) { Node&lt;Entry&lt;K,V&gt;&gt; leaf = (isExternal(p.left) ? p.left : p.right); remove(leaf); remove(p); }</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<p>public Node&lt;Entry&lt;K,V&gt;&gt; treeMax(Node&lt;Entry&lt;K,V&gt;&gt; p) { if (isExternal(p.right)) return p; else treeMax(p.right); }</p>
+<p>public void delete(K key) { Node&lt;Entry&lt;K,V&gt;&gt; p = treeSearch(root, key); if (isInternal(p)) { if (isExternal(p.left) || isExternal(p.right)) { // Situation 1: p is a leaf node // Situation 2: p has only one child deleteHelper(p); } else { // Situation 3: p has two children // find the rightmost node in the left subtree Node&lt;Entry&lt;K,V&gt;&gt; replacement = treeMax(p.left); // replace p.element = replacement.element; // remove deleteHelper(replacement); } } }</p>
+<pre><code>- Time complexity in terms of $h$, the height of the tree
+
+| Method | Time Complexity |
+|:---:|:---:|
+|`treeSearch(p, k)`| $\mathcal{O}(h)$ |
+|`insert(k, v)`| $\mathcal{O}(h)$ |
+|`delete(k)`| $\mathcal{O}(h)$ |
+  
+  - However, when the tree structure is different, the relationship between $h$ and $n$ (the number of nodes) is different. 
+    - The worst case time complexity of the `delete` method is $\mathcal{O}(n)$, where $n$ is the number of nodes in the tree.
+    - The best case time complexity of the `delete` method is $\mathcal{O}(h)=\mathcal{O}(\log n)$, where $h$ is the height of the tree.
+- Rebalance Trees: 
+  
+![Rebalance Trees](figs/RebalanceTree.png){#fig-rebalance-trees width=75%}
+
+- The basic operation for rebalancing is `rotate()`.
+  - Step 1: Link `b`'s parent as `a`'s parent.  
+  - Step 2:
+    - Relink `a` as `b`'s parent
+    - Relink `a`'s child as `b`'s child. 
+  ![Rotate](figs/TreeRotation.png){#fig-rotate width=75%}
+```java
+protected void relink(Node&lt;Entry&lt;K,V&gt;&gt; parent, Node&lt;Entry&lt;K,V&gt;&gt; child, boolean makeLeftChild) {
+  child.parent = parent;
+  if (makeLeftChild) parent.left = child;
+  else parent.right = child;
+}
+
+public void rotate(Node&lt;Entry&lt;K,V&gt;&gt; p) {
+  // We assue node a has parent as otherwise it is trivial to handle by wrapper. 
+  Node&lt;Entry&lt;K,V&gt;&gt; q = p.parent;
+  Node&lt;Entry&lt;K,V&gt;&gt; grandparent = q.parent;
+  if (grandparent == null) {
+    // Corner case: parent is root
+    root = p;
+    p.parent = null;
+  } else {
+    // Step 1
+    relink(grandparent, p, q == grandparent.left);
+  }
+  // Step 2
+  if (p == q.left) {
+    relink(q, p.right, true);
+    relink(p, q, false);
+  } else {
+    relink(q, p.left, false);
+    relink(p, q, true);
+  }
+}</code></pre>
+<ul>
+<li>When we are handling trinode resturction, there are two possible cases:
+<ul>
+<li>Single rotation <img src="figs/SingleRotation.png" id="fig-single-rotation" class="img-fluid" style="width:75.0%" alt="Single Rotation"></li>
+<li>Double rotation <img src="figs/DoubleRotation.png" id="fig-double-rotation" class="img-fluid" style="width:75.0%" alt="Double Rotation"></li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="bu">Node</span><span class="op">&lt;</span>Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;&gt;</span> <span class="fu">restructure</span><span class="op">(</span><span class="bu">Node</span><span class="op">&lt;</span>Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;&gt;</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">// We assume node x has parent adn grandparent as otherwise it is trivial to handle by wrapper.</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">// x will be the lowest node in trinodes.</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">Node</span><span class="op">&lt;</span>Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;&gt;</span> parent <span class="op">=</span> p<span class="op">.</span><span class="fu">parent</span><span class="op">;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="bu">Node</span><span class="op">&lt;</span>Entry<span class="op">&lt;</span>K<span class="op">,</span>V<span class="op">&gt;&gt;</span> grandparent <span class="op">=</span> parent<span class="op">.</span><span class="fu">parent</span><span class="op">;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">((</span>grandparent<span class="op">.</span><span class="fu">left</span> <span class="op">==</span> parent<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">(</span>parent<span class="op">.</span><span class="fu">left</span> <span class="op">==</span> p<span class="op">)</span> <span class="op">||</span> <span class="op">(</span>grandparent<span class="op">.</span><span class="fu">right</span> <span class="op">==</span> parent<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">(</span>parent<span class="op">.</span><span class="fu">right</span> <span class="op">==</span> p<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rotate</span><span class="op">(</span>parent<span class="op">);</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> parent<span class="op">;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rotate</span><span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rotate</span><span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> p<span class="op">;</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Created with <a href="https://quarto.org/">Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 May 5.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs253/4 Trees and Binary Search Trees.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs253/4 Trees and Binary Search Trees.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jiuru-lyu/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JrLyu">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="mailto:jiuru.lyu@emory.edu">
+      <i class="bi bi-envelope" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+    <script type="text/javascript">
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let pseudocodeOptions = {
+          indentSize: el.dataset.indentSize || "1.2em",
+          commentDelimiter: el.dataset.commentDelimiter || "//",
+          lineNumber: el.dataset.lineNumber === "true" ? true : false,
+          lineNumberPunc: el.dataset.lineNumberPunc || ":",
+          noEnd: el.dataset.noEnd === "true" ? true : false,
+          titlePrefix: el.dataset.captionPrefix || "Algorithm"
+        };
+        pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
+      });
+    })(document);
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let captionSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        if (captionSpan !== null) {
+          let captionPrefix = el.dataset.captionPrefix + " ";
+          let captionNumber = "";
+          if (el.dataset.pseudocodeNumber) {
+            captionNumber = el.dataset.pseudocodeNumber + " ";
+            if (el.dataset.chapterLevel) {
+              captionNumber = el.dataset.chapterLevel + "." + captionNumber;
+            }
+          }
+          captionSpan.innerHTML = captionPrefix + captionNumber;
+        }
+      });
+    })(document);
+    </script>
+  
+
+
+
+
+</body></html>

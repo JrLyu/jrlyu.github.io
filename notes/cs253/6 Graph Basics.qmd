@@ -1,0 +1,166 @@
+---
+title: "6 Graph Basics"
+description: "This lecture introduces the basics of graph theory."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 05-14-2024
+categories: [Coding, Java, Data Structure, Graph]
+draft: false
+callout-appearance: simple
+---
+
+# Introduction to Graphs
+- Motivation: DAG are effective abstraction of many real-world problems (Köningberg Bridge Problem)
+  - Advantage 1: Removing irrelevant information for easier analysis.
+  - Advantage 2: Getting general rules across any applications.
+  - Some applications of graph (graphs are ubiquitous):
+    - Molecular structure
+    - Protein
+    - Brain network
+    - Social network
+    - Road network
+    - Integrated circuit
+
+:::{.callout-note}
+:::{#def-dag}
+***DAG*** is a pair of sets $(V, E)$, where $V$ is a set of vertices and $E$ is a set of edges, each edge is a pair of vertices.
+:::
+:::
+
+- **Undirected graph**: An edge is a set of two vertices.
+    - An edge between two vertices is denoted as `(“an endpoint”, “the other endpoint”)`
+    - An edge between Vertices 0 and 1 is denoted as: `(0,1)`
+- **Directed graph**: An edge is an ordered pair of vertices.
+![Directed DAG](figs/DirectedGraph.png){#fig-directed-dag width=75%}
+    - An directed edge from an origin vertex to a destination vertex is denoted as: `(origin, destination)`. 
+    - An edge from Vertex 0 to Vertex 1 is denoted as: `(0,1)`
+    - An edge from Vertices 2 to 0 is denoted as: `(2,0)`
+- **Weighted graph**: Each edge has a weight.
+![Weighted DAG](figs/WeightedGraph.png){#fig-weighted-dag width=75%}
+    - An edge with weight from Vertex 0 to Vertex 1 is denoted as: `(0,1,3)`
+    - A weighted edge between Vertices 2 and 0 is denoted as: `(2,0,4)`
+- Representing an undirected graph with a directed graph:
+![Undirected to Directed DAG](figs/UndirectedGraph.png){#fig-undirected-to-directed-dag width=75%}
+
+:::{.callout-note}
+:::{#def-circle}
+A ***circle*** is a path that starts and ends at the same vertex. If there is no circle in a graph, it is called an ***acyclic graph***.
+
+![Circle](figs/Circle.png){#fig-circle width=75%}
+:::
+:::
+
+- Real world example of acyclic graph: CS 253 knowledge dependency graph
+
+:::{.callout-note}
+:::{#def-connected}
+An undirected graph is ***connected*** if, for any two vertices, there is a path between them.
+
+![Connectivity](figs/Connectivity.png){#fig-connected width=75%}
+:::
+:::
+
+- A ***tree*** is a connected acyclic graph.
+    ![Tree](figs/Tree.png){#fig-tree width=75%}
+- A ***forest*** is a collection of trees.
+    ![Forest](figs/Forest.png){#fig-forest width=75%}
+
+:::{.callout-note}
+:::{#def-subgraph}
+A graph $G'=(V',E')$ whose vertices and edges are subsets of the vertices and edges of $G=(V,E)$, such that $V' \subseteq V$ and $E' \subseteq E$, is called a ***subgraph*** of $G$.
+
+![Subgraph](figs/Subgraph.png){#fig-subgraph width=75%}
+
+*Note that a graph itself is a subgraph of itself.*
+:::
+:::
+
+- A ***spanning subgraph*** of a graph $G$ is a subgraph that contains all the vertices of $G$.
+    ![Spanning Subgraph](figs/SpanningSubgraph.png){#fig-spanning-subgraph width=75%}
+    - Suppose $G'=(V',E')$ is a spanning subgraph of $G=(V,E)$, then it must be that $V'=V$ and $E' \subseteq E$.
+- A tree $T=(V',E')$ whose vertices are all the vertices of $G$ and edges are a subset of the edges of $G$ is called a ***spanning tree*** of $G$.
+    ![Spanning Tree](figs/SpanningTree.png){#fig-spanning-tree width=75%}
+    - Suppose $T=(V',E')$ is a spanning tree of $G=(V,E)$, then it must be that $V'=V$ and $E' \subseteq E$. 
+    - Moreover, $T$ must be a tree.
+
+:::{.callout-note}
+:::{#def-degree}
+- In an undirected graph The ***degree*** of a vertex is the number of edges incident to it. We denote the degree of a vertex $v$ as $d(v)$.
+- In a directed graph, the ***in-degree*** of a vertex is the number of edges that point to it, and the ***out-degree*** of a vertex is the number of edges that point from it.
+:::
+:::
+
+- Java implementatin of a graph: 
+
+
+# DAG Traversal
+:::{.callout-note}
+:::{#def-path}
+A ***path*** is a sequence of distinct edges which joins a sequence of distinct vertices.
+A closed path is called a ***cycle***.
+:::
+:::
+- In directed graph, the edge in a path follows the same direction.
+
+:::{.callout-note}
+:::{#def-reachable}
+We say that $u$ ***reaches*** $v$ (aka. $v$ is ***reachable*** from $u$) if there is a path from $u$ to $v$.
+:::
+:::
+
+:::{.callout-note}
+:::{#def-connectedness}
+- An undirected graph is ***connected*** if, for any two vertices, there is a path between them.
+- A directed graph is ***strongly connected*** if, for any two vertices $u$ and $v$, $u$ reaches $v$ and $v$ reaches $u$.
+- A directed graph is ***weakly connected*** if replacing all of its directed edges with undirected edges produces a connected (undirected) graph. 
+![Directed DAG Connectivity](figs/DirectedGraphConnectivity.png){#fig-directed-dag-connectivity width=75%}
+:::
+:::
+
+- Relation between vertex degree and number of edges.
+  - Let $m$ be the number of edges and $n$ be the number of vertices.
+  - In undirected graph, sum of degrees of all vertices is $2m$.
+    - $0\leq m\leq\dfrac{n(n-1)}{2}=\mathcal{O}(n^2)$
+  - In directed graph, sum of out-degree of all vertices = sum of in-degree of all vertices = $m$.
+    - $0\leq m\leq n(n-1)=\mathcal{O}(n^2)$
+
+:::{.callout-note}
+:::{#def-dag-traversal}
+***DAG traversal*** is A systematic procedure for exploring a graph by examining all of its vertices and edges.
+:::
+:::
+
+- We will discuss two graph traversal algorithms:
+  - Breadth-first search (BFS): explore all the neighbors of a vertex before moving on to the next level of neighbors. We visit vertices **level by level**.
+  - Depth-first search (DFS): Explore the graph by going as deep as possible along each branch before backtracking.
+![DAG Traversal Overview](figs/GraphTraversalOverview.png){#fig-dag-traversal-overview width=75%}
+
+- DFS: 
+  ![DFS Overview](figs/DFSOverview.png){#fig-dfs-overview width=75%}
+  - Algorithm Overview
+```
+Algorithm DFS(u):
+    for each u's outgoing edges e=(u,v), do {
+        if v is not visited, then {
+            record vertex v and its discovery edge e.
+            Recursively call DFS(v).
+        }
+    }
+```
+
+- BFS: 
+ ![BFS Overview](figs/BFS.png){#fig-bfs-overview width=75%}
+  - Algorithm Overview
+```
+Algorithm BFS(u)
+    initialize a recorder of visited vertices
+    for each level of vertices as long as nonempty {
+        for each vertex in the current level {
+            for each unvisited neighbor of current vertex {
+                add into recorder
+                add all its neighbors into next level
+            }
+        }
+    }
+```

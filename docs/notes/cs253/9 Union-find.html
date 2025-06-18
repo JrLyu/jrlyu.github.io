@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jiuru Lyu">
+<meta name="dcterms.date" content="2024-05-17">
+<meta name="description" content="This lecture introduces the Union-Find data structure, which efficiently supports dynamic connectivity operations in graphs.">
 
-<title>Class Notes –  Jiuru Lyu</title>
+<title>9 Union-Find –  Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,27 +26,27 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href=".//media/favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script src="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
-<link href="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../..//media/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,8 +143,37 @@ window.MathJax = {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Noto+Serif+TC:wght@200..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -151,8 +183,8 @@ window.MathJax = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title"><img src="./media/icon.png" alt="JL logo" style="height: 50px; margin-right: 8px;"> Jiuru Lyu</span>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title"><img src="../../media/icon.png" alt="JL logo" style="height: 50px; margin-right: 8px;"> Jiuru Lyu</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -162,7 +194,7 @@ window.MathJax = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -171,15 +203,15 @@ window.MathJax = {
     </span>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./notes.html" aria-current="page"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./photo.html"> 
+    <a class="nav-link" href="../../photo.html"> 
 <span class="menu-text">Photograph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blogs.html"> 
+    <a class="nav-link" href="../../blogs.html"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
 </ul>
@@ -204,26 +236,47 @@ window.MathJax = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#high-school-level-math" id="toc-high-school-level-math" class="nav-link active" data-scroll-target="#high-school-level-math">High School Level Math</a></li>
-  <li><a href="#college-level-math" id="toc-college-level-math" class="nav-link" data-scroll-target="#college-level-math">College Level Math</a></li>
-  <li><a href="#computer-science" id="toc-computer-science" class="nav-link" data-scroll-target="#computer-science">Computer Science</a></li>
-  <li><a href="#other-fields" id="toc-other-fields" class="nav-link" data-scroll-target="#other-fields">Other Fields</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#union-find-data-type" id="toc-union-find-data-type" class="nav-link" data-scroll-target="#union-find-data-type">Union-Find Data Type</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs253/9 Union-find.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs253/9 Union-find.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Class Notes</h1>
-</div>
+<h1 class="title">9 Union-Find</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Coding</div>
+    <div class="quarto-category">Java</div>
+    <div class="quarto-category">Algorithm</div>
+    <div class="quarto-category">Union-Find</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    This lecture introduces the Union-Find data structure, which efficiently supports dynamic connectivity operations in graphs.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://jrlyu.github.io/">Jiuru Lyu</a> </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 17, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -233,66 +286,178 @@ window.MathJax = {
 </header>
 
 
-<section id="high-school-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="high-school-level-math">High School Level Math</h3>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-dynamic-connectivity" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1</strong></span> An undirected graph is <strong><em>connected</em></strong> if, for any two vertices, there is a path between them.</p>
 <ul>
-<li><a href="./notes/IBMath.html">IB Math AA HL Notes</a></li>
+<li><strong><em>Connected components</em></strong>: maximal connected subgraphs.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Dynamic Connectivity Problem
+<ul>
+<li>Given a set of <span class="math inline">\(n\)</span> nodes (vertices), support two operations:
+<ul>
+<li><strong><em>Find</em></strong>: Tell if two vertices have path(s) to each other. i.e., if they are in the same component.</li>
+<li><strong><em>Union</em></strong>: if two vertices are in different components, merge them into one component.</li>
+</ul></li>
+</ul></li>
+<li>Applications of dynamic connectivity problem:
+<ul>
+<li>Identify if a pair of “nodes” are connected via a path; if not, we can make them connected.</li>
+<li>The “nodes” can be:
+<ul>
+<li>Computers in a network</li>
+<li>Pixels in a digital image</li>
+<li>Friends in a social network</li>
+<li>Transistors in a computer chip</li>
+<li>Elements in a mathematical set</li>
+<li>Variable names in a Fortran program</li>
+<li>etc.</li>
+</ul></li>
+</ul></li>
+<li>If we use graph, there are some challenges to solve the dynamic connectivity problem:
+<ul>
+<li>The time complexity of graph traversal is <span class="math inline">\(O(m+n)\)</span>, which is too slow for large graphs.</li>
+<li>Since the graph is changing, we need to re-traverse it every time.</li>
+</ul></li>
 </ul>
 </section>
-<section id="college-level-math" class="level3">
-<h3 class="anchored" data-anchor-id="college-level-math">College Level Math</h3>
-<section id="math-fundamentals" class="level4">
-<h4 class="anchored" data-anchor-id="math-fundamentals">Math Fundamentals</h4>
+<section id="union-find-data-type" class="level1">
+<h1>Union-Find Data Type</h1>
 <ul>
-<li><a href="./notes/Calc2.html">Calculus II</a></li>
-<li><a href="./notes/Calc3.html">Multivariable Calculus/Advanced Calculus/Calculus III</a></li>
-<li><a href="./notes/LA.html">Linear Algebra</a></li>
-<li><a href="./notes/Proofs.html">Mathematical Proofs</a></li>
-<li><a href="./notes/ProofPractice.html">Proof Practice</a></li>
+<li>In the union-find data type, we implement the following two operations:
+<ul>
+<li><code>find(p)</code>: return the component containing the node <code>p</code>.</li>
+<li><code>union(p, q)</code>: merge the components containing nodes <code>p</code> and <code>q</code>.</li>
+</ul></li>
+<li>Goal: design efficient data structure for union-find.
+<ul>
+<li>Number of nodes (vertices) <span class="math inline">\(n\)</span> can be huge.</li>
+<li>Number of union and find operations <span class="math inline">\(k\)</span> can be huge.</li>
+<li>Union and find operations may be intermixed. Namely, we want:
+<ul>
+<li>Usually, we first tell if <code>p</code> and <code>q</code> are from the same component by calling <code>find(p)</code> and <code>find(q)</code>.</li>
+<li>If they are not, we call <code>union(p, q)</code> to merge their components.</li>
+</ul></li>
+</ul></li>
+<li>A further note on the data structure is that:
+<ul>
+<li>Each vertex records the identity of the component</li>
+<li>The identity can be used to locate the component</li>
+<li>When performing “union”, update each vertex’s records of their component.</li>
+</ul></li>
+<li>The simplest structure is to use a sequence (e.g., a list, a map) for each component.
+<ul>
+<li><code>find(p)</code>: <span class="math inline">\(\mathcal{O}(1)\)</span> <img src="./figs/FindHashMap.png" id="fig-find-hash-map" class="img-fluid" style="width:75.0%" alt="Find Hash Map"></li>
+<li><code>union(p, q)</code>: <span class="math inline">\(\mathcal{O}(n_\text{small})\)</span>, <span class="math inline">\(n_\text{small}\)</span> is the size of the smaller component.
+<ul>
+<li>Step 1: identify two nodes from different components <img src="./figs/UnionHashMap1.png" id="fig-union-hash-map-step1" class="img-fluid" style="width:75.0%" alt="Union Hash Map Step 1"></li>
+<li>Step 2: merge the two components (move all nodes from the smaller component to the larger one) <img src="./figs/UnionHashMap2.png" id="fig-union-hash-map2" class="img-fluid" style="width:75.0%" alt="Union Hash Map Step 2"></li>
+</ul></li>
+</ul></li>
+<li>Amortized time complexity of “union-find”:
+<ul>
+<li>A union-find operation <code>union-find(p, q)</code>:
+<ul>
+<li><code>find</code> operation: Tell if <code>p</code> and <code>q</code> are from the same component by calling <code>find(p)</code> and <code>find(q)</code>.</li>
+<li><code>union</code> operation: If they are not in the same component, we call <code>union(p, q)</code> to merge their components.</li>
+</ul></li>
+<li>What is the time complexity for executing <code>union-find</code> for <span class="math inline">\(k\)</span> times?
+<ul>
+<li>Time complexity of <span class="math inline">\(k\)</span> <code>find</code> operations: <span class="math inline">\(\mathcal{O}(k)\)</span>.</li>
+<li>Time complexity of <span class="math inline">\(k\)</span> <code>union</code> operations: <span class="math inline">\(\mathcal{O}(n\log n)\)</span>.
+<ul>
+<li><span class="math inline">\((\text{maximial number of ``moves'' for each vertex})\times(\text{number of vertices})\)</span></li>
+<li><span class="math inline">\((\text{maximial number of ``moves'' for each vertex})=\mathcal{O}(\log n)\)</span>: a vertex can only be moved at most <span class="math inline">\(\log n\)</span> times, as each time a vertex move, its component’s size (at least) doubles until <span class="math inline">\(n\)</span>.</li>
+<li><span class="math inline">\((\text{number of vertices})=\mathcal{O}(n)\)</span>.</li>
+<li>Hence, <code>union</code> is <span class="math inline">\(\mathcal{O}(n)\)</span> for each operation and <span class="math inline">\(\mathcal{O}(n\log n)\)</span> for <span class="math inline">\(k\)</span> operations.</li>
+</ul></li>
+<li>Hence, <code>union</code> is very time-consuming due to many “moves”. Can we avoid many “moves?”</li>
+</ul></li>
+</ul></li>
+<li>An alternative data structure to implement union-find: tree structure: a naïve implementation <img src="./figs/NaiveTreeUnionFind.png" id="fig-NaiveTreeUnionFind" class="img-fluid" style="width:75.0%" alt="Naive Tree Union Find">
+<ul>
+<li>We can further simplify the tree structure by using the root to represent the component.
+<ul>
+<li>In this case, we use a <strong>self-loop</strong>: that is, the root points to itself. <img src="./figs/SelfLoopUnionFind.png" id="fig-SelfLoopUnionFind" class="img-fluid" style="width:75.0%" alt="Self Loop Union Find">
+<ul>
+<li><code>find(p)</code>: will simply be to trace back to the root from <code>p</code>.</li>
 </ul>
-</section>
-<section id="applied-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="applied-mathematics">Applied Mathematics</h4>
+<pre><code>Algorithm find(p):
+    if not yet reached the root:
+        return find(parent of p);
+    else: 
+        return parent of p;</code></pre></li>
+<li>At this time, the time complexity of <code>union</code> is <span class="math inline">\(\mathcal{O}(1)\)</span>.</li>
+<li>However, the time complexity of <code>find</code> is <span class="math inline">\(\mathcal{O}(\text{depth})\)</span>.</li>
+</ul></li>
+<li>To reduce the time complexity of <code>find</code>, we can reduce the <span class="math inline">\(\text{depth}\)</span> of the tree.
 <ul>
-<li><a href="./notes/ODE.html">Ordinary Differential Equations</a></li>
-<li><a href="./notes/NonlinearOpt.html">Nonlinear Optimization</a></li>
-<li><a href="./notes/NA1.html">Undergraduate-Level Numerical Analysis</a></li>
-<li><a href="./notes/NumericalDEs.html">Numerical ODEs and PDEs</a></li>
-<li><a href="./notes/NA2.html">PhD-Level Numerical Analysis I (Numerical Linear Algebra)</a></li>
-<li><a href="./notes/NA3.html">PhD-Level Numerical Analysis II</a></li>
+<li>We will use a technique of <strong>path compression</strong>. <img src="./figs/PathCompressionUnionFind.png" id="fig-PathCompressionUnionFind" class="img-fluid" style="width:75.0%" alt="Path Compression Union Find">
+<ul>
+<li><code>find(p)</code>: will be to trace back to the root from <code>p</code>, and let the root to be the parent of all the traversed nodes.</li>
 </ul>
-</section>
-<section id="pure-mathematics" class="level4">
-<h4 class="anchored" data-anchor-id="pure-mathematics">Pure Mathematics</h4>
+<pre><code>Algorithm find(p):
+    if not yet reached the root:
+        parent of p &lt;- find(parent of p);
+    else: 
+        return parent of p;</code></pre></li>
+<li>Now, the time complexity of <code>find</code> is <span class="math inline">\(\mathcal{O}(\text{depth}')\)</span>, and we know <span class="math inline">\(\text{depth}'\)</span> is much smaller than <span class="math inline">\(\text{depth}\)</span>.</li>
+</ul></li>
+</ul></li>
+<li>Time complexity of union-find by path compression
 <ul>
-<li><a href="./notes/LADR.html">Linear Algebra Done Right</a></li>
-<li><a href="./notes/RealAnalysis.html">Real Analysis</a></li>
-</ul>
-</section>
-<section id="data-science-statistics-and-causal-inference" class="level4">
-<h4 class="anchored" data-anchor-id="data-science-statistics-and-causal-inference">Data Science, Statistics, and Causal Inference</h4>
+<li><p>We conduct <span class="math inline">\(k\)</span> series of <code>union-find</code> operations in a graph with <span class="math inline">\(n\)</span> vertices.</p>
 <ul>
-<li><a href="https://jrlyu.github.io/qtm110.io/">Introduction to Causal Inference</a></li>
-<li><a href="https://jrlyu.github.io/google_analytics.io/">Google Data Analytics Learning Notes</a></li>
-<li><a href="./notes/Probability.html">Mathematical Statistics – Propability Theory</a></li>
-<li><a href="./notes/Inference.html">Mathematical Statistics – Statistical Inference</a></li>
-<li>Causal Designs and Inference</li>
-<li><a href="./notes/cs334.html">Machine Learning</a></li>
-</ul>
-</section>
-</section>
-<section id="computer-science" class="level3">
-<h3 class="anchored" data-anchor-id="computer-science">Computer Science</h3>
+<li>Each time find if the current pair of vertices are in the same component.</li>
+<li>If not, then we union them into the same component.</li>
+</ul></li>
+<li><p>The amortized time complexity of <span class="math inline">\(k\)</span> series of <code>union-find</code> operations: <span class="math inline">\(\mathcal{O}(k\log^* n)\)</span>, where <span class="math inline">\(\log^*n\)</span>= log-star <span class="math inline">\(n\)</span>, the inverse of the tower-of-twos function.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">minimum <span class="math inline">\(n\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(2\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(2^2=4\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(2^{2^2}=16\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(2^{2^{2^2}}=65,536\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(2^{2^{2^{2^2}}}=2^65,536\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\log^*n\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(4\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(5\)</span></td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li><a href="./notes/cs171.html">Object-Oriented Programming &amp; Introduction to Data Structures</a></li>
-<li><a href="./notes/cs253.html">Introduction to Data Structure and Algorithms</a></li>
-<li><a href="./notes/cs377.html">Database Systems</a></li>
-</ul>
-</section>
-<section id="other-fields" class="level3">
-<h3 class="anchored" data-anchor-id="other-fields">Other Fields</h3>
-<ul>
-<li><a href="https://jrlyu.github.io/intro_to_socio.io/">Introduction to Sociology</a></li>
+<li>This time complexity function is very slow-growing, and we can consider it as the constant time complexity. That is, <span class="math inline">\(\mathcal{O}(k\log^* n)\sim\mathcal{O}(1)\)</span>.</li>
+</ul></li>
+</ul></li>
 </ul>
 
 
@@ -868,7 +1033,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/notes/cs253/9 Union-find.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/notes/cs253/9 Union-find.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
