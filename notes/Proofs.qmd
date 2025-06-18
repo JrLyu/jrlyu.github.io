@@ -1,11 +1,16 @@
 ---
-title: "IB Math AA HL Notes"
+title: "Mathematical Proofs"
 ---
 
-## Class Notes
+<p>
+  <a href="pdf/Proofs.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/Proofs.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
 
-<embed src="pdf/Mathematical Proofs.pdf" width="800px" height="800px" />
-
-## Proof Practice
-
-<embed src="pdf/Proof Practice.pdf" width="800px" height="800px" />
+<div class="responsive-pdf">
+  <iframe src="pdf/Proofs.pdf" frameborder="0"></iframe>
+</div>

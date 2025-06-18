@@ -60,7 +60,7 @@
     "href": "notes/Calc3.html",
     "title": "Multivariable Calculus/Calculus 3",
     "section": "",
-    "text": "Back to top"
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
   },
   {
     "objectID": "notes/NumericalAnalysis2.html",
@@ -74,7 +74,7 @@
     "href": "notes/ODE.html",
     "title": "Ordinary Differential Equations",
     "section": "",
-    "text": "Back to top"
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
   },
   {
     "objectID": "notes/cs377/05-sql-set-operations/05-SQL-Set-Operations.html",
@@ -130,7 +130,7 @@
     "href": "notes/Calc2.html",
     "title": "Calculus 2",
     "section": "",
-    "text": "Back to top"
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
   },
   {
     "objectID": "notes/cs334.html",
@@ -158,7 +158,7 @@
     "href": "notes.html",
     "title": "Class Notes",
     "section": "",
-    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\nNumerical ODEs and PDEs\nPhD-Level Numerical Analysis I (Numerical Linear Algebra)\nPhD-Level Numerical Analysis II\n\n\n\nPure Mathematics\n\nReal Analysis\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nGoogle Data Analytics Learning Notes\nMathematical Statistics\nCausal Designs and Inference\nMachine Learning\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\nDatabase Systems\n\n\n\nOther Fields\n\nIntroduction to Sociology\n\n\n\n\n\n Back to top"
+    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\nProof Practice\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\nNumerical ODEs and PDEs\nPhD-Level Numerical Analysis I (Numerical Linear Algebra)\nPhD-Level Numerical Analysis II\n\n\n\nPure Mathematics\n\nLinear Algebra Done Right\nReal Analysis\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nGoogle Data Analytics Learning Notes\nMathematical Statistics – Propability Theory\nMathematical Statistics – Statistical Inference\nCausal Designs and Inference\nMachine Learning\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\nDatabase Systems\n\n\n\nOther Fields\n\nIntroduction to Sociology\n\n\n\n\n\n Back to top"
   },
   {
     "objectID": "index.html",
@@ -368,7 +368,7 @@
     "href": "notes/RealAnalysis.html",
     "title": "Real Analysis",
     "section": "",
-    "text": "Back to top"
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
   },
   {
     "objectID": "index.html#education",
@@ -621,5 +621,138 @@
     "title": "PhD-Level Numerical Analysis II",
     "section": "",
     "text": "Back to top"
+  },
+  {
+    "objectID": "notes/IBMath.html",
+    "href": "notes/IBMath.html",
+    "title": "IB Math AA HL Notes",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/LA.html",
+    "href": "notes/LA.html",
+    "title": "Linear Algebra",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/LADR.html",
+    "href": "notes/LADR.html",
+    "title": "Linear Algebra Done Right",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/MathStats.html#statistical-inference",
+    "href": "notes/MathStats.html#statistical-inference",
+    "title": "Mathematical Statistics – Probability Theory",
+    "section": "Statistical Inference",
+    "text": "Statistical Inference"
+  },
+  {
+    "objectID": "notes/Prob.html#statistical-inference",
+    "href": "notes/Prob.html#statistical-inference",
+    "title": "Mathematical Statistics – Probability Theory",
+    "section": "Statistical Inference",
+    "text": "Statistical Inference"
+  },
+  {
+    "objectID": "notes/Prob copy.html#statistical-inference",
+    "href": "notes/Prob copy.html#statistical-inference",
+    "title": "Mathematical Statistics – Probability Theory",
+    "section": "Statistical Inference",
+    "text": "Statistical Inference"
+  },
+  {
+    "objectID": "notes/Prob.html",
+    "href": "notes/Prob.html",
+    "title": "Mathematical Statistics – Probability Theory",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/Inference.html#statistical-inference",
+    "href": "notes/Inference.html#statistical-inference",
+    "title": "Mathematical Statistics – Statistical Inference",
+    "section": "Statistical Inference",
+    "text": "Statistical Inference"
+  },
+  {
+    "objectID": "notes/Inference.html",
+    "href": "notes/Inference.html",
+    "title": "Mathematical Statistics – Statistical Inference",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/NonlinearOpt.html",
+    "href": "notes/NonlinearOpt.html",
+    "title": "Nonlinear Optimization",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/NumericalDEs.html",
+    "href": "notes/NumericalDEs.html",
+    "title": "Numerical ODEs and PDEs",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/NA2.html",
+    "href": "notes/NA2.html",
+    "title": "PhD-Level Numerical Analysis I (Numerical Linear Algebra)",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/NA3.html",
+    "href": "notes/NA3.html",
+    "title": "PhD-Level Numerical Analysis II",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/NA1.html",
+    "href": "notes/NA1.html",
+    "title": "Undergraduate-Level Numerical Analysis",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/ProofPractice.html#proof-practice",
+    "href": "notes/ProofPractice.html#proof-practice",
+    "title": "Proof Practice",
+    "section": "Proof Practice",
+    "text": "Proof Practice"
+  },
+  {
+    "objectID": "notes/ProofPractice.html",
+    "href": "notes/ProofPractice.html",
+    "title": "Proof Practice",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/Probability.html",
+    "href": "notes/Probability.html",
+    "title": "Mathematical Statistics – Probability Theory",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/Proofs.html",
+    "href": "notes/Proofs.html",
+    "title": "Mathematical Proofs",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/cs171.html",
+    "href": "notes/cs171.html",
+    "title": "CS 171 Introduction to Computer Science II",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nLecture 1 Introduction & Review\n\n\n\n\n\n\nCoding\n\n\nJava\n\n\nAlgorithm\n\n\nOOP\n\n\nData Structure\n\n\n\nThis lecture introduces the purpose of studying algorithms and data structures. It also does some review on Java and its code basics.\n\n\n\n\n\nAug 29, 2023\n\n\nJiuru Lyu\n\n\n\n\n\n\n\n\n\n\n\n\nLecture 2 Objects and Classes\n\n\n\n\n\n\nCoding\n\n\nJava\n\n\nOOP\n\n\nObjects\n\n\nClass\n\n\n\nThis lecture introduces the concepts of OOP in Java.\n\n\n\n\n\nSep 7, 2023\n\n\nJiuru Lyu\n\n\n\n\n\n\n\n\n\n\n\n\nLecture 3 Packages\n\n\n\n\n\n\nCoding\n\n\nJava\n\n\nOOP\n\n\nPakcage\n\n\n\nBased on Objects and Classes, this lecture extends the idea and introduces Packages and how it works in Java.\n\n\n\n\n\nSep 16, 2023\n\n\nJiuru Lyu\n\n\n\n\n\n\n\n\n\n\n\n\nLecture 4 Inheritance and Polymorphism\n\n\n\n\n\n\nCoding\n\n\nJava\n\n\nOOP\n\n\nInhertiance\n\n\nPolymorphism\n\n\n\nThis lecture is a more detailed lecture on inheritance and polymorphism, two very essential concepts in OOP.\n\n\n\n\n\nSep 19, 2023\n\n\nJiuru Lyu\n\n\n\n\n\n\n\n\n\n\n\n\nLecture 5 Abstract Classes and Interfaces\n\n\n\n\n\n\nCoding\n\n\nJava\n\n\nOOP\n\n\nInterface\n\n\nAbstract Class\n\n\n\nThis lecture touches on abstract classes and extends it to interfaces. It also introduces Iterator and Iterable interfaces in Java and how to use them in practice. \n\n\n\n\n\nOct 4, 2023\n\n\nJiuru Lyu\n\n\n\n\n\n\n\n\n\n\n\n\nLecture 6 Generic Classes and Generic Methods\n\n\n\n\n\n\nCoding\n\n\nJava\n\n\nGenerics\n\n\n\nThis lecture discusses the use of generic class and generic methods in Java. It also touches on the use of generic classes in practice.\n\n\n\n\n\nOct 10, 2023\n\n\nJiuru Lyu\n\n\n\n\n\n\n\n\n\n\n\n\nLecture 7 Array Data Structure\n\n\n\n\n\n\nCoding\n\n\nJava\n\n\nData Structure\n\n\nArray\n\n\n\nStarting from this lecture, we discuss some data structures. The very basic data structure of discussion is the array data structure.\n\n\n\n\n\nOct 14, 2023\n\n\nJiuru Lyu\n\n\n\n\n\n\n\n\n\n\n\n\nLecture 8 Stack\n\n\n\n\n\n\nCoding\n\n\nJava\n\n\nData Structure\n\n\nStack\n\n\n\nThis lecture discusses the stack data structure and its implementation in Java.\n\n\n\n\n\nOct 18, 2023\n\n\nJiuru Lyu\n\n\n\n\n\n\n\n\n\n\n\n\nLecture 9 Queue Data Structure\n\n\n\n\n\n\nCoding\n\n\nJava\n\n\nData Structure\n\n\nQueue\n\n\n\nThis lecture discusses the queue data structure and its implementation in Java.\n\n\n\n\n\nOct 18, 2023\n\n\nJiuru Lyu\n\n\n\n\n\n\n\n\n\n\n\n\nLecture 10 Linked List\n\n\n\n\n\n\nCoding\n\n\nJava\n\n\nData Structure\n\n\nLinked List\n\n\n\nThis lecture discusses the linked list data structure and its implementation in Java.\n\n\n\n\n\nNov 2, 2023\n\n\nJiuru Lyu\n\n\n\n\n\n\n\n\n\n\n\n\nLecture 11 Complexity Analysis\n\n\n\n\n\n\nCoding\n\n\nJava\n\n\nAlgorithms\n\n\nComplexity Analysis\n\n\n\nStarting from this lecture, we will discuss some sorting algorithms and their complexity analysis. This lecture offers an overview of running time analysis.\n\n\n\n\n\nNov 11, 2023\n\n\nJiuru Lyu\n\n\n\n\n\n\n\n\n\n\n\n\nLecture 12 Sorting Algorithms\n\n\n\n\n\n\nCoding\n\n\nJava\n\n\nAlgorithms\n\n\nSorting\n\n\n\nThis lecture discusses various sorting algorithms and their implementation in Java. It also touches on the runtime analysis of them.\n\n\n\n\n\nDec 4, 2023\n\n\nJiuru Lyu\n\n\n\n\n\n\n\n\n\n\n\n\nLecture 13 Hashing (Hash Table): Implementation and Runtime Analysis\n\n\n\n\n\n\nCoding\n\n\nJava\n\n\nData Structure\n\n\nAlgorithms\n\n\nHash Table\n\n\nHashing\n\n\n\nThis lecture discusses the hashing algorithm and the hash table data structure. It also covers the implementation of the hash table and the runtime analysis of the hash table operations.\n\n\n\n\n\nDec 6, 2023\n\n\nJiuru Lyu\n\n\n\n\n\n\nNo matching items\n\n Back to top"
   }
 ]

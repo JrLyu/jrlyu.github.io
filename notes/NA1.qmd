@@ -1,0 +1,16 @@
+---
+title: "Undergraduate-Level Numerical Analysis"
+---
+
+<p>
+  <a href="pdf/NA1.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/NA1.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
+
+<div class="responsive-pdf">
+  <iframe src="pdf/NA1.pdf" frameborder="0"></iframe>
+</div>

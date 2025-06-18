@@ -1,0 +1,16 @@
+---
+title: "Proof Practice"
+---
+
+<p>
+  <a href="pdf/ProofPractice.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/ProofPractice.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
+
+<div class="responsive-pdf">
+  <iframe src="pdf/ProofPractice.pdf" frameborder="0"></iframe>
+</div>

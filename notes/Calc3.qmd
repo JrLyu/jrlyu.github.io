@@ -2,4 +2,15 @@
 title: "Multivariable Calculus/Calculus 3"
 ---
 
-<embed src="pdf/Multivariable Calculus.pdf" width="800px" height="800px" />
+<p>
+  <a href="pdf/Calc3.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/Calc3.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
+
+<div class="responsive-pdf">
+  <iframe src="pdf/Calc3.pdf" frameborder="0"></iframe>
+</div>

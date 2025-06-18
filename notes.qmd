@@ -14,25 +14,28 @@ title: "Class Notes"
 - [Multivariable Calculus/Advanced Calculus/Calculus III](notes/Calc3.qmd)
 - [Linear Algebra](notes/LA.qmd)
 - [Mathematical Proofs](notes/Proofs.qmd)
+- [Proof Practice](notes/ProofPractice.qmd)
 
 #### Applied Mathematics
 
 - [Ordinary Differential Equations](notes/ODE.qmd)
-- [Nonlinear Optimization](notes/nonlinearOpt.qmd)
-- [Undergraduate-Level Numerical Analysis](notes/NumericalAnalysis1.qmd)
-- [Numerical ODEs and PDEs](notes/NumericalODEsPDEs.qmd)
-- [PhD-Level Numerical Analysis I (Numerical Linear Algebra)](notes/NumericalAnalysis2.qmd)
-- [PhD-Level Numerical Analysis II](notes/NumericalAnalysis3.qmd)
+- [Nonlinear Optimization](notes/NonlinearOpt.qmd)
+- [Undergraduate-Level Numerical Analysis](notes/NA1.qmd)
+- [Numerical ODEs and PDEs](notes/NumericalDEs.qmd)
+- [PhD-Level Numerical Analysis I (Numerical Linear Algebra)](notes/NA2.qmd)
+- [PhD-Level Numerical Analysis II](notes/NA3.qmd)
 
 
 #### Pure Mathematics
+- [Linear Algebra Done Right](notes/LADR.qmd)
 - [Real Analysis](notes/RealAnalysis.qmd)
 
 #### Data Science, Statistics, and Causal Inference
 
 - [Introduction to Causal Inference](https://jrlyu.github.io/qtm110.io/)
 - [Google Data Analytics Learning Notes](https://jrlyu.github.io/google_analytics.io/)
-- [Mathematical Statistics](notes/MathStats.qmd)
+- [Mathematical Statistics -- Propability Theory](notes/Probability.qmd)
+- [Mathematical Statistics -- Statistical Inference](notes/Inference.qmd)
 - Causal Designs and Inference
 - [Machine Learning](notes/cs334.qmd)
 

@@ -2,4 +2,15 @@
 title: "Real Analysis"
 ---
 
-<embed src="pdf/Real Analysis.pdf" width="800px" height="800px" />
+<p>
+  <a href="pdf/RealAnalysis.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/RealAnalysis.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
+
+<div class="responsive-pdf">
+  <iframe src="pdf/RealAnalysis.pdf" frameborder="0"></iframe>
+</div>

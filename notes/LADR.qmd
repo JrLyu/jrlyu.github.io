@@ -1,0 +1,16 @@
+---
+title: Linear Algebra Done Right
+---
+
+<p>
+  <a href="pdf/LADR.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/LADR.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
+
+<div class="responsive-pdf">
+  <iframe src="pdf/LADR.pdf" frameborder="0"></iframe>
+</div>

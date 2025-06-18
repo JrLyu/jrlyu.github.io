@@ -1,0 +1,16 @@
+---
+title: "PhD-Level Numerical Analysis I (Numerical Linear Algebra)"
+---
+
+<p>
+  <a href="pdf/NA2.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/NA2.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
+
+<div class="responsive-pdf">
+  <iframe src="pdf/NA2.pdf" frameborder="0"></iframe>
+</div>

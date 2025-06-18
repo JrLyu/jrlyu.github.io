@@ -1,0 +1,16 @@
+---
+title: "Mathematical Statistics -- Statistical Inference"
+---
+
+<p>
+  <a href="pdf/Inference.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/Inference.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
+
+<div class="responsive-pdf">
+  <iframe src="pdf/Inference.pdf" frameborder="0"></iframe>
+</div>

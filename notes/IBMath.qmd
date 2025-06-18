@@ -2,7 +2,15 @@
 title: "IB Math AA HL Notes"
 ---
 
+<p>
+  <a href="pdf/IBMath.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/IBMath.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
 
-```{=html}
-<embed src="pdf/IB Math AA HL.pdf" width="800px" height="800px" />
-```
+<div class="responsive-pdf">
+  <iframe src="pdf/IBMath.pdf" frameborder="0"></iframe>
+</div>

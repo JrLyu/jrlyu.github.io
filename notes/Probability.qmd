@@ -1,0 +1,16 @@
+---
+title: "Mathematical Statistics -- Probability Theory"
+---
+
+<p>
+  <a href="pdf/Probability.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/Probability.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
+
+<div class="responsive-pdf">
+  <iframe src="pdf/Probability.pdf" frameborder="0"></iframe>
+</div>

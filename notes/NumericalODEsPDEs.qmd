@@ -1,5 +1,0 @@
----
-title: "Numerical ODEs and PDEs"
----
-
-<embed src="pdf/Numerical ODEs and PDEs.pdf" width="800px" height="800px" />

@@ -2,4 +2,15 @@
 title: "Nonlinear Optimization"
 ---
 
-<embed src="pdf/Nonlinear Optimization.pdf" width="800px" height="800px" />
+<p>
+  <a href="pdf/NonlinearOpt.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/NonlinearOpt.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
+
+<div class="responsive-pdf">
+  <iframe src="pdf/NonlinearOpt.pdf" frameborder="0"></iframe>
+</div>

@@ -1,0 +1,16 @@
+---
+title: "Numerical ODEs and PDEs"
+---
+
+<p>
+  <a href="pdf/NumericalDEs.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/NumericalDEs.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
+
+<div class="responsive-pdf">
+  <iframe src="pdf/NumericalDEs.pdf" frameborder="0"></iframe>
+</div>

@@ -2,10 +2,15 @@
 title: "Linear Algebra"
 ---
 
-## General Linear Algebra
+<p>
+  <a href="pdf/LA.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/LA.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
 
-<embed src="pdf/Linear Algebra.pdf" width="800px" height="800px" />
-
-## Linear Algebra Done Right
-
-<embed src="pdf/Linear Algebra Done Right.pdf" width="800px" height="800px" />
+<div class="responsive-pdf">
+  <iframe src="pdf/LA.pdf" frameborder="0"></iframe>
+</div>

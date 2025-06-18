@@ -1,5 +1,0 @@
----
-title: "Undergraduate-Level Numerical Analysis"
----
-
-<embed src="pdf/Undergrad Numerical Analysis.pdf" width="800px" height="800px" />
