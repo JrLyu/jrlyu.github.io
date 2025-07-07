@@ -15,21 +15,25 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - # href: /cv/cv.pdf
+      - href: cv/cv.pdf
         text: CV
+        target: _blank
       - href: notes.qmd
         text: Notes
-      - href: photo.qmd
-        text: Photograph
       - href: blogs.qmd
         text: Blogs
+      - href: https://jrlyu.github.io/math-notes.io/
+        text: WorkSpace
+        target: _blank
   page-footer: 
-    left: "Created with <a href='https://quarto.org/'>Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 May 5."
+    left: "Created with <a href='https://quarto.org/' target='_blank'>Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 May 5."
     right: 
       - icon: linkedin
         href: https://www.linkedin.com/in/jiuru-lyu/
+        target: _blank
       - icon: github
         href: https://github.com/JrLyu
+        target: _blank
       - icon: envelope
         href: mailto:jiuru.lyu@emory.edu
 
@@ -47,6 +51,15 @@ format:
       <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Noto+Serif+TC:wght@200..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Sedan:ital@0;1&display=swap" rel="stylesheet">
     include-in-header:
           - text: |
+              <!-- Google tag (gtag.js) -->
+              <script async src="https://www.googletagmanager.com/gtag/js?id=G-EZXYTJTW7D"></script>
+              <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', 'G-EZXYTJTW7D');
+              </script>
               <script>
               window.MathJax = {
                 loader: {

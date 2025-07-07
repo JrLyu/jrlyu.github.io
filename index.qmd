@@ -11,9 +11,11 @@ about:
     - icon: linkedin
       text: LinkedIn
       href: https://www.linkedin.com/in/jiuru-lyu/
+      target: _blank
     - icon: github
       text: GitHub
       href: https://github.com/JrLyu
+      target: _blank
     - icon: envelope
       text: Email
       href: mailto:jiuru.lyu@emory.edu

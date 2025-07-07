@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>CV –  Jiuru Lyu</title>
+<title>Site Analytics –  Jiuru Lyu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -71,6 +105,15 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-EZXYTJTW7D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EZXYTJTW7D');
+</script>
 <script>
 window.MathJax = {
   loader: {
@@ -166,7 +209,7 @@ window.MathJax = {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./cv.html" aria-current="page"> 
+    <a class="nav-link" href="./cv/cv.pdf" target="_blank"> 
 <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item">
@@ -174,12 +217,12 @@ window.MathJax = {
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://jrlyu.github.io/math-notes.io/"> 
-<span class="menu-text">WorkSpace</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./blogs.html"> 
 <span class="menu-text">Blogs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://jrlyu.github.io/math-notes.io/" target="_blank"> 
+<span class="menu-text">WorkSpace</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -198,15 +241,13 @@ window.MathJax = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
 <main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">CV</h1>
+<h1 class="title">Site Analytics</h1>
 </div>
 
 
@@ -223,8 +264,98 @@ window.MathJax = {
 </header>
 
 
+<section id="site-analytics-dashboard" class="level1">
+<h1>Site Analytics Dashboard</h1>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is a private analytics page. The data below shows visitor behavior and site performance metrics.</p>
+</div>
+</div>
+<section id="google-analytics-integration" class="level2">
+<h2 class="anchored" data-anchor-id="google-analytics-integration">Google Analytics Integration</h2>
+<div id="analytics-container">
+<p>
+Loading analytics data…
+</p>
+<p>
+<em>Note: You’ll need to set up Google Analytics and replace the placeholder code below with your actual Analytics embed code.</em>
+</p>
+</div>
+</section>
+<section id="quick-setup-instructions" class="level2">
+<h2 class="anchored" data-anchor-id="quick-setup-instructions">Quick Setup Instructions</h2>
+<section id="set-up-google-analytics" class="level3">
+<h3 class="anchored" data-anchor-id="set-up-google-analytics">1. Set up Google Analytics</h3>
+<ol type="1">
+<li>Go to <a href="https://analytics.google.com/">Google Analytics</a></li>
+<li>Create a new property for your website</li>
+<li>Get your GA4 Measurement ID (starts with “G-”)</li>
+<li>Replace <code>GA_MEASUREMENT_ID</code> in the tracking code below</li>
+</ol>
+</section>
+<section id="alternative-simple-visit-counter" class="level3">
+<h3 class="anchored" data-anchor-id="alternative-simple-visit-counter">2. Alternative: Simple Visit Counter</h3>
+<p>If you prefer a simpler solution, you can use services like: - <strong>Umami Analytics</strong> (privacy-focused, self-hosted) - <strong>Plausible Analytics</strong> (privacy-focused, paid) - <strong>Simple Analytics</strong> (privacy-focused, paid)</p>
+</section>
+</section>
+<section id="custom-analytics-code" class="level2">
+<h2 class="anchored" data-anchor-id="custom-analytics-code">Custom Analytics Code</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Google Analytics --&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> async src</span><span class="op">=</span><span class="st">"https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">window</span><span class="op">.</span><span class="at">dataLayer</span> <span class="op">=</span> <span class="bu">window</span><span class="op">.</span><span class="at">dataLayer</span> <span class="op">||</span> []<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">gtag</span>(){dataLayer<span class="op">.</span><span class="fu">push</span>(<span class="kw">arguments</span>)<span class="op">;</span>}</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gtag</span>(<span class="st">'js'</span><span class="op">,</span> <span class="kw">new</span> <span class="bu">Date</span>())<span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gtag</span>(<span class="st">'config'</span><span class="op">,</span> <span class="st">'GA_MEASUREMENT_ID'</span>)<span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Custom tracking for specific events --&gt;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">// Track page views</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">gtag</span>(<span class="st">'event'</span><span class="op">,</span> <span class="st">'page_view'</span><span class="op">,</span> {</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">page_title</span><span class="op">:</span> <span class="bu">document</span><span class="op">.</span><span class="at">title</span><span class="op">,</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">page_location</span><span class="op">:</span> <span class="bu">window</span><span class="op">.</span><span class="at">location</span><span class="op">.</span><span class="at">href</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">// Track external link clicks</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">document</span><span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">'click'</span><span class="op">,</span> <span class="kw">function</span>(e) {</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (e<span class="op">.</span><span class="at">target</span><span class="op">.</span><span class="at">tagName</span> <span class="op">===</span> <span class="st">'A'</span> <span class="op">&amp;&amp;</span> e<span class="op">.</span><span class="at">target</span><span class="op">.</span><span class="at">href</span><span class="op">.</span><span class="fu">startsWith</span>(<span class="st">'http'</span>) <span class="op">&amp;&amp;</span> <span class="op">!</span>e<span class="op">.</span><span class="at">target</span><span class="op">.</span><span class="at">href</span><span class="op">.</span><span class="fu">includes</span>(<span class="bu">window</span><span class="op">.</span><span class="at">location</span><span class="op">.</span><span class="at">hostname</span>)) {</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gtag</span>(<span class="st">'event'</span><span class="op">,</span> <span class="st">'click'</span><span class="op">,</span> {</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>      <span class="dt">event_category</span><span class="op">:</span> <span class="st">'external_link'</span><span class="op">,</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>      <span class="dt">event_label</span><span class="op">:</span> e<span class="op">.</span><span class="at">target</span><span class="op">.</span><span class="at">href</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">// Track time on page</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> startTime <span class="op">=</span> <span class="bu">Date</span><span class="op">.</span><span class="fu">now</span>()<span class="op">;</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="bu">window</span><span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">'beforeunload'</span><span class="op">,</span> <span class="kw">function</span>() {</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> timeOnPage <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>((<span class="bu">Date</span><span class="op">.</span><span class="fu">now</span>() <span class="op">-</span> startTime) <span class="op">/</span> <span class="dv">1000</span>)<span class="op">;</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gtag</span>(<span class="st">'event'</span><span class="op">,</span> <span class="st">'timing_complete'</span><span class="op">,</span> {</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="dt">name</span><span class="op">:</span> <span class="st">'time_on_page'</span><span class="op">,</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="dt">value</span><span class="op">:</span> timeOnPage</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="privacy-notice" class="level2">
+<h2 class="anchored" data-anchor-id="privacy-notice">Privacy Notice</h2>
+<p>This analytics setup: - Tracks page views and user interactions - Monitors external link clicks - Measures time spent on pages - Collects anonymous usage data - Helps improve site design and content</p>
+<p>All data is collected anonymously and used solely for improving the website experience.</p>
+<hr>
+<p><em>Last updated: July 2025</em></p>
 
 
+</section>
+</section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -792,21 +923,21 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>Created with <a href="https://quarto.org/">Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 May 5.</p>
+<p>Created with <a href="https://quarto.org/" target="_blank">Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 May 5.</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/cv.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/cv.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/JrLyu/jrlyu.github.io/edit/main/stats.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/blob/main/stats.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/JrLyu/jrlyu.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/jiuru-lyu/">
+    <a class="nav-link" href="https://www.linkedin.com/in/jiuru-lyu/" target="_blank">
       <i class="bi bi-linkedin" role="img">
 </i> 
     </a>
   </li>  
     <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/JrLyu">
+    <a class="nav-link" href="https://github.com/JrLyu" target="_blank">
       <i class="bi bi-github" role="img">
 </i> 
     </a>

@@ -144,7 +144,7 @@
     "href": "blogs.html",
     "title": "My Blogs",
     "section": "",
-    "text": "Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Author\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\nPolynomial Representation of Arnoldi\n\n\n\nNumerical Analysis\n\nIterative Method\n\nLinear Algebra\n\nArnoldi\n\n\n\nI’m recently learning about the Arnoldi’s method, and the textbook mentioned that the it can be viewed from a polynomial approximation point of view. However, I think the…\n\n\n\nJiuru Lyu\n\n\nDec 10, 2024\n\n\n\n\n\n\nNo matching items\n Back to top"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\nPolynomial Representation of Arnoldi\n\n\n\nNumerical Analysis\n\n\nIterative Method\n\n\nLinear Algebra\n\n\nArnoldi\n\n\n\nI’m recently learning about the Arnoldi’s method, and the textbook mentioned that the it can be viewed from a polynomial approximation point of view. However, I think the…\n\n\n\nJiuru Lyu\n\n\nDec 10, 2024\n\n\n\n\n\n\n\n\nNo matching items\n\n Back to top"
   },
   {
     "objectID": "photo.html",
@@ -1181,5 +1181,40 @@
     "title": "4 Trees and Binary Search Trees",
     "section": "Why don’t we use heap or priority queue?",
     "text": "Why don’t we use heap or priority queue?\n- Using a heap, the function `get(k)` will be slow.\n- Using a priority queue, the function `insert(k,v)`  and `delete(k)` will be slow."
+  },
+  {
+    "objectID": "stats.html",
+    "href": "stats.html",
+    "title": "Site Analytics",
+    "section": "",
+    "text": "Note\n\n\n\nThis is a private analytics page. The data below shows visitor behavior and site performance metrics.\n\n\n\n\n\n\nLoading analytics data…\n\n\nNote: You’ll need to set up Google Analytics and replace the placeholder code below with your actual Analytics embed code.\n\n\n\n\n\n\n\n\nGo to Google Analytics\nCreate a new property for your website\nGet your GA4 Measurement ID (starts with “G-”)\nReplace GA_MEASUREMENT_ID in the tracking code below\n\n\n\n\nIf you prefer a simpler solution, you can use services like: - Umami Analytics (privacy-focused, self-hosted) - Plausible Analytics (privacy-focused, paid) - Simple Analytics (privacy-focused, paid)\n\n\n\n\n&lt;!-- Google Analytics --&gt;\n&lt;script async src=\"https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID\"&gt;&lt;/script&gt;\n&lt;script&gt;\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n  gtag('config', 'GA_MEASUREMENT_ID');\n&lt;/script&gt;\n\n&lt;!-- Custom tracking for specific events --&gt;\n&lt;script&gt;\n// Track page views\ngtag('event', 'page_view', {\n  page_title: document.title,\n  page_location: window.location.href\n});\n\n// Track external link clicks\ndocument.addEventListener('click', function(e) {\n  if (e.target.tagName === 'A' && e.target.href.startsWith('http') && !e.target.href.includes(window.location.hostname)) {\n    gtag('event', 'click', {\n      event_category: 'external_link',\n      event_label: e.target.href\n    });\n  }\n});\n\n// Track time on page\nlet startTime = Date.now();\nwindow.addEventListener('beforeunload', function() {\n  let timeOnPage = Math.round((Date.now() - startTime) / 1000);\n  gtag('event', 'timing_complete', {\n    name: 'time_on_page',\n    value: timeOnPage\n  });\n});\n&lt;/script&gt;\n\n\n\nThis analytics setup: - Tracks page views and user interactions - Monitors external link clicks - Measures time spent on pages - Collects anonymous usage data - Helps improve site design and content\nAll data is collected anonymously and used solely for improving the website experience.\n\nLast updated: July 2025"
+  },
+  {
+    "objectID": "stats.html#google-analytics-integration",
+    "href": "stats.html#google-analytics-integration",
+    "title": "Site Analytics",
+    "section": "",
+    "text": "Loading analytics data…\n\n\nNote: You’ll need to set up Google Analytics and replace the placeholder code below with your actual Analytics embed code."
+  },
+  {
+    "objectID": "stats.html#quick-setup-instructions",
+    "href": "stats.html#quick-setup-instructions",
+    "title": "Site Analytics",
+    "section": "",
+    "text": "Go to Google Analytics\nCreate a new property for your website\nGet your GA4 Measurement ID (starts with “G-”)\nReplace GA_MEASUREMENT_ID in the tracking code below\n\n\n\n\nIf you prefer a simpler solution, you can use services like: - Umami Analytics (privacy-focused, self-hosted) - Plausible Analytics (privacy-focused, paid) - Simple Analytics (privacy-focused, paid)"
+  },
+  {
+    "objectID": "stats.html#custom-analytics-code",
+    "href": "stats.html#custom-analytics-code",
+    "title": "Site Analytics",
+    "section": "",
+    "text": "&lt;!-- Google Analytics --&gt;\n&lt;script async src=\"https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID\"&gt;&lt;/script&gt;\n&lt;script&gt;\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n  gtag('config', 'GA_MEASUREMENT_ID');\n&lt;/script&gt;\n\n&lt;!-- Custom tracking for specific events --&gt;\n&lt;script&gt;\n// Track page views\ngtag('event', 'page_view', {\n  page_title: document.title,\n  page_location: window.location.href\n});\n\n// Track external link clicks\ndocument.addEventListener('click', function(e) {\n  if (e.target.tagName === 'A' && e.target.href.startsWith('http') && !e.target.href.includes(window.location.hostname)) {\n    gtag('event', 'click', {\n      event_category: 'external_link',\n      event_label: e.target.href\n    });\n  }\n});\n\n// Track time on page\nlet startTime = Date.now();\nwindow.addEventListener('beforeunload', function() {\n  let timeOnPage = Math.round((Date.now() - startTime) / 1000);\n  gtag('event', 'timing_complete', {\n    name: 'time_on_page',\n    value: timeOnPage\n  });\n});\n&lt;/script&gt;"
+  },
+  {
+    "objectID": "stats.html#privacy-notice",
+    "href": "stats.html#privacy-notice",
+    "title": "Site Analytics",
+    "section": "",
+    "text": "This analytics setup: - Tracks page views and user interactions - Monitors external link clicks - Measures time spent on pages - Collects anonymous usage data - Helps improve site design and content\nAll data is collected anonymously and used solely for improving the website experience.\n\nLast updated: July 2025"
   }
 ]

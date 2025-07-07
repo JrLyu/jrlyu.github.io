@@ -1,0 +1,90 @@
+---
+title: "Site Analytics"
+format: html
+toc: false
+page-layout: full
+---
+
+# Site Analytics Dashboard
+
+::: {.callout-note}
+This is a private analytics page. The data below shows visitor behavior and site performance metrics.
+:::
+
+## Google Analytics Integration
+
+<div id="analytics-container">
+  <p>Loading analytics data...</p>
+  <p><em>Note: You'll need to set up Google Analytics and replace the placeholder code below with your actual Analytics embed code.</em></p>
+</div>
+
+## Quick Setup Instructions
+
+### 1. Set up Google Analytics
+1. Go to [Google Analytics](https://analytics.google.com/)
+2. Create a new property for your website
+3. Get your GA4 Measurement ID (starts with "G-")
+4. Replace `GA_MEASUREMENT_ID` in the tracking code below
+
+### 2. Alternative: Simple Visit Counter
+If you prefer a simpler solution, you can use services like:
+- **Umami Analytics** (privacy-focused, self-hosted)
+- **Plausible Analytics** (privacy-focused, paid)
+- **Simple Analytics** (privacy-focused, paid)
+
+## Custom Analytics Code
+
+```html
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'GA_MEASUREMENT_ID');
+</script>
+
+<!-- Custom tracking for specific events -->
+<script>
+// Track page views
+gtag('event', 'page_view', {
+  page_title: document.title,
+  page_location: window.location.href
+});
+
+// Track external link clicks
+document.addEventListener('click', function(e) {
+  if (e.target.tagName === 'A' && e.target.href.startsWith('http') && !e.target.href.includes(window.location.hostname)) {
+    gtag('event', 'click', {
+      event_category: 'external_link',
+      event_label: e.target.href
+    });
+  }
+});
+
+// Track time on page
+let startTime = Date.now();
+window.addEventListener('beforeunload', function() {
+  let timeOnPage = Math.round((Date.now() - startTime) / 1000);
+  gtag('event', 'timing_complete', {
+    name: 'time_on_page',
+    value: timeOnPage
+  });
+});
+</script>
+```
+
+## Privacy Notice
+
+This analytics setup:
+- Tracks page views and user interactions
+- Monitors external link clicks
+- Measures time spent on pages
+- Collects anonymous usage data
+- Helps improve site design and content
+
+All data is collected anonymously and used solely for improving the website experience.
+
+---
+
+*Last updated: July 2025*
