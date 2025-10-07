@@ -1,0 +1,169 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Medium Length Professional CV
+% LaTeX Template
+% Version 2.0 (8/5/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Trey Hunner (http://www.treyhunner.com/)
+%
+% Important note:
+% This template requires the resume.cls file to be in the same directory as the
+% .tex file. The resume.cls file provides the resume style used for structuring the
+% document.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS 
+%----------------------------------------------------------------------------------------
+ 
+\documentclass[10pt, letterpaper]{resume} % Use the custom resume.cls style 
+
+\usepackage[letterpaper, left=1cm, top=1.75cm, right=1cm, bottom=1.75cm]{geometry} % Document margins
+\usepackage{fancyhdr}
+\usepackage{utopia, hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=cyan,
+    urlcolor=cyan,
+    urlbordercolor=0 1 1
+}
+
+\fancyhead[LO,LE]{\textbf{Jiuru Lyu -- Curriculum vitae}}
+\fancyhead[RO,RE]{Last Updated On: \today}
+\chead{} 
+\cfoot{Page \thepage\ of ~\pageref{LastPage}}
+\fancyfoot[LO,LE]{} 
+\fancyfoot[RO,RE]{} 
+%\renewcommand{\footrulewidth}{0.5pt}
+
+\pagestyle{fancy}
+
+\newcommand{\tab}[1]{\hspace{.2667\textwidth}\rlap{#1}}
+\newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
+\name{Jiuru Lyu} % Your name 
+\address{400 Dowman Dr, Atlanta, GA 30322} % Your address 
+%\address{123 Pleasant Lane \\ City, State 12345} % Your secondary addess (optional) 
+\address{+1 (404)-791-0290 \\ \href{mailto:jiuru.lyu@emory.edu}{jiuru.lyu@emory.edu} \\ \href{https://github.com/JrLyu}{GitHub} \\ \href{https://www.linkedin.com/in/jiuru-lyu/}{LinkedIn} \\ \href{https://jrlyu.github.io/}{Website}}
+
+\begin{document} 
+\begin{rSection}{Education}
+\begin{rSubsection}
+	{B.S. in Applied Mathematics and Statistics\normalfont{, Minor in Computer Informatics}}
+	{Aug 2022 -- May 2026}
+	{Emory University, Emory College of Arts and Sciences}{Atlanta, GA}
+	
+	\item \textbf{Cumulative GPA}: 3.99/4.0, \textbf{Major GPA}: 4.0/4.0; Dean's List
+	\item \textbf{Coursework}: Iterative Methods (Grad), Numerical Linear Algebra (Grad), Numerical Analysis (Grad), Real Analysis, Optimization Methods, Mathematical Statistics, Differential Equations, Graph Theory, Machine Learning, Deep Learning, Regression Analysis, Causal Inference, Data Structures \& Algorithms, Database System
+	\item \textbf{Research Interests}: Iterative Methods, Numerical Optimization, Mean-Field Games, Machine Learning
+\end{rSubsection}
+\end{rSection} 
+
+\begin{rSection}{Research Experiences}
+\begin{rSubsection}
+	{Research Assistant: Global Optimization}
+	{Oct 2023 -- Present}
+	{Department of Mathematics, Emory University}{Atlanta, GA}
+	
+	\item Conducted independent research on Double Descent with Color Diffusion (DDCID) and other Global Optimization methods under the supervision of Dr. Manuela Manetta; to develop results into an honors thesis
+	\item Implemented a log-barrier regularization and the continuation method to enhance the algorithm for finding high-dimensional Morse Potential problems; cross-validated outcomes against the Cambridge Database
+	\item Applied the algorithm to COVID-19 modeling; recasted ODE constraints to an adjoint-based dual form for efficient optimization; improved the hyperparameter tuning stability
+	\item Explored ways to integrate derivative-free optimization techniques into the algorithm to enhance efficiency
+\end{rSubsection}
+
+\begin{rSubsection}
+	{Research Assistant: PDHG Algorithm for Non-Potential Mean-Field Games}
+	{Feb 2025 -- Present}
+	{Department of Mathematics, Emory University}{Atlanta, GA}
+	
+	\item Conducted research on a PDHG solver for non-potential mean-field games supervised by Dr. Levon Nurbekyan
+	\item Developed a general-purpose Python implementation of Primal-Dual Hybrid Gradient (PDHG) solver for non-potential Mean-Field Games (MFGs) with space-time discretization using sparse linear algebra package SciPy
+	\item Assembled discrete operators and block matrices; engineered convergence diagnostics and invariants for MFG structure; accelerated the solver via iterative methods and matrix caching; parallelized the solver
+\end{rSubsection}
+
+\begin{rSubsection}
+	{Research Assistant: Spectral Graph Theory}
+	{Jan 2025 -- Jul 2025}
+	{Department of Mathematics, Emory University}{Atlanta, GA}
+	
+	\item Studied the relationship between Spectral Graph Theory and  ODEs under the guidance of Dr. Manuela Manetta
+	\item Led weekly discussion sessions on papers related to spectral graph theory and their relationships with ODEs 
+	\item Implemented centrality and other Network Analysis pipelines for the Emory Mathematics Department faculty network; identified communities/bridges and summarized collaboration insights
+	\item Compared symmetrization schemes for directed graphs and their impact on diffusion and ODE dynamics
+\end{rSubsection}
+\end{rSection} 
+
+\begin{rSection}{Awards and Honors}
+\begin{rSubsection}{Wilson Family Undergraduate Research Award}{May 2025}{Department of Mathematics, Emory University}{Atlanta, GA}
+	\item Chosen by a faculty committee as an outstanding third-year undergraduate student in Mathematics; received research funding and support to advance the Global Optimization project
+\end{rSubsection}
+
+\begin{rSubsection}{Phi Eta Sigma Honor Society}{Feb 2023}{Emory Chapter of Phi Eta Sigma National Honor Society}{Atlanta, GA}
+	\item National-wide freshman honor society; invitation based on scholastic achievements during freshman year
+\end{rSubsection}
+\end{rSection} 
+
+\begin{rSection}{Teaching/Mentoring Experiences}
+\begin{rSubsection}
+	{Academic Success, Emory Office of Undergraduate Education}
+	{Sep 2023 -- Present}
+	{Peer Tutor in Mathematics}{Atlanta, GA}
+	
+	\item Provided 1-to-1 tutoring services for Calculus II, Multivariable Calculus, and Linear Algebra 
+	\item Helped $30+$ students prepare for exams and improve grades; received positive feedback from tutees
+\end{rSubsection}
+
+\begin{rSubsection}
+	{Emory Department of Data and Decision Sciences}
+	{Aug 2024 -- Dec 2024}
+	{Teaching Assistant for DATASCI 151 (Scientific Computing with Python)}{Atlanta, GA}
+	
+	\item Held weekly $1$-hour office hours to help students clarify confusions and prepare for homework 
+	\item Designed homework assignment connecting SQL with Python based on real-world data extracted from Kaggle 
+\end{rSubsection}
+\end{rSection}
+
+\begin{rSection}{Internships}
+\begin{rSubsection}
+	{Baker Hughes}
+	{Jun 2024 -- Aug 2024}
+	{Digital Technology Intern}{Shanghai, China}
+	
+	\item Applied Agile development workflows to a valve lifecycle management system (VKAM); implemented soft-delete and advanced-filter features; improved customer report UI designs for better user experience
+	\item Wrote and executed $100+$ regression test cases, gained hands-on experience in database validation; discovered $30+$ bugs or outdated tests; helped maintain consistent test case writing styles
+\end{rSubsection}
+
+\begin{rSubsection}
+	{Algory Capital}
+	{Jan 2023 -- Aug 2024}
+	{Quantitative Investment Analyst}{Atlanta, GA}
+	
+	\item Oversaw risk assessment of Algory Capital, a student-managed fund with \$100,000 AUM; implemented Monte Carlo Simulations to calculate Conditional Value at Risk (cVaR); integrated insights into a grid search algorithm
+	\item Developed advanced trading strategies (e.g., mean reversion pair trading and ADF tests); performed sentiment analysis using Reddit API and web-scraping tools to inform portfolio management decisions
+\end{rSubsection}
+\end{rSection} 
+
+\begin{rSection}{Additional Information}
+\begin{tabular}{ @{} >{\bfseries}l @{\hspace{6ex}} l }  
+Skills & \LaTeX, MATLAB, Python,  R, Java, PostgreSQL, HTML, CSS, JavaScript, TypeScript, Angular\\ 
+Languages & Mandarin Chinese (Fluent), English (Fluent), Spanish (Elementary).\\ 
+Interests & Specialty Coffee, Traveling, Photography, Mathematics Through Movement.\\
+\end{tabular}   
+\end{rSection}
+
+\begin{rSection}{Selected Informal Presentations}  
+\begin{rSubsection}{}{}{}{}
+\item \href{https://www.dropbox.com/scl/fi/cau0hc4erhg0amyyfme8o/Spectral_Graph_Theory_Jiuru_Lyu.pdf?rlkey=mbcigxfeqv8e4vlk3cn97zrvn&st=5hlxdzf8&dl=0}{\textit{An Analysis on Faculty Connection Network}}, Spectral Graph Theory Project \hfill Apr 25, 2025
+\item \href{https://www.dropbox.com/scl/fi/tvpx670nijy8lwamxlvnd/Global_Optimization_Jiuru_Lyu.pdf?rlkey=hxpo4xxkzwubmb2lestimqs8k&st=66eovify&dl=0}{\textit{Global Optimization of Morse-Cluster Potential}}, Global Optimization Project \hfill Feb 7, 2025 
+%\item \href{https://www.dropbox.com/scl/fi/38acs7hp0wn73ddmyk30x/QTM345_Final_Presentation_Jiuru_Lyu.pdf?rlkey=7p99hnbg97w5z9rvtlmtgrvf3&st=qkrhb6r9&dl=0}{\textit{Measuring the Effect of Napster on Recorded Music Sales}}, Causal Inference Final Project \hfill Dec 14, 2024
+\item \href{https://www.dropbox.com/scl/fi/czpae3nk0h61b4mmwbiid/MATH498R_Presentation_Fall24_Jiuru-Lyu.pdf?rlkey=rrvxbr4u8ekfmjep7r5rd99uh&st=mttmtbxy&dl=0}{\textit{Numerical Optimization}}, Emory Math Directed Reading Program \hfill Dec 4, 2025
+\item \href{https://www.dropbox.com/scl/fi/gsxbufy0xojg319tvfjgl/MATH347_Final_Presentation_Jiuru_Lyu.pdf?rlkey=uljq7nr93m7eybdo8relga1cb&st=3u9r1x3e&dl=0}{\textit{Calculus of Variation}}, Nonlinear Optimization Final Group Project \hfill Apr 29, 2024
+\item \href{https://www.dropbox.com/scl/fi/8x3j4utuucjsocsw0pyhh/MATH498R_Presentation_Fall23_Jiuru_Lyu.pdf?rlkey=fav70ky3k878qf8gy6tnypd8w&st=ggxgey5l&dl=0}{\textit{Probabilistic Tools in Hypergraph Coloring}}, Emory Math Directed Reading Program \hfill Nov 30, 2023\end{rSubsection}
+\end{rSection}
+  
+\label{LastPage}
+\end{document}
