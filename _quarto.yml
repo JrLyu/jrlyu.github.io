@@ -15,7 +15,7 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href: cv/cv.pdf
+      - href: cv/CV_Jiuru_Lyu.pdf
         text: CV
         target: _blank
       - href: notes.qmd
