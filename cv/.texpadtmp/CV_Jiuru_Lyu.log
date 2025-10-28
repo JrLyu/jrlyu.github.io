@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.9.28)  16 OCT 2025 13:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.9.28)  28 OCT 2025 10:22
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -280,4 +280,82 @@ Package color Info: Driver file: pdftex.def on input line 149.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-def/pdftex.def
 File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
  (/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
-[Loading MPS to PDF converter (version 2006.
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count278
+\scratchdimen=\dimen155
+\scratchbox=\box54
+\nofMPsegments=\count279
+\nofMParguments=\count280
+\everyMPshowfont=\toks20
+\MPscratchCnt=\count281
+\MPscratchDim=\dimen156
+\MPnumerator=\count282
+\makeMPintoPDFobject=\count283
+\everyMPtoPDFconversion=\toks21
+)) (/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+Package hyperref Info: Link coloring ON on input line 53.
+ (/Users/richardlyu/Library/CloudStorage/Dropbox/GitHub/jiurulyu.github.io/cv/.texpadtmp/CV_Jiuru_Lyu.out) (/Users/richardlyu/Library/CloudStorage/Dropbox/GitHub/jiurulyu.github.io/cv/.texpadtmp/CV_Jiuru_Lyu.out)
+\@outlinefile=\write3
+\openout3 = `CV_Jiuru_Lyu.out'.
+
+
+Overfull \hbox (30.0pt too wide) in paragraph at lines 53--53
+[] 
+ []
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 53.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 53.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 53.
+
+Overfull \hbox (5.01794pt too wide) in paragraph at lines 61--62
+\OT1/put/m/n/10.95 Anal-y-sis, Op-ti-miza-tion Meth-ods, Math-e-mat-i-cal Statis-tics, Dif-fer-en-tial Equa-tions, Graph The-ory, Ma-chine Learn-
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[1{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc}
+
+]
+LaTeX Font Info:    Trying to load font information for TS1+put on input line 147.
+ (/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/ts1put.fd
+File: ts1put.fd 2001/06/04 font definitions for TS1/put.
+)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[2] (/Users/richardlyu/Library/CloudStorage/Dropbox/GitHub/jiurulyu.github.io/cv/.texpadtmp/CV_Jiuru_Lyu.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-02-20>
+ ***********
+Package rerunfilecheck Info: File `CV_Jiuru_Lyu.out' has not changed.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+ ) 
+Here is how much of TeX's memory you used:
+ 9011 strings out of 474116
+ 140955 string characters out of 5743682
+ 1946187 words of memory out of 5000000
+ 31272 multiletter control sequences out of 15000+600000
+ 592382 words of font info for 63 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 72i,11n,79p,584b,439s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/adobe/utopia/putb8a.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/adobe/utopia/putr8a.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/adobe/utopia/putri8a.pfb>
+Output written on /Users/richardlyu/Library/CloudStorage/Dropbox/GitHub/jiurulyu.github.io/cv/.texpadtmp/CV_Jiuru_Lyu.pdf (2 pages, 82209 bytes).
+PDF statistics:
+ 52 PDF objects out of 1000 (max. 8388607)
+ 37 compressed objects within 1 object stream
+ 3 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+
