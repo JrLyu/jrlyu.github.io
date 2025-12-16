@@ -158,7 +158,7 @@
     "href": "notes.html",
     "title": "Class Notes",
     "section": "",
-    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\nProof Practice\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\nNumerical ODEs and PDEs\nPhD-Level Numerical Analysis I (Numerical Linear Algebra)\nPhD-Level Numerical Analysis II\n\n\n\nPure Mathematics\n\nLinear Algebra Done Right\nReal Analysis\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nGoogle Data Analytics Learning Notes\nMathematical Statistics – Propability Theory\nMathematical Statistics – Statistical Inference\nCausal Designs and Inference\nMachine Learning\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\nDatabase Systems\n\n\n\nOther Fields\n\nIntroduction to Sociology\n\n\n\n\n\n Back to top"
+    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\nProof Practice\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nPartial Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\nNumerical ODEs and PDEs\nPhD-Level Numerical Analysis I (Numerical Linear Algebra)\nPhD-Level Numerical Analysis II\nPhD-Level Numerical Analysis III (Iterative Methods for Linear Systems)\n\n\n\nPure Mathematics\n\nLinear Algebra Done Right\nReal Analysis\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nGoogle Data Analytics Learning Notes\nMathematical Statistics – Propability Theory\nMathematical Statistics – Statistical Inference\nCausal Designs and Inference\nMachine Learning\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\nDatabase Systems\n\n\n\nOther Fields\n\nIntroduction to Sociology\n\n\n\n\n\n Back to top"
   },
   {
     "objectID": "index.html",
@@ -1216,5 +1216,19 @@
     "title": "Site Analytics",
     "section": "",
     "text": "This analytics setup: - Tracks page views and user interactions - Monitors external link clicks - Measures time spent on pages - Collects anonymous usage data - Helps improve site design and content\nAll data is collected anonymously and used solely for improving the website experience.\n\nLast updated: July 2025"
+  },
+  {
+    "objectID": "notes/PDE.html",
+    "href": "notes/PDE.html",
+    "title": "Partial Differential Equations",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/IterativeMethods.html",
+    "href": "notes/IterativeMethods.html",
+    "title": "Iterative Methods for Linear Systems",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
   }
 ]

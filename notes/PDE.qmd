@@ -1,0 +1,16 @@
+---
+title: "Partial Differential Equations"
+---
+
+<p>
+  <a href="pdf/PDE.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/PDE.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
+
+<div class="responsive-pdf">
+  <iframe src="pdf/PDE.pdf" frameborder="0"></iframe>
+</div>

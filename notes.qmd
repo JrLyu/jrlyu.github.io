@@ -19,11 +19,13 @@ title: "Class Notes"
 #### Applied Mathematics
 
 - [Ordinary Differential Equations](notes/ODE.qmd)
+- [Partial Differential Equations](notes/PDE.qmd)
 - [Nonlinear Optimization](notes/NonlinearOpt.qmd)
 - [Undergraduate-Level Numerical Analysis](notes/NA1.qmd)
 - [Numerical ODEs and PDEs](notes/NumericalDEs.qmd)
 - [PhD-Level Numerical Analysis I (Numerical Linear Algebra)](notes/NA2.qmd)
 - [PhD-Level Numerical Analysis II](notes/NA3.qmd)
+- [PhD-Level Numerical Analysis III (Iterative Methods for Linear Systems)](notes/IterativeMethods.qmd)
 
 
 #### Pure Mathematics
