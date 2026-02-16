@@ -6,7 +6,7 @@ toc: false
 about: 
   template: solana
   image-shape: round
-  image-width: 17em
+  image-width: 17ems
   links:
     - icon: linkedin
       text: LinkedIn
@@ -19,9 +19,28 @@ about:
     - icon: envelope
       text: Email
       href: mailto:jiuru.lyu@emory.edu
+listing:
+  - id: news
+    contents:
+      - news
+    type: default
+    fields: [date, title, description]
+    sort: "date-modified desc"
+    filter-ui: false
+    sort-ui: false
+    max-items: 4
 ---
 
-Hi! My name is Jiuru Lyu, and I am a junior at Emory University studying Applied Mathematics. In my leisure time, I enjoy coffee brewing, traveling, photography, and commercial aviation.
+Hi! My name is Jiuru Lyu, and I am a senior at Emory University studying Applied Mathematics. In my leisure time, I enjoy coffee brewing, traveling, photography, and commercial aviation.
+
+---
+
+# News!
+
+::: {#news}
+:::
+
+---
 
 ## Education
 **Emory University** (2022 - 2026) | Atlanta, GA <br>
@@ -29,18 +48,3 @@ BS in Applied Mathematics and Statistics; Minor in Computer Science
 
 **United World College Changshu China** (2019 - 2022) | Suzhou, China <br>
 International Baccalaureate Diploma Programme
-
-## Research Experience
-**Research Assistant** @ Emory University (2025 - Present) | Atlanta, GA<br>
-Topic: Numerical Methods for Mean-Field Games
-
-**Research Assistant** @ Emory University (2025 - Present) | Atlanta, GA<br>
-Topic: Spectral Graph Theory and Differential Equations
-
-**Research Assistant** @ Emory University (2023 - Present) | Atlanta, GA<br>
-Topic: Global Optimization for Morse Potential
-
-## Work Experience
-**Summer Digital Intern** @ Baker Hughes (2024) | Shanghai, China
-
-

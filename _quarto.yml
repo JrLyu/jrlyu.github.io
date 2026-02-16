@@ -26,7 +26,7 @@ website:
         text: WorkSpace
         target: _blank
   page-footer: 
-    left: "Created with <a href='https://quarto.org/' target='_blank'>Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2025 May 5."
+    left: "Created with <a href='https://quarto.org/' target='_blank'>Quarto</a>. <br> © Copyright 2025, Jiuru Lyu.<br> Last updated: 2026 Feb."
     right: 
       - icon: linkedin
         href: https://www.linkedin.com/in/jiuru-lyu/

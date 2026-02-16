@@ -1,0 +1,9 @@
+---
+title: "News Function is Coming! "
+description: "I am updating my website and adding a news section to share my latest updates. This is the first news post. When I have any news to share, I will post it here. Stay tuned!"
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 02-15-2026
+draft: false 
+---
