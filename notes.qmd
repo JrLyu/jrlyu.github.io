@@ -26,6 +26,7 @@ title: "Class Notes"
 - [PhD-Level Numerical Analysis I (Numerical Linear Algebra)](notes/NA2.qmd)
 - [PhD-Level Numerical Analysis II](notes/NA3.qmd)
 - [PhD-Level Numerical Analysis III (Iterative Methods for Linear Systems)](notes/IterativeMethods.qmd)
+- [PhD-Level Numerical PDEs](notes/NumericalPDEs.qmd)
 
 
 #### Pure Mathematics

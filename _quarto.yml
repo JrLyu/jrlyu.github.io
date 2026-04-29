@@ -125,6 +125,27 @@ format:
                 }
               };
               </script>
+              <script>
+              // Make all external links open in a new tab/window and add safe rel attributes
+              document.addEventListener('DOMContentLoaded', function() {
+                try {
+                  var anchors = document.querySelectorAll('a[href]');
+                  anchors.forEach(function(a){
+                    try {
+                      var url = new URL(a.href, location.href);
+                      if (url.origin !== location.origin) {
+                        a.setAttribute('target', '_blank');
+                        a.setAttribute('rel', 'noopener noreferrer');
+                      }
+                    } catch(e) {
+                      // ignore invalid URLs
+                    }
+                  });
+                } catch(e) {
+                  console.warn('external link script failed', e);
+                }
+              });
+              </script>
 
 filters:
   - pseudocode

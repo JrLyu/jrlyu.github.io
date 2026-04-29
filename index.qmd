@@ -6,7 +6,7 @@ toc: false
 about: 
   template: solana
   image-shape: round
-  image-width: 17ems
+  image-width: 17em
   links:
     - icon: linkedin
       text: LinkedIn
@@ -18,17 +18,17 @@ about:
       target: _blank
     - icon: envelope
       text: Email
-      href: mailto:jiuru.lyu@emory.edu
+      href: mailto:jiuru.lyu+webpage@gmail.com
 listing:
   - id: news
     contents:
       - news
     type: default
     fields: [date, title, description]
-    sort: "date-modified desc"
+    sort: "date desc"
     filter-ui: false
     sort-ui: false
-    max-items: 4
+    max-items: 3
 ---
 
 Hi! My name is Jiuru Lyu, and I am a senior at Emory University studying Applied Mathematics. In my leisure time, I enjoy coffee brewing, traveling, photography, and commercial aviation.

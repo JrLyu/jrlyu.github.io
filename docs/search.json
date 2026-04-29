@@ -158,7 +158,7 @@
     "href": "notes.html",
     "title": "Class Notes",
     "section": "",
-    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\nProof Practice\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nPartial Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\nNumerical ODEs and PDEs\nPhD-Level Numerical Analysis I (Numerical Linear Algebra)\nPhD-Level Numerical Analysis II\nPhD-Level Numerical Analysis III (Iterative Methods for Linear Systems)\n\n\n\nPure Mathematics\n\nLinear Algebra Done Right\nReal Analysis\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nGoogle Data Analytics Learning Notes\nMathematical Statistics – Propability Theory\nMathematical Statistics – Statistical Inference\nCausal Designs and Inference\nMachine Learning\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\nDatabase Systems\n\n\n\nOther Fields\n\nIntroduction to Sociology\n\n\n\n\n\n Back to top"
+    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\nProof Practice\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nPartial Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\nNumerical ODEs and PDEs\nPhD-Level Numerical Analysis I (Numerical Linear Algebra)\nPhD-Level Numerical Analysis II\nPhD-Level Numerical Analysis III (Iterative Methods for Linear Systems)\nPhD-Level Numerical PDEs\n\n\n\nPure Mathematics\n\nLinear Algebra Done Right\nReal Analysis\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nGoogle Data Analytics Learning Notes\nMathematical Statistics – Propability Theory\nMathematical Statistics – Statistical Inference\nCausal Designs and Inference\nMachine Learning\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\nDatabase Systems\n\n\n\nOther Fields\n\nIntroduction to Sociology\n\n\n\n\n\n Back to top"
   },
   {
     "objectID": "index.html",
@@ -1250,6 +1250,34 @@
     "href": "news/2026-02-15.html",
     "title": "News Function is Coming!",
     "section": "",
-    "text": "Back to top"
+    "text": "I am updating my website and adding a news section to share my latest updates. This is the first news post. When I have any news to share, I will post it here. Stay tuned!\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "news/2026-04-29.html",
+    "href": "news/2026-04-29.html",
+    "title": "New Notes Update: Numerical PDEs",
+    "section": "",
+    "text": "I have added a new set of notes on PhD-Level Numerical PDEs. These notes cover advanced topics in numerical methods for solving partial differential equations, primarily including finite difference methods, finite element methods, and other relevant techniques. The notes are available in PDF format and can be viewed online or downloaded for offline use. Check out the new notes and let me know if you have any questions or feedback!\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/NumericalPDEs.html",
+    "href": "notes/NumericalPDEs.html",
+    "title": "PhD-Level Numerical PDEs",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "news/2026-04-13.html",
+    "href": "news/2026-04-13.html",
+    "title": "Phi Beta Kappa Induction Ceremony",
+    "section": "",
+    "text": "Today, I had the honor of being inducted into the Phi Beta Kappa Society, the oldest and most prestigious academic honor society in the United States by Emory’s chapter – Gamma of Georgia. The induction ceremony was a memorable event where I was recognized for my academic achievements and commitment to excellence in the liberal arts and sciences. I am grateful for the support of my family, friends, and mentors who have encouraged me throughout my academic journey. Being a part of Phi Beta Kappa is a significant milestone in my life, and I look forward to continuing to pursue knowledge and contribute to the intellectual community.\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "news/2026-03-27.html",
+    "href": "news/2026-03-27.html",
+    "title": "Honors Thesis Defense",
+    "section": "",
+    "text": "Today, I defended my honors thesis titled \"Double Descent and Color Intermittent Diffusion: A Global Optimization Framework Across Disciplines\". It will be accessible via Emory Thesis and Dissertations (ETD) in the near future. A link to the thesis is here: ETD Link. I am grateful for the support of my advisor, Manuela Manetta, and my committee members for their guidance and feedback throughout this process. I am also thankful for the encouragement from my family and friends. This thesis represents a significant milestone in my academic journey, and I look forward to applying the knowledge and skills I have gained to future endeavors.\n\n\n\n Back to top"
   }
 ]

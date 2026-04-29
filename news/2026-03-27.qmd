@@ -1,0 +1,11 @@
+---
+title: "Honors Thesis Defense"
+description: "Today, I defended my honors thesis titled \"*Double Descent and Color Intermittent Diffusion: A Global Optimization Framework Across Disciplines*\"."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 03-27-2026
+draft: false 
+---
+
+Today, I defended my honors thesis titled \"*Double Descent and Color Intermittent Diffusion: A Global Optimization Framework Across Disciplines*\". It will be accessible via Emory Thesis and Dissertations (ETD) in the near future. A link to the thesis is here: [ETD Link](https://etd.library.emory.edu/concern/etds/1g05fd258?locale=en). I am grateful for the support of my advisor, [Manuela Manetta](https://mannalela.wixsite.com/my-site), and my committee members for their guidance and feedback throughout this process. I am also thankful for the encouragement from my family and friends. This thesis represents a significant milestone in my academic journey, and I look forward to applying the knowledge and skills I have gained to future endeavors.

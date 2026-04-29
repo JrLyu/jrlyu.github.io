@@ -1,0 +1,11 @@
+---
+title: "New Notes Update: Numerical PDEs"
+description: "I have added a new set of notes on PhD-Level Numerical PDEs. "
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 04-29-2026
+draft: false 
+---
+
+I have added a new set of notes on PhD-Level Numerical PDEs. These notes cover advanced topics in numerical methods for solving partial differential equations, primarily including finite difference methods, finite element methods, and other relevant techniques. The notes are available in PDF format and can be viewed online or downloaded for offline use. Check out the [new notes](../notes/NumericalPDEs.qmd) and [let me know](mailto:jiuru.lyu+webpage@gmail.com) if you have any questions or feedback!

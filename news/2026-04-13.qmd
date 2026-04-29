@@ -1,0 +1,11 @@
+---
+title: "Phi Beta Kappa Induction Ceremony"
+description: "Today, I had the honor of being inducted into the [Phi Beta Kappa Society](https://www.pbk.org/)."
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 04-13-2026
+draft: false 
+---
+
+Today, I had the honor of being inducted into the [Phi Beta Kappa Society](https://www.pbk.org/), the oldest and most prestigious academic honor society in the United States by [Emory's chapter](https://oue.college.emory.edu/programs/other/phi-beta-kappa.html) -- Gamma of Georgia. The induction ceremony was a memorable event where I was recognized for my academic achievements and commitment to excellence in the liberal arts and sciences. I am grateful for the support of my family, friends, and mentors who have encouraged me throughout my academic journey. Being a part of Phi Beta Kappa is a significant milestone in my life, and I look forward to continuing to pursue knowledge and contribute to the intellectual community.
