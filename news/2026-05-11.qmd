@@ -1,0 +1,11 @@
+---
+title: "I graduated from Emory University!"
+description: "I am excited to announce that I have completed my Bachelor's degree in Applied Mathematics and Statistics at Emory University. "
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 05-11-2026
+draft: false 
+---
+
+Today, I am excited to announce that I have completed my Bachelor's degree in Applied Mathematics and Statistics at Emory University. It has been an incredible journey filled with learning, growth, and unforgettable experiences. I am grateful for the support of my family, friends, professors, and mentors who have guided me throughout this academic journey. As I embark on the next chapter of my life, I look forward to applying the knowledge and skills I have gained to make a positive impact in the world. Thank you to everyone who has been a part of this journey with me!

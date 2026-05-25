@@ -16,6 +16,10 @@ about:
       text: GitHub
       href: https://github.com/JrLyu
       target: _blank
+    - icon: orcid
+      text: "<img src=\"media/orcid.svg\" alt=\"ORCID\" style=\"height:1em; vertical-align:middle; margin-right:6px;\"> ORCID"
+      href: https://orcid.org/0009-0008-0071-1247
+      target: _blank
     - icon: envelope
       text: Email
       href: mailto:jiuru.lyu+webpage@gmail.com

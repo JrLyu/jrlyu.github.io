@@ -158,7 +158,7 @@
     "href": "notes.html",
     "title": "Class Notes",
     "section": "",
-    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\nProof Practice\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nPartial Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\nNumerical ODEs and PDEs\nPhD-Level Numerical Analysis I (Numerical Linear Algebra)\nPhD-Level Numerical Analysis II\nPhD-Level Numerical Analysis III (Iterative Methods for Linear Systems)\nPhD-Level Numerical PDEs\n\n\n\nPure Mathematics\n\nLinear Algebra Done Right\nReal Analysis\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nGoogle Data Analytics Learning Notes\nMathematical Statistics – Propability Theory\nMathematical Statistics – Statistical Inference\nCausal Designs and Inference\nMachine Learning\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\nDatabase Systems\n\n\n\nOther Fields\n\nIntroduction to Sociology\n\n\n\n\n\n Back to top"
+    "text": "High School Level Math\n\nIB Math AA HL Notes\n\n\n\nCollege Level Math\n\nMath Fundamentals\n\nCalculus II\nMultivariable Calculus/Advanced Calculus/Calculus III\nLinear Algebra\nMathematical Proofs\nProof Practice\n\n\n\nApplied Mathematics\n\nOrdinary Differential Equations\nPartial Differential Equations\nNonlinear Optimization\nUndergraduate-Level Numerical Analysis\nNumerical ODEs and PDEs\nPhD-Level Numerical Analysis I (Numerical Linear Algebra)\nPhD-Level Numerical Analysis II\nPhD-Level Numerical Analysis III (Iterative Methods for Linear Systems)\nPhD-Level Numerical PDEs\n\n\n\nPure Mathematics\n\nLinear Algebra Done Right\nReal Analysis\nPhD-Level Measure Theory\n\n\n\nData Science, Statistics, and Causal Inference\n\nIntroduction to Causal Inference\nGoogle Data Analytics Learning Notes\nMathematical Statistics – Propability Theory\nMathematical Statistics – Statistical Inference\nCausal Designs and Inference\nMachine Learning\n\n\n\n\nComputer Science\n\nObject-Oriented Programming & Introduction to Data Structures\nIntroduction to Data Structure and Algorithms\nDatabase Systems\nQuantum Computing\n\n\n\nOther Fields\n\nIntroduction to Sociology\n\n\n\n\n\n Back to top"
   },
   {
     "objectID": "index.html",
@@ -1279,5 +1279,40 @@
     "title": "Honors Thesis Defense",
     "section": "",
     "text": "Today, I defended my honors thesis titled \"Double Descent and Color Intermittent Diffusion: A Global Optimization Framework Across Disciplines\". It will be accessible via Emory Thesis and Dissertations (ETD) in the near future. A link to the thesis is here: ETD Link. I am grateful for the support of my advisor, Manuela Manetta, and my committee members for their guidance and feedback throughout this process. I am also thankful for the encouragement from my family and friends. This thesis represents a significant milestone in my academic journey, and I look forward to applying the knowledge and skills I have gained to future endeavors.\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "news/2026-05-25.html",
+    "href": "news/2026-05-25.html",
+    "title": "New Notes Update: Measure Theory",
+    "section": "",
+    "text": "I have added a new set of notes on PhD-Level Measure Theory. These notes cover advanced topics in measure theory, primarily including Lebesgue measure, measurable functions, integration theory, and other relevant concepts. The notes are available in PDF format and can be viewed online or downloaded for offline use. Check out the new notes and let me know if you have any questions or feedback!\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/MeasureTheory.html",
+    "href": "notes/MeasureTheory.html",
+    "title": "Measure Theory",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "news/2026-05-11.html",
+    "href": "news/2026-05-11.html",
+    "title": "I graduated from Emory University!",
+    "section": "",
+    "text": "Today, I am excited to announce that I have completed my Bachelor’s degree in Applied Mathematics and Statistics at Emory University. It has been an incredible journey filled with learning, growth, and unforgettable experiences. I am grateful for the support of my family, friends, professors, and mentors who have guided me throughout this academic journey. As I embark on the next chapter of my life, I look forward to applying the knowledge and skills I have gained to make a positive impact in the world. Thank you to everyone who has been a part of this journey with me!\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "news/2026-05-25-2.html",
+    "href": "news/2026-05-25-2.html",
+    "title": "New Notes Update: Quantum Computing",
+    "section": "",
+    "text": "I have added a new set of notes on Quantum Computing. These notes cover advanced topics in quantum computing, primarily including quantum algorithms, quantum circuits, and other relevant concepts. The notes are available in PDF format and can be viewed online or downloaded for offline use. Check out the new notes and let me know if you have any questions or feedback!\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "notes/QuantumCom.html",
+    "href": "notes/QuantumCom.html",
+    "title": "Quantum Computing",
+    "section": "",
+    "text": "📖 Open in new tab  |  📄 Download PDF \n\n\n\n\n\n\n\n Back to top"
   }
 ]

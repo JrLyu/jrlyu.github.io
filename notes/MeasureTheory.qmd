@@ -1,0 +1,16 @@
+---
+title: "Measure Theory"
+---
+
+<p>
+  <a href="pdf/MeasureTheory.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/MeasureTheory.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
+
+<div class="responsive-pdf">
+  <iframe src="pdf/MeasureTheory.pdf" frameborder="0"></iframe>
+</div>

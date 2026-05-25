@@ -32,6 +32,7 @@ title: "Class Notes"
 #### Pure Mathematics
 - [Linear Algebra Done Right](notes/LADR.qmd)
 - [Real Analysis](notes/RealAnalysis.qmd)
+- [PhD-Level Measure Theory](notes/MeasureTheory.qmd)
 
 #### Data Science, Statistics, and Causal Inference
 
@@ -47,6 +48,7 @@ title: "Class Notes"
 - [Object-Oriented Programming & Introduction to Data Structures](notes/cs171.qmd)
 - [Introduction to Data Structure and Algorithms](notes/cs253.qmd)
 - [Database Systems](notes/cs377.qmd)
+- [Quantum Computing](notes/QuantumCom.qmd)
 
 
 ### Other Fields

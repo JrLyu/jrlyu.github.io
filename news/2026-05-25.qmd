@@ -1,0 +1,11 @@
+---
+title: "New Notes Update: Measure Theory"
+description: "I have added a new set of notes on PhD-Level Measure Theory. "
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 05-25-2026
+draft: false 
+---
+
+I have added a new set of notes on PhD-Level Measure Theory. These notes cover advanced topics in measure theory, primarily including Lebesgue measure, measurable functions, integration theory, and other relevant concepts. The notes are available in PDF format and can be viewed online or downloaded for offline use. Check out the [new notes](../notes/MeasureTheory.qmd) and [let me know](mailto:jiuru.lyu+webpage@gmail.com) if you have any questions or feedback!

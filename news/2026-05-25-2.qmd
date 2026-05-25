@@ -1,0 +1,11 @@
+---
+title: "New Notes Update: Quantum Computing"
+description: "I have added a new set of notes on Quantum Computing. "
+author:
+  - name: Jiuru Lyu
+    url: https://jrlyu.github.io/
+date: 05-25-2026
+draft: false 
+---
+
+I have added a new set of notes on Quantum Computing. These notes cover advanced topics in quantum computing, primarily including quantum algorithms, quantum circuits, and other relevant concepts. The notes are available in PDF format and can be viewed online or downloaded for offline use. Check out the [new notes](../notes/QuantumCom.qmd) and [let me know](mailto:jiuru.lyu+webpage@gmail.com) if you have any questions or feedback!

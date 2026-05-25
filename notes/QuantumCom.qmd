@@ -1,0 +1,16 @@
+---
+title: "Quantum Computing"
+---
+
+<p>
+  <a href="pdf/QuantumCom.pdf" target="_blank" rel="noopener noreferrer">
+    📖 Open in new tab
+  </a> |
+  <a href="pdf/QuantumCom.pdf" download>
+    📄 Download PDF
+  </a>
+</p>
+
+<div class="responsive-pdf">
+  <iframe src="pdf/QuantumCom.pdf" frameborder="0"></iframe>
+</div>

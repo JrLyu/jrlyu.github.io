@@ -145,6 +145,27 @@ window.MathJax = {
   }
 };
 </script>
+<script>
+// Make all external links open in a new tab/window and add safe rel attributes
+document.addEventListener('DOMContentLoaded', function() {
+  try {
+    var anchors = document.querySelectorAll('a[href]');
+    anchors.forEach(function(a){
+      try {
+        var url = new URL(a.href, location.href);
+        if (url.origin !== location.origin) {
+          a.setAttribute('target', '_blank');
+          a.setAttribute('rel', 'noopener noreferrer');
+        }
+      } catch(e) {
+        // ignore invalid URLs
+      }
+    });
+  } catch(e) {
+    console.warn('external link script failed', e);
+  }
+});
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Noto+Serif+TC:wght@200..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Sedan:ital@0;1&amp;display=swap" rel="stylesheet">
@@ -278,6 +299,7 @@ window.MathJax = {
 <ul>
 <li><a href="./notes/LADR.html">Linear Algebra Done Right</a></li>
 <li><a href="./notes/RealAnalysis.html">Real Analysis</a></li>
+<li><a href="./notes/MeasureTheory.html">PhD-Level Measure Theory</a></li>
 </ul>
 </section>
 <section id="data-science-statistics-and-causal-inference" class="level4">
@@ -298,6 +320,7 @@ window.MathJax = {
 <li><a href="./notes/cs171.html">Object-Oriented Programming &amp; Introduction to Data Structures</a></li>
 <li><a href="./notes/cs253.html">Introduction to Data Structure and Algorithms</a></li>
 <li><a href="./notes/cs377.html">Database Systems</a></li>
+<li><a href="notes/QuantumCom.qmd">Quantum Computing</a></li>
 </ul>
 </section>
 <section id="other-fields" class="level3">
